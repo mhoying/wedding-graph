@@ -422,6 +422,29 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     return result;
   }, [nodes]);
 
+  // Dual-Location Overlapping Cluster Engine: Overloads Originally From AND Currently Lives In!
+  const dynamicLocationClusters = useMemo(() => {
+    const clusterMap = {};
+    nodes.forEach(node => {
+      if (node.type === 'CONTEXT_HUB') return;
+      if (node.originallyFrom) {
+        const key = `🏡 Originally: ${node.originallyFrom}`;
+        if (!clusterMap[key]) clusterMap[key] = [];
+        clusterMap[key].push(node);
+      }
+      if (node.currentlyLivesIn) {
+        const key = `📍 Lives in: ${node.currentlyLivesIn}`;
+        if (!clusterMap[key]) clusterMap[key] = [];
+        clusterMap[key].push(node);
+      }
+    });
+    const result = {};
+    Object.entries(clusterMap).forEach(([tag, arr]) => {
+      if (arr.length >= 2) result[tag] = arr;
+    });
+    return result;
+  }, [nodes]);
+
   // Current Location Cluster Engine
   const dynamicCurrentLocationClusters = useMemo(() => {
     const clusterMap = {};
@@ -1100,10 +1123,9 @@ function getConvexHull2D(points) {
         ctx.fillStyle = clusterColor;
         ctx.textAlign = 'left';
         ctx.fillText(label.toUpperCase(), labelX, labelY);
-        ctx.restore();
       }
     });
-  }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters, showHeadshots, nodeScaleMultiplier]);
+  }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters, dynamicLocationClusters, dynamicCurrentLocationClusters, dynamicOriginalLocationClusters, showHeadshots, nodeScaleMultiplier]);
 
   // Modern Square Card Badge Renderer in NATIVE WORLD UNITS with Independent Node Scale Multiplier
   const drawNode = useCallback((node, ctx, globalScale) => {

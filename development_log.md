@@ -9,14 +9,9 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Grouping Change Lock-Release & Simulation Reheat Fix
-- **User Prompt**: "now as soon as i change hte grouping it basically shows me a non rsponsive screen with only the coupls group and the freindmand rahmans"
+## [2026-08-22] Locations Mode Blank Screen Fix (`dynamicLocationClusters`)
+- **User Prompt**: "changeing the grouping to location now makes a blank screen"
 - **Actions**:
-  1. **Root Cause Analysis**:
-     - Dragging group clusters locked member node coordinates (`fx`, `fy`).
-     - Switching `clusterMode` (grouping mode) left these fixed drag coordinates locked on nodes without reheating D3, causing nodes to freeze in place and canvas to become non-responsive.
-  2. **Automatic Drag Lock Release & Reheat**:
-     - Added a dedicated `useEffect` triggered whenever `clusterMode` changes:
-       - Automatically un-fixes all drag locks (`node.fx = undefined; node.fy = undefined;`).
-       - Reheats D3 simulation (`d3AlphaTarget(0.35).restart()`) so nodes immediately untangle and spread out cleanly into the newly selected cluster mode.
+  1. **Root Cause Analysis**: `dynamicLocationClusters` memo function was accidentally omitted during a prior edit while `drawBackgroundHulls` still referenced `dynamicLocationClusters`. When selecting `Locations`, calling `Object.entries(undefined)` threw an uncaught TypeError on canvas render frames, causing the canvas to go blank.
+  2. **Restored `dynamicLocationClusters` Engine**: Re-inserted `dynamicLocationClusters` memo computation to handle dual-location overlays (Origin & Current) and added it to `drawBackgroundHulls` dependency array.
   3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
