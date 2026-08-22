@@ -602,6 +602,12 @@ export default function App() {
         setShowHeadshots={setShowHeadshots}
         isOrbiting={isOrbiting}
         setIsOrbiting={setIsOrbiting}
+        orbitSpeed={orbitSpeed}
+        setOrbitSpeed={setOrbitSpeed}
+        nodeScaleMultiplier={nodeScaleMultiplier}
+        setNodeScaleMultiplier={setNodeScaleMultiplier}
+        edgeLengthMultiplier={edgeLengthMultiplier}
+        setEdgeLengthMultiplier={setEdgeLengthMultiplier}
         isPathMode={isPathMode}
         setIsPathMode={setIsPathMode}
         setIsMatchmakerOpen={setIsMatchmakerOpen}

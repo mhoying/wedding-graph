@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause, Eye, EyeOff } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause, Eye, EyeOff, SlidersHorizontal, Palette } from 'lucide-react';
 
 export default function TopHeaderNav({
   searchQuery,
@@ -16,6 +16,12 @@ export default function TopHeaderNav({
   setShowHeadshots,
   isOrbiting,
   setIsOrbiting,
+  orbitSpeed,
+  setOrbitSpeed,
+  nodeScaleMultiplier,
+  setNodeScaleMultiplier,
+  edgeLengthMultiplier,
+  setEdgeLengthMultiplier,
   isPathMode,
   setIsPathMode,
   setIsMatchmakerOpen,
@@ -25,6 +31,8 @@ export default function TopHeaderNav({
   feedbackQueueCount,
   setIsFeedbackQueueOpen
 }) {
+  const [isTunePopoverOpen, setIsTunePopoverOpen] = useState(false);
+
   return (
     <header className="glass-panel top-bar no-print">
       <div className="logo-area">
@@ -35,7 +43,7 @@ export default function TopHeaderNav({
         <span className="logo-subtitle">Sept 12, 2026 • Wedding Guest Universe</span>
       </div>
 
-      <div className="search-controls-area" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div className="search-controls-area" style={{ display: 'flex', alignItems: 'center', gap: 10, position: 'relative' }}>
         {/* Search Bar Input */}
         <div className="search-box">
           <Search style={{ width: 14, height: 14, color: '#94a3b8' }} />
@@ -97,6 +105,7 @@ export default function TopHeaderNav({
 
         {/* Desktop Color Mode Selector */}
         <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 36, padding: '0 10px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12, flexShrink: 0 }}>
+          <Palette style={{ width: 14, height: 14, color: '#38bdf8', marginRight: 4 }} />
           <span style={{ color: '#cbd5e1', fontSize: 12, fontWeight: 700, marginRight: 6 }}>Color:</span>
           <select 
             value={colorMode}
@@ -107,6 +116,98 @@ export default function TopHeaderNav({
             <option value="side">Side (Matt/Maureen)</option>
             <option value="state">States</option>
           </select>
+        </div>
+
+        {/* Desktop Sliders Popover Button (Node Size & Map Spacing) */}
+        <div className="desktop-only-inline" style={{ position: 'relative' }}>
+          <button 
+            onClick={() => setIsTunePopoverOpen(!isTunePopoverOpen)}
+            className={`glass-panel btn-icon ${isTunePopoverOpen ? 'active' : ''}`}
+            title="Adjust Node Size, Map Density & Orbit Speed Sliders"
+            style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: isTunePopoverOpen ? '#38bdf8' : '#94a3b8', flexShrink: 0 }}
+          >
+            <SlidersHorizontal style={{ width: 14, height: 14 }} />
+            <span>Tune Sliders</span>
+          </button>
+
+          {/* Editorial Glass Sliders Popover */}
+          {isTunePopoverOpen && (
+            <div className="glass-panel" style={{
+              position: 'absolute',
+              top: 44,
+              right: 0,
+              width: 260,
+              padding: 16,
+              borderRadius: 20,
+              background: 'rgba(15, 23, 42, 0.96)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              boxShadow: '0 16px 48px rgba(0, 0, 0, 0.6)',
+              zIndex: 1000,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: '#f8fafc' }}>Display Sliders</span>
+                <button onClick={() => setIsTunePopoverOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                  <X style={{ width: 14, height: 14 }} />
+                </button>
+              </div>
+
+              {/* Node Size Slider */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
+                  <span style={{ color: '#cbd5e1', fontWeight: 600 }}>Node Size:</span>
+                  <span style={{ color: '#38bdf8', fontWeight: 800 }}>{nodeScaleMultiplier.toFixed(1)}x</span>
+                </div>
+                <input 
+                  type="range"
+                  min="0.5"
+                  max="2.0"
+                  step="0.1"
+                  value={nodeScaleMultiplier}
+                  onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
+                  style={{ width: '100%', accentColor: '#38bdf8', height: 8, cursor: 'pointer' }}
+                />
+              </div>
+
+              {/* Map Spacing / Density Slider */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
+                  <span style={{ color: '#cbd5e1', fontWeight: 600 }}>Map Spacing:</span>
+                  <span style={{ color: '#10b981', fontWeight: 800 }}>{edgeLengthMultiplier.toFixed(1)}x</span>
+                </div>
+                <input 
+                  type="range"
+                  min="0.5"
+                  max="2.0"
+                  step="0.1"
+                  value={edgeLengthMultiplier}
+                  onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
+                  style={{ width: '100%', accentColor: '#10b981', height: 8, cursor: 'pointer' }}
+                />
+              </div>
+
+              {/* Orbit Speed Slider */}
+              {isOrbiting && (
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
+                    <span style={{ color: '#cbd5e1', fontWeight: 600 }}>Orbit Speed:</span>
+                    <span style={{ color: '#a855f7', fontWeight: 800 }}>{orbitSpeed.toFixed(1)}x</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0.1"
+                    max="3.0"
+                    step="0.05"
+                    value={orbitSpeed}
+                    onChange={(e) => setOrbitSpeed(parseFloat(e.target.value))}
+                    style={{ width: '100%', accentColor: '#a855f7', height: 8, cursor: 'pointer' }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Desktop Headshot Photos Toggle */}
