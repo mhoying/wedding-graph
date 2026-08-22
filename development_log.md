@@ -23,12 +23,9 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Mobile & Tablet Responsive Layout & Control Drawer
-- **User Prompt**: "this will be viewed on computer sand cell phones. lets make sure that it is dynamically orgnaized for each ui ratio and size. it may be necesary toe mkae a contorll drawer"
+## [2026-08-22] Fix Blank Window Component Crash
+- **User Prompt**: "the window is blank in my browser"
 - **Actions**:
-  1. **Mobile Viewport Detection (`isMobileViewport`)**: Detects screen width ($< 768\text{px}$) and aspect ratios ($H/W > 1.25$) on initial load and window resize.
-  2. **Auto-Responsive Default Scale**: Automatically initializes `nodeScaleMultiplier = 0.85` and `edgeLengthMultiplier = 0.90` on mobile phones so nodes and graph clusters fit comfortably on smaller smartphone screens.
-  3. **Mobile Controls Sheet (Bottom Sheet Drawer)**:
-     - On mobile screens, the cluttered top desktop bar condenses into a clean navbar: Logo + Search + **`Controls 🎛️`** trigger button!
-     - Tapping **`Controls`** slides up a glassmorphism bottom sheet drawer containing Card Size, Density, Photo Toggles, Color Modes, Cluster Overlays, Path Finder, Matchmaker, Suggest Edit, and Theme controls.
-  4. **Mobile Bottom Sheet Drawers**: Guest Profile & Matchmaker drawers transform into mobile-optimized bottom sheets (`70vh` height max with touch scrolling).
+  1. **Log Diagnostic**: Traced runtime `TypeError: fg.d3AlphaTarget is not a function` in `src/App.jsx`.
+  2. **Fix**: Removed invalid `fg.d3AlphaTarget` call and replaced with standard `fg.d3ReheatSimulation()`.
+  3. Verified clean HMR update and zero console errors.

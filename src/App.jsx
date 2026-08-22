@@ -462,13 +462,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
       }).iterations(25));
 
-      fg.d3AlphaTarget(0.3);
       fg.d3ReheatSimulation();
-      const timer = setTimeout(() => {
-        if (fgRef.current) fgRef.current.d3AlphaTarget(0);
-      }, 700);
-
-      return () => clearTimeout(timer);
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier]);
 
