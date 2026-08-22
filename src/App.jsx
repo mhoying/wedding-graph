@@ -828,10 +828,10 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       ctx.shadowBlur = 0;
       ctx.setLineDash([]);
-      ctx.font = `600 11px Inter, sans-serif`;
+      ctx.font = `800 ${22 * nodeScaleMultiplier}px Inter, sans-serif`;
       ctx.fillStyle = '#38bdf8';
       ctx.textAlign = 'center';
-      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - 8);
+      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - 12);
       ctx.restore();
     }
 
@@ -843,8 +843,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       clusterGroups = dynamicAutoClusters;
     } else if (clusterMode === 'state') {
       filteredNodes.forEach(node => {
-        if (node.state && node.x !== undefined) {
-          const key = `📍 State: ${node.state}`;
+        const loc = node.currentlyLivesIn || node.originallyFrom || node.state;
+        if (loc && node.x !== undefined) {
+          const key = `📍 ${loc}`;
           if (!clusterGroups[key]) clusterGroups[key] = [];
           clusterGroups[key].push(node);
         }
@@ -877,7 +878,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         });
 
         // Exact Uniform Padding in World Units around outer card edges
-        const pad = 24 * nodeScaleMultiplier;
+        const pad = 30 * nodeScaleMultiplier;
         const w = (maxX - minX) + pad * 2;
         const h = (maxY - minY) + pad * 2;
         const x = minX - pad;
@@ -890,22 +891,23 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
         ctx.beginPath();
         if (ctx.roundRect) {
-          ctx.roundRect(x, y, w, h, 18 * nodeScaleMultiplier);
+          ctx.roundRect(x, y, w, h, 20 * nodeScaleMultiplier);
         } else {
           ctx.rect(x, y, w, h);
         }
         ctx.fill();
 
-        ctx.lineWidth = 1 / globalScale;
-        ctx.strokeStyle = hexToRgba(clusterColor, 0.4);
-        ctx.setLineDash([4 / globalScale, 4 / globalScale]);
+        ctx.lineWidth = 1.5 / globalScale;
+        ctx.strokeStyle = hexToRgba(clusterColor, 0.45);
+        ctx.setLineDash([6 / globalScale, 6 / globalScale]);
         ctx.stroke();
 
         ctx.setLineDash([]);
-        ctx.font = `600 11px Inter, sans-serif`;
+        // 2X LARGER CLUSTER TITLE LABELS (22px * nodeScaleMultiplier, Bold 800)
+        ctx.font = `800 ${22 * nodeScaleMultiplier}px Inter, sans-serif`;
         ctx.fillStyle = clusterColor;
         ctx.textAlign = 'left';
-        ctx.fillText(label.toUpperCase(), x + 12, y + 14);
+        ctx.fillText(label.toUpperCase(), x + 16 * nodeScaleMultiplier, y + 26 * nodeScaleMultiplier);
         ctx.restore();
       }
     });
