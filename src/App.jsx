@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, HardDrive } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -136,9 +136,36 @@ export default function App() {
         console.log('Successfully saved to disk:', data.message);
       }
     } catch (e) {
-      console.warn('API save-dataset failed (running in static mode):', e);
+      console.warn('Running on static web server (no Node backend process). Using client export pipeline.');
     }
   }, [links, feedbackList]);
+
+  // Helper to Download updated sampleData.js file directly for Git committing
+  const downloadSampleDataJs = () => {
+    const fileContent = `// Auto-generated & updated from guest profile edits
+export const COHORT_COLORS = ${JSON.stringify(COHORT_COLORS, null, 2)};
+
+export const SIDE_COLORS = ${JSON.stringify(SIDE_COLORS, null, 2)};
+
+export const STATE_COLORS = ${JSON.stringify(STATE_COLORS, null, 2)};
+
+export const SAMPLE_NODES = ${JSON.stringify(nodes, null, 2)};
+
+export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
+`;
+    const blob = new Blob([fileContent], { type: 'text/javascript' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sampleData.js';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    setToastMessage('Downloaded sampleData.js! Replace in src/data/ and git commit.');
+    setTimeout(() => setToastMessage(''), 4000);
+  };
 
   // Dynamically extract all unique Interests across the dataset
   const allInterests = useMemo(() => {
@@ -250,7 +277,7 @@ export default function App() {
     // Save to Disk File src/data/sampleData.js for Git Tracking!
     persistNodesToDisk(newNodesList);
 
-    setToastMessage(`Saved profile changes for ${selectedNode.name} to Git repository!`);
+    setToastMessage(`Saved profile changes for ${selectedNode.name}!`);
     setTimeout(() => setToastMessage(''), 3500);
   };
 
@@ -457,7 +484,7 @@ export default function App() {
     setFeedbackList(prev => prev.map(item => item.id === fb.id ? { ...item, applied: true } : item));
     persistNodesToDisk(updatedNodes);
 
-    setToastMessage(`Updated ${fb.guestName}'s profile & saved to Git!`);
+    setToastMessage(`Updated ${fb.guestName}'s profile!`);
     setTimeout(() => setToastMessage(''), 3000);
   };
 
@@ -875,20 +902,6 @@ export default function App() {
             <span>Matchmaker</span>
           </button>
 
-          {/* Suggest Edit Trigger */}
-          <button 
-            onClick={() => {
-              setFeedbackTargetNode(selectedNode || nodes[0]);
-              setIsFeedbackModalOpen(true);
-            }}
-            className="glass-panel btn-mode"
-            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Report Missing or Incorrect Metadata"
-          >
-            <Edit3 style={{ width: 14, height: 14, color: '#38bdf8' }} />
-            <span>Suggest Edit</span>
-          </button>
-
           {/* Host Feedback Admin Queue Button */}
           {feedbackList.some(f => !f.applied) && (
             <button 
@@ -901,6 +914,17 @@ export default function App() {
               <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
             </button>
           )}
+
+          {/* Download updated sampleData.js for Git */}
+          <button 
+            onClick={downloadSampleDataJs}
+            className="glass-panel btn-mode"
+            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            title="Download updated sampleData.js to replace in git repository"
+          >
+            <Download style={{ width: 14, height: 14, color: '#10b981' }} />
+            <span>Export for Git</span>
+          </button>
 
           {/* Color Mode Selector */}
           <div className="glass-panel color-mode-bar">
@@ -1007,30 +1031,26 @@ export default function App() {
                       className="btn-mode"
                       style={{ padding: '6px 12px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 11, display: 'flex', alignItems: 'center', gap: 6, width: '100%', justifyContent: 'center' }}
                     >
-                      <Check style={{ width: 12, height: 12 }} /> Apply Update to Graph & Git
+                      <Check style={{ width: 12, height: 12 }} /> Apply Update to Graph
                     </button>
                   ) : (
                     <div style={{ fontSize: 11, color: '#10b981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <CheckCircle2 style={{ width: 12, height: 12 }} /> Applied to Canvas & Git
+                      <CheckCircle2 style={{ width: 12, height: 12 }} /> Applied to Canvas
                     </div>
                   )}
                 </div>
               ))}
             </div>
 
-            {/* Manual Persist to Git Button */}
+            {/* Download updated sampleData.js for Git */}
             <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
               <button 
-                onClick={() => {
-                  persistNodesToDisk(nodes);
-                  setToastMessage('Persisted latest dataset to src/data/sampleData.js!');
-                  setTimeout(() => setToastMessage(''), 3000);
-                }}
+                onClick={downloadSampleDataJs}
                 className="btn-action"
                 style={{ width: '100%', background: '#0284c7', color: '#fff', justifyContent: 'center' }}
               >
-                <HardDrive style={{ width: 14, height: 14 }} />
-                <span>Persist All Dataset Changes to Disk/Git</span>
+                <Download style={{ width: 14, height: 14 }} />
+                <span>Export sampleData.js for Git Repository</span>
               </button>
             </div>
           </div>
@@ -1505,7 +1525,7 @@ export default function App() {
                     className="btn-action"
                     style={{ flex: 1, padding: '8px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 12, justifyContent: 'center' }}
                   >
-                    <Save style={{ width: 14, height: 14 }} /> Save & Persist to Git
+                    <Save style={{ width: 14, height: 14 }} /> Save Edits
                   </button>
                 </div>
               </div>

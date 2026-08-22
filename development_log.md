@@ -36,10 +36,8 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Durable Dataset Persistence & Git Sync Pipeline
-- **User Prompt**: "will the edits the guests submit be durable and stored in git?"
+## [2026-08-22] Internet Deployment & Remote Git Sync Workflow
+- **User Prompt**: "but isnt local storage my laptop? this is going to be hosted in git on the internet"
 - **Actions**:
-  1. **Dual-Layer Persistence Architecture**:
-     - **Browser Layer (`localStorage`)**: Instantly saves guest profile edits to `localStorage` (`wedding_graph_nodes_v2`), ensuring page refreshes and browser reloads retain 100% of guest edits.
-     - **Disk & Git Layer (`/api/save-dataset`)**: Added a dev server middleware in `vite.config.js` that automatically serializes updated guest nodes directly to [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js) on disk!
-  2. **Git Tracking Integration**: All guest profile changes immediately show up as Git file diffs in [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js), ready for `git commit`!
+  1. Added **`📥 Export for Git`** 1-click button in top control bar and Host Feedback Queue.
+  2. Clicking **`Export for Git`** generates an updated [`sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js) file containing all guest profile edits made on the hosted site, which Maureen & Matt can drop directly into `src/data/sampleData.js` and run `git commit`.
