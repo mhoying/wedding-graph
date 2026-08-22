@@ -21,7 +21,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.app-container {
+.app-container, .app-root {
   width: 100vw;
   height: 100vh;
   position: relative;

@@ -580,7 +580,7 @@ export default function App() {
   };
 
   return (
-    <div className={`app-root ${isLightMode ? 'light-mode' : ''}`}>
+    <div className={`app-container ${isLightMode ? 'light-mode' : ''}`}>
       {/* Top Header Navigation */}
       <TopHeaderNav 
         searchQuery={searchQuery}
