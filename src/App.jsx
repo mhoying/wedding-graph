@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal, SlidersHorizontal, Settings } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal, SlidersHorizontal, Settings, RotateCw, Disc } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -79,6 +79,50 @@ function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
 
+// CUSTOM D3 CELESTIAL ORBIT FORCE: Rotates social galaxy around Maureen & Matt
+function createOrbitForce(speedMultiplier = 1.0) {
+  let nodes = [];
+  function force(alpha) {
+    if (speedMultiplier <= 0) return;
+    const baseSpeed = 0.0022 * speedMultiplier * alpha;
+
+    // Find center of gravity (Maureen & Matt couple anchor)
+    let cx = 0, cy = 0, count = 0;
+    nodes.forEach(n => {
+      if (n.id === 'maureen' || n.id === 'matt') {
+        cx += n.x || 0;
+        cy += n.y || 0;
+        count++;
+      }
+    });
+    if (count > 0) { cx /= count; cy /= count; }
+
+    nodes.forEach(node => {
+      // Don't orbit fixed/dragged nodes or core couple anchors
+      if (node.fx !== undefined && node.fx !== null) return;
+      if (node.id === 'maureen' || node.id === 'matt') return;
+
+      const dx = (node.x || 0) - cx;
+      const dy = (node.y || 0) - cy;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist > 15) {
+        const currentAngle = Math.atan2(dy, dx);
+        const nextAngle = currentAngle + baseSpeed;
+
+        const targetX = cx + Math.cos(nextAngle) * dist;
+        const targetY = cy + Math.sin(nextAngle) * dist;
+
+        node.vx += (targetX - node.x) * 0.12;
+        node.vy += (targetY - node.y) * 0.12;
+      }
+    });
+  }
+
+  force.initialize = _nodes => { nodes = _nodes; };
+  return force;
+}
+
 export default function App() {
   const fgRef = useRef();
   
@@ -94,6 +138,10 @@ export default function App() {
 
   // Toggle state for headshot photos on node cards
   const [showHeadshots, setShowHeadshots] = useState(true);
+
+  // Dynamic Orbital Galaxy Motion Engine (ON by default as requested!)
+  const [isOrbiting, setIsOrbiting] = useState(true);
+  const [orbitSpeed, setOrbitSpeed] = useState(1.0);
 
   // Independent Sliders: Node Size Multiplier & Map Density / Edge Length Multiplier (Auto-tuned default for mobile)
   const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(() => isMobileViewport ? 0.85 : 1.0);
@@ -418,7 +466,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces: PROPORTIONAL COHORT MULTIPLIERS (0.80x same cohort vs 1.85x cross cohort) & ACTIVE RE-HEATING!
+  // Configure D3 forces: PROPORTIONAL COHORT MULTIPLIERS & DYNAMIC ORBITAL GALAXY FORCE!
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
@@ -462,9 +510,16 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
       }).iterations(25));
 
+      // DYNAMIC ORBITAL GALAXY MOTION FORCE
+      if (isOrbiting) {
+        fg.d3Force('orbit', createOrbitForce(orbitSpeed));
+      } else {
+        fg.d3Force('orbit', null);
+      }
+
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, isOrbiting, orbitSpeed]);
 
   // Handle D3 Zoom Event: Re-optimizes simulation smoothly on page zoom
   const handleZoom = useCallback(({ k }) => {
@@ -1058,6 +1113,36 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ) : (
           /* DESKTOP CONTROLS BAR */
           <div className="top-bar-right desktop-only-controls">
+            {/* DYNAMIC ORBIT MOTION TOGGLE & SPEED SLIDER */}
+            <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
+              <button 
+                onClick={() => setIsOrbiting(!isOrbiting)}
+                className={`btn-mode ${isOrbiting ? 'active' : ''}`}
+                style={{ padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 5, background: isOrbiting ? '#8b5cf6' : 'transparent', color: isOrbiting ? '#fff' : '#94a3b8' }}
+                title="Toggle Celestial Galaxy Orbit Animation"
+              >
+                <RotateCw style={{ width: 13, height: 13, animation: isOrbiting ? 'spin 10s linear infinite' : 'none' }} />
+                <span>Orbit: {isOrbiting ? 'ON' : 'OFF'}</span>
+              </button>
+              {isOrbiting && (
+                <>
+                  <input 
+                    type="range"
+                    min="0.2"
+                    max="3.0"
+                    step="0.1"
+                    value={orbitSpeed}
+                    onChange={(e) => setOrbitSpeed(parseFloat(e.target.value))}
+                    style={{ width: 50, accentColor: '#8b5cf6', cursor: 'pointer' }}
+                    title="Orbit Speed Multiplier"
+                  />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#a855f7', minWidth: 26 }}>
+                    {orbitSpeed.toFixed(1)}x
+                  </span>
+                </>
+              )}
+            </div>
+
             {/* INDEPENDENT NODE SIZE SLIDER CONTROL */}
             <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
               <Sliders style={{ width: 14, height: 14, color: '#38bdf8' }} />
@@ -1069,7 +1154,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                 step="0.1"
                 value={nodeScaleMultiplier}
                 onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
-                style={{ width: 60, accentColor: '#38bdf8', cursor: 'pointer' }}
+                style={{ width: 55, accentColor: '#38bdf8', cursor: 'pointer' }}
                 title="Independent Node Card Size Slider"
               />
               <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', minWidth: 26 }}>
@@ -1088,7 +1173,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                 step="0.1"
                 value={edgeLengthMultiplier}
                 onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
-                style={{ width: 60, accentColor: '#10b981', cursor: 'pointer' }}
+                style={{ width: 55, accentColor: '#10b981', cursor: 'pointer' }}
                 title="Independent Map Density / Edge Length Slider"
               />
               <span style={{ fontSize: 11, fontWeight: 700, color: '#10b981', minWidth: 26 }}>
@@ -1241,7 +1326,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 18 }}>
                 <SlidersHorizontal style={{ width: 20, height: 20, color: '#38bdf8' }} />
-                <span>Map Controls & Settings</span>
+                <span>Map Controls & Motion</span>
               </div>
               <button 
                 onClick={() => setIsMobileControlsOpen(false)}
@@ -1249,6 +1334,40 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
               >
                 <X style={{ width: 22, height: 22 }} />
               </button>
+            </div>
+
+            {/* Orbit Galaxy Controls */}
+            <div style={{ background: 'rgba(139, 92, 246, 0.12)', border: '1px solid rgba(139, 92, 246, 0.3)', padding: 16, borderRadius: 16, marginBottom: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                <span className="mobile-control-label" style={{ color: '#a855f7' }}>
+                  <RotateCw style={{ width: 14, height: 14 }} /> Celestial Orbit Motion:
+                </span>
+                <button 
+                  onClick={() => setIsOrbiting(!isOrbiting)}
+                  className={`btn-mode ${isOrbiting ? 'active' : ''}`}
+                  style={{ padding: '6px 14px', borderRadius: 9999, background: isOrbiting ? '#8b5cf6' : 'rgba(255, 255, 255, 0.1)', color: '#fff', fontWeight: 700 }}
+                >
+                  {isOrbiting ? 'ON (Orbiting)' : 'OFF (Paused)'}
+                </button>
+              </div>
+
+              {isOrbiting && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
+                    <span style={{ color: '#cbd5e1' }}>Orbit Speed:</span>
+                    <span style={{ color: '#a855f7', fontWeight: 700 }}>{orbitSpeed.toFixed(1)}x</span>
+                  </div>
+                  <input 
+                    type="range"
+                    min="0.2"
+                    max="3.0"
+                    step="0.1"
+                    value={orbitSpeed}
+                    onChange={(e) => setOrbitSpeed(parseFloat(e.target.value))}
+                    style={{ width: '100%', accentColor: '#a855f7', height: 6 }}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Sliders Section */}
@@ -1725,7 +1844,10 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             );
             return isHoveredLink ? 3 : 1.5;
           }}
-          linkDirectionalParticles={0}
+          linkDirectionalParticles={isOrbiting ? 2 : 0}
+          linkDirectionalParticleSpeed={0.0035 * orbitSpeed}
+          linkDirectionalParticleWidth={2.5 * nodeScaleMultiplier}
+          linkDirectionalParticleColor={() => isLightMode ? '#0284c7' : '#38bdf8'}
           backgroundColor="transparent"
         />
       </div>

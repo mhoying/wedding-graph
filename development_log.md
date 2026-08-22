@@ -23,9 +23,9 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Fix Blank Window Component Crash
-- **User Prompt**: "the window is blank in my browser"
+## [2026-08-22] Celestial Orbit Motion Engine & Energy Particles
+- **User Prompt**: "can we add a orbiting sytle animation to it by defualt that can be toggled on and off and speed adjsutemed. or some type of dynamic movement that adds to visual interst"
 - **Actions**:
-  1. **Log Diagnostic**: Traced runtime `TypeError: fg.d3AlphaTarget is not a function` in `src/App.jsx`.
-  2. **Fix**: Removed invalid `fg.d3AlphaTarget` call and replaced with standard `fg.d3ReheatSimulation()`.
-  3. Verified clean HMR update and zero console errors.
+  1. **Celestial Orbit Force Engine (`createOrbitForce`)**: Implemented a D3 tangential rotational force that gently orbits the entire social galaxy around Maureen & Matt (**ON by default**)!
+  2. **Orbit Controls**: Added an **`Orbit: ON / OFF`** toggle button and an **`Orbit Speed`** slider (`0.2x` - `3.0x`, default `1.0x`) in both desktop header and mobile controls drawer.
+  3. **Social Connection Energy Particles (`linkDirectionalParticles`)**: Added glowing cyan energy particles flowing along social connection lines between friends and family when Orbit mode is active!
