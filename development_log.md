@@ -33,7 +33,12 @@
 ## [2026-08-22] Visual Distinction for Place Hubs & Non-Attending Ghost Nodes
 - **User Prompt**: "we shoudl be able to tell the differnce visually between people and connecting nodes (liek the dog park) also, rememebr we may need an intermediate node for a person taht isnt atending and it shoudl be clear visulaly that htey are not attending in some way"
 - **Actions**:
-  1. **Place Hub Nodes (`CONTEXT_HUB`)**: Rendered as crisp **rectangular location badges** with location pin prefix (`📍 Avalon Dog Park`) and dark slate-cyan gradient styling, clearly distinguishing places/hubs from people.
-  2. **Non-Attending Ghost Nodes (`NON_ATTENDING`)**: Rendered as **semi-transparent ghost pills** (`alpha 0.75`) with **dashed borders** and `(Not Attending)` text tags so guests immediately see they are connecting bridge people who are not physically attending the wedding.
-  3. Added non-attending sample node (`Uncle Bob`) connecting Matt and family friends.
-  4. Updated Tooltips and Drawer with special status indicators (`👻 Not Attending (Connecting Bridge Person)` and `📍 Place Hub`).
+  1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
+  2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
+
+## [2026-08-22] Sprints 2, 3 & 4 Execution: Import Engine, Matchmaker & Constellation Mode
+- **User Prompt**: "/goal do three more spirnts with the goal of making the most useufl, beutiful, interactive solution possible"
+- **Actions**:
+  1. **Sprint 2 (Live Google Sheets CSV Import Modal & Validation)**: Built full-screen Glassmorphism import modal (`Import CSV`). Integrates PapaParse and Zod runtime schema validation (`NodeSchema`). Allows pasting any published Google Sheets URL or clicking `⚡ Load Sample Demo` with live health meters!
+  2. **Sprint 3 (Cocktail Hour Matchmaker & Icebreaker Drawer)**: Built `🍸 Matchmaker` drawer mode. Guests pick their name from a dropdown; the algorithm calculates interest intersections and geographic overlaps, generating top 3 match cards with vibe scores (`85% Vibe Match`) and conversation starters!
+  3. **Sprint 4 (Cinematic Camera Fly-To & Starry Constellation Mode)**: Added smooth camera panning and zooming (`flyToNode` using `centerAt(x,y,900)` & `zoom(2.6,900)`) whenever clicking nodes or matchmaker cards. Added `⭐ Constellation` toggle mode that renders 45 canvas background stars while dimming non-active nodes into glowing star clusters!

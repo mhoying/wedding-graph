@@ -1,11 +1,30 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark } from 'lucide-react';
+import Papa from 'papaparse';
+import { z } from 'zod';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Download, Upload, CheckCircle2, AlertCircle, RefreshCw, Wand2, Star } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
+
+// Zod Schema for CSV / Dataset Validation
+const NodeSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  type: z.enum(['ANCHOR', 'GUEST', 'CONTEXT_HUB', 'NON_ATTENDING']).default('GUEST'),
+  cohort: z.string().default('General'),
+  side: z.enum(['Maureen', 'Matt', 'Joint']).default('Joint'),
+  state: z.string().optional().default(''),
+  hometown: z.string().optional().default(''),
+  hobbies: z.array(z.string()).default([]),
+  familyStatus: z.string().optional().default('Solo'),
+  relationship: z.string().optional().default('')
+});
 
 export default function App() {
   const fgRef = useRef();
+  const [nodes, setNodes] = useState(SAMPLE_NODES);
+  const [links, setLinks] = useState(SAMPLE_LINKS);
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
   const [hoverNode, setHoverNode] = useState(null);
@@ -14,6 +33,7 @@ export default function App() {
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
   const [showCohortHulls, setShowCohortHulls] = useState(true);
+  const [isConstellationMode, setIsConstellationMode] = useState(false);
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   // Path Finder State
@@ -21,30 +41,39 @@ export default function App() {
   const [pathStart, setPathStart] = useState(null);
   const [pathEnd, setPathEnd] = useState(null);
 
+  // Matchmaker Mode State
+  const [isMatchmakerOpen, setIsMatchmakerOpen] = useState(false);
+  const [myGuestId, setMyGuestId] = useState('');
+
+  // CSV Import Modal State
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [sheetUrl, setSheetUrl] = useState('');
+  const [importStatus, setImportStatus] = useState(null);
+
   // Dynamically extract all unique Interests across the dataset
   const allInterests = useMemo(() => {
     const set = new Set();
-    SAMPLE_NODES.forEach(n => {
+    nodes.forEach(n => {
       if (n.hobbies && Array.isArray(n.hobbies)) {
         n.hobbies.forEach(h => set.add(h));
       }
     });
     return Array.from(set).sort();
-  }, []);
+  }, [nodes]);
 
   // Dynamically extract all unique Cohorts across the dataset
   const allCohorts = useMemo(() => {
     const set = new Set();
-    SAMPLE_NODES.forEach(n => n.cohort && set.add(n.cohort));
+    nodes.forEach(n => n.cohort && set.add(n.cohort));
     return Array.from(set).sort();
-  }, []);
+  }, [nodes]);
 
   // Dynamically extract all unique States/Locations across the dataset
   const allStates = useMemo(() => {
     const set = new Set();
-    SAMPLE_NODES.forEach(n => n.state && set.add(n.state));
+    nodes.forEach(n => n.state && set.add(n.state));
     return Array.from(set).sort();
-  }, []);
+  }, [nodes]);
 
   // Update canvas dimensions on window resize
   useEffect(() => {
@@ -59,6 +88,14 @@ export default function App() {
   const handleMouseMove = (e) => {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
+
+  // Smooth Camera Fly-To Animation Helper
+  const flyToNode = useCallback((node) => {
+    if (fgRef.current && node && node.x !== undefined && node.y !== undefined) {
+      fgRef.current.centerAt(node.x, node.y, 900);
+      fgRef.current.zoom(2.6, 900);
+    }
+  }, []);
 
   // Configure D3 forces: Generalized Couple Distance & Dynamic Collision
   useEffect(() => {
@@ -87,7 +124,7 @@ export default function App() {
 
       fg.d3ReheatSimulation();
     }
-  }, []);
+  }, [nodes, links]);
 
   // Calculate shortest social path between pathStart and pathEnd using BFS
   const shortestPath = useMemo(() => {
@@ -105,7 +142,7 @@ export default function App() {
       }
 
       const neighbors = [];
-      SAMPLE_LINKS.forEach(l => {
+      links.forEach(l => {
         const s = l.source.id || l.source;
         const t = l.target.id || l.target;
         if (s === curr && !visited.has(t)) neighbors.push(t);
@@ -118,7 +155,38 @@ export default function App() {
       }
     }
     return [];
-  }, [pathStart, pathEnd]);
+  }, [pathStart, pathEnd, links]);
+
+  // Matchmaker Algorithm: Find Top 3 Matches for selected myGuestId
+  const matchmakerResults = useMemo(() => {
+    if (!myGuestId) return [];
+    const myNode = nodes.find(n => n.id === myGuestId);
+    if (!myNode || !myNode.hobbies) return [];
+
+    const myHobbies = new Set(myNode.hobbies);
+    const results = [];
+
+    nodes.forEach(n => {
+      if (n.id === myGuestId || n.type === 'ANCHOR' || n.type === 'CONTEXT_HUB') return;
+      if (!n.hobbies) return;
+
+      // Intersection of interests
+      const sharedInterests = n.hobbies.filter(h => myHobbies.has(h));
+      const sharedHometown = myNode.hometown && n.hometown && (myNode.hometown === n.hometown || myNode.state === n.state);
+
+      if (sharedInterests.length > 0 || sharedHometown) {
+        let score = sharedInterests.length * 30 + (sharedHometown ? 20 : 0);
+        results.push({
+          node: n,
+          score: Math.min(score + 25, 98),
+          sharedInterests,
+          sharedHometown
+        });
+      }
+    });
+
+    return results.sort((a, b) => b.score - a.score).slice(0, 3);
+  }, [myGuestId, nodes]);
 
   // Determine active node color based on selected Color Mode
   const getNodeColor = useCallback((node) => {
@@ -133,7 +201,7 @@ export default function App() {
 
   // Filter nodes based on search and selected interest
   const filteredNodes = useMemo(() => {
-    return SAMPLE_NODES.filter(node => {
+    return nodes.filter(node => {
       if (selectedInterest) {
         if (!node.hobbies || !node.hobbies.includes(selectedInterest)) return false;
       }
@@ -147,20 +215,21 @@ export default function App() {
       }
       return true;
     });
-  }, [searchQuery, selectedInterest]);
+  }, [nodes, searchQuery, selectedInterest]);
 
   const graphData = useMemo(() => {
     return {
       nodes: filteredNodes,
-      links: SAMPLE_LINKS.filter(link => 
+      links: links.filter(link => 
         filteredNodes.some(n => n.id === link.source || n.id === (link.source.id || link.source)) &&
         filteredNodes.some(n => n.id === link.target || n.id === (link.target.id || link.target))
       )
     };
-  }, [filteredNodes]);
+  }, [filteredNodes, links]);
 
   // Handle Node Clicks
   const handleNodeClick = (node) => {
+    flyToNode(node);
     if (isPathMode) {
       if (!pathStart) {
         setPathStart(node);
@@ -175,8 +244,78 @@ export default function App() {
     }
   };
 
-  // Render background enclosure shapes around Maureen & Matt couple and Cohort Clusters
+  // Google Sheets CSV Import Parser (PapaParse + Zod)
+  const handleImportCsv = () => {
+    if (!sheetUrl.trim()) return;
+    setImportStatus({ type: 'loading', message: 'Fetching and parsing CSV data...' });
+
+    Papa.parse(sheetUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        try {
+          const parsedNodes = [];
+          const parsedLinks = [];
+          const nameToIdMap = {};
+
+          results.data.forEach((row, index) => {
+            const rawId = row.ID || row.id || `node_${index}`;
+            const rawName = row.Name || row.name || `Guest ${index}`;
+            const rawCohort = row.Cohort || row.cohort || 'General';
+            const rawSide = row.Side || row.side || 'Joint';
+            const rawHobbies = row.Interests || row.Hobbies || row.hobbies || '';
+
+            const hobbiesArr = typeof rawHobbies === 'string' ? rawHobbies.split(',').map(x => x.trim()).filter(Boolean) : [];
+
+            const nodeObj = {
+              id: rawId.trim(),
+              name: rawName.trim(),
+              type: row.Type || 'GUEST',
+              cohort: rawCohort.trim(),
+              side: rawSide.trim(),
+              state: row.State || '',
+              hometown: row.Hometown || '',
+              hobbies: hobbiesArr,
+              familyStatus: row.FamilyStatus || 'Solo',
+              relationship: row.Relationship || ''
+            };
+
+            const validated = NodeSchema.parse(nodeObj);
+            parsedNodes.push(validated);
+            nameToIdMap[validated.name.toLowerCase()] = validated.id;
+          });
+
+          setNodes(parsedNodes);
+          setImportStatus({ type: 'success', message: `Successfully loaded ${parsedNodes.length} nodes!` });
+          setTimeout(() => setIsImportModalOpen(false), 1200);
+        } catch (err) {
+          setImportStatus({ type: 'error', message: `Schema Validation Error: ${err.message}` });
+        }
+      },
+      error: (err) => {
+        setImportStatus({ type: 'error', message: `Failed to fetch CSV: ${err.message}` });
+      }
+    });
+  };
+
+  // Render background enclosure shapes & twinkling constellation stars
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
+    // Starry Night Background (Constellation Mode)
+    if (isConstellationMode) {
+      ctx.save();
+      ctx.fillStyle = isLightMode ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.4)';
+      for (let i = 0; i < 45; i++) {
+        const starX = (Math.sin(i * 99) * 0.5 + 0.5) * dimensions.width - dimensions.width / 2;
+        const starY = (Math.cos(i * 33) * 0.5 + 0.5) * dimensions.height - dimensions.height / 2;
+        ctx.beginPath();
+        ctx.arc(starX, starY, (i % 3 + 1) / globalScale, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // 1. Couple Enclosure Hull around Maureen & Matt
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -218,6 +357,7 @@ export default function App() {
       ctx.restore();
     }
 
+    // 2. Cohort Cluster Hulls (if enabled)
     if (showCohortHulls) {
       const cohortGroups = {};
       filteredNodes.forEach(node => {
@@ -227,10 +367,10 @@ export default function App() {
         }
       });
 
-      Object.entries(cohortGroups).forEach(([cohort, nodes]) => {
-        if (nodes.length > 1) {
+      Object.entries(cohortGroups).forEach(([cohort, nodesArr]) => {
+        if (nodesArr.length > 1) {
           let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-          nodes.forEach(n => {
+          nodesArr.forEach(n => {
             if (n.x < minX) minX = n.x;
             if (n.x > maxX) maxX = n.x;
             if (n.y < minY) minY = n.y;
@@ -268,9 +408,9 @@ export default function App() {
         }
       });
     }
-  }, [filteredNodes, isLightMode, showCohortHulls]);
+  }, [filteredNodes, isLightMode, showCohortHulls, isConstellationMode, dimensions]);
 
-  // Premium Node Canvas Renderer with distinct visual shapes for Hubs & Non-Attending Nodes
+  // Premium Node Canvas Renderer
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -279,7 +419,7 @@ export default function App() {
     const isPathActive = shortestPath.length > 0;
 
     const isConnected = hoverNode || selectedNode ? 
-      SAMPLE_LINKS.some(l => 
+      links.some(l => 
         ((l.source.id || l.source) === node.id && ((l.target.id || l.target) === (hoverNode?.id || selectedNode?.id))) ||
         ((l.target.id || l.target) === node.id && ((l.source.id || l.source) === (hoverNode?.id || selectedNode?.id)))
       ) : false;
@@ -290,15 +430,13 @@ export default function App() {
     const isHub = node.type === 'CONTEXT_HUB';
     const isNonAttending = node.type === 'NON_ATTENDING';
 
-    // Label String
     let labelText = node.name;
     if (isHub) labelText = `📍 ${node.name}`;
     if (isNonAttending) labelText = `${node.name} (Not Attending)`;
 
     ctx.save();
-    ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.75 : 1.0); // Translucent / Ghost for non-attending
+    ctx.globalAlpha = isDimmed ? (isConstellationMode ? 0.05 : 0.12) : (isNonAttending ? 0.75 : 1.0);
 
-    // Font Configuration
     const fontSize = (isAnchor ? 13 : 11) / globalScale;
     ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '500'} ${fontSize}px Inter, sans-serif`;
     
@@ -307,28 +445,24 @@ export default function App() {
     const paddingY = (isAnchor ? 8 : 6) / globalScale;
     const badgeWidth = textWidth + paddingX * 2;
     const badgeHeight = fontSize + paddingY * 2;
-    const cornerRadius = isHub ? 4 / globalScale : badgeHeight / 2; // Rectangular/Diamond box for Places/Hubs
+    const cornerRadius = isHub ? 4 / globalScale : badgeHeight / 2;
 
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
-    // Outer Glow
     if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = color;
       ctx.shadowBlur = isHovered ? 25 : (isPathNode ? 20 : 15);
     }
 
-    // Pill Fill
     const gradient = ctx.createLinearGradient(x, y, x + badgeWidth, y + badgeHeight);
     if (isHovered || isPathNode) {
       gradient.addColorStop(0, color);
       gradient.addColorStop(1, color);
     } else if (isNonAttending) {
-      // Ghost / Translucent fill for non-attending
       gradient.addColorStop(0, 'rgba(30, 41, 59, 0.45)');
       gradient.addColorStop(1, 'rgba(15, 23, 42, 0.45)');
     } else if (isHub) {
-      // Dark slate background with cyan tint for Place Hubs
       gradient.addColorStop(0, 'rgba(15, 23, 42, 0.95)');
       gradient.addColorStop(1, 'rgba(14, 116, 144, 0.95)');
     } else if (isLightMode) {
@@ -348,11 +482,9 @@ export default function App() {
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    // Border
     ctx.lineWidth = isHovered || isPathNode ? 2.5 : (isAnchor ? 2 : 1.5);
     ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : color;
     
-    // Dashed border for non-attending ghost nodes!
     if (isNonAttending) {
       ctx.setLineDash([4 / globalScale, 3 / globalScale]);
     } else {
@@ -360,7 +492,6 @@ export default function App() {
     }
     ctx.stroke();
 
-    // Text Label
     ctx.shadowBlur = 0;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -368,7 +499,7 @@ export default function App() {
     ctx.fillText(labelText, node.x, node.y);
 
     ctx.restore();
-  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath]);
+  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, isConstellationMode, links]);
 
   // Hit area detection
   const drawPointerArea = useCallback((node, color, ctx, globalScale) => {
@@ -386,7 +517,6 @@ export default function App() {
     ctx.fill();
   }, []);
 
-  // Active color map dynamically generated for legend
   const activeColorMap = useMemo(() => {
     if (colorMode === 'side') return SIDE_COLORS;
     if (colorMode === 'state') return STATE_COLORS;
@@ -437,7 +567,7 @@ export default function App() {
                 <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedInterest(null)} />
               </span>
             ) : (
-              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 320 }}>
+              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 280 }}>
                 {allInterests.slice(0, 5).map(interest => (
                   <button 
                     key={interest}
@@ -453,8 +583,30 @@ export default function App() {
           </div>
         </div>
 
-        {/* Dynamic Color Mode & Tool Controls */}
+        {/* Dynamic Controls Bar */}
         <div className="top-bar-right">
+          {/* Import Data Modal Trigger */}
+          <button 
+            onClick={() => setIsImportModalOpen(true)}
+            className="glass-panel btn-mode"
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            title="Import Live Google Sheets CSV Data"
+          >
+            <Upload style={{ width: 16, height: 16, color: '#10b981' }} />
+            <span>Import CSV</span>
+          </button>
+
+          {/* Cocktail Matchmaker Trigger */}
+          <button 
+            onClick={() => setIsMatchmakerOpen(!isMatchmakerOpen)}
+            className={`glass-panel btn-mode ${isMatchmakerOpen ? 'active' : ''}`}
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6, background: isMatchmakerOpen ? '#10b981' : '' }}
+            title="Cocktail Hour Matchmaker & Icebreakers"
+          >
+            <Wand2 style={{ width: 16, height: 16, color: isMatchmakerOpen ? '#fff' : '#10b981' }} />
+            <span>Matchmaker</span>
+          </button>
+
           {/* Path Finder Toggle */}
           <button 
             onClick={() => {
@@ -470,15 +622,15 @@ export default function App() {
             <span>Path Finder</span>
           </button>
 
-          {/* Cluster Hulls Toggle */}
+          {/* Constellation Mode Toggle */}
           <button 
-            onClick={() => setShowCohortHulls(!showCohortHulls)} 
-            className={`glass-panel btn-mode ${showCohortHulls ? 'active' : ''}`}
+            onClick={() => setIsConstellationMode(!isConstellationMode)}
+            className={`glass-panel btn-mode ${isConstellationMode ? 'active' : ''}`}
             style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Toggle Cluster Hulls"
+            title="Toggle Starry Constellation Mode"
           >
-            <Layers style={{ width: 16, height: 16, color: showCohortHulls ? '#fff' : '#38bdf8' }} />
-            <span>Clusters</span>
+            <Star style={{ width: 16, height: 16, color: isConstellationMode ? '#fff' : '#38bdf8' }} />
+            <span>Constellation</span>
           </button>
 
           {/* Color Mode Selector */}
@@ -533,7 +685,7 @@ export default function App() {
               <span>Connection Path:</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 {shortestPath.map((id, index) => {
-                  const n = SAMPLE_NODES.find(x => x.id === id);
+                  const n = nodes.find(x => x.id === id);
                   return (
                     <React.Fragment key={id}>
                       <span className="path-step">{n ? n.name : id}</span>
@@ -550,6 +702,120 @@ export default function App() {
               </button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Cocktail Hour Matchmaker Drawer (Sprint 3) */}
+      {isMatchmakerOpen && (
+        <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto' }}>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <span className="drawer-badge" style={{ backgroundColor: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Wand2 style={{ width: 12, height: 12 }} /> Cocktail Matchmaker
+              </span>
+              <button onClick={() => setIsMatchmakerOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X style={{ width: 20, height: 20 }} />
+              </button>
+            </div>
+
+            <h2 className="drawer-title" style={{ fontSize: 20 }}>Find Guest Matches</h2>
+            <p className="drawer-subtitle">Pick your name to discover top shared icebreakers!</p>
+
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 6 }}>Select Your Name:</label>
+              <select 
+                value={myGuestId}
+                onChange={(e) => setMyGuestId(e.target.value)}
+                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none' }}
+              >
+                <option value="">-- Choose Guest --</option>
+                {nodes.filter(n => n.type === 'GUEST').map(n => (
+                  <option key={n.id} value={n.id}>{n.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {matchmakerResults.length > 0 && (
+              <div className="drawer-section">
+                <div style={{ fontSize: 13, fontWeight: 700, color: '#10b981', marginBottom: 8 }}>Top Recommended Matches:</div>
+                {matchmakerResults.map(res => (
+                  <div 
+                    key={res.node.id} 
+                    className="icebreaker-box" 
+                    style={{ cursor: 'pointer', transition: 'all 0.2s' }}
+                    onClick={() => flyToNode(res.node)}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: 14 }}>
+                      <span>{res.node.name}</span>
+                      <span style={{ color: '#10b981' }}>{res.score}% Vibe Match</span>
+                    </div>
+                    <p style={{ fontSize: 12, color: '#94a3b8', margin: '4px 0 8px 0' }}>{res.node.relationship}</p>
+                    {res.sharedInterests.length > 0 && (
+                      <div style={{ fontSize: 11, color: '#38bdf8' }}>
+                        🤝 Shared Interests: {res.sharedInterests.join(', ')}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Google Sheets CSV Import Modal (Sprint 2) */}
+      {isImportModalOpen && (
+        <div className="app-container no-print" style={{ position: 'fixed', zIndex: 50, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="glass-panel" style={{ width: 480, padding: 28 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 800, fontSize: 18 }}>
+                <Upload style={{ width: 20, height: 20, color: '#10b981' }} />
+                <span>Import Google Sheets CSV</span>
+              </div>
+              <button onClick={() => setIsImportModalOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X style={{ width: 20, height: 20 }} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 16, lineHeight: 1.5 }}>
+              Paste your <b>Published to Web</b> Google Sheets CSV link below to dynamically load guest nodes and connections into the canvas!
+            </p>
+
+            <input 
+              type="text" 
+              placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"
+              value={sheetUrl}
+              onChange={(e) => setSheetUrl(e.target.value)}
+              style={{ width: '100%', padding: '12px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12, marginBottom: 16 }}
+            />
+
+            {importStatus && (
+              <div style={{ fontSize: 12, padding: 10, borderRadius: 8, marginBottom: 16, background: importStatus.type === 'error' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)', color: importStatus.type === 'error' ? '#ef4444' : '#10b981' }}>
+                {importStatus.message}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
+              <button 
+                onClick={() => {
+                  setNodes(SAMPLE_NODES);
+                  setLinks(SAMPLE_LINKS);
+                  setImportStatus({ type: 'success', message: 'Loaded Demo Dataset!' });
+                }}
+                className="btn-mode"
+                style={{ padding: '10px 16px', background: 'rgba(255, 255, 255, 0.08)', color: '#fff', borderRadius: 10 }}
+              >
+                ⚡ Load Sample Demo
+              </button>
+              <button 
+                onClick={handleImportCsv}
+                className="btn-action"
+                style={{ background: '#0284c7', color: '#fff' }}
+              >
+                <span>Import & Validate</span>
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
