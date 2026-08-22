@@ -23,9 +23,9 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Native World Unit Zoom-Invariant Node Scaling Engine
-- **User Prompt**: "ah.. i see what is happenign. the nodes htemselve sarent scaling even if the distance sare.. this seems suboptimal. i wnat to maek this avoid overalps at any level of zoom.. so maybe you need to adjust the node size too?"
+## [2026-08-22] Independent Node Size Slider & Dynamic Zoom Re-Optimization
+- **User Prompt**: "can we add an independent slider that controls node size independent of page zoom? on page zoom it shoudl reoptimze node and edge size"
 - **Actions**:
-  1. **Zoom-Invariant Native World Unit Rendering**: Removed `/ globalScale` division from node card width, height, avatar photo diameter, and text dimensions!
-  2. **1:1 Lockstep Proportional Scaling**: Cards, headshot photos, and connection line distances now scale in **100% exact 1:1 lockstep ratio with viewport zoom**!
-  3. **Zero Overlaps at Any Zoom Level**: Because D3 physics simulation coordinates (`x, y`), node bounds (`width, height`), and collision radii (`forceCollide`) are all defined in uniform Native World Units, node cards **never overlap at any level of zoom** (zoomed out 0.2x or zoomed in 3.0x)!
+  1. **Independent Node Size Slider (`nodeScaleMultiplier`)**: Added an interactive slider (`0.5x` to `2.0x`) in the top bar to adjust card node & headshot sizes independently of page zoom!
+  2. **Dynamic Physics & Collision Re-Simulation**: Dragging the size slider dynamically updates `getNodeBounds`, collision radii, link distances, and charge repulsion in real time, triggering `d3ReheatSimulation()` to re-optimize node positions and edge lengths on the fly.
+  3. **Page Zoom Layout Re-Optimization (`handleZoom`)**: Added an `onZoom` listener that automatically reheats the simulation on viewport zoom to optimize edge lengths and layout density for the active zoom level.

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -43,8 +43,8 @@ function extractProposedTag(note, category) {
   return note.trim();
 }
 
-// NATIVE WORLD UNITS LAYOUT MATH HELPER: Scales 1:1 with D3 Simulation & Zoom Viewport
-function getNodeBounds(node, showHeadshots) {
+// DYNAMIC LAYOUT MATH HELPER: Scales with Independent Node Size Slider (scaleMult)
+function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
   const isAnchor = node.type === 'ANCHOR';
   const isHub = node.type === 'CONTEXT_HUB';
   const isNonAttending = node.type === 'NON_ATTENDING';
@@ -54,24 +54,27 @@ function getNodeBounds(node, showHeadshots) {
   if (isHub) labelText = `📍 ${node.name}`;
   if (isNonAttending) labelText = `${node.name} (Not Attending)`;
 
-  // Native World Unit Dimensions (Node sizes scale proportionally with zoom level!)
-  const avatarDiameter = isAnchor ? 56 : 46;
-  const fontSize = isAnchor ? 13 : 11;
+  // Native World Unit Dimensions multiplied by Independent Node Scale Multiplier
+  const baseAvatarDiameter = isAnchor ? 56 : 46;
+  const baseFontSize = isAnchor ? 13 : 11;
+
+  const avatarDiameter = baseAvatarDiameter * scaleMult;
+  const fontSize = baseFontSize * scaleMult;
   const textWidth = labelText.length * (fontSize * 0.60);
 
   let width, height;
   if (renderAvatar) {
-    width = Math.max(textWidth + 24, avatarDiameter + 20, isAnchor ? 110 : 92);
-    height = avatarDiameter + fontSize + 22;
+    width = Math.max(textWidth + 24 * scaleMult, avatarDiameter + 20 * scaleMult, (isAnchor ? 110 : 92) * scaleMult);
+    height = avatarDiameter + fontSize + 22 * scaleMult;
   } else {
-    width = Math.max(textWidth + 24, 76);
-    height = fontSize + 16;
+    width = Math.max(textWidth + 24 * scaleMult, 76 * scaleMult);
+    height = fontSize + 16 * scaleMult;
   }
 
   // Exact Bounding Radius: Hypotenuse + Margin in World Coordinates
   const halfW = width / 2;
   const halfH = height / 2;
-  const collisionRadius = Math.hypot(halfW, halfH) + 16;
+  const collisionRadius = Math.hypot(halfW, halfH) + 16 * scaleMult;
 
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
@@ -87,6 +90,10 @@ export default function App() {
 
   // Toggle state for headshot photos on node cards
   const [showHeadshots, setShowHeadshots] = useState(true);
+
+  // Independent Node Size Multiplier (0.5x to 2.0x, Default 1.0x)
+  const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(1.0);
+  const [currentZoomLevel, setCurrentZoomLevel] = useState(1.0);
 
   // Initialize Nodes with localStorage fallback (strip any old D3 physics positions on init)
   const [nodes, setNodes] = useState(() => {
@@ -403,18 +410,18 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces: 100% Invariant World Units for Zero Overlaps at ANY Zoom Level!
+  // Configure D3 forces: Re-optimizes node positions & edge lengths dynamically on Node Size Slider & Zoom level!
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
       
-      // Dynamic link distance in World Units
+      // Dynamic link distance in World Units incorporating nodeScaleMultiplier
       fg.d3Force('link').distance(l => {
         const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
         const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
         
-        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots).collisionRadius : 65;
-        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots).collisionRadius : 65;
+        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
+        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
         
         const sId = sObj ? sObj.id : l.source;
         const tId = tObj ? tObj.id : l.target;
@@ -422,21 +429,31 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (sId === 'maureen' && tId === 'matt') || (sId === 'matt' && tId === 'maureen');
         if (isCoupleLink) {
-          return sRadius + tRadius + 20;
+          return sRadius + tRadius + 20 * nodeScaleMultiplier;
         }
-        return sRadius + tRadius + 55;
+        return sRadius + tRadius + 55 * nodeScaleMultiplier;
       });
 
-      // Stable World Unit Repulsion & Collision Solver
-      fg.d3Force('charge').strength(-3800).distanceMax(1800);
+      // Stable World Unit Repulsion & Collision Solver scaled by nodeScaleMultiplier
+      fg.d3Force('charge').strength(-3800 * nodeScaleMultiplier).distanceMax(1800 * nodeScaleMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
-        return getNodeBounds(node, showHeadshots).collisionRadius;
-      }).iterations(20));
+        return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
+      }).iterations(22));
 
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier]);
+
+  // Handle D3 Zoom Event: Re-optimizes simulation smoothly on page zoom
+  const handleZoom = useCallback(({ k }) => {
+    if (Math.abs(k - currentZoomLevel) > 0.15) {
+      setCurrentZoomLevel(k);
+      if (fgRef.current) {
+        fgRef.current.d3ReheatSimulation();
+      }
+    }
+  }, [currentZoomLevel]);
 
   // Calculate shortest social path between pathStart and pathEnd using BFS
   const shortestPath = useMemo(() => {
@@ -624,20 +641,20 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     const matt = filteredNodes.find(n => n.id === 'matt');
 
     if (maureen && matt && maureen.x !== undefined && matt.x !== undefined) {
-      const mBounds = getNodeBounds(maureen, showHeadshots);
-      const tBounds = getNodeBounds(matt, showHeadshots);
+      const mBounds = getNodeBounds(maureen, showHeadshots, nodeScaleMultiplier);
+      const tBounds = getNodeBounds(matt, showHeadshots, nodeScaleMultiplier);
 
       const minX = Math.min(maureen.x - mBounds.width / 2, matt.x - tBounds.width / 2);
       const maxX = Math.max(maureen.x + mBounds.width / 2, matt.x + tBounds.width / 2);
       const minY = Math.min(maureen.y - mBounds.height / 2, matt.y - tBounds.height / 2);
       const maxY = Math.max(maureen.y + mBounds.height / 2, matt.y + tBounds.height / 2);
 
-      const padding = 28;
+      const padding = 28 * nodeScaleMultiplier;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
       const y = minY - padding;
-      const cornerRadius = 20;
+      const cornerRadius = 20 * nodeScaleMultiplier;
 
       ctx.save();
       ctx.shadowColor = 'rgba(56, 189, 248, 0.15)';
@@ -693,7 +710,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       if (nodesArr.length > 1) {
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         nodesArr.forEach(n => {
-          const b = getNodeBounds(n, showHeadshots);
+          const b = getNodeBounds(n, showHeadshots, nodeScaleMultiplier);
           const left = n.x - b.width / 2;
           const right = n.x + b.width / 2;
           const top = n.y - b.height / 2;
@@ -706,7 +723,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         });
 
         // Exact Uniform Padding in World Units around outer card edges
-        const pad = 24;
+        const pad = 24 * nodeScaleMultiplier;
         const w = (maxX - minX) + pad * 2;
         const h = (maxY - minY) + pad * 2;
         const x = minX - pad;
@@ -719,7 +736,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
         ctx.beginPath();
         if (ctx.roundRect) {
-          ctx.roundRect(x, y, w, h, 18);
+          ctx.roundRect(x, y, w, h, 18 * nodeScaleMultiplier);
         } else {
           ctx.rect(x, y, w, h);
         }
@@ -738,9 +755,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.restore();
       }
     });
-  }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters, showHeadshots]);
+  }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters, showHeadshots, nodeScaleMultiplier]);
 
-  // Modern Square Card Badge Renderer in 100% NATIVE WORLD UNITS (Zoom-Invariant Zero-Overlap!)
+  // Modern Square Card Badge Renderer in NATIVE WORLD UNITS with Independent Node Scale Multiplier
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -770,15 +787,15 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.75 : 1.0);
 
     const renderAvatar = showHeadshots && !isHub;
-    const bounds = getNodeBounds(node, showHeadshots);
+    const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
 
-    // Render 1:1 in Native World Units (Nodes scale proportionally with viewport zoom!)
+    // Render in World Units scaled by Independent Node Size Multiplier
     const badgeWidth = bounds.width;
     const badgeHeight = bounds.height;
     const avatarDiameter = bounds.avatarDiameter;
     const fontSize = bounds.fontSize;
 
-    const cornerRadius = 10;
+    const cornerRadius = 10 * nodeScaleMultiplier;
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
@@ -827,13 +844,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     // RENDER CIRCULAR HEADSHOT AVATAR PHOTO / MONOGRAM IN NATIVE WORLD SPACE
     if (renderAvatar) {
       const avatarX = node.x;
-      const avatarY = y + (avatarDiameter / 2) + 8;
+      const avatarY = y + (avatarDiameter / 2) + 8 * nodeScaleMultiplier;
 
       ctx.save();
       
       // Outer Glowing Ring Accent
       ctx.beginPath();
-      ctx.arc(avatarX, avatarY, (avatarDiameter / 2) + 2, 0, Math.PI * 2);
+      ctx.arc(avatarX, avatarY, (avatarDiameter / 2) + 2 * nodeScaleMultiplier, 0, Math.PI * 2);
       ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : groupColor;
       ctx.lineWidth = 2 / globalScale;
       ctx.stroke();
@@ -851,7 +868,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = groupColor;
         ctx.fill();
 
-        ctx.font = `800 ${isAnchor ? 16 : 13}px Inter, sans-serif`;
+        ctx.font = `800 ${isAnchor ? 16 * nodeScaleMultiplier : 13 * nodeScaleMultiplier}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#ffffff';
@@ -866,7 +883,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '600'} ${fontSize}px Inter, sans-serif`;
       ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isNonAttending ? '#94a3b8' : (isLightMode ? '#0f172a' : '#f8fafc'));
       
-      const textY = y + badgeHeight - 9;
+      const textY = y + badgeHeight - 9 * nodeScaleMultiplier;
       ctx.fillText(labelText, avatarX, textY);
 
     } else {
@@ -880,16 +897,16 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
 
     ctx.restore();
-  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links, showHeadshots]);
+  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links, showHeadshots, nodeScaleMultiplier]);
 
   // Hit area detection using exact getNodeBounds in Native World Units
   const drawPointerArea = useCallback((node, color, ctx) => {
-    const bounds = getNodeBounds(node, showHeadshots);
+    const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.rect(node.x - bounds.width / 2, node.y - bounds.height / 2, bounds.width, bounds.height);
     ctx.fill();
-  }, [showHeadshots]);
+  }, [showHeadshots, nodeScaleMultiplier]);
 
   const activeColorMap = useMemo(() => {
     if (colorMode === 'side') return SIDE_COLORS;
@@ -1007,6 +1024,25 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
         {/* Compact & Streamlined Action Controls Bar */}
         <div className="top-bar-right">
+          {/* INDEPENDENT NODE SIZE SLIDER CONTROL */}
+          <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 8 }}>
+            <Sliders style={{ width: 14, height: 14, color: '#38bdf8' }} />
+            <span style={{ color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>Size:</span>
+            <input 
+              type="range"
+              min="0.5"
+              max="2.0"
+              step="0.1"
+              value={nodeScaleMultiplier}
+              onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
+              style={{ width: 70, accentColor: '#38bdf8', cursor: 'pointer' }}
+              title="Independent Node Card Size Slider"
+            />
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', minWidth: 28 }}>
+              {nodeScaleMultiplier.toFixed(1)}x
+            </span>
+          </div>
+
           {/* Headshots Photo Toggle Button */}
           <button 
             onClick={() => setShowHeadshots(!showHeadshots)}
@@ -1457,6 +1493,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
           nodePointerAreaPaint={drawPointerArea}
           onNodeClick={handleNodeClick}
           onNodeHover={(node) => setHoverNode(node)}
+          onZoom={handleZoom}
           onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
           linkColor={(link) => {
             const s = typeof link.source === 'object' ? link.source.id : link.source;
