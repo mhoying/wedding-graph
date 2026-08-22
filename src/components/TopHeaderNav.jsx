@@ -263,42 +263,6 @@ export default function TopHeaderNav({
         >
           {isLightMode ? <Moon style={{ width: 15, height: 15 }} /> : <Sun style={{ width: 15, height: 15, color: '#38bdf8' }} />}
         </button>
-
-        {/* Hidden Host Admin Tools (Only visible when unlocked via secret URL parameter) */}
-        {isAdmin && (
-          <>
-            {/* 1-Click CSV Export Button */}
-            <button 
-              onClick={handleExportCsv} 
-              className="glass-panel btn-icon desktop-only-inline"
-              title="Export Guest List to CSV for Google Sheets"
-              style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: '#34d399', flexShrink: 0 }}
-            >
-              <Download style={{ width: 14, height: 14, color: '#34d399' }} />
-              <span>Export CSV</span>
-            </button>
-
-            {feedbackQueueCount > 0 && (
-              <button 
-                onClick={() => setIsFeedbackQueueOpen(true)}
-                className="glass-panel btn-icon"
-                style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid #ef4444', color: '#f87171', padding: '6px 10px', fontSize: 11, fontWeight: 700 }}
-              >
-                <ShieldAlert style={{ width: 14, height: 14 }} />
-                <span>Host Queue ({feedbackQueueCount})</span>
-              </button>
-            )}
-            <button 
-              onClick={handleExportGitJs}
-              className="glass-panel btn-icon"
-              title="Download updated sampleData.js for local Git repository"
-              style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid #10b981', color: '#34d399', padding: '6px 10px', fontSize: 11, fontWeight: 700 }}
-            >
-              <Download style={{ width: 14, height: 14 }} />
-              <span>Export Git JS</span>
-            </button>
-          </>
-        )}
       </div>
     </header>
   );

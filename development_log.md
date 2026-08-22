@@ -9,17 +9,19 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Master UI/UX Desktop Glass Toolbar Redesign
-- **User Prompt**: "also the top bar doenst have the density or node szie sliders any more. make sure that all the controls int he map controls drawer are in the top age and arranged beautifyly. bring the ux desginer in to dot his correctly"
+## [2026-08-22] Dedicated Host Admin Control Panel
+- **User Prompt**: "in the admin view, put the admin specific contorls in a separate pannel"
 - **Actions**:
-  1. **UI/UX Master Desktop Layout Upgrade**:
-     - Embedded 100% of all map controls into the desktop glass top header navigation bar.
-     - Added **Tune Sliders** glass popover button (`<SlidersHorizontal /> Tune Sliders`). Clicking it opens a sleek, non-crowded glass popover containing:
-       - **Node Size Slider** (`0.5x` - `2.0x`)
-       - **Map Spacing / Density Slider** (`0.5x` - `2.0x`)
-       - **Orbit Speed Slider** (`0.1x` - `3.0x`)
-     - Formatted the complete desktop header toolbar: **Clusters Dropdown**, **Color Mode Selector**, **Tune Sliders Popover**, **Headshots Photos Toggle**, **Celestial Orbit Toggle**, **Path Finder**, **Matchmaker**, and **Theme Toggle**.
-  2. **Empirical Headless Chromium Verification**:
-     - `DESKTOP HEADER TOOLS`: All 8 map control components present.
-     - `TUNE SLIDERS POPOVER OPENS SUCCESSFULLY: true` (0% console/runtime errors).
-  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Dedicated Host Admin Panel Architecture**:
+     - Extracted all administrative controls out of the top header bar and built a dedicated floating glass panel (`<HostAdminPanel />`).
+     - Rendered conditionally when `isAdmin` is true (`top: 80px`, `right: 20px`).
+  2. **Host Administrative Suite Features**:
+     - **Export Guest List CSV**: Download guest list for Excel / Google Sheets.
+     - **Export Git sampleData.js**: Download updated dataset for local codebase persistence.
+     - **Moderation Queue**: Badge indicator and viewer for guest profile edit suggestions (`Moderation Queue (X)`).
+     - **Copy Host QR Link**: Copy host invitation deep link to clipboard.
+     - **Lock Host Mode**: 1-click lock button to exit administrative mode.
+  3. **Empirical Headless Chromium Verification**:
+     - `HOST ADMIN PANEL TITLE: Host Admin Suite`
+     - Verified all 5 administrative control tools rendered inside the separate panel with 0 errors.
+  4. **Redeployed**: Force-pushed fresh build to `gh-pages` branch on GitHub (`https://mhoying.github.io/wedding-graph/`).

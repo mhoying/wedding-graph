@@ -13,6 +13,7 @@ import GuestProfileDrawer from './components/GuestProfileDrawer';
 import CocktailMatchmakerModal from './components/CocktailMatchmakerModal';
 import SuggestEditModal from './components/SuggestEditModal';
 import ForceCanvas from './components/ForceCanvas';
+import HostAdminPanel from './components/HostAdminPanel';
 
 export default function App() {
   const fgRef = useRef();
@@ -613,9 +614,19 @@ export default function App() {
         setIsMatchmakerOpen={setIsMatchmakerOpen}
         isAdmin={isAdmin}
         handleExportCsv={handleExportCsv}
+        feedbackQueueCount={feedbackList.filter(f => f.status === 'PENDING').length}
+        setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
+      />
+
+      {/* Dedicated Host Admin Floating Control Panel */}
+      <HostAdminPanel 
+        isAdmin={isAdmin}
+        setIsAdmin={setIsAdmin}
+        handleExportCsv={handleExportCsv}
         handleExportGitJs={handleExportGitJs}
         feedbackQueueCount={feedbackList.filter(f => f.status === 'PENDING').length}
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
+        handleCopyQrLink={handleCopyQrLink}
       />
 
       {/* Path Finder Floating Interactive Toolbar (Positioned cleanly below top header at top: 80px) */}
