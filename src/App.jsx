@@ -370,7 +370,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces: Distance & Dynamic Collision for Prominent Cards
+  // Configure D3 forces: Distance & Dynamic Collision for Prominent 50% Larger Cards
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
@@ -381,23 +381,23 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen');
         if (isCoupleLink) {
-          return 75;
+          return 90;
         }
-        return (s === 'maureen' || s === 'matt' || t === 'maureen' || t === 'matt') ? 210 : 160;
+        return (s === 'maureen' || s === 'matt' || t === 'maureen' || t === 'matt') ? 240 : 185;
       });
 
-      fg.d3Force('charge').strength(-1850).distanceMax(750);
+      fg.d3Force('charge').strength(-2200).distanceMax(850);
       
       fg.d3Force('collide', forceCollide().radius(node => {
+        const isAnchor = node.type === 'ANCHOR';
+        if (showHeadshots && node.type !== 'CONTEXT_HUB') {
+          // 50% larger collision radius for prominent headshot cards
+          return isAnchor ? 78 : 65;
+        }
         const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
         const charCount = nameStr ? nameStr.length : 10;
-        
-        if (showHeadshots && node.type !== 'CONTEXT_HUB') {
-          // Generous collision radius for prominent headshot cards
-          return 55;
-        }
         const estimatedWidth = Math.max(charCount * 7.5 + 24, 90);
-        return estimatedWidth / 2 + 12;
+        return estimatedWidth / 2 + 14;
       }).iterations(6));
 
       fg.d3ReheatSimulation();
@@ -595,7 +595,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       const minY = Math.min(maureen.y, matt.y);
       const maxY = Math.max(maureen.y, matt.y);
 
-      const padding = 65 / globalScale;
+      const padding = 80 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
@@ -662,7 +662,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
           if (n.y > maxY) maxY = n.y;
         });
 
-        const pad = 48 / globalScale;
+        const pad = 60 / globalScale;
         const w = (maxX - minX) + pad * 2;
         const h = (maxY - minY) + pad * 2;
         const x = minX - pad;
@@ -696,7 +696,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     });
   }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters]);
 
-  // Modern Square Card Badge Renderer with PROMINENT READABLE HEADSHOTS & TOGGLE
+  // Modern Square Card Badge Renderer with 50% LARGER HEADSHOTS (58px-70px)
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -727,34 +727,33 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
     const renderAvatar = showHeadshots && !isHub;
     
-    // PROMINENT READABLE AVATAR DIMENSIONS: 46px for Anchors, 38px for Guests!
-    const avatarDiameter = (isAnchor ? 46 : 38) / globalScale;
-    const fontSize = (isAnchor ? 13 : 11) / globalScale;
+    // 50% LARGER HEADSHOT AVATARS: 70px for Anchors (Maureen & Matt), 58px for Guests!
+    const avatarDiameter = (isAnchor ? 70 : 58) / globalScale;
+    const fontSize = (isAnchor ? 14 : 12) / globalScale;
     ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '600'} ${fontSize}px Inter, sans-serif`;
     const textWidth = ctx.measureText(labelText).width;
 
     let badgeWidth, badgeHeight;
 
     if (renderAvatar) {
-      // VERTICAL PROMINENT CARD BADGE (Avatar on Top, Bold Name Below!)
-      const cardPaddingX = Math.max(14 / globalScale, (textWidth - avatarDiameter) / 2 + 12 / globalScale);
-      badgeWidth = Math.max(textWidth + 24 / globalScale, avatarDiameter + 24 / globalScale, (isAnchor ? 95 : 85) / globalScale);
-      badgeHeight = avatarDiameter + fontSize + (22 / globalScale);
+      // VERTICAL PROMINENT CARD BADGE (50% Larger Avatar on Top, Bold Name Below)
+      badgeWidth = Math.max(textWidth + 28 / globalScale, avatarDiameter + 24 / globalScale, (isAnchor ? 125 : 105) / globalScale);
+      badgeHeight = avatarDiameter + fontSize + (26 / globalScale);
     } else {
       // COMPACT EDITORIAL TEXT BADGE
-      const paddingX = (isAnchor ? 14 : 10) / globalScale;
-      const paddingY = (isAnchor ? 10 : 8) / globalScale;
+      const paddingX = (isAnchor ? 16 : 12) / globalScale;
+      const paddingY = (isAnchor ? 12 : 9) / globalScale;
       badgeWidth = textWidth + paddingX * 2;
       badgeHeight = fontSize + paddingY * 2;
     }
 
-    const cornerRadius = 12 / globalScale;
+    const cornerRadius = 14 / globalScale;
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
     if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = groupColor;
-      ctx.shadowBlur = 16;
+      ctx.shadowBlur = 18;
     }
 
     // Card Outer Background Box
@@ -774,11 +773,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     } else if (isLightMode) {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
     } else {
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
     }
     ctx.fill();
 
-    ctx.lineWidth = isHovered || isPathNode ? 2.0 : 1.4;
+    ctx.lineWidth = isHovered || isPathNode ? 2.2 : 1.5;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
     } else if (isNonAttending) {
@@ -794,18 +793,18 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
     ctx.stroke();
 
-    // RENDER PROMINENT CIRCULAR HEADSHOT AVATAR PHOTO / MONOGRAM
+    // RENDER 50% LARGER CIRCULAR HEADSHOT AVATAR PHOTO / MONOGRAM
     if (renderAvatar) {
       const avatarX = node.x;
-      const avatarY = y + (avatarDiameter / 2) + (8 / globalScale);
+      const avatarY = y + (avatarDiameter / 2) + (10 / globalScale);
 
       ctx.save();
       
       // Outer Glowing Ring Accent
       ctx.beginPath();
-      ctx.arc(avatarX, avatarY, (avatarDiameter / 2) + (2 / globalScale), 0, Math.PI * 2);
+      ctx.arc(avatarX, avatarY, (avatarDiameter / 2) + (2.5 / globalScale), 0, Math.PI * 2);
       ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : groupColor;
-      ctx.lineWidth = 2 / globalScale;
+      ctx.lineWidth = 2.5 / globalScale;
       ctx.stroke();
 
       // Circular Clip for Headshot Photo
@@ -821,7 +820,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = groupColor;
         ctx.fill();
 
-        ctx.font = `800 ${(isAnchor ? 15 : 12) / globalScale}px Inter, sans-serif`;
+        ctx.font = `800 ${(isAnchor ? 20 : 16) / globalScale}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#ffffff';
@@ -836,7 +835,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '600'} ${fontSize}px Inter, sans-serif`;
       ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isNonAttending ? '#94a3b8' : (isLightMode ? '#0f172a' : '#f8fafc'));
       
-      const textY = y + badgeHeight - (10 / globalScale);
+      const textY = y + badgeHeight - (11 / globalScale);
       ctx.fillText(labelText, avatarX, textY);
 
     } else {
@@ -855,20 +854,20 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
   // Hit area detection
   const drawPointerArea = useCallback((node, color, ctx, globalScale) => {
     const isAnchor = node.type === 'ANCHOR';
-    const fontSize = (isAnchor ? 13 : 11) / globalScale;
-    const avatarDiameter = (isAnchor ? 46 : 38) / globalScale;
+    const fontSize = (isAnchor ? 14 : 12) / globalScale;
+    const avatarDiameter = (isAnchor ? 70 : 58) / globalScale;
     
     let badgeWidth, badgeHeight;
 
     if (showHeadshots && node.type !== 'CONTEXT_HUB') {
-      badgeWidth = (isAnchor ? 95 : 85) / globalScale;
-      badgeHeight = avatarDiameter + fontSize + (22 / globalScale);
+      badgeWidth = (isAnchor ? 125 : 105) / globalScale;
+      badgeHeight = avatarDiameter + fontSize + (26 / globalScale);
     } else {
       ctx.font = `600 ${fontSize}px Inter, sans-serif`;
       const labelStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
       const textWidth = ctx.measureText(labelStr).width;
-      badgeWidth = textWidth + (24 / globalScale);
-      badgeHeight = fontSize + (16 / globalScale);
+      badgeWidth = textWidth + (28 / globalScale);
+      badgeHeight = fontSize + (18 / globalScale);
     }
 
     ctx.fillStyle = color;

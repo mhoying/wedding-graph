@@ -30,10 +30,9 @@
   2. Added Dynamic Color Mode Selector (`colorMode`).
   3. Added Interactive Color Legend footer.
 
-## [2026-08-22] Prominent Portrait Cards & Large Headshots
-- **User Prompt**: "i dont see the sirgular placeholders... i see a little badge to the left of hte names, but this is going to be much too small to be readable."
+## [2026-08-22] 50% Larger Headshot Portraits & Scaled Card Layout
+- **User Prompt**: "cna we make those headshots about 50% bigger"
 - **Actions**:
-  1. **Prominent 38px–46px Headshot Photos**: Expanded avatar diameter from tiny 18px to a large, clear 38px (guests) and 46px (anchors) circular portrait!
-  2. **Glowing Legend Border Ring**: Added a colored accent ring matching the active legend group around each circular photo.
-  3. **High-Contrast Monogram Fallback**: Displaying bold 12px–15px monogram initials centered inside the avatar frame when photo is loading.
-  4. **Vertical Card Layout**: Structured node cards as vertical social directory cards with photo on top and bold guest name centered below.
+  1. **50% Larger Headshots**: Increased avatar diameter to **58px for guests** and **70px for Maureen & Matt**!
+  2. **Scaled Card Bounds**: Scaled card badge width to 105px–125px with bold typography below the avatar.
+  3. **Expanded Physics Collision Radius**: Expanded D3 collision force radii (65–78px) to prevent node card overlaps.
