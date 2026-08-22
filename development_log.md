@@ -30,9 +30,9 @@
   2. Added Dynamic Color Mode Selector (`colorMode`).
   3. Added Interactive Color Legend footer.
 
-## [2026-08-22] Layout Sizing & Pure Vanilla CSS Migration
-- **User Prompt**: "there are no erros, but it si still a completley blank page.. shoudl i start using the pro model for this"
+## [2026-08-22] Couple Enclosure Hull & Moving Dots Removal
+- **User Prompt**: "can we remove the dots moving on the edges and the grid background; also , i was thinking that there woudl be a shape around maureen and matt to represent the coulple and the people part of that couple woudl be nodes inside it. is there a reason that owuldnt work"
 - **Actions**:
-  1. Identified root cause: `App.jsx` was attempting to use Tailwind utility classes (`w-full`, `h-screen`, `flex-1`) without Tailwind being installed, causing the canvas container element to collapse to 0 height.
-  2. Converted all styling to pure Vanilla CSS in `src/index.css` with zero external dependencies.
-  3. Passed explicit dynamic pixel width and height props (`dimensions.width`, `dimensions.height`) to `<ForceGraph2D />` with auto-resizing event listeners. The canvas and UI elements now render 100% reliably.
+  1. Removed moving directional particles on connection links (`linkDirectionalParticles={0}`).
+  2. Removed background grid pattern from `src/index.css`.
+  3. Added a dynamic canvas background layer (`onRenderFramePre`) that calculates the spatial bounds around Maureen & Matt and renders a glowing, dashed, translucent **Couple Enclosure Shape** labeled `"THE COUPLE (MAUREEN & MATT)"` around their nodes!

@@ -71,6 +71,57 @@ export default function App() {
     };
   }, [filteredNodes]);
 
+  // Render background enclosure shape around Maureen & Matt couple nodes
+  const drawBackgroundHulls = useCallback((ctx, globalScale) => {
+    const maureen = filteredNodes.find(n => n.id === 'maureen');
+    const matt = filteredNodes.find(n => n.id === 'matt');
+
+    if (maureen && matt && maureen.x !== undefined && matt.x !== undefined) {
+      const minX = Math.min(maureen.x, matt.x);
+      const maxX = Math.max(maureen.x, matt.x);
+      const minY = Math.min(maureen.y, matt.y);
+      const maxY = Math.max(maureen.y, matt.y);
+
+      const padding = 45 / globalScale;
+      const width = (maxX - minX) + padding * 2;
+      const height = (maxY - minY) + padding * 2;
+      const x = minX - padding;
+      const y = minY - padding;
+      const cornerRadius = 30 / globalScale;
+
+      ctx.save();
+      // Hull Glow
+      ctx.shadowColor = '#38bdf8';
+      ctx.shadowBlur = 20;
+
+      // Hull Background Fill
+      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.5)' : 'rgba(14, 165, 233, 0.12)';
+      ctx.beginPath();
+      if (ctx.roundRect) {
+        ctx.roundRect(x, y, width, height, cornerRadius);
+      } else {
+        ctx.rect(x, y, width, height);
+      }
+      ctx.fill();
+
+      // Hull Border
+      ctx.lineWidth = 2 / globalScale;
+      ctx.strokeStyle = '#38bdf8';
+      ctx.setLineDash([6 / globalScale, 4 / globalScale]);
+      ctx.stroke();
+
+      // Enclosure Title Label
+      ctx.shadowBlur = 0;
+      ctx.setLineDash([]);
+      ctx.font = `700 ${11 / globalScale}px Inter, sans-serif`;
+      ctx.fillStyle = '#38bdf8';
+      ctx.textAlign = 'center';
+      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - (8 / globalScale));
+
+      ctx.restore();
+    }
+  }, [filteredNodes, isLightMode]);
+
   // Premium Node Canvas Renderer
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
@@ -170,7 +221,7 @@ export default function App() {
 
   return (
     <div 
-      className={`app-container bg-grid-pattern ${isLightMode ? 'light-mode' : ''}`}
+      className={`app-container ${isLightMode ? 'light-mode' : ''}`}
       onMouseMove={handleMouseMove}
     >
       {/* Top Controls Bar */}
@@ -252,7 +303,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* Force Graph Canvas (Explicit Pixel Dimensions) */}
+      {/* Force Graph Canvas */}
       <div className="graph-container">
         <ForceGraph2D
           ref={fgRef}
@@ -263,6 +314,7 @@ export default function App() {
           nodePointerAreaPaint={drawPointerArea}
           onNodeClick={(node) => setSelectedNode(node)}
           onNodeHover={(node) => setHoverNode(node)}
+          onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
           linkColor={(link) => {
             const isHoveredLink = (hoverNode || selectedNode) && (
               (link.source.id || link.source) === (hoverNode?.id || selectedNode?.id) ||
@@ -278,10 +330,7 @@ export default function App() {
             );
             return isHoveredLink ? 3 : 1.5;
           }}
-          linkDirectionalParticles={2}
-          linkDirectionalParticleSpeed={0.004}
-          linkDirectionalParticleWidth={2.5}
-          linkDirectionalParticleColor={() => '#38bdf8'}
+          linkDirectionalParticles={0} // Removed moving dots
           backgroundColor="transparent"
         />
       </div>
@@ -375,7 +424,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: '#94a3b8' }}>
+          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94a3b8' }}>
             <span>Guest Network Profile</span>
             <Heart style={{ width: 16, height: 16, color: '#f43f5e' }} />
           </div>
