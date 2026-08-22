@@ -20,13 +20,31 @@ export default function App() {
 
   // Core Data State
   const [nodes, setNodes] = useState(() => {
-    const saved = localStorage.getItem('wedding_graph_nodes_v3');
-    return saved ? JSON.parse(saved) : SAMPLE_NODES;
+    try {
+      const saved = localStorage.getItem('wedding_graph_nodes_v4');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed.some(n => n.id === 'maureen')) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to parse saved nodes from localStorage:', e);
+    }
+    return SAMPLE_NODES;
   });
   const [links, setLinks] = useState(SAMPLE_LINKS);
   const [feedbackList, setFeedbackList] = useState(() => {
-    const saved = localStorage.getItem('wedding_graph_feedback_v3');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('wedding_graph_feedback_v4');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {
+      console.warn('Failed to parse feedback list:', e);
+    }
+    return [];
   });
 
   // UI Modes & Filters
