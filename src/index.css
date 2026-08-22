@@ -18,6 +18,7 @@ body {
   overflow: hidden;
   background: radial-gradient(circle at 50% 50%, #1e293b 0%, #111827 60%, #0b101d 100%);
   color: #f8fafc;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .app-container {
@@ -49,7 +50,7 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-/* Layout Components */
+/* Desktop Layout Components */
 .top-bar {
   position: absolute;
   top: 20px;
@@ -65,18 +66,19 @@ body {
 .top-bar-left, .top-bar-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .brand-badge {
-  padding: 8px 18px;
+  padding: 8px 16px;
   border-radius: 9999px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .search-box {
@@ -84,7 +86,8 @@ body {
   border-radius: 9999px;
   display: flex;
   align-items: center;
-  width: 260px;
+  width: 240px;
+  transition: width 0.3s ease;
 }
 
 .search-input {
@@ -98,11 +101,11 @@ body {
 }
 
 .color-mode-bar {
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 9999px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-size: 12px;
   font-weight: 600;
 }
@@ -117,6 +120,7 @@ body {
   font-weight: 600;
   font-size: 12px;
   transition: all 0.2s ease;
+  min-height: 34px;
 }
 
 .btn-mode.active {
@@ -131,17 +135,23 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 38px;
+  min-height: 38px;
 }
 
 .btn-action {
-  padding: 8px 18px;
+  padding: 8px 16px;
   border-radius: 9999px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
+  border: none;
+  background: #0284c7;
+  color: #fff;
+  min-height: 36px;
 }
 
 .graph-container {
@@ -163,6 +173,8 @@ body {
   align-items: center;
   gap: 12px;
   font-size: 12px;
+  max-width: calc(100vw - 48px);
+  overflow-x: auto;
 }
 
 .legend-items {
@@ -175,12 +187,14 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 .legend-color {
   width: 9px;
   height: 9px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .metadata-drawer {
@@ -209,9 +223,9 @@ body {
 }
 
 .drawer-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  margin-top: 12px;
+  margin-top: 8px;
   margin-bottom: 4px;
   letter-spacing: -0.02em;
 }
@@ -219,12 +233,12 @@ body {
 .drawer-subtitle {
   font-size: 13px;
   color: #94a3b8;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .drawer-section {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 16px;
+  padding-top: 14px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -270,6 +284,8 @@ body {
   gap: 12px;
   font-size: 13px;
   border: 1px solid rgba(56, 189, 248, 0.3);
+  max-width: calc(100vw - 48px);
+  overflow-x: auto;
 }
 
 .path-step {
@@ -282,6 +298,124 @@ body {
   display: none;
   text-align: center;
   margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE STYLES (UI RATIO & SCREEN ADAPTATION)
+   ========================================================================== */
+
+/* Mobile Bottom Sheet Overlay Drawer */
+.mobile-controls-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+  padding: 20px 24px 32px 24px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.mobile-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 140;
+}
+
+.mobile-control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mobile-control-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media screen and (max-width: 900px) {
+  .top-bar {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .search-box {
+    width: 140px;
+  }
+
+  .brand-badge span {
+    display: none;
+  }
+}
+
+/* Mobile Devices (< 768px width or Portrait Ratio) */
+@media screen and (max-width: 768px) {
+  .top-bar {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    gap: 8px;
+  }
+
+  .search-box {
+    flex: 1;
+    width: auto;
+  }
+
+  .desktop-only-controls {
+    display: none !important;
+  }
+
+  .metadata-drawer {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    top: auto;
+    width: auto;
+    max-height: 70vh;
+    border-radius: 24px;
+  }
+
+  .legend-bar {
+    left: 12px;
+    bottom: 12px;
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+
+  .path-finder-banner {
+    top: 66px;
+    left: 12px;
+    right: 12px;
+    font-size: 11px;
+  }
+
+  .hover-tooltip {
+    display: none; /* Hide hover tooltip on touch devices to avoid touch overlap */
+  }
 }
 
 @media print {

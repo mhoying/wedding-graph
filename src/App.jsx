@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal, SlidersHorizontal, Settings } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -88,12 +88,16 @@ export default function App() {
     return urlParams.get('admin') === 'true' || localStorage.getItem('wedding_graph_admin') === 'true';
   });
 
+  // Mobile Viewport & Orientation Detection
+  const [isMobileViewport, setIsMobileViewport] = useState(() => window.innerWidth < 768 || (window.innerHeight / window.innerWidth) > 1.25);
+  const [isMobileControlsOpen, setIsMobileControlsOpen] = useState(false);
+
   // Toggle state for headshot photos on node cards
   const [showHeadshots, setShowHeadshots] = useState(true);
 
-  // Independent Sliders: Node Size Multiplier & Map Density / Edge Length Multiplier
-  const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(1.0);
-  const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(1.0);
+  // Independent Sliders: Node Size Multiplier & Map Density / Edge Length Multiplier (Auto-tuned default for mobile)
+  const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(() => isMobileViewport ? 0.85 : 1.0);
+  const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(() => isMobileViewport ? 0.90 : 1.0);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(1.0);
 
   // Initialize Nodes with localStorage fallback (strip any old D3 physics positions on init)
@@ -335,10 +339,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
   }, [selectedNode]);
 
-  // Update canvas dimensions on window resize
+  // Dynamic Viewport Resize & Orientation Listener
   useEffect(() => {
     const handleResize = () => {
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      setDimensions({ width: w, height: h });
+      setIsMobileViewport(w < 768 || (h / w) > 1.25);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -353,9 +360,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
   const flyToNode = useCallback((node) => {
     if (fgRef.current && node && node.x !== undefined && node.y !== undefined) {
       fgRef.current.centerAt(node.x, node.y, 900);
-      fgRef.current.zoom(2.6, 900);
+      fgRef.current.zoom(isMobileViewport ? 2.1 : 2.6, 900);
     }
-  }, []);
+  }, [isMobileViewport]);
 
   // Toggle interest checkbox in multi-select array
   const toggleInterest = (interest) => {
@@ -432,23 +439,21 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
         const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
 
-        // PROPORTIONAL MULTIPLIERS to preserve cohort hierarchy across all node size and density slider values!
         let cohortMultiplier;
         if (isCoupleLink) {
-          cohortMultiplier = 0.65; // Tightest core bond for Maureen & Matt
+          cohortMultiplier = 0.65;
         } else if (isSameCohort) {
-          cohortMultiplier = 0.80; // TIGHT INTRA-COHORT EDGE SPACING (Tightly grouped within cohort!)
+          cohortMultiplier = 0.80;
         } else if (isHubLink) {
-          cohortMultiplier = 2.20; // Radial distance for shared place hubs
+          cohortMultiplier = 2.20;
         } else {
-          cohortMultiplier = 1.85; // LONGER CROSS-COHORT BRIDGE EDGES (Distinct inter-cluster bridge spacing!)
+          cohortMultiplier = 1.85;
         }
 
         const baseSum = sRadius + tRadius + 15 * nodeScaleMultiplier;
         return baseSum * cohortMultiplier * edgeLengthMultiplier;
       });
 
-      // Moderate Charge Repulsion so link cohort distances dominate placement!
       fg.d3Force('charge')
         .strength(-2200 * nodeScaleMultiplier * edgeLengthMultiplier)
         .distanceMax(1800 * edgeLengthMultiplier);
@@ -457,7 +462,6 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
       }).iterations(25));
 
-      // Fully re-heat D3 simulation with temporary alpha target so nodes immediately move to exact new positions!
       fg.d3AlphaTarget(0.3);
       fg.d3ReheatSimulation();
       const timer = setTimeout(() => {
@@ -944,7 +948,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     >
       {/* Toast Notification Banner */}
       {toastMessage && (
-        <div className="glass-panel no-print" style={{ position: 'fixed', top: 90, left: '50%', transform: 'translateX(-50%)', zIndex: 100, padding: '10px 20px', background: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, borderRadius: 9999, boxShadow: '0 10px 30px rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="glass-panel no-print" style={{ position: 'fixed', top: 80, left: '50%', transform: 'translateX(-50%)', zIndex: 200, padding: '10px 20px', background: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, borderRadius: 9999, boxShadow: '0 10px 30px rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', gap: 8, maxWidth: '90vw' }}>
           <CheckCircle2 style={{ width: 16, height: 16 }} />
           <span>{toastMessage}</span>
         </div>
@@ -956,9 +960,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         <p>A Visual Map of Family, Friends & Connections</p>
       </div>
 
-      {/* Streamlined Top Controls Bar */}
+      {/* Streamlined Top Controls Bar (Desktop & Responsive Mobile Header) */}
       <div className="top-bar no-print">
-        <div className="top-bar-left">
+        <div className="top-bar-left" style={{ flex: isMobileViewport ? 1 : 'initial' }}>
           <div className="glass-panel brand-badge">
             <Heart style={{ width: 14, height: 14, color: '#38bdf8' }} />
             <span>Maureen & Matt</span>
@@ -966,10 +970,10 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
           {/* Search Box */}
           <div className="glass-panel search-box">
-            <Search style={{ width: 14, height: 14, color: '#94a3b8', marginRight: 8 }} />
+            <Search style={{ width: 14, height: 14, color: '#94a3b8', marginRight: 8, flexShrink: 0 }} />
             <input 
               type="text"
-              placeholder="Search guests, cohorts, or interests..."
+              placeholder={isMobileViewport ? "Search..." : "Search guests, cohorts, or interests..."}
               className="search-input"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -979,257 +983,406 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             )}
           </div>
 
-          {/* Multi-Select Interest Dropdown with Checkboxes */}
-          <div style={{ position: 'relative' }}>
-            <button 
-              onClick={() => setIsInterestDropdownOpen(!isInterestDropdownOpen)}
-              className={`glass-panel btn-mode ${selectedInterests.length > 0 ? 'active' : ''}`}
-              style={{ padding: '6px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
-            >
-              <Filter style={{ width: 13, height: 13, color: selectedInterests.length > 0 ? '#fff' : '#10b981' }} />
-              <span>
-                {selectedInterests.length > 0 ? `Interests (${selectedInterests.length})` : 'Filter Interests'}
-              </span>
-              <ChevronDown style={{ width: 12, height: 12 }} />
-            </button>
-
-            {isInterestDropdownOpen && (
-              <div 
-                className="glass-panel"
-                style={{ 
-                  position: 'absolute', 
-                  top: '120%', 
-                  left: 0, 
-                  width: 220, 
-                  maxHeight: 280, 
-                  overflowY: 'auto', 
-                  padding: '12px', 
-                  zIndex: 60,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 8
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Filter by Interests</span>
-                  {selectedInterests.length > 0 && (
-                    <button 
-                      onClick={() => setSelectedInterests([])} 
-                      style={{ background: 'none', border: 'none', color: '#38bdf8', fontSize: 11, cursor: 'pointer', fontWeight: 600 }}
-                    >
-                      Clear
-                    </button>
-                  )}
-                </div>
-                {allInterests.map(interest => {
-                  const isChecked = selectedInterests.includes(interest);
-                  return (
-                    <label 
-                      key={interest}
-                      style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, cursor: 'pointer', userSelect: 'none' }}
-                    >
-                      <input 
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => toggleInterest(interest)}
-                        style={{ accentColor: '#10b981', cursor: 'pointer' }}
-                      />
-                      <span style={{ color: isChecked ? '#34d399' : 'inherit', fontWeight: isChecked ? 700 : 400 }}>
-                        🏷️ {interest}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Compact & Streamlined Action Controls Bar */}
-        <div className="top-bar-right">
-          {/* INDEPENDENT NODE SIZE SLIDER CONTROL */}
-          <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
-            <Sliders style={{ width: 14, height: 14, color: '#38bdf8' }} />
-            <span style={{ color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>Size:</span>
-            <input 
-              type="range"
-              min="0.5"
-              max="2.0"
-              step="0.1"
-              value={nodeScaleMultiplier}
-              onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
-              style={{ width: 60, accentColor: '#38bdf8', cursor: 'pointer' }}
-              title="Independent Node Card Size Slider"
-            />
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', minWidth: 26 }}>
-              {nodeScaleMultiplier.toFixed(1)}x
-            </span>
-          </div>
-
-          {/* INDEPENDENT MAP DENSITY / EDGE LENGTH SLIDER CONTROL */}
-          <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
-            <MoveHorizontal style={{ width: 14, height: 14, color: '#10b981' }} />
-            <span style={{ color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>Density:</span>
-            <input 
-              type="range"
-              min="0.5"
-              max="2.0"
-              step="0.1"
-              value={edgeLengthMultiplier}
-              onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
-              style={{ width: 60, accentColor: '#10b981', cursor: 'pointer' }}
-              title="Independent Map Density / Edge Length Slider"
-            />
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#10b981', minWidth: 26 }}>
-              {edgeLengthMultiplier.toFixed(1)}x
-            </span>
-          </div>
-
-          {/* Headshots Photo Toggle Button */}
-          <button 
-            onClick={() => setShowHeadshots(!showHeadshots)}
-            className={`glass-panel btn-mode ${showHeadshots ? 'active' : ''}`}
-            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Toggle Headshot Photos on Node Cards"
-          >
-            <Camera style={{ width: 14, height: 14, color: showHeadshots ? '#fff' : '#ec4899' }} />
-            <span>Photos: {showHeadshots ? 'ON' : 'OFF'}</span>
-          </button>
-
-          {/* Cluster Overlay Mode Dropdown Selector */}
-          <div className="glass-panel color-mode-bar">
-            <Layers style={{ width: 14, height: 14, color: '#ec4899' }} />
-            <span style={{ color: '#94a3b8', fontSize: 11 }}>Clusters:</span>
-            <select 
-              value={clusterMode}
-              onChange={(e) => setClusterMode(e.target.value)}
-              style={{ background: 'none', border: 'none', color: isLightMode ? '#0f172a' : '#f8fafc', fontSize: 11, fontWeight: 600, outline: 'none', cursor: 'pointer' }}
-            >
-              <option value="cohort" style={{ background: '#0f172a', color: '#fff' }}>Cohorts</option>
-              <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>✨ Auto Interests</option>
-              <option value="state" style={{ background: '#0f172a', color: '#fff' }}>States</option>
-              <option value="none" style={{ background: '#0f172a', color: '#fff' }}>🚫 Off (Hide)</option>
-            </select>
-          </div>
-
-          {/* Path Finder Toggle */}
-          <button 
-            onClick={() => {
-              setIsPathMode(!isPathMode);
-              setPathStart(null);
-              setPathEnd(null);
-            }} 
-            className={`glass-panel btn-mode ${isPathMode ? 'active' : ''}`}
-            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Calculate shortest social connection path between 2 guests"
-          >
-            <Compass style={{ width: 14, height: 14, color: isPathMode ? '#fff' : '#38bdf8' }} />
-            <span>Path Finder</span>
-          </button>
-
-          {/* Matchmaker Toggle */}
-          <button 
-            onClick={() => setIsMatchmakerOpen(!isMatchmakerOpen)}
-            className={`glass-panel btn-mode ${isMatchmakerOpen ? 'active' : ''}`}
-            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: isMatchmakerOpen ? '#10b981' : '' }}
-            title="Cocktail Hour Matchmaker & Icebreakers"
-          >
-            <Wand2 style={{ width: 14, height: 14, color: isMatchmakerOpen ? '#fff' : '#10b981' }} />
-            <span>Matchmaker</span>
-          </button>
-
-          {/* Guest Edit Submission Trigger */}
-          <button 
-            onClick={() => {
-              setFeedbackTargetNode(selectedNode || nodes[0]);
-              setIsFeedbackModalOpen(true);
-            }}
-            className="glass-panel btn-mode"
-            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Report Missing or Incorrect Metadata"
-          >
-            <Edit3 style={{ width: 14, height: 14, color: '#38bdf8' }} />
-            <span>Suggest Edit</span>
-          </button>
-
-          {/* ADMIN ONLY CONTROLS */}
-          {isAdmin && (
-            <>
-              {/* Host Feedback Admin Queue Button */}
-              {feedbackList.some(f => !f.applied) && (
-                <button 
-                  onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
-                  className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
-                  style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(245, 158, 11, 0.2)', border: '1px solid #f59e0b' }}
-                  title="View Submitted Guest Metadata Corrections (Host Admin Only)"
-                >
-                  <Inbox style={{ width: 14, height: 14, color: '#f59e0b' }} />
-                  <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
-                </button>
-              )}
-
-              {/* Download updated sampleData.js for Git */}
+          {/* Multi-Select Interest Dropdown (Desktop view) */}
+          {!isMobileViewport && (
+            <div style={{ position: 'relative' }}>
               <button 
-                onClick={downloadSampleDataJs}
-                className="glass-panel btn-mode"
-                style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, borderColor: '#10b981' }}
-                title="Download updated sampleData.js for Git repository (Host Admin Only)"
+                onClick={() => setIsInterestDropdownOpen(!isInterestDropdownOpen)}
+                className={`glass-panel btn-mode ${selectedInterests.length > 0 ? 'active' : ''}`}
+                style={{ padding: '6px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
               >
-                <Download style={{ width: 14, height: 14, color: '#10b981' }} />
-                <span>Export Git JS</span>
+                <Filter style={{ width: 13, height: 13, color: selectedInterests.length > 0 ? '#fff' : '#10b981' }} />
+                <span>
+                  {selectedInterests.length > 0 ? `Interests (${selectedInterests.length})` : 'Filter Interests'}
+                </span>
+                <ChevronDown style={{ width: 12, height: 12 }} />
               </button>
-            </>
-          )}
 
-          {/* Color Mode Selector */}
-          <div className="glass-panel color-mode-bar">
-            <Palette style={{ width: 14, height: 14, color: '#38bdf8' }} />
+              {isInterestDropdownOpen && (
+                <div 
+                  className="glass-panel"
+                  style={{ 
+                    position: 'absolute', 
+                    top: '120%', 
+                    left: 0, 
+                    width: 220, 
+                    maxHeight: 280, 
+                    overflowY: 'auto', 
+                    padding: '12px', 
+                    zIndex: 60,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 8
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Filter by Interests</span>
+                    {selectedInterests.length > 0 && (
+                      <button 
+                        onClick={() => setSelectedInterests([])} 
+                        style={{ background: 'none', border: 'none', color: '#38bdf8', fontSize: 11, cursor: 'pointer', fontWeight: 600 }}
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                  {allInterests.map(interest => {
+                    const isChecked = selectedInterests.includes(interest);
+                    return (
+                      <label 
+                        key={interest}
+                        style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, cursor: 'pointer', userSelect: 'none' }}
+                      >
+                        <input 
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => toggleInterest(interest)}
+                          style={{ accentColor: '#10b981', cursor: 'pointer' }}
+                        />
+                        <span style={{ color: isChecked ? '#34d399' : 'inherit', fontWeight: isChecked ? 700 : 400 }}>
+                          🏷️ {interest}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* MOBILE CONTROLS DRAWER TRIGGER BUTTON */}
+        {isMobileViewport ? (
+          <button 
+            onClick={() => setIsMobileControlsOpen(true)}
+            className="glass-panel btn-action"
+            style={{ padding: '8px 14px', background: '#0284c7', color: '#fff', borderRadius: 9999, display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            <SlidersHorizontal style={{ width: 16, height: 16 }} />
+            <span>Controls</span>
+          </button>
+        ) : (
+          /* DESKTOP CONTROLS BAR */
+          <div className="top-bar-right desktop-only-controls">
+            {/* INDEPENDENT NODE SIZE SLIDER CONTROL */}
+            <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
+              <Sliders style={{ width: 14, height: 14, color: '#38bdf8' }} />
+              <span style={{ color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>Size:</span>
+              <input 
+                type="range"
+                min="0.5"
+                max="2.0"
+                step="0.1"
+                value={nodeScaleMultiplier}
+                onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
+                style={{ width: 60, accentColor: '#38bdf8', cursor: 'pointer' }}
+                title="Independent Node Card Size Slider"
+              />
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', minWidth: 26 }}>
+                {nodeScaleMultiplier.toFixed(1)}x
+              </span>
+            </div>
+
+            {/* INDEPENDENT MAP DENSITY / EDGE LENGTH SLIDER CONTROL */}
+            <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
+              <MoveHorizontal style={{ width: 14, height: 14, color: '#10b981' }} />
+              <span style={{ color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>Density:</span>
+              <input 
+                type="range"
+                min="0.5"
+                max="2.0"
+                step="0.1"
+                value={edgeLengthMultiplier}
+                onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
+                style={{ width: 60, accentColor: '#10b981', cursor: 'pointer' }}
+                title="Independent Map Density / Edge Length Slider"
+              />
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#10b981', minWidth: 26 }}>
+                {edgeLengthMultiplier.toFixed(1)}x
+              </span>
+            </div>
+
+            {/* Headshots Photo Toggle Button */}
             <button 
-              onClick={() => setColorMode('cohort')}
-              className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`}
+              onClick={() => setShowHeadshots(!showHeadshots)}
+              className={`glass-panel btn-mode ${showHeadshots ? 'active' : ''}`}
+              style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+              title="Toggle Headshot Photos on Node Cards"
             >
-              Cohort
+              <Camera style={{ width: 14, height: 14, color: showHeadshots ? '#fff' : '#ec4899' }} />
+              <span>Photos: {showHeadshots ? 'ON' : 'OFF'}</span>
+            </button>
+
+            {/* Cluster Overlay Mode Dropdown Selector */}
+            <div className="glass-panel color-mode-bar">
+              <Layers style={{ width: 14, height: 14, color: '#ec4899' }} />
+              <span style={{ color: '#94a3b8', fontSize: 11 }}>Clusters:</span>
+              <select 
+                value={clusterMode}
+                onChange={(e) => setClusterMode(e.target.value)}
+                style={{ background: 'none', border: 'none', color: isLightMode ? '#0f172a' : '#f8fafc', fontSize: 11, fontWeight: 600, outline: 'none', cursor: 'pointer' }}
+              >
+                <option value="cohort" style={{ background: '#0f172a', color: '#fff' }}>Cohorts</option>
+                <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>✨ Auto Interests</option>
+                <option value="state" style={{ background: '#0f172a', color: '#fff' }}>States</option>
+                <option value="none" style={{ background: '#0f172a', color: '#fff' }}>🚫 Off (Hide)</option>
+              </select>
+            </div>
+
+            {/* Path Finder Toggle */}
+            <button 
+              onClick={() => {
+                setIsPathMode(!isPathMode);
+                setPathStart(null);
+                setPathEnd(null);
+              }} 
+              className={`glass-panel btn-mode ${isPathMode ? 'active' : ''}`}
+              style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+              title="Calculate shortest social connection path between 2 guests"
+            >
+              <Compass style={{ width: 14, height: 14, color: isPathMode ? '#fff' : '#38bdf8' }} />
+              <span>Path Finder</span>
+            </button>
+
+            {/* Matchmaker Toggle */}
+            <button 
+              onClick={() => setIsMatchmakerOpen(!isMatchmakerOpen)}
+              className={`glass-panel btn-mode ${isMatchmakerOpen ? 'active' : ''}`}
+              style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: isMatchmakerOpen ? '#10b981' : '' }}
+              title="Cocktail Hour Matchmaker & Icebreakers"
+            >
+              <Wand2 style={{ width: 14, height: 14, color: isMatchmakerOpen ? '#fff' : '#10b981' }} />
+              <span>Matchmaker</span>
+            </button>
+
+            {/* Guest Edit Submission Trigger */}
+            <button 
+              onClick={() => {
+                setFeedbackTargetNode(selectedNode || nodes[0]);
+                setIsFeedbackModalOpen(true);
+              }}
+              className="glass-panel btn-mode"
+              style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+              title="Report Missing or Incorrect Metadata"
+            >
+              <Edit3 style={{ width: 14, height: 14, color: '#38bdf8' }} />
+              <span>Suggest Edit</span>
+            </button>
+
+            {/* ADMIN ONLY CONTROLS */}
+            {isAdmin && (
+              <>
+                {/* Host Feedback Admin Queue Button */}
+                {feedbackList.some(f => !f.applied) && (
+                  <button 
+                    onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
+                    className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
+                    style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(245, 158, 11, 0.2)', border: '1px solid #f59e0b' }}
+                    title="View Submitted Guest Metadata Corrections (Host Admin Only)"
+                  >
+                    <Inbox style={{ width: 14, height: 14, color: '#f59e0b' }} />
+                    <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
+                  </button>
+                )}
+
+                {/* Download updated sampleData.js for Git */}
+                <button 
+                  onClick={downloadSampleDataJs}
+                  className="glass-panel btn-mode"
+                  style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, borderColor: '#10b981' }}
+                  title="Download updated sampleData.js for Git repository (Host Admin Only)"
+                >
+                  <Download style={{ width: 14, height: 14, color: '#10b981' }} />
+                  <span>Export Git JS</span>
+                </button>
+              </>
+            )}
+
+            {/* Color Mode Selector */}
+            <div className="glass-panel color-mode-bar">
+              <Palette style={{ width: 14, height: 14, color: '#38bdf8' }} />
+              <button 
+                onClick={() => setColorMode('cohort')}
+                className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`}
+              >
+                Cohort
+              </button>
+              <button 
+                onClick={() => setColorMode('side')}
+                className={`btn-mode ${colorMode === 'side' ? 'active' : ''}`}
+              >
+                Side
+              </button>
+              <button 
+                onClick={() => setColorMode('state')}
+                className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`}
+              >
+                State
+              </button>
+            </div>
+
+            <button 
+              onClick={() => setIsLightMode(!isLightMode)} 
+              className="glass-panel btn-icon"
+              title="Toggle Light/Dark Theme"
+            >
+              {isLightMode ? <Moon style={{ width: 16, height: 16 }} /> : <Sun style={{ width: 16, height: 16, color: '#38bdf8' }} />}
             </button>
             <button 
-              onClick={() => setColorMode('side')}
-              className={`btn-mode ${colorMode === 'side' ? 'active' : ''}`}
+              onClick={() => window.print()} 
+              className="glass-panel btn-action"
             >
-              Side
-            </button>
-            <button 
-              onClick={() => setColorMode('state')}
-              className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`}
-            >
-              State
+              <Printer style={{ width: 14, height: 14, color: '#38bdf8' }} />
+              <span>Export Poster</span>
             </button>
           </div>
-
-          <button 
-            onClick={() => setIsLightMode(!isLightMode)} 
-            className="glass-panel btn-icon"
-            title="Toggle Light/Dark Theme"
-          >
-            {isLightMode ? <Moon style={{ width: 16, height: 16 }} /> : <Sun style={{ width: 16, height: 16, color: '#38bdf8' }} />}
-          </button>
-          <button 
-            onClick={() => window.print()} 
-            className="glass-panel btn-action"
-          >
-            <Printer style={{ width: 14, height: 14, color: '#38bdf8' }} />
-            <span>Export Poster</span>
-          </button>
-        </div>
+        )}
       </div>
+
+      {/* MOBILE CONTROLS BOTTOM SHEET DRAWER MODAL */}
+      {isMobileControlsOpen && (
+        <>
+          <div className="mobile-sheet-backdrop" onClick={() => setIsMobileControlsOpen(false)} />
+          <div className="mobile-controls-sheet no-print">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 18 }}>
+                <SlidersHorizontal style={{ width: 20, height: 20, color: '#38bdf8' }} />
+                <span>Map Controls & Settings</span>
+              </div>
+              <button 
+                onClick={() => setIsMobileControlsOpen(false)}
+                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
+              >
+                <X style={{ width: 22, height: 22 }} />
+              </button>
+            </div>
+
+            {/* Sliders Section */}
+            <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 16, borderRadius: 16, marginBottom: 14, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="mobile-control-label"><Sliders style={{ width: 14, height: 14, color: '#38bdf8' }} /> Card Node Size:</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#38bdf8' }}>{nodeScaleMultiplier.toFixed(1)}x</span>
+              </div>
+              <input 
+                type="range"
+                min="0.5"
+                max="2.0"
+                step="0.1"
+                value={nodeScaleMultiplier}
+                onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
+                style={{ width: '100%', accentColor: '#38bdf8', height: 6 }}
+              />
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+                <span className="mobile-control-label"><MoveHorizontal style={{ width: 14, height: 14, color: '#10b981' }} /> Map Density / Spacing:</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#10b981' }}>{edgeLengthMultiplier.toFixed(1)}x</span>
+              </div>
+              <input 
+                type="range"
+                min="0.5"
+                max="2.0"
+                step="0.1"
+                value={edgeLengthMultiplier}
+                onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
+                style={{ width: '100%', accentColor: '#10b981', height: 6 }}
+              />
+            </div>
+
+            {/* Toggles & Options */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+              {/* Photo Toggle */}
+              <button 
+                onClick={() => setShowHeadshots(!showHeadshots)}
+                className={`btn-mode ${showHeadshots ? 'active' : ''}`}
+                style={{ padding: '10px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: showHeadshots ? '#0284c7' : 'rgba(255, 255, 255, 0.08)' }}
+              >
+                <Camera style={{ width: 14, height: 14 }} />
+                <span>Photos: {showHeadshots ? 'ON' : 'OFF'}</span>
+              </button>
+
+              {/* Theme Toggle */}
+              <button 
+                onClick={() => setIsLightMode(!isLightMode)}
+                className="btn-mode"
+                style={{ padding: '10px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(255, 255, 255, 0.08)' }}
+              >
+                {isLightMode ? <Moon style={{ width: 14, height: 14 }} /> : <Sun style={{ width: 14, height: 14, color: '#38bdf8' }} />}
+                <span>Theme: {isLightMode ? 'Light' : 'Dark'}</span>
+              </button>
+            </div>
+
+            {/* Color Mode Selector */}
+            <div className="mobile-control-row">
+              <span className="mobile-control-label"><Palette style={{ width: 14, height: 14, color: '#38bdf8' }} /> Color Mode:</span>
+              <div style={{ display: 'flex', gap: 6, background: 'rgba(30, 41, 59, 0.6)', padding: 4, borderRadius: 12 }}>
+                <button onClick={() => setColorMode('cohort')} className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`} style={{ flex: 1 }}>Cohort</button>
+                <button onClick={() => setColorMode('side')} className={`btn-mode ${colorMode === 'side' ? 'active' : ''}`} style={{ flex: 1 }}>Side</button>
+                <button onClick={() => setColorMode('state')} className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`} style={{ flex: 1 }}>State</button>
+              </div>
+            </div>
+
+            {/* Cluster Overlays */}
+            <div className="mobile-control-row">
+              <span className="mobile-control-label"><Layers style={{ width: 14, height: 14, color: '#ec4899' }} /> Cluster Overlays:</span>
+              <select 
+                value={clusterMode}
+                onChange={(e) => setClusterMode(e.target.value)}
+                style={{ width: '100%', padding: '10px', borderRadius: 12, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 13 }}
+              >
+                <option value="cohort">Cohorts</option>
+                <option value="interests">✨ Auto Interests</option>
+                <option value="state">States</option>
+                <option value="none">🚫 Off (Hide)</option>
+              </select>
+            </div>
+
+            {/* Action Tools */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 14 }}>
+              <button 
+                onClick={() => { setIsPathMode(!isPathMode); setIsMobileControlsOpen(false); }} 
+                className={`btn-mode ${isPathMode ? 'active' : ''}`}
+                style={{ padding: '12px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: isPathMode ? '#0284c7' : 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', fontWeight: 700 }}
+              >
+                <Compass style={{ width: 16, height: 16 }} /> Path Finder Calculator
+              </button>
+
+              <button 
+                onClick={() => { setIsMatchmakerOpen(!isMatchmakerOpen); setIsMobileControlsOpen(false); }}
+                className="btn-mode"
+                style={{ padding: '12px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 700 }}
+              >
+                <Wand2 style={{ width: 16, height: 16 }} /> Cocktail Hour Matchmaker
+              </button>
+
+              <button 
+                onClick={() => { setFeedbackTargetNode(selectedNode || nodes[0]); setIsFeedbackModalOpen(true); setIsMobileControlsOpen(false); }}
+                className="btn-mode"
+                style={{ padding: '12px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255, 255, 255, 0.08)', color: '#fff' }}
+              >
+                <Edit3 style={{ width: 16, height: 16 }} /> Suggest Profile Edit
+              </button>
+            </div>
+
+            <button 
+              onClick={() => setIsMobileControlsOpen(false)}
+              className="btn-action"
+              style={{ width: '100%', marginTop: 18, padding: '12px', justifyContent: 'center', fontSize: 14 }}
+            >
+              Done / Close Controls
+            </button>
+          </div>
+        </>
+      )}
 
       {/* Path Finder Active Breadcrumb Banner */}
       {isPathMode && (
         <div className="glass-panel path-finder-banner no-print">
-          <GitCommit style={{ width: 16, height: 16, color: '#38bdf8' }} />
-          {!pathStart && <span>Click the <b>First Guest</b> to start calculating connection path...</span>}
-          {pathStart && !pathEnd && <span>Selected <span className="path-step">{pathStart.name}</span>. Now click the <b>Second Guest</b>...</span>}
+          <GitCommit style={{ width: 16, height: 16, color: '#38bdf8', flexShrink: 0 }} />
+          {!pathStart && <span>Click <b>First Guest</b>...</span>}
+          {pathStart && !pathEnd && <span>Selected <span className="path-step">{pathStart.name}</span>. Click <b>Second Guest</b>...</span>}
           {pathStart && pathEnd && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span>Connection Path:</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflowX: 'auto' }}>
+              <span>Path:</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 {shortestPath.map((id, index) => {
                   const n = nodes.find(x => x.id === id);
@@ -1243,7 +1396,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
               </div>
               <button 
                 onClick={() => { setPathStart(null); setPathEnd(null); }}
-                style={{ marginLeft: 10, background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                style={{ marginLeft: 6, background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
               >
                 <X style={{ width: 14, height: 14 }} />
               </button>
@@ -1252,9 +1405,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         </div>
       )}
 
-      {/* Host Feedback Admin Queue Drawer (Admin Only with EXPLICIT TAG & METADATA DIFF REVIEW) */}
+      {/* Host Feedback Admin Queue Drawer (Admin Only) */}
       {isAdmin && isHostQueueOpen && (
-        <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto', zIndex: 40, width: 380 }}>
+        <div className="glass-panel metadata-drawer no-print" style={{ left: isMobileViewport ? 12 : 24, right: isMobileViewport ? 12 : 'auto', zIndex: 40, width: isMobileViewport ? 'auto' : 380 }}>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span className="drawer-badge" style={{ backgroundColor: '#f59e0b', display: 'flex', alignItems: 'center', gap: 6, color: '#000' }}>
@@ -1284,7 +1437,6 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                       "{fb.note}"
                     </p>
 
-                    {/* EXPLICIT METADATA DIFF PROPOSAL CARD */}
                     {!fb.applied ? (
                       <div style={{ background: 'rgba(15, 23, 42, 0.8)', padding: 10, borderRadius: 10, border: '1px solid rgba(255, 255, 255, 0.1)', marginBottom: 10 }}>
                         <div style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -1359,7 +1511,6 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
               })}
             </div>
 
-            {/* Download updated sampleData.js for Git */}
             <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
               <button 
                 onClick={downloadSampleDataJs}
@@ -1376,8 +1527,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       {/* Guest Report Correction Modal */}
       {isFeedbackModalOpen && (
-        <div className="app-container no-print" style={{ position: 'fixed', zIndex: 50, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="glass-panel" style={{ width: 440, padding: 28, borderRadius: 24 }}>
+        <div className="app-container no-print" style={{ position: 'fixed', zIndex: 160, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 16 }}>
+          <div className="glass-panel" style={{ width: 440, maxWidth: '100%', padding: 24, borderRadius: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 800, fontSize: 18 }}>
                 <Edit3 style={{ width: 20, height: 20, color: '#38bdf8' }} />
@@ -1454,7 +1605,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       {/* Cocktail Hour Matchmaker Drawer */}
       {isMatchmakerOpen && (
-        <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto' }}>
+        <div className="glass-panel metadata-drawer no-print" style={{ left: isMobileViewport ? 12 : 24, right: isMobileViewport ? 12 : 'auto', zIndex: 40, width: isMobileViewport ? 'auto' : 380 }}>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span className="drawer-badge" style={{ backgroundColor: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -1490,7 +1641,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                     key={res.node.id} 
                     className="icebreaker-box" 
                     style={{ cursor: 'pointer', transition: 'all 0.2s' }}
-                    onClick={() => flyToNode(res.node)}
+                    onClick={() => { flyToNode(res.node); if (isMobileViewport) setIsMatchmakerOpen(false); }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: 14 }}>
                       <span>{res.node.name}</span>
@@ -1512,7 +1663,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       {/* Dynamic Color Legend Footer */}
       <div className="glass-panel legend-bar no-print">
-        <span style={{ fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', fontSize: 10, letterSpacing: '0.08em' }}>Legend ({colorMode}):</span>
+        <span style={{ fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', fontSize: 10, letterSpacing: '0.08em', flexShrink: 0 }}>Legend:</span>
         <div className="legend-items">
           {Object.entries(activeColorMap).map(([key, hex]) => (
             <div key={key} className="legend-item">
@@ -1534,7 +1685,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
           nodeCanvasObject={drawNode}
           nodePointerAreaPaint={drawPointerArea}
           onNodeClick={handleNodeClick}
-          onNodeHover={(node) => setHoverNode(node)}
+          onNodeHover={(node) => !isMobileViewport && setHoverNode(node)}
           onZoom={handleZoom}
           onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
           linkColor={(link) => {
@@ -1585,8 +1736,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         />
       </div>
 
-      {/* Instant Hover Tooltip Popup Overlay */}
-      {hoverNode && !selectedNode && !isPathMode && (
+      {/* Instant Hover Tooltip Popup Overlay (Desktop only) */}
+      {!isMobileViewport && hoverNode && !selectedNode && !isPathMode && (
         <div 
           className="glass-panel hover-tooltip"
           style={{ 
@@ -1631,7 +1782,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         </div>
       )}
 
-      {/* Glassmorphism Metadata Side Drawer Popup (On Click & Self-Editing Mode) */}
+      {/* Glassmorphism Metadata Side Drawer / Mobile Bottom Sheet */}
       {selectedNode && !isPathMode && (
         <div className="glass-panel metadata-drawer no-print">
           <div>
@@ -1644,9 +1795,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
               </span>
               <button 
                 onClick={() => setSelectedNode(null)}
-                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
               >
-                <X style={{ width: 18, height: 18 }} />
+                <X style={{ width: 20, height: 20 }} />
               </button>
             </div>
 

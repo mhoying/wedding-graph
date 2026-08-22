@@ -23,14 +23,12 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Proportional Cohort Multiplier & Active Alpha Re-Heating
-- **User Prompt**: "it seems that the edge spacing gets ignored if the node size or density are edited"
+## [2026-08-22] Mobile & Tablet Responsive Layout & Control Drawer
+- **User Prompt**: "this will be viewed on computer sand cell phones. lets make sure that it is dynamically orgnaized for each ui ratio and size. it may be necesary toe mkae a contorll drawer"
 - **Actions**:
-  1. **Root Cause Analysis**: Fixed issue where additive `basePadding` was getting drowned out whenever `nodeScaleMultiplier` or `edgeLengthMultiplier` changed.
-  2. **Proportional Cohort Multipliers**: Switched link distance calculation to use exact relative multipliers:
-     - **The Couple (Maureen & Matt)**: `0.65x` (Ultra-tight core).
-     - **Intra-Cohort Links**: `0.80x` (Tight, cohesive cohort grouping).
-     - **Cross-Cohort Bridge Links**: `1.85x` (More than **2.3x longer** inter-cohort bridge distance!).
-     - **Place Hub Links**: `2.20x` (Radial anchor distance).
-  3. **Preserved Ratio Invariance**: Because multipliers scale multiplicatively (`base * multiplier * slider`), the **2.3x ratio difference** between same-cohort and cross-cohort edges remains **100% invariant at any level of Node Size or Density slider values**!
-  4. **Active Physics Re-Heating (`d3AlphaTarget(0.3)`)**: Added temporary alpha target re-heating when sliders move so D3 physics immediately forces nodes into position.
+  1. **Mobile Viewport Detection (`isMobileViewport`)**: Detects screen width ($< 768\text{px}$) and aspect ratios ($H/W > 1.25$) on initial load and window resize.
+  2. **Auto-Responsive Default Scale**: Automatically initializes `nodeScaleMultiplier = 0.85` and `edgeLengthMultiplier = 0.90` on mobile phones so nodes and graph clusters fit comfortably on smaller smartphone screens.
+  3. **Mobile Controls Sheet (Bottom Sheet Drawer)**:
+     - On mobile screens, the cluttered top desktop bar condenses into a clean navbar: Logo + Search + **`Controls 🎛️`** trigger button!
+     - Tapping **`Controls`** slides up a glassmorphism bottom sheet drawer containing Card Size, Density, Photo Toggles, Color Modes, Cluster Overlays, Path Finder, Matchmaker, Suggest Edit, and Theme controls.
+  4. **Mobile Bottom Sheet Drawers**: Guest Profile & Matchmaker drawers transform into mobile-optimized bottom sheets (`70vh` height max with touch scrolling).
