@@ -1,8 +1,16 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Tag } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
+
+// Helper to extract uppercase initials for guest monogram headshots
+function getInitials(name) {
+  if (!name) return '??';
+  const parts = name.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
 export default function App() {
   const fgRef = useRef();
@@ -12,7 +20,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
   const [hoverNode, setHoverNode] = useState(null);
-  const [selectedInterests, setSelectedInterests] = useState([]); // Multi-select array
+  const [selectedInterests, setSelectedInterests] = useState([]);
   const [isInterestDropdownOpen, setIsInterestDropdownOpen] = useState(false);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -58,6 +66,9 @@ export default function App() {
   const [isHostQueueOpen, setIsHostQueueOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
+  // Image cache for avatar headshots
+  const imageCacheRef = useRef({});
+
   // Dynamically extract all unique Interests across the dataset
   const allInterests = useMemo(() => {
     const set = new Set();
@@ -100,7 +111,7 @@ export default function App() {
     }
   };
 
-  // Configure D3 forces: Generalized Couple Distance & Dynamic Collision
+  // Configure D3 forces: Generalized Couple Distance & Dynamic Collision for Square Badges
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
@@ -111,18 +122,18 @@ export default function App() {
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen');
         if (isCoupleLink) {
-          return 45;
+          return 50;
         }
-        return l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 170 : 130;
+        return l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 175 : 135;
       });
 
-      fg.d3Force('charge').strength(-1400).distanceMax(650);
+      fg.d3Force('charge').strength(-1450).distanceMax(650);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
         const charCount = nameStr ? nameStr.length : 10;
-        const estimatedWidth = Math.max(charCount * 7.5 + 32, 80);
-        return estimatedWidth / 2 + 10;
+        const estimatedWidth = Math.max(charCount * 7.5 + 44, 90); // Extra width for headshot avatar
+        return estimatedWidth / 2 + 12;
       }).iterations(6));
 
       fg.d3ReheatSimulation();
@@ -204,7 +215,6 @@ export default function App() {
   // Filter nodes based on search and selected interest checkboxes
   const filteredNodes = useMemo(() => {
     return nodes.filter(node => {
-      // Interest Checkbox Filter (Match ANY selected interest)
       if (selectedInterests.length > 0) {
         if (!node.hobbies || !selectedInterests.some(i => node.hobbies.includes(i))) return false;
       }
@@ -301,12 +311,12 @@ export default function App() {
       const minY = Math.min(maureen.y, matt.y);
       const maxY = Math.max(maureen.y, matt.y);
 
-      const padding = 45 / globalScale;
+      const padding = 50 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
       const y = minY - padding;
-      const cornerRadius = 28 / globalScale;
+      const cornerRadius = 24 / globalScale;
 
       ctx.save();
       ctx.shadowColor = 'rgba(56, 189, 248, 0.15)';
@@ -352,7 +362,7 @@ export default function App() {
             if (n.y > maxY) maxY = n.y;
           });
 
-          const pad = 35 / globalScale;
+          const pad = 38 / globalScale;
           const w = (maxX - minX) + pad * 2;
           const h = (maxY - minY) + pad * 2;
           const x = minX - pad;
@@ -385,7 +395,7 @@ export default function App() {
     }
   }, [filteredNodes, isLightMode, showCohortHulls]);
 
-  // Clean Editorial Canvas Node Renderer
+  // Modern Square Card Badge Renderer with Circular Monogram / Headshot Avatar
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -416,21 +426,25 @@ export default function App() {
     ctx.font = `${isAnchor || isHovered || isPathNode ? '600' : '500'} ${fontSize}px Inter, sans-serif`;
     
     const textWidth = ctx.measureText(labelText).width;
-    const dotRadius = 4 / globalScale;
+    const avatarDiameter = (isAnchor ? 20 : 16) / globalScale;
     const paddingX = (isAnchor ? 14 : 10) / globalScale;
-    const paddingY = (isAnchor ? 8 : 6) / globalScale;
-    const badgeWidth = textWidth + paddingX * 2 + (isHub || isNonAttending ? 0 : dotRadius * 2 + 6 / globalScale);
-    const badgeHeight = fontSize + paddingY * 2;
-    const cornerRadius = isHub ? 4 / globalScale : badgeHeight / 2;
+    const paddingY = (isAnchor ? 10 : 8) / globalScale;
+    
+    // Square-ish card dimensions with avatar spacing
+    const badgeWidth = textWidth + paddingX * 2 + (isHub ? 0 : avatarDiameter + 8 / globalScale);
+    const badgeHeight = Math.max(fontSize + paddingY * 2, avatarDiameter + paddingY * 1.5);
+    const cornerRadius = 10 / globalScale; // Modern square-ish rounded corners
 
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
+    // Organic Soft Shadow on Hover
     if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = 12;
     }
 
+    // Square Card Background Fill
     ctx.beginPath();
     if (ctx.roundRect) {
       ctx.roundRect(x, y, badgeWidth, badgeHeight, cornerRadius);
@@ -451,7 +465,8 @@ export default function App() {
     }
     ctx.fill();
 
-    ctx.lineWidth = isHovered || isPathNode ? 1.5 : 1;
+    // Soft Card Border
+    ctx.lineWidth = isHovered || isPathNode ? 1.8 : 1;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
     } else if (isNonAttending) {
@@ -469,21 +484,50 @@ export default function App() {
     }
     ctx.stroke();
 
-    if (!isHub && !isNonAttending) {
-      const dotX = x + paddingX + dotRadius;
+    // Circular Headshot Monogram Avatar on Left Side of Card
+    if (!isHub) {
+      const avatarX = x + paddingX + avatarDiameter / 2;
+      const avatarY = node.y;
+
+      ctx.save();
       ctx.beginPath();
-      ctx.arc(dotX, node.y, dotRadius, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.fill();
+      ctx.arc(avatarX, avatarY, avatarDiameter / 2, 0, Math.PI * 2);
+      ctx.clip();
+
+      if (node.image && imageCacheRef.current[node.image]) {
+        // Draw Headshot Image if available
+        const img = imageCacheRef.current[node.image];
+        ctx.drawImage(img, avatarX - avatarDiameter / 2, avatarY - avatarDiameter / 2, avatarDiameter, avatarDiameter);
+      } else if (node.image && !imageCacheRef.current[node.image]) {
+        // Load image into cache
+        const img = new Image();
+        img.src = node.image;
+        img.onload = () => { imageCacheRef.current[node.image] = img; };
+      }
+
+      if (!node.image || !imageCacheRef.current[node.image]) {
+        // Draw Monogram Initials Circle Avatar
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        ctx.font = `700 ${(isAnchor ? 9 : 8) / globalScale}px Inter, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(getInitials(node.name), avatarX, avatarY);
+      }
+      ctx.restore();
     }
 
+    // Card Text Label
     ctx.shadowBlur = 0;
-    ctx.textAlign = 'center';
+    ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
+    ctx.font = `${isAnchor || isHovered || isPathNode ? '600' : '500'} ${fontSize}px Inter, sans-serif`;
     ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isNonAttending ? '#94a3b8' : (isLightMode ? '#0f172a' : '#f8fafc'));
     
-    const textOffsetX = (!isHub && !isNonAttending) ? (dotRadius + 3 / globalScale) / 2 : 0;
-    ctx.fillText(labelText, node.x + textOffsetX, node.y);
+    const textStartX = isHub ? (x + paddingX) : (x + paddingX + avatarDiameter + 6 / globalScale);
+    ctx.fillText(labelText, textStartX, node.y);
 
     ctx.restore();
   }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links]);
@@ -495,8 +539,8 @@ export default function App() {
     ctx.font = `500 ${fontSize}px Inter, sans-serif`;
     const labelStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
     const textWidth = ctx.measureText(labelStr).width;
-    const badgeWidth = textWidth + (28 / globalScale);
-    const badgeHeight = fontSize + (14 / globalScale);
+    const badgeWidth = textWidth + (36 / globalScale);
+    const badgeHeight = fontSize + (16 / globalScale);
 
     ctx.fillStyle = color;
     ctx.beginPath();

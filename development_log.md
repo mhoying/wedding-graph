@@ -36,8 +36,8 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Aesthetic Refinements: Soft Matte Badges & Multi-Select Interest Dropdown
-- **User Prompt**: "the ode outlsines still read much too cyberpunk" / "can the interest filter be reneded as a dropdown iwth chekcboxes or something instead"
+## [2026-08-22] Square Card Node Badges with Headshot Avatars & Monograms
+- **User Prompt**: "can the nodes also have a headshot of the indvidual and be more square shaped than pill shaped"
 - **Actions**:
-  1. **Eliminated Cyberpunk Outlines**: Replaced harsh bright node outlines with soft, matte organic slate pill badges (`rgba(30, 41, 59, 0.95)`). Added an elegant colored dot indicator (`●`) on each guest pill to indicate cohort/side/state color cleanly without bright neon box strokes!
-  2. **Multi-Select Interest Checkbox Dropdown**: Replaced horizontal interest ribbon with a compact **`Filter Interests ▾`** dropdown menu featuring checkboxes (`[x] Wine`, `[x] Cycling`, `[x] Coffee`). Guests can check multiple interests simultaneously to filter the graph in real time!
+  1. **Square-ish Card Badge Geometry**: Converted nodes from round pill shapes to modern rounded rectangle card badges (`border-radius: 10px`).
+  2. **Headshot Avatar & Monogram System**: Added circular headshot avatars on the left side of every guest card node badge. Loads headshot photos dynamically or renders custom uppercase initials monograms (e.g. `"MC"`, `"MK"`, `"EC"`).
