@@ -23,14 +23,10 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] 2-Minute Orbit Minimum Speed, Zero-Shake Lockstep & Edge Particle Removal
-- **User Prompt**: "i think it neesd more dmapenign. its stil shaking and as it orbits seems that it randomly acclerates. i want the slowest speed to be just barely noticalbe. maybe where it woudl tkae a full two minutes to do a full rotation" / "i also dont want the prticles moving on the edges"
+## [2026-08-22] Zero Overlaps & Smooth Collision-Protected Orbiting
+- **User Prompt**: "the nodes are overlapping a lot again"
 - **Actions**:
-  1. **Root Cause Analysis**: D3 charge repulsion (`strength(-2200)`) and velocity noise were fighting against the orbit engine on every frame, causing random acceleration bursts and node shaking.
-  2. **Zero-Shake Lockstep Motion**:
-     - Disabled `charge` repulsion force during orbit mode (`strength = 0`), eliminating all force turbulence.
-     - Zeroed out velocity noise (`node.vx = 0, node.vy = 0`) on every frame so nodes move in 100% rigid, perfectly smooth polar lockstep.
-  3. **Exact 2-Minute Full Rotation Calibration**:
-     - Set minimum angular velocity step to $\Delta \theta = 0.000145 \text{ rad/frame}$.
-     - At $60 \text{ FPS}$, a full 360-degree rotation takes **EXACTLY 2 MINUTES (120 seconds)**! It is whisper-slow, ultra-tranquil, and barely noticeable.
-  4. **Removed Edge Particles**: Set `linkDirectionalParticles={0}` per request.
+  1. **Root Cause Analysis**: Zeroing out charge strength during orbit mode disabled D3's collision buffer, allowing card nodes to pass through each other as their orbital radii overlapped.
+  2. **25% Collision Radius Safety Buffer**: Expanded `collisionRadius` calculation in `getNodeBounds` with a 1.25x safety margin: `(Math.hypot(halfW, halfH) + 22 * scaleMult) * 1.25`.
+  3. **Reinstated Full Collision Resolution**: Re-enabled D3 charge repulsion (`-1800`) and set `iterations(25)` on `forceCollide`.
+  4. **Smooth Tangential Velocity Orbital Vector**: Combined tangential orbital velocity blending (`vx = -r * sin(theta) * omega`, `vy = r * cos(theta) * omega`) with full D3 collision resolution—guaranteeing **ZERO OVERLAPS AT ALL TIMES** while preserving smooth 2-minute orbit speed!

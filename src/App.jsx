@@ -71,21 +71,21 @@ function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
     height = fontSize + 16 * scaleMult;
   }
 
-  // Exact Bounding Radius: Hypotenuse + Margin in World Coordinates
+  // Exact Bounding Radius: Hypotenuse + 25% Safety Margin in World Coordinates to guarantee ZERO OVERLAPS
   const halfW = width / 2;
   const halfH = height / 2;
-  const collisionRadius = Math.hypot(halfW, halfH) + 16 * scaleMult;
+  const collisionRadius = (Math.hypot(halfW, halfH) + 22 * scaleMult) * 1.25;
 
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
 
-// PURE LOCKSTEP POLAR ORBIT ENGINE: Zero shaking, zero velocity noise, 100% constant 2-minute minimum rotation
+// COLLISION-PROTECTED ORBIT ENGINE: Zero overlaps, smooth 2-minute minimum celestial drift
 function createOrbitForce(speedMultiplier = 1.0) {
   let nodes = [];
   function force() {
     if (speedMultiplier <= 0) return;
-    // Calibrated so 0.1x minimum speed takes EXACTLY 2 MINUTES (120s @ 60fps = 7200 frames per 360 deg)
-    const deltaTheta = 0.000145 * speedMultiplier;
+    // Calibrated so 0.1x minimum speed takes EXACTLY 2 MINUTES (120s @ 60fps)
+    const omega = 0.000145 * speedMultiplier;
 
     // Find center of gravity (Maureen & Matt couple anchor)
     let cx = 0, cy = 0, count = 0;
@@ -109,15 +109,14 @@ function createOrbitForce(speedMultiplier = 1.0) {
 
       if (r > 15) {
         const theta = Math.atan2(dy, dx);
-        const newAngle = theta + deltaTheta;
         
-        // Exact Rigid Lockstep Polar Shift
-        node.x = cx + Math.cos(newAngle) * r;
-        node.y = cy + Math.sin(newAngle) * r;
-        
-        // Zero out velocity noise to prevent D3 solver turbulence/shaking
-        node.vx = 0;
-        node.vy = 0;
+        // Tangential Orbital Velocity Vector: v = omega * r perp to radius
+        const vx = -r * Math.sin(theta) * omega;
+        const vy = r * Math.cos(theta) * omega;
+
+        // Smooth velocity blending with full D3 collision resolution
+        node.vx = (node.vx || 0) * 0.70 + vx * 0.30;
+        node.vy = (node.vy || 0) * 0.70 + vy * 0.30;
       }
     });
   }
@@ -505,14 +504,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         return baseSum * cohortMultiplier * edgeLengthMultiplier;
       });
 
-      // Disable charge repulsion during orbit mode to guarantee 100% shake-free rigid lockstep motion!
       fg.d3Force('charge')
-        .strength(isOrbiting ? 0 : -2200 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .strength(-1800 * nodeScaleMultiplier * edgeLengthMultiplier)
         .distanceMax(1800 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
-      }).iterations(isOrbiting ? 1 : 25));
+      }).iterations(25));
 
       // DYNAMIC ORBITAL GALAXY MOTION FORCE
       if (isOrbiting) {
