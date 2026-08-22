@@ -600,40 +600,77 @@ export default function App() {
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
       />
 
-      {/* Floating Mobile Micro-Dock Control Trigger & Sheet (CSS media queries control display) */}
-      <button 
-        className="mobile-drawer-toggle-fab no-print"
-        onClick={() => setIsMobileControlsOpen(true)}
-      >
-        <SlidersHorizontal style={{ width: 16, height: 16 }} />
-        <span>Map Controls</span>
-      </button>
+      {/* Path Finder Floating Status Banner (Positioned cleanly below header at top: 84px) */}
+      {isPathMode && (
+        <div className="glass-panel no-print" style={{
+          position: 'absolute',
+          top: 84,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 200,
+          padding: '10px 20px',
+          borderRadius: 16,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          background: 'rgba(15, 23, 42, 0.92)',
+          border: '1px solid rgba(56, 189, 248, 0.4)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+        }}>
+          <Compass style={{ width: 18, height: 18, color: '#38bdf8' }} />
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#f8fafc' }}>Path Finder Active</div>
+            <div style={{ fontSize: 11, color: '#94a3b8' }}>
+              {pathStartNode ? `From: ${pathStartNode.name} • Select 2nd Guest` : 'Click 1st guest to set starting node'}
+            </div>
+          </div>
+          <button 
+            onClick={() => { setIsPathMode(false); setPathStartNode(null); setShortestPath([]); }}
+            style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', marginLeft: 8 }}
+          >
+            <X style={{ width: 16, height: 16 }} />
+          </button>
+        </div>
+      )}
 
-      <MobileControlsSheet 
-        isOpen={isMobileControlsOpen}
-        onClose={() => setIsMobileControlsOpen(false)}
-        isOrbiting={isOrbiting}
-        setIsOrbiting={setIsOrbiting}
-        orbitSpeed={orbitSpeed}
-        setOrbitSpeed={setOrbitSpeed}
-        nodeScaleMultiplier={nodeScaleMultiplier}
-        setNodeScaleMultiplier={setNodeScaleMultiplier}
-        edgeLengthMultiplier={edgeLengthMultiplier}
-        setEdgeLengthMultiplier={setEdgeLengthMultiplier}
-        showHeadshots={showHeadshots}
-        setShowHeadshots={setShowHeadshots}
-        clusterMode={clusterMode}
-        setClusterMode={setClusterMode}
-        colorMode={colorMode}
-        setColorMode={setColorMode}
-        isPathMode={isPathMode}
-        setIsPathMode={setIsPathMode}
-        setIsMatchmakerOpen={setIsMatchmakerOpen}
-        setIsFeedbackModalOpen={setIsFeedbackModalOpen}
-        setSelectedNode={setSelectedNode}
-        isAdmin={isAdmin}
-        handleCopyQrLink={handleCopyQrLink}
-      />
+      {/* Floating Mobile Micro-Dock Control Trigger & Sheet (ONLY rendered on mobile viewports) */}
+      {isMobileViewport && (
+        <>
+          <button 
+            className="mobile-drawer-toggle-fab no-print"
+            onClick={() => setIsMobileControlsOpen(true)}
+          >
+            <SlidersHorizontal style={{ width: 16, height: 16 }} />
+            <span>Map Controls</span>
+          </button>
+
+          <MobileControlsSheet 
+            isOpen={isMobileControlsOpen}
+            onClose={() => setIsMobileControlsOpen(false)}
+            isOrbiting={isOrbiting}
+            setIsOrbiting={setIsOrbiting}
+            orbitSpeed={orbitSpeed}
+            setOrbitSpeed={setOrbitSpeed}
+            nodeScaleMultiplier={nodeScaleMultiplier}
+            setNodeScaleMultiplier={setNodeScaleMultiplier}
+            edgeLengthMultiplier={edgeLengthMultiplier}
+            setEdgeLengthMultiplier={setEdgeLengthMultiplier}
+            showHeadshots={showHeadshots}
+            setShowHeadshots={setShowHeadshots}
+            clusterMode={clusterMode}
+            setClusterMode={setClusterMode}
+            colorMode={colorMode}
+            setColorMode={setColorMode}
+            isPathMode={isPathMode}
+            setIsPathMode={setIsPathMode}
+            setIsMatchmakerOpen={setIsMatchmakerOpen}
+            setIsFeedbackModalOpen={setIsFeedbackModalOpen}
+            setSelectedNode={setSelectedNode}
+            isAdmin={isAdmin}
+            handleCopyQrLink={handleCopyQrLink}
+          />
+        </>
+      )}
 
       {/* HTML5 2D Canvas Force Graph */}
       <ForceCanvas 
