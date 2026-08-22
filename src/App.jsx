@@ -588,6 +588,10 @@ export default function App() {
         setIsLightMode={setIsLightMode}
         clusterMode={clusterMode}
         setClusterMode={setClusterMode}
+        colorMode={colorMode}
+        setColorMode={setColorMode}
+        showHeadshots={showHeadshots}
+        setShowHeadshots={setShowHeadshots}
         isOrbiting={isOrbiting}
         setIsOrbiting={setIsOrbiting}
         isPathMode={isPathMode}
@@ -621,11 +625,11 @@ export default function App() {
           <div>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#f8fafc' }}>Path Finder Active</div>
             <div style={{ fontSize: 11, color: '#94a3b8' }}>
-              {pathStartNode ? `From: ${pathStartNode.name} • Select 2nd Guest` : 'Click 1st guest to set starting node'}
+              {pathStartId ? `From: ${nodes.find(n => n.id === pathStartId)?.name || 'Guest'} • Select 2nd Guest` : 'Click 1st guest to set starting node'}
             </div>
           </div>
           <button 
-            onClick={() => { setIsPathMode(false); setPathStartNode(null); setShortestPath([]); }}
+            onClick={() => { setIsPathMode(false); setPathStartId(''); setPathEndId(''); setShortestPath([]); }}
             style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', marginLeft: 8 }}
           >
             <X style={{ width: 16, height: 16 }} />

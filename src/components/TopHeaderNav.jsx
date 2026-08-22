@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause } from 'lucide-react';
+import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause, Eye, EyeOff } from 'lucide-react';
 
 export default function TopHeaderNav({
   searchQuery,
@@ -10,6 +10,10 @@ export default function TopHeaderNav({
   setIsLightMode,
   clusterMode,
   setClusterMode,
+  colorMode,
+  setColorMode,
+  showHeadshots,
+  setShowHeadshots,
   isOrbiting,
   setIsOrbiting,
   isPathMode,
@@ -91,6 +95,31 @@ export default function TopHeaderNav({
           </select>
         </div>
 
+        {/* Desktop Color Mode Selector */}
+        <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 36, padding: '0 10px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12, flexShrink: 0 }}>
+          <span style={{ color: '#cbd5e1', fontSize: 12, fontWeight: 700, marginRight: 6 }}>Color:</span>
+          <select 
+            value={colorMode}
+            onChange={(e) => setColorMode(e.target.value)}
+            style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
+          >
+            <option value="cohort">Cohorts</option>
+            <option value="side">Side (Matt/Maureen)</option>
+            <option value="state">States</option>
+          </select>
+        </div>
+
+        {/* Desktop Headshot Photos Toggle */}
+        <button 
+          onClick={() => setShowHeadshots(!showHeadshots)}
+          className={`glass-panel btn-icon desktop-only-inline ${showHeadshots ? 'active' : ''}`}
+          title="Toggle Guest Photos on Canvas"
+          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: showHeadshots ? '#38bdf8' : '#94a3b8', flexShrink: 0 }}
+        >
+          {showHeadshots ? <Eye style={{ width: 14, height: 14 }} /> : <EyeOff style={{ width: 14, height: 14 }} />}
+          <span>Photos</span>
+        </button>
+
         {/* Desktop Orbit Motion Toggle */}
         <button 
           onClick={() => setIsOrbiting(!isOrbiting)}
@@ -134,20 +163,20 @@ export default function TopHeaderNav({
           {isLightMode ? <Moon style={{ width: 15, height: 15 }} /> : <Sun style={{ width: 15, height: 15, color: '#38bdf8' }} />}
         </button>
 
-        {/* 1-Click CSV Export Button */}
-        <button 
-          onClick={handleExportCsv} 
-          className="glass-panel btn-icon desktop-only-inline"
-          title="Export Guest List to CSV for Google Sheets"
-          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: '#34d399', flexShrink: 0 }}
-        >
-          <Download style={{ width: 14, height: 14, color: '#34d399' }} />
-          <span>Export CSV</span>
-        </button>
-
-        {/* Hidden Host Admin Indicators (Only visible when unlocked via secret URL parameter) */}
+        {/* Hidden Host Admin Tools (Only visible when unlocked via secret URL parameter) */}
         {isAdmin && (
           <>
+            {/* 1-Click CSV Export Button */}
+            <button 
+              onClick={handleExportCsv} 
+              className="glass-panel btn-icon desktop-only-inline"
+              title="Export Guest List to CSV for Google Sheets"
+              style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: '#34d399', flexShrink: 0 }}
+            >
+              <Download style={{ width: 14, height: 14, color: '#34d399' }} />
+              <span>Export CSV</span>
+            </button>
+
             {feedbackQueueCount > 0 && (
               <button 
                 onClick={() => setIsFeedbackQueueOpen(true)}

@@ -9,17 +9,16 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Modal Overlay Positioning & Zero Desktop Drawer Redundancy
-- **User Prompt**: "the desktop version still has the contorls drawer and it seems to be largely redundant with the top bar. also when you chose the matchmaker or the path, it opens up unde rthe Maureen and matt header"
+## [2026-08-22] Path Finder Reference Fix & Non-Admin CSV Export Removal
+- **User Prompt**: "in the desktop version all the map contorls shoudl be in the top bar and working. also when you clikc pathfinder it throws an refence error pathstart node is not defined... remove the export csv button from the non-admin view"
 - **Actions**:
-  1. **Complete Desktop Drawer Removal**:
-     - Updated `App.jsx` to render `<MobileControlsSheet>` and the `Map Controls` FAB **ONLY when `isMobileViewport` is true**.
-     - On desktop viewports (>768px), 0 mobile drawer elements exist in the DOM (`DESKTOP FAB EXISTS: false`), eliminating all drawer redundancy.
-  2. **Top-Layer Modal Backdrop & Path Finder Banner**:
-     - Added `.modal-backdrop` (`z-index: 9999; backdrop-filter: blur(12px)`) and `.modal-card` (`z-index: 10000; margin-top: 40px`) CSS rules.
-     - Positioned the Cocktail Matchmaker modal in the dead center of the viewport ABOVE the `Maureen & Matt` top header bar.
-     - Positioned the Path Finder status banner at `top: 84px` cleanly below the top header bar with zero overlap.
-  3. **Headless Chromium Dual Viewport Verification**:
-     - **Desktop (1440x900)**: `DESKTOP FAB EXISTS IN DOM: false` (0% redundant drawers).
-     - **Mobile Phone (390x844)**: `MOBILE FAB EXISTS IN DOM: true` (100% mobile drawer experience preserved).
-  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **All Desktop Map Controls in Top Header Bar**:
+     - Embedded all primary map controls directly into the top header nav bar: **Clusters Dropdown**, **Color Mode Selector**, **Photos Headshot Toggle**, **Orbit Toggle**, **Path Finder**, **Matchmaker**, **Theme Toggle**.
+  2. **Path Finder Bug Fix**:
+     - Fixed `ReferenceError: pathStartNode is not defined` by replacing `pathStartNode` with valid state reference `nodes.find(n => n.id === pathStartId)`.
+  3. **Non-Admin View Hardening**:
+     - Restricted the **Export CSV** button exclusively to Host Admin mode (`{isAdmin && (...)}`), removing it completely from public non-admin view.
+  4. **Empirical Headless Chromium Verification**:
+     - `PUBLIC NON-ADMIN EXPORT CSV BUTTON EXISTS: false` (100% removed for public guests).
+     - `PATH FINDER CLICKED SUCCESSFULLY WITH 0 ERRORS!` (0% console/runtime errors).
+  5. **Redeployed**: Force-pushed fresh build to `gh-pages` branch on GitHub (`https://mhoying.github.io/wedding-graph/`).
