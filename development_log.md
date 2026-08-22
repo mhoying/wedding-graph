@@ -30,9 +30,9 @@
   2. Added Dynamic Color Mode Selector (`colorMode`).
   3. Added Interactive Color Legend footer.
 
-## [2026-08-22] 50% Larger Headshot Portraits & Scaled Card Layout
-- **User Prompt**: "cna we make those headshots about 50% bigger"
+## [2026-08-22] 50% Larger Headshot Portraits & Force Physics Tuning
+- **User Prompt**: "now they are overlapping both each other and hte cohort groupings"
 - **Actions**:
-  1. **50% Larger Headshots**: Increased avatar diameter to **58px for guests** and **70px for Maureen & Matt**!
-  2. **Scaled Card Bounds**: Scaled card badge width to 105px–125px with bold typography below the avatar.
-  3. **Expanded Physics Collision Radius**: Expanded D3 collision force radii (65–78px) to prevent node card overlaps.
+  1. **Expanded Collision Radius**: Increased `d3.forceCollide()` radius from `65px` to **`88px–105px`** with 10 iterations to strictly enforce non-overlapping cards.
+  2. **Increased Link Distance & Charge Repulsion**: Increased edge distances to `260px–320px` and doubled charge repulsion strength to `-4500` to space out the 70px photo cards gracefully.
+  3. **Expanded Cohort Cluster Bounding Hulls**: Expanded background enclosure shape padding to **`85px`** so that cohort cluster hulls enclose all node cards without clipping.

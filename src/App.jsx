@@ -370,7 +370,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces: Distance & Dynamic Collision for Prominent 50% Larger Cards
+  // Configure D3 forces: Generous Spacing for 70px Photo Cards & Strict Collision
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
@@ -381,24 +381,24 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen');
         if (isCoupleLink) {
-          return 90;
+          return 140;
         }
-        return (s === 'maureen' || s === 'matt' || t === 'maureen' || t === 'matt') ? 240 : 185;
+        return (s === 'maureen' || s === 'matt' || t === 'maureen' || t === 'matt') ? 320 : 260;
       });
 
-      fg.d3Force('charge').strength(-2200).distanceMax(850);
+      fg.d3Force('charge').strength(-4500).distanceMax(1200);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         const isAnchor = node.type === 'ANCHOR';
         if (showHeadshots && node.type !== 'CONTEXT_HUB') {
-          // 50% larger collision radius for prominent headshot cards
-          return isAnchor ? 78 : 65;
+          // Generous non-overlapping collision radius for 70px card nodes
+          return isAnchor ? 105 : 88;
         }
         const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
         const charCount = nameStr ? nameStr.length : 10;
         const estimatedWidth = Math.max(charCount * 7.5 + 24, 90);
-        return estimatedWidth / 2 + 14;
-      }).iterations(6));
+        return estimatedWidth / 2 + 16;
+      }).iterations(10));
 
       fg.d3ReheatSimulation();
     }
@@ -595,12 +595,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       const minY = Math.min(maureen.y, matt.y);
       const maxY = Math.max(maureen.y, matt.y);
 
-      const padding = 80 / globalScale;
+      const padding = 110 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
       const y = minY - padding;
-      const cornerRadius = 24 / globalScale;
+      const cornerRadius = 28 / globalScale;
 
       ctx.save();
       ctx.shadowColor = 'rgba(56, 189, 248, 0.15)';
@@ -620,10 +620,10 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       ctx.shadowBlur = 0;
       ctx.setLineDash([]);
-      ctx.font = `600 ${10 / globalScale}px Inter, sans-serif`;
+      ctx.font = `600 ${11 / globalScale}px Inter, sans-serif`;
       ctx.fillStyle = '#38bdf8';
       ctx.textAlign = 'center';
-      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - (8 / globalScale));
+      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - (10 / globalScale));
       ctx.restore();
     }
 
@@ -662,7 +662,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
           if (n.y > maxY) maxY = n.y;
         });
 
-        const pad = 60 / globalScale;
+        // Bounding Box Padding scaled to accommodate 70px photo cards!
+        const pad = (showHeadshots ? 85 : 55) / globalScale;
         const w = (maxX - minX) + pad * 2;
         const h = (maxY - minY) + pad * 2;
         const x = minX - pad;
@@ -675,7 +676,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
         ctx.beginPath();
         if (ctx.roundRect) {
-          ctx.roundRect(x, y, w, h, 20 / globalScale);
+          ctx.roundRect(x, y, w, h, 24 / globalScale);
         } else {
           ctx.rect(x, y, w, h);
         }
@@ -687,14 +688,14 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.stroke();
 
         ctx.setLineDash([]);
-        ctx.font = `600 ${10 / globalScale}px Inter, sans-serif`;
+        ctx.font = `600 ${11 / globalScale}px Inter, sans-serif`;
         ctx.fillStyle = clusterColor;
         ctx.textAlign = 'left';
-        ctx.fillText(label.toUpperCase(), x + 10 / globalScale, y + 14 / globalScale);
+        ctx.fillText(label.toUpperCase(), x + 12 / globalScale, y + 16 / globalScale);
         ctx.restore();
       }
     });
-  }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters]);
+  }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters, showHeadshots]);
 
   // Modern Square Card Badge Renderer with 50% LARGER HEADSHOTS (58px-70px)
   const drawNode = useCallback((node, ctx, globalScale) => {
