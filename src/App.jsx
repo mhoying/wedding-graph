@@ -54,28 +54,30 @@ export default function App() {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
 
-  // Configure D3 forces: Dynamic Label Collision & customized link distances
+  // Configure D3 forces: Generalized Couple Distance & Dynamic Collision
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
       
-      // Maureen & Matt sit closer inside their couple container (70px), while external links are further (160px)
+      // Generalized Couple Distance Rule: Any couple/partner link gets a tight 45px distance!
       fg.d3Force('link').distance(l => {
         const s = l.source.id || l.source;
         const t = l.target.id || l.target;
-        if ((s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen')) {
-          return 70; // Shorter distance inside the Couple Enclosure
+        const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
+                             (s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen');
+        if (isCoupleLink) {
+          return 45; // Tight 45px distance for any couple pair
         }
         return l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 170 : 130;
       });
 
-      fg.d3Force('charge').strength(-1400).distanceMax(650);
+      fg.d3Force('charge').strength(-1200).distanceMax(650);
       
       // Dynamic collision radius based on exact node label width
       fg.d3Force('collide', forceCollide().radius(node => {
         const charCount = node.name ? node.name.length : 10;
         const estimatedWidth = Math.max(charCount * 7.5 + 24, 70);
-        return estimatedWidth / 2 + 14;
+        return estimatedWidth / 2 + 10;
       }).iterations(6));
 
       fg.d3ReheatSimulation();
@@ -134,12 +136,12 @@ export default function App() {
       const minY = Math.min(maureen.y, matt.y);
       const maxY = Math.max(maureen.y, matt.y);
 
-      const padding = 55 / globalScale;
+      const padding = 45 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
       const y = minY - padding;
-      const cornerRadius = 32 / globalScale;
+      const cornerRadius = 28 / globalScale;
 
       ctx.save();
       // Hull Glow
@@ -304,7 +306,7 @@ export default function App() {
             <Filter style={{ width: 15, height: 15, color: '#10b981' }} />
             <span style={{ color: '#94a3b8', marginRight: 4 }}>Filter Interest:</span>
             {selectedInterest ? (
-              <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', items: 'center', gap: 6 }}>
+              <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
                 🏷️ {selectedInterest}
                 <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedInterest(null)} />
               </span>
@@ -439,7 +441,7 @@ export default function App() {
           <h4 style={{ fontWeight: 800, fontSize: 14, marginBottom: 2 }}>{hoverNode.name}</h4>
           <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>{hoverNode.relationship}</p>
           {hoverNode.hometown && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 4 }}>
+            <div style={{ display: 'flex', items: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 4 }}>
               <MapPin style={{ width: 12, height: 12, color: '#38bdf8' }} />
               <span>{hoverNode.hometown}</span>
             </div>

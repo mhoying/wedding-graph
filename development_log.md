@@ -33,6 +33,12 @@
 ## [2026-08-22] Dynamic Metadata Extraction & Spacing Refinements
 - **User Prompt**: "it seems that the nodes inside of a grouping (like the coupe) dont need to have the same distane between them than mos tothers. als o the goruping node shoudl repell the externa nodes as mucha s the people nodes. the list of interests (i'd rather all it that than 'hobbies') shoudl be dynamically generated from the data in the data set as shoudl the location and cohorts"
 - **Actions**:
-  1. **Dynamic Metadata Extraction**: Replaced all hardcoded filter lists. Interests, Cohorts, and States/Locations are now dynamically extracted directly from the dataset (`SAMPLE_NODES`). Adding any new guest with new interests, cohorts, or locations automatically updates the filter ribbon, legend, and color modes!
-  2. **Renamed Terminology**: Updated UI terminology from "Hobbies" to **"Interests"** throughout the app.
-  3. **Tightened Grouping Link Spacing**: Customized D3 link distance so Maureen and Matt sit closer together inside their shared couple container (`70px`), while external links maintain a healthy distance (`170px`).
+  1. Dynamic Metadata Extraction for Interests, Cohorts, and States.
+  2. Renamed UI terminology to Interests.
+  3. Tightened couple link distance.
+
+## [2026-08-22] Generalized Tight Couple Distance Rule
+- **User Prompt**: "is there a way to make this couple distance more generalized.. whenever there are two poeple in a couple gropu, it will be much closer. i think it could be even closer than 70"
+- **Actions**:
+  1. **Generalized Couple Distance Engine**: Created a dynamic link evaluation rule in D3 forces. Any link marked as a couple, partner, or married relationship (or connecting Maureen & Matt) automatically collapses to a tight **`45px`** distance.
+  2. This ensures that any couple pair in the dataset sits closely together inside their shared container/hull, while external guest links maintain a healthy distance (`170px`).
