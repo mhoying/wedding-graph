@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -51,6 +51,9 @@ export default function App() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('admin') === 'true' || localStorage.getItem('wedding_graph_admin') === 'true';
   });
+
+  // Toggle state for headshot photos on node cards
+  const [showHeadshots, setShowHeadshots] = useState(true);
 
   // Initialize Nodes with localStorage fallback (strip any old D3 physics positions on init)
   const [nodes, setNodes] = useState(() => {
@@ -147,6 +150,17 @@ export default function App() {
 
   // Image cache for avatar headshots
   const imageCacheRef = useRef({});
+
+  // Preload portrait headshots
+  useEffect(() => {
+    nodes.forEach(node => {
+      if (node.image && !imageCacheRef.current[node.image]) {
+        const img = new Image();
+        img.src = node.image;
+        img.onload = () => { imageCacheRef.current[node.image] = img; };
+      }
+    });
+  }, [nodes]);
 
   // Clear obsolete localStorage caches
   useEffect(() => {
@@ -376,13 +390,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       fg.d3Force('collide', forceCollide().radius(node => {
         const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
         const charCount = nameStr ? nameStr.length : 10;
-        const estimatedWidth = Math.max(charCount * 7.5 + 44, 90);
+        const estimatedWidth = Math.max(charCount * 7.5 + (showHeadshots && node.type !== 'CONTEXT_HUB' ? 44 : 24), 90);
         return estimatedWidth / 2 + 12;
       }).iterations(6));
 
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links]);
+  }, [nodes, links, showHeadshots]);
 
   // Calculate shortest social path between pathStart and pathEnd using BFS
   const shortestPath = useMemo(() => {
@@ -676,7 +690,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     });
   }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters]);
 
-  // Modern Square Card Badge Renderer with Legend Group Color Tint Shading
+  // Modern Square Card Badge Renderer with Headshot Photos & Toggle
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -709,12 +723,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     ctx.font = `${isAnchor || isHovered || isPathNode ? '600' : '500'} ${fontSize}px Inter, sans-serif`;
     
     const textWidth = ctx.measureText(labelText).width;
-    const avatarDiameter = (isAnchor ? 20 : 16) / globalScale;
+    const avatarDiameter = (isAnchor ? 22 : 18) / globalScale;
     const paddingX = (isAnchor ? 14 : 10) / globalScale;
     const paddingY = (isAnchor ? 10 : 8) / globalScale;
     
-    const badgeWidth = textWidth + paddingX * 2 + (isHub ? 0 : avatarDiameter + 8 / globalScale);
-    const badgeHeight = Math.max(fontSize + paddingY * 2, avatarDiameter + paddingY * 1.5);
+    const renderAvatar = showHeadshots && !isHub;
+    const badgeWidth = textWidth + paddingX * 2 + (renderAvatar ? avatarDiameter + 8 / globalScale : 0);
+    const badgeHeight = renderAvatar ? Math.max(fontSize + paddingY * 2, avatarDiameter + paddingY * 1.2) : (fontSize + paddingY * 2);
     const cornerRadius = 10 / globalScale;
 
     const x = node.x - badgeWidth / 2;
@@ -763,7 +778,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
     ctx.stroke();
 
-    if (!isHub) {
+    // Render Circular Headshot Photo Avatar
+    if (renderAvatar) {
       const avatarX = x + paddingX + avatarDiameter / 2;
       const avatarY = node.y;
 
@@ -775,17 +791,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       if (node.image && imageCacheRef.current[node.image]) {
         const img = imageCacheRef.current[node.image];
         ctx.drawImage(img, avatarX - avatarDiameter / 2, avatarY - avatarDiameter / 2, avatarDiameter, avatarDiameter);
-      } else if (node.image && !imageCacheRef.current[node.image]) {
-        const img = new Image();
-        img.src = node.image;
-        img.onload = () => { imageCacheRef.current[node.image] = img; };
-      }
-
-      if (!node.image || !imageCacheRef.current[node.image]) {
+      } else {
+        // Fallback Monogram Avatar
         ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : groupColor;
         ctx.fill();
 
-        ctx.font = `700 ${(isAnchor ? 9 : 8) / globalScale}px Inter, sans-serif`;
+        ctx.font = `700 ${(isAnchor ? 10 : 8) / globalScale}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = isHovered || isPathNode ? groupColor : '#ffffff';
@@ -800,11 +811,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     ctx.font = `${isAnchor || isHovered || isPathNode ? '600' : '500'} ${fontSize}px Inter, sans-serif`;
     ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isNonAttending ? '#94a3b8' : (isLightMode ? '#0f172a' : '#f8fafc'));
     
-    const textStartX = isHub ? (x + paddingX) : (x + paddingX + avatarDiameter + 6 / globalScale);
+    const textStartX = renderAvatar ? (x + paddingX + avatarDiameter + 6 / globalScale) : (x + paddingX);
     ctx.fillText(labelText, textStartX, node.y);
 
     ctx.restore();
-  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links]);
+  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links, showHeadshots]);
 
   // Hit area detection
   const drawPointerArea = useCallback((node, color, ctx, globalScale) => {
@@ -813,14 +824,14 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     ctx.font = `500 ${fontSize}px Inter, sans-serif`;
     const labelStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
     const textWidth = ctx.measureText(labelStr).width;
-    const badgeWidth = textWidth + (36 / globalScale);
+    const badgeWidth = textWidth + (showHeadshots && node.type !== 'CONTEXT_HUB' ? 44 : 24) / globalScale;
     const badgeHeight = fontSize + (16 / globalScale);
 
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.rect(node.x - badgeWidth / 2, node.y - badgeHeight / 2, badgeWidth, badgeHeight);
     ctx.fill();
-  }, []);
+  }, [showHeadshots]);
 
   const activeColorMap = useMemo(() => {
     if (colorMode === 'side') return SIDE_COLORS;
@@ -938,6 +949,17 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
         {/* Compact & Streamlined Action Controls Bar */}
         <div className="top-bar-right">
+          {/* Headshots Photo Toggle Button */}
+          <button 
+            onClick={() => setShowHeadshots(!showHeadshots)}
+            className={`glass-panel btn-mode ${showHeadshots ? 'active' : ''}`}
+            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            title="Toggle Headshot Photos on Node Cards"
+          >
+            <Camera style={{ width: 14, height: 14, color: showHeadshots ? '#fff' : '#ec4899' }} />
+            <span>Photos: {showHeadshots ? 'ON' : 'OFF'}</span>
+          </button>
+
           {/* Cluster Overlay Mode Dropdown Selector */}
           <div className="glass-panel color-mode-bar">
             <Layers style={{ width: 14, height: 14, color: '#ec4899' }} />

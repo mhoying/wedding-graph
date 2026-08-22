@@ -30,18 +30,12 @@
   2. Added Dynamic Color Mode Selector (`colorMode`).
   3. Added Interactive Color Legend footer.
 
-## [2026-08-22] Visual Distinction for Place Hubs & Non-Attending Ghost Nodes
-- **User Prompt**: "we shoudl be able to tell the differnce visually between people and connecting nodes (liek the dog park) also, rememebr we may need an intermediate node for a person taht isnt atending and it shoudl be clear visulaly that htey are not attending in some way"
+## [2026-08-22] Headshot Photo Avatars & Toggle Button
+- **User Prompt**: "okay the peopel nodes still look like rectangles, can you put placehodler shapes that represent what it woudl look like wiht the headhsot in there? (also, images should be toggleable)"
 - **Actions**:
-  1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
-  2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
-
-## [2026-08-22] Permanent Fix for Disconnected Nodes and Links on Page Refresh
-- **User Prompt**: "i refreshed and the nodes and edges are still copletye disconnected"
-- **Actions**:
-  1. **Root Cause**: When dataset was saved to disk/localStorage previously, `SAMPLE_LINKS` saved D3's internal mutated `{ source: { id: "maureen", x: ... } }` object references instead of clean string IDs (`source: "maureen"`). When reloaded, D3 saw `link.source` was an object and skipped re-binding it to the new `nodes` array!
-  2. **Sanitized Persistence Engine**:
-     - Updated `vite.config.js` and `downloadSampleDataJs` to strip D3 internal properties (`x`, `y`, `vx`, `vy`, `index`, `__indexColor`) and guarantee `source` & `target` are **always saved as clean String IDs** (`source: "maureen"`, `target: "matt"`).
-     - Sanitized `SAMPLE_NODES` and `SAMPLE_LINKS` in [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js).
-     - Cleared stale `localStorage` keys (`wedding_graph_nodes_v2`, `wedding_graph_nodes_v1`).
-  3. **Result**: On every page refresh or edit, D3 re-binds string link IDs to the node objects seamlessly. Nodes and edges are 100% connected and anchored!
+  1. **Headshot Photo Avatars**: Populated portrait photo URLs for Maureen, Matt, Brian, Eleanor, Anne, Uncle Bob, David in [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js).
+  2. **Headshots Photo Toggle**: Added **`📷 Photos: ON / OFF`** button in the top navigation bar (`showHeadshots`).
+  3. **Visual Card Badges**:
+     - **Photos ON**: Renders a circular headshot portrait avatar on the left side of the card badge with monogram initials fallback.
+     - **Photos OFF**: Renders a compact editorial pill badge.
+  4. **D3 Collision & Hit Box Resizing**: Dynamically recalculates card badge widths and collision radii based on photo visibility.
