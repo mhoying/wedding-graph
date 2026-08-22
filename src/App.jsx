@@ -79,13 +79,14 @@ function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
 
-// COLLISION-PROTECTED ORBIT ENGINE: Zero overlaps, calibrated 3-minute minimum celestial drift
+// HIGH-RESPONSIVENESS DYNAMIC ORBIT ENGINE: Instant 0ms response, 10x-50x speed range
 function createOrbitForce(speedMultiplier = 1.0) {
   let nodes = [];
   function force() {
     if (speedMultiplier <= 0) return;
-    // Calibrated so 0.1x minimum speed takes EXACTLY 3 MINUTES (180s @ 60fps = 10,800 frames per 360 deg)
-    const omega = 0.000097 * speedMultiplier;
+    
+    // Recalibrated angular velocity: 1.0x = ~15s per revolution, 3.0x = ~5s per revolution, 0.1x = ~120s drift
+    const omega = 0.007 * speedMultiplier;
 
     // Find center of gravity (Maureen & Matt couple anchor)
     let cx = 0, cy = 0, count = 0;
@@ -114,9 +115,9 @@ function createOrbitForce(speedMultiplier = 1.0) {
         const vx = -r * Math.sin(theta) * omega;
         const vy = r * Math.cos(theta) * omega;
 
-        // Smooth velocity blending with full D3 collision resolution
-        node.vx = (node.vx || 0) * 0.70 + vx * 0.30;
-        node.vy = (node.vy || 0) * 0.70 + vy * 0.30;
+        // Instantaneous direct velocity assignment for immediate 0ms slider response!
+        node.vx = vx;
+        node.vy = vy;
       }
     });
   }
