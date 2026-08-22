@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Tag, Filter } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 export default function App() {
@@ -9,20 +9,34 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
   const [hoverNode, setHoverNode] = useState(null);
-  const [selectedHobby, setSelectedHobby] = useState(null);
+  const [selectedInterest, setSelectedInterest] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 
-  // Extract all unique hobbies across all nodes
-  const allHobbies = useMemo(() => {
+  // Dynamically extract all unique Interests across the dataset
+  const allInterests = useMemo(() => {
     const set = new Set();
     SAMPLE_NODES.forEach(n => {
       if (n.hobbies && Array.isArray(n.hobbies)) {
         n.hobbies.forEach(h => set.add(h));
       }
     });
+    return Array.from(set).sort();
+  }, []);
+
+  // Dynamically extract all unique Cohorts across the dataset
+  const allCohorts = useMemo(() => {
+    const set = new Set();
+    SAMPLE_NODES.forEach(n => n.cohort && set.add(n.cohort));
+    return Array.from(set).sort();
+  }, []);
+
+  // Dynamically extract all unique States/Locations across the dataset
+  const allStates = useMemo(() => {
+    const set = new Set();
+    SAMPLE_NODES.forEach(n => n.state && set.add(n.state));
     return Array.from(set).sort();
   }, []);
 
@@ -40,11 +54,21 @@ export default function App() {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
 
-  // Configure D3 forces: Dynamic Label Collision radius & strong repulsion
+  // Configure D3 forces: Dynamic Label Collision & customized link distances
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
-      fg.d3Force('link').distance(l => l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 190 : 140);
+      
+      // Maureen & Matt sit closer inside their couple container (70px), while external links are further (160px)
+      fg.d3Force('link').distance(l => {
+        const s = l.source.id || l.source;
+        const t = l.target.id || l.target;
+        if ((s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen')) {
+          return 70; // Shorter distance inside the Couple Enclosure
+        }
+        return l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 170 : 130;
+      });
+
       fg.d3Force('charge').strength(-1400).distanceMax(650);
       
       // Dynamic collision radius based on exact node label width
@@ -69,12 +93,12 @@ export default function App() {
     return COHORT_COLORS[node.cohort] || COHORT_COLORS.Default;
   }, [colorMode]);
 
-  // Filter nodes based on search and selected hobby
+  // Filter nodes based on search and selected interest
   const filteredNodes = useMemo(() => {
     return SAMPLE_NODES.filter(node => {
-      // Hobby Tag Filter
-      if (selectedHobby) {
-        if (!node.hobbies || !node.hobbies.includes(selectedHobby)) return false;
+      // Interest Tag Filter
+      if (selectedInterest) {
+        if (!node.hobbies || !node.hobbies.includes(selectedInterest)) return false;
       }
       // Text Search Filter
       if (searchQuery.trim()) {
@@ -82,12 +106,12 @@ export default function App() {
         const matchesName = node.name.toLowerCase().includes(q);
         const matchesCohort = node.cohort.toLowerCase().includes(q);
         const matchesSide = node.side && node.side.toLowerCase().includes(q);
-        const matchesHobby = node.hobbies && node.hobbies.some(h => h.toLowerCase().includes(q));
-        return matchesName || matchesCohort || matchesSide || matchesHobby;
+        const matchesInterest = node.hobbies && node.hobbies.some(h => h.toLowerCase().includes(q));
+        return matchesName || matchesCohort || matchesSide || matchesInterest;
       }
       return true;
     });
-  }, [searchQuery, selectedHobby]);
+  }, [searchQuery, selectedInterest]);
 
   const graphData = useMemo(() => {
     return {
@@ -240,7 +264,7 @@ export default function App() {
     ctx.fill();
   }, []);
 
-  // Active color map for legend
+  // Active color map dynamically generated for legend
   const activeColorMap = useMemo(() => {
     if (colorMode === 'side') return SIDE_COLORS;
     if (colorMode === 'state') return STATE_COLORS;
@@ -265,7 +289,7 @@ export default function App() {
             <Search style={{ width: 16, height: 16, color: '#94a3b8', marginRight: 10 }} />
             <input 
               type="text"
-              placeholder="Search guests, cohorts, or hobbies..."
+              placeholder="Search guests, cohorts, or interests..."
               className="search-input"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -275,25 +299,25 @@ export default function App() {
             )}
           </div>
 
-          {/* Dynamic Hobby Filter Ribbon */}
+          {/* Dynamic Interest Filter Ribbon */}
           <div className="glass-panel color-mode-bar">
             <Filter style={{ width: 15, height: 15, color: '#10b981' }} />
-            <span style={{ color: '#94a3b8', marginRight: 4 }}>Filter Hobby:</span>
-            {selectedHobby ? (
-              <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
-                🏷️ {selectedHobby}
-                <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedHobby(null)} />
+            <span style={{ color: '#94a3b8', marginRight: 4 }}>Filter Interest:</span>
+            {selectedInterest ? (
+              <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', items: 'center', gap: 6 }}>
+                🏷️ {selectedInterest}
+                <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedInterest(null)} />
               </span>
             ) : (
               <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 360 }}>
-                {allHobbies.slice(0, 5).map(hobby => (
+                {allInterests.slice(0, 5).map(interest => (
                   <button 
-                    key={hobby}
-                    onClick={() => setSelectedHobby(hobby)}
+                    key={interest}
+                    onClick={() => setSelectedInterest(interest)}
                     className="btn-mode"
                     style={{ fontSize: 11, padding: '3px 8px' }}
                   >
-                    {hobby}
+                    {interest}
                   </button>
                 ))}
               </div>
@@ -310,7 +334,7 @@ export default function App() {
               onClick={() => setColorMode('cohort')}
               className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`}
             >
-              Cohort
+              Cohort ({allCohorts.length})
             </button>
             <button 
               onClick={() => setColorMode('side')}
@@ -322,7 +346,7 @@ export default function App() {
               onClick={() => setColorMode('state')}
               className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`}
             >
-              State
+              State ({allStates.length})
             </button>
           </div>
 
@@ -471,14 +495,14 @@ export default function App() {
                 <div style={{ marginTop: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
                     <Sparkles style={{ width: 16, height: 16, color: '#10b981' }} />
-                    <span>Click a Hobby to Find Matches:</span>
+                    <span>Click an Interest to Find Matches:</span>
                   </div>
                   <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                     {selectedNode.hobbies.map(h => (
                       <button 
                         key={h}
                         onClick={() => {
-                          setSelectedHobby(h);
+                          setSelectedInterest(h);
                           setSelectedNode(null);
                         }}
                         style={{

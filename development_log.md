@@ -30,18 +30,9 @@
   2. Added Dynamic Color Mode Selector (`colorMode`).
   3. Added Interactive Color Legend footer.
 
-## [2026-08-22] Couple Enclosure Hull & Moving Dots Removal
-- **User Prompt**: "can we remove the dots moving on the edges and the grid background; also , i was thinking that there woudl be a shape around maureen and matt to represent the coulple and the people part of that couple woudl be nodes inside it. is there a reason that owuldnt work"
+## [2026-08-22] Dynamic Metadata Extraction & Spacing Refinements
+- **User Prompt**: "it seems that the nodes inside of a grouping (like the coupe) dont need to have the same distane between them than mos tothers. als o the goruping node shoudl repell the externa nodes as mucha s the people nodes. the list of interests (i'd rather all it that than 'hobbies') shoudl be dynamically generated from the data in the data set as shoudl the location and cohorts"
 - **Actions**:
-  1. Removed moving directional particles on connection links.
-  2. Removed background grid pattern.
-  3. Added dynamic canvas Couple Enclosure Shape around Maureen & Matt.
-
-## [2026-08-22] Design Sprint: Dynamic Interest Tag Filter & Authentic School Colors
-- **User Prompt**: "/goal Run an autonomous multi-agent design sprint..."
-- **Actions**:
-  1. Spawned `ui_ux_master` and `matt_persona` subagents for adversarial design critique.
-  2. Implemented **Dynamic Interest & Hobby Filter Ribbon** in `src/App.jsx`. Users can click any hobby pill (e.g. `Coffee`, `Skiing`, `Bouldering`, `Dog Lover`) to filter the graph in real-time.
-  3. Made interest badges in the guest profile drawer interactive: clicking a guest's hobby instantly filters the graph to discover all other guests with that shared interest!
-  4. Updated school colors: authentic Cornell Red (`#B31B1B`) and Stanford Cardinal (`#8C1515`).
-  5. Implemented dynamic label collision radius (`charCount * 7.5 + 24`) in D3 `forceCollide()` so text labels never touch regardless of length.
+  1. **Dynamic Metadata Extraction**: Replaced all hardcoded filter lists. Interests, Cohorts, and States/Locations are now dynamically extracted directly from the dataset (`SAMPLE_NODES`). Adding any new guest with new interests, cohorts, or locations automatically updates the filter ribbon, legend, and color modes!
+  2. **Renamed Terminology**: Updated UI terminology from "Hobbies" to **"Interests"** throughout the app.
+  3. **Tightened Grouping Link Spacing**: Customized D3 link distance so Maureen and Matt sit closer together inside their shared couple container (`70px`), while external links maintain a healthy distance (`170px`).
