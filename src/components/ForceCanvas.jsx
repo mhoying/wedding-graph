@@ -115,20 +115,15 @@ export default function ForceCanvas({
       }
     });
 
-    if (fgRef.current) {
-      fgRef.current.d3AlphaTarget(0.35).restart();
-      setTimeout(() => {
-        if (fgRef.current) fgRef.current.d3AlphaTarget(0);
-      }, 600);
+    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+      fgRef.current.d3ReheatSimulation();
     }
   }, [clusterMode, nodes]);
 
-  // PERPETUAL KINEMATIC ORBIT TICKER: Gentle continuous physics alpha target for collision stability
+  // PERPETUAL KINEMATIC ORBIT TICKER: Reheat simulation when orbiting mode changes
   useEffect(() => {
-    if (isOrbiting && fgRef.current) {
-      fgRef.current.d3AlphaTarget(0.08).restart();
-    } else if (fgRef.current) {
-      fgRef.current.d3AlphaTarget(0);
+    if (isOrbiting && fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+      fgRef.current.d3ReheatSimulation();
     }
   }, [isOrbiting, orbitSpeed]);
 

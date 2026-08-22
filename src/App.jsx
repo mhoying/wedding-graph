@@ -360,11 +360,8 @@ export default function App() {
       });
     }
 
-    if (fgRef.current) {
-      fgRef.current.d3AlphaTarget(0.3).restart();
-      setTimeout(() => {
-        if (fgRef.current) fgRef.current.d3AlphaTarget(0);
-      }, 500);
+    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+      fgRef.current.d3ReheatSimulation();
     }
   }, [nodes, clusterMode]);
 
