@@ -50,10 +50,13 @@ export default function App() {
   const [isMatchmakerOpen, setIsMatchmakerOpen] = useState(false);
   const [myGuestId, setMyGuestId] = useState('');
 
-  // Direct Guest Profile Inline Editing State
+  // Direct Guest Profile Inline Editing State (Full Metadata)
   const [isEditingDrawer, setIsEditingDrawer] = useState(false);
   const [editRelationship, setEditRelationship] = useState('');
   const [editHometown, setEditHometown] = useState('');
+  const [editState, setEditState] = useState('');
+  const [editCohort, setEditCohort] = useState('');
+  const [editSide, setEditSide] = useState('Maureen');
   const [editFamilyStatus, setEditFamilyStatus] = useState('');
   const [editHobbies, setEditHobbies] = useState([]);
   const [newInterestInput, setNewInterestInput] = useState('');
@@ -105,6 +108,9 @@ export default function App() {
     if (selectedNode) {
       setEditRelationship(selectedNode.relationship || '');
       setEditHometown(selectedNode.hometown || '');
+      setEditState(selectedNode.state || '');
+      setEditCohort(selectedNode.cohort || '');
+      setEditSide(selectedNode.side || 'Maureen');
       setEditFamilyStatus(selectedNode.familyStatus || '');
       setEditHobbies(selectedNode.hobbies ? [...selectedNode.hobbies] : []);
       setIsEditingDrawer(false);
@@ -142,7 +148,7 @@ export default function App() {
     }
   };
 
-  // Save Direct Profile Edits
+  // Save Direct Profile Edits across ALL Metadata fields
   const handleSaveProfileEdits = () => {
     if (!selectedNode) return;
 
@@ -150,6 +156,9 @@ export default function App() {
       ...selectedNode,
       relationship: editRelationship,
       hometown: editHometown,
+      state: editState,
+      cohort: editCohort,
+      side: editSide,
       familyStatus: editFamilyStatus,
       hobbies: editHobbies
     };
@@ -1250,25 +1259,25 @@ export default function App() {
                 </div>
               </>
             ) : (
-              /* DIRECT IN-SITU EDIT MODE FOR GUESTS */
+              /* DIRECT IN-SITU EDIT MODE FOR GUESTS - ALL METADATA */
               <div className="drawer-section" style={{ marginTop: 12 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: '#10b981', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Edit3 style={{ width: 14, height: 14 }} /> Edit Profile Details
+                  <Edit3 style={{ width: 14, height: 14 }} /> Direct Metadata Profile Editor
                 </div>
 
-                <div style={{ marginBottom: 12 }}>
+                <div style={{ marginBottom: 10 }}>
                   <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Profile Blurb / Relationship Note:</label>
                   <textarea 
-                    rows={3}
+                    rows={2}
                     value={editRelationship}
                     onChange={(e) => setEditRelationship(e.target.value)}
                     style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12, resize: 'none' }}
                   />
                 </div>
 
-                <div style={{ marginBottom: 12 }}>
+                <div style={{ marginBottom: 10 }}>
                   <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Interests (Click ✕ to remove or add below):</label>
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 }}>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
                     {editHobbies.map(h => (
                       <span key={h} style={{ fontSize: 11, padding: '3px 8px', borderRadius: 9999, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', gap: 4 }}>
                         🏷️ {h}
@@ -1279,7 +1288,7 @@ export default function App() {
                   <div style={{ display: 'flex', gap: 6 }}>
                     <input 
                       type="text"
-                      placeholder="Add interest (e.g. Wine, Hiking)"
+                      placeholder="Add interest (e.g. Wine, Cycling)"
                       value={newInterestInput}
                       onChange={(e) => setNewInterestInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleAddInterestTag()}
@@ -1295,17 +1304,54 @@ export default function App() {
                   </div>
                 </div>
 
-                <div style={{ marginBottom: 12 }}>
-                  <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Hometown:</label>
-                  <input 
-                    type="text"
-                    value={editHometown}
-                    onChange={(e) => setEditHometown(e.target.value)}
-                    style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
-                  />
+                <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Hometown:</label>
+                    <input 
+                      type="text"
+                      value={editHometown}
+                      onChange={(e) => setEditHometown(e.target.value)}
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>State / Region:</label>
+                    <input 
+                      type="text"
+                      value={editState}
+                      onChange={(e) => setEditState(e.target.value)}
+                      placeholder="e.g. GA, NY"
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                    />
+                  </div>
                 </div>
 
-                <div style={{ marginBottom: 16 }}>
+                <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Cohort / Group:</label>
+                    <input 
+                      type="text"
+                      value={editCohort}
+                      onChange={(e) => setEditCohort(e.target.value)}
+                      placeholder="e.g. Cornell, Family"
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Wedding Side:</label>
+                    <select 
+                      value={editSide}
+                      onChange={(e) => setEditSide(e.target.value)}
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                    >
+                      <option value="Maureen">Maureen</option>
+                      <option value="Matt">Matt</option>
+                      <option value="Joint">Joint</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: 14 }}>
                   <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Family Status / Notes:</label>
                   <input 
                     type="text"
@@ -1328,7 +1374,7 @@ export default function App() {
                     className="btn-action"
                     style={{ flex: 1, padding: '8px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 12, justifyContent: 'center' }}
                   >
-                    <Save style={{ width: 14, height: 14 }} /> Save Changes
+                    <Save style={{ width: 14, height: 14 }} /> Save All Edits
                   </button>
                 </div>
               </div>
