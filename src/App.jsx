@@ -390,12 +390,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     return Array.from(set).sort();
   }, [nodes]);
 
-  // Auto-Cluster Discovery Engine: Scans tags and metadata to form dynamic clusters
+  // Auto-Cluster Discovery Engine: Scans tags, interests, origins, and metadata to form dynamic clusters
   const dynamicAutoClusters = useMemo(() => {
     const clusterMap = {};
 
     nodes.forEach(node => {
-      if (node.type === 'CONTEXT_HUB' || node.x === undefined) return;
+      if (node.type === 'CONTEXT_HUB') return;
 
       if (node.hobbies && Array.isArray(node.hobbies)) {
         node.hobbies.forEach(h => {
@@ -407,6 +407,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       if (node.familyStatus && /kid|child|daughter|son/i.test(node.familyStatus)) {
         const key = `👨‍👩‍👧 Guests with Kids`;
+        if (!clusterMap[key]) clusterMap[key] = [];
+        clusterMap[key].push(node);
+      }
+
+      if (node.currentlyLivesIn) {
+        const key = `📍 ${node.currentlyLivesIn}`;
         if (!clusterMap[key]) clusterMap[key] = [];
         clusterMap[key].push(node);
       }
@@ -1566,7 +1572,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             </div>
 
             {/* Quick Action Toggles */}
-            <div style={{ display: 'flex', gap: 6 }}>
+            <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
               <button 
                 onClick={() => setShowHeadshots(!showHeadshots)}
                 className={`btn-mode ${showHeadshots ? 'active' : ''}`}
@@ -1583,14 +1589,79 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                 {isLightMode ? <Moon style={{ width: 12, height: 12 }} /> : <Sun style={{ width: 12, height: 12, color: '#38bdf8' }} />}
                 <span>{isLightMode ? 'Light' : 'Dark'}</span>
               </button>
+            </div>
+
+            {/* SCROLL DOWN UI HINT BANNER */}
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#38bdf8', letterSpacing: '0.05em', textAlign: 'center', margin: '8px 0', padding: '6px', background: 'rgba(56, 189, 248, 0.15)', border: '1px solid rgba(56, 189, 248, 0.3)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+              <ChevronDown style={{ width: 14, height: 14, color: '#38bdf8' }} />
+              <span>Scroll down for Overlays, Color Modes & Tools</span>
+              <ChevronDown style={{ width: 14, height: 14, color: '#38bdf8' }} />
+            </div>
+
+            {/* Cluster Overlays */}
+            <div className="mobile-control-row" style={{ marginTop: 8 }}>
+              <span className="mobile-control-label" style={{ fontSize: 11, fontWeight: 700, color: '#ec4899', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+                <Layers style={{ width: 13, height: 13 }} /> Cluster Overlays:
+              </span>
+              <select 
+                value={clusterMode}
+                onChange={(e) => setClusterMode(e.target.value)}
+                style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}
+              >
+                <option value="cohort">Cohorts</option>
+                <option value="interests">✨ Auto Interests & Locations</option>
+                <option value="state">States & Regions</option>
+                <option value="none">🚫 Off (Hide)</option>
+              </select>
+            </div>
+
+            {/* Color Mode Selector */}
+            <div className="mobile-control-row" style={{ marginTop: 8 }}>
+              <span className="mobile-control-label" style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+                <Palette style={{ width: 13, height: 13 }} /> Card Color Mode:
+              </span>
+              <div style={{ display: 'flex', gap: 4, background: 'rgba(30, 41, 59, 0.6)', padding: 3, borderRadius: 10 }}>
+                <button onClick={() => setColorMode('cohort')} className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>Cohort</button>
+                <button onClick={() => setColorMode('side')} className={`btn-mode ${colorMode === 'side' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>Side</button>
+                <button onClick={() => setColorMode('state')} className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>State</button>
+              </div>
+            </div>
+
+            {/* Action Tools Section */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
+              <button 
+                onClick={() => { setIsPathMode(!isPathMode); setIsMobileControlsOpen(false); }} 
+                className={`btn-mode ${isPathMode ? 'active' : ''}`}
+                style={{ padding: '10px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: isPathMode ? '#0284c7' : 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', fontWeight: 700 }}
+              >
+                <Compass style={{ width: 14, height: 14 }} /> Path Finder Calculator
+              </button>
+
               <button 
                 onClick={() => { setIsMatchmakerOpen(!isMatchmakerOpen); setIsMobileControlsOpen(false); }}
                 className="btn-mode"
-                style={{ flex: 1, padding: '6px', borderRadius: 10, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 700 }}
+                style={{ padding: '10px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 700 }}
               >
-                <Wand2 style={{ width: 12, height: 12 }} />
-                <span>Matchmaker</span>
+                <Wand2 style={{ width: 14, height: 14 }} /> Cocktail Hour Matchmaker
               </button>
+
+              <button 
+                onClick={() => { setFeedbackTargetNode(selectedNode || nodes[0]); setIsFeedbackModalOpen(true); setIsMobileControlsOpen(false); }}
+                className="btn-mode"
+                style={{ padding: '10px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(255, 255, 255, 0.08)', color: '#fff' }}
+              >
+                <Edit3 style={{ width: 14, height: 14 }} /> Suggest Profile Edit
+              </button>
+
+              {isAdmin && (
+                <button 
+                  onClick={handleCopyQrLink}
+                  className="btn-mode"
+                  style={{ padding: '10px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(56, 189, 248, 0.2)', color: '#38bdf8', border: '1px solid #38bdf8' }}
+                >
+                  <Copy style={{ width: 14, height: 14 }} /> Copy Invitation QR Link
+                </button>
+              )}
             </div>
           </div>
         </>

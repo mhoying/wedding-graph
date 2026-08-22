@@ -9,10 +9,12 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Mobile Floating Micro-Dock Controls UI (200px Dock)
-- **User Prompt**: "on my phone the controll drawer still takes up the entier screren"
+## [2026-08-22] Auto Interest Cluster Fix & Mobile Controls Scroll UI Hints
+- **User Prompt**: "its isnt evident that there are more contorlls if you scroll, can we make some ui hints to improve that.. also. nothign showwed up when i clicked forhte auto inteerstt clustering"
 - **Actions**:
-  1. **Root Cause Analysis**: The mobile controls drawer had stacked multiple desktop action panels, creating a ~600px tall content box that stretched across mobile viewports.
-  2. **Floating Micro-Dock Design**: Streamlined mobile controls into a floating 200px Glassmorphism dock (`max-height: 280px`, `bottom: 16px`, `left: 12px`, `right: 12px`) with transparent backdrop blur.
-  3. **Visual Real Estate**: **75-80% of the mobile phone screen is now completely open and visible** above the floating micro-dock so live motion and zoom changes are seen immediately.
-  4. **Redeployed**: Published build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Auto Interest Cluster Fix**: Removed premature `node.x === undefined` filter from `dynamicAutoClusters` calculation in `src/App.jsx`. Added `currentlyLivesIn` location clustering so shared tags (e.g. `🏷️ Dog Lover`, `🏷️ Coffee`, `📍 San Francisco, CA`) generate dynamic cluster overlays cleanly.
+  2. **Mobile Scroll UI Hints**:
+     - Added a prominent glowing cyan **Scroll Indicator Banner**: `📜 Scroll down for Overlays, Color Modes & Tools ↓`.
+     - Configured visible blue scrollbar styling (`::-webkit-scrollbar-thumb`) so users immediately see a scroll track on mobile.
+     - Included full tools suite inside the scrollable micro-dock (Cluster Overlays, Card Color Modes, Path Finder, Cocktail Matchmaker, Suggest Profile Edit, Copy QR Link).
+  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
