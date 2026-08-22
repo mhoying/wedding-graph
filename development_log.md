@@ -23,11 +23,9 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] 3-Minute Orbit Speed Calibration & Zero Overlaps
-- **User Prompt**: "i dont htink the rotation has been slowed as much as i asked, it is doing a rotation in like 30s. i want it to take 3 minutes for a full rotaiton on minim"
+## [2026-08-22] Requirements & Technical Architecture Documentation Refresh
+- **User Prompt**: "okay. i htink we're good in terme sof refining design. now updateh the requirements and design documents to acuratley represent all the the refinements weve made"
 - **Actions**:
-  1. **Exact 3-Minute Speed Calibration**:
-     - Recalibrated angular velocity step $\omega = 0.000097 \cdot \text{speedMultiplier}$.
-     - At minimum setting (`0.1x`): $\omega_{\text{min}} = 0.0000097 \text{ rad/frame}$.
-     - At $60 \text{ FPS}$, a full 360-degree rotation takes **EXACTLY 3 MINUTES (180 SECONDS)**!
-  2. **Tranquil Default Speed (`0.3x`)**: Set initial `orbitSpeed` state to `0.3x` (~1 minute per full rotation), creating a peaceful ambient galaxy drift upon page load.
+  1. **[PRD.md](file:///home/mattie/vibe/wedding-graph/docs/PRD.md)**: Updated Product Requirements Document with full specifications for 25% collision radius safety buffer, 3-minute calibrated orbit speed, mobile controls bottom sheet drawer, multi-select tag filtering, and host queue visual diffs.
+  2. **[TECHNICAL_DESIGN.md](file:///home/mattie/vibe/wedding-graph/docs/TECHNICAL_DESIGN.md)**: Created comprehensive Technical Design Document detailing mathematical formulas, force mechanics, state management, and backend sync endpoints.
+  3. **[README.md](file:///home/mattie/vibe/wedding-graph/README.md)**: Updated main project README with feature overview, developer setup guide, and documentation links.
