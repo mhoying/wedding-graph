@@ -16,7 +16,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 60%, #020617 100%);
+  background: radial-gradient(circle at 50% 50%, #1e293b 0%, #111827 60%, #0b101d 100%);
   color: #f8fafc;
 }
 
@@ -28,25 +28,25 @@ body {
   overflow: hidden;
 }
 
-/* Glassmorphism Panels */
+/* Glassmorphism Editorial Panels */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(30, 41, 59, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
 }
 
 .light-mode {
-  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
+  background: radial-gradient(circle at 50% 50%, #fafafa 0%, #f1f5f9 60%, #e2e8f0 100%);
   color: #0f172a;
 }
 
 .light-mode .glass-panel {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 /* Layout Components */
@@ -65,31 +65,26 @@ body {
 .top-bar-left, .top-bar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand-badge {
-  padding: 10px 16px;
+  padding: 8px 18px;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   gap: 10px;
   font-weight: 700;
   font-size: 14px;
-}
-
-.pulse-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #38bdf8;
-  box-shadow: 0 0 12px #38bdf8;
+  letter-spacing: -0.01em;
 }
 
 .search-box {
-  padding: 8px 14px;
+  padding: 8px 16px;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
-  width: 280px;
+  width: 260px;
 }
 
 .search-input {
@@ -103,7 +98,8 @@ body {
 }
 
 .color-mode-bar {
-  padding: 6px 12px;
+  padding: 6px 14px;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -112,15 +108,15 @@ body {
 }
 
 .btn-mode {
-  padding: 4px 10px;
-  border-radius: 8px;
+  padding: 5px 12px;
+  border-radius: 9999px;
   border: none;
   background: transparent;
   color: #94a3b8;
   cursor: pointer;
   font-weight: 600;
   font-size: 12px;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .btn-mode.active {
@@ -130,7 +126,7 @@ body {
 
 .btn-icon {
   padding: 10px;
-  border-radius: 12px;
+  border-radius: 9999px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -138,8 +134,8 @@ body {
 }
 
 .btn-action {
-  padding: 8px 16px;
-  border-radius: 12px;
+  padding: 8px 18px;
+  border-radius: 9999px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -161,7 +157,8 @@ body {
   bottom: 20px;
   left: 24px;
   z-index: 10;
-  padding: 10px 16px;
+  padding: 8px 18px;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -181,8 +178,8 @@ body {
 }
 
 .legend-color {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
 }
 
@@ -194,6 +191,7 @@ body {
   width: 360px;
   z-index: 20;
   padding: 24px;
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -203,9 +201,11 @@ body {
 .drawer-badge {
   font-size: 11px;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: 9999px;
   color: #ffffff;
+  text-transform: uppercase;
 }
 
 .drawer-title {
@@ -213,6 +213,7 @@ body {
   font-weight: 800;
   margin-top: 12px;
   margin-bottom: 4px;
+  letter-spacing: -0.02em;
 }
 
 .drawer-subtitle {
@@ -222,7 +223,7 @@ body {
 }
 
 .drawer-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 16px;
   display: flex;
   flex-direction: column;
@@ -237,9 +238,9 @@ body {
 }
 
 .icebreaker-box {
-  background: rgba(30, 41, 59, 0.6);
-  padding: 12px;
-  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.5);
+  padding: 14px;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 13px;
   line-height: 1.5;
@@ -251,8 +252,9 @@ body {
   pointer-events: none;
   z-index: 30;
   padding: 14px;
+  border-radius: 16px;
   width: 260px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
 /* Path Finder Breadcrumb Banner */
@@ -261,12 +263,13 @@ body {
   top: 76px;
   left: 24px;
   z-index: 10;
-  padding: 10px 18px;
+  padding: 8px 18px;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 13px;
-  border: 1px solid rgba(56, 189, 248, 0.4);
+  border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
 .path-step {
@@ -283,8 +286,8 @@ body {
 
 @media print {
   body {
-    background: #ffffff !important;
-    color: #000000 !important;
+    background: #f8fafc !important;
+    color: #0f172a !important;
   }
   .no-print {
     display: none !important;
@@ -298,6 +301,7 @@ body {
     font-weight: 800;
     margin-bottom: 8px;
     font-family: 'Inter', sans-serif;
+    letter-spacing: 0.05em;
   }
   .print-poster-header p {
     font-size: 14px;

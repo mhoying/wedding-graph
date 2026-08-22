@@ -3,7 +3,7 @@ import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
 import Papa from 'papaparse';
 import { z } from 'zod';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Download, Upload, CheckCircle2, AlertCircle, RefreshCw, Wand2, Star, Edit3, MessageSquare, Inbox, Send, Check } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Download, Upload, CheckCircle2, AlertCircle, RefreshCw, Wand2, Edit3, Inbox, Send, Check } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Zod Schema for CSV / Dataset Validation
@@ -33,7 +33,6 @@ export default function App() {
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
   const [showCohortHulls, setShowCohortHulls] = useState(true);
-  const [isConstellationMode, setIsConstellationMode] = useState(false);
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   // Path Finder State
@@ -185,7 +184,7 @@ export default function App() {
     return [];
   }, [pathStart, pathEnd, links]);
 
-  // Matchmaker Algorithm: Find Top 3 Matches for selected myGuestId
+  // Matchmaker Algorithm
   const matchmakerResults = useMemo(() => {
     if (!myGuestId) return [];
     const myNode = nodes.find(n => n.id === myGuestId);
@@ -365,21 +364,8 @@ export default function App() {
     });
   };
 
-  // Render background enclosure shapes & twinkling constellation stars
+  // Render organic background enclosure shapes around Maureen & Matt couple and Cohort Clusters
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
-    if (isConstellationMode) {
-      ctx.save();
-      ctx.fillStyle = isLightMode ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.4)';
-      for (let i = 0; i < 45; i++) {
-        const starX = (Math.sin(i * 99) * 0.5 + 0.5) * dimensions.width - dimensions.width / 2;
-        const starY = (Math.cos(i * 33) * 0.5 + 0.5) * dimensions.height - dimensions.height / 2;
-        ctx.beginPath();
-        ctx.arc(starX, starY, (i % 3 + 1) / globalScale, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-    }
-
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -397,9 +383,9 @@ export default function App() {
       const cornerRadius = 28 / globalScale;
 
       ctx.save();
-      ctx.shadowColor = '#38bdf8';
-      ctx.shadowBlur = 18;
-      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.55)' : 'rgba(14, 165, 233, 0.08)';
+      ctx.shadowColor = 'rgba(56, 189, 248, 0.2)';
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.55)' : 'rgba(14, 165, 233, 0.05)';
       ctx.beginPath();
       if (ctx.roundRect) {
         ctx.roundRect(x, y, width, height, cornerRadius);
@@ -407,14 +393,14 @@ export default function App() {
         ctx.rect(x, y, width, height);
       }
       ctx.fill();
-      ctx.lineWidth = 2 / globalScale;
-      ctx.strokeStyle = '#38bdf8';
-      ctx.setLineDash([6 / globalScale, 4 / globalScale]);
+      ctx.lineWidth = 1.5 / globalScale;
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.setLineDash([5 / globalScale, 4 / globalScale]);
       ctx.stroke();
 
       ctx.shadowBlur = 0;
       ctx.setLineDash([]);
-      ctx.font = `700 ${11 / globalScale}px Inter, sans-serif`;
+      ctx.font = `600 ${10 / globalScale}px Inter, sans-serif`;
       ctx.fillStyle = '#38bdf8';
       ctx.textAlign = 'center';
       ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - (8 / globalScale));
@@ -448,7 +434,7 @@ export default function App() {
           const cohortColor = COHORT_COLORS[cohort] || '#64748b';
 
           ctx.save();
-          ctx.fillStyle = isLightMode ? 'rgba(241, 245, 249, 0.4)' : 'rgba(30, 41, 59, 0.25)';
+          ctx.fillStyle = isLightMode ? 'rgba(241, 245, 249, 0.4)' : 'rgba(30, 41, 59, 0.2)';
           ctx.beginPath();
           if (ctx.roundRect) {
             ctx.roundRect(x, y, w, h, 20 / globalScale);
@@ -471,9 +457,9 @@ export default function App() {
         }
       });
     }
-  }, [filteredNodes, isLightMode, showCohortHulls, isConstellationMode, dimensions]);
+  }, [filteredNodes, isLightMode, showCohortHulls]);
 
-  // Premium Node Canvas Renderer
+  // Clean Editorial Canvas Node Renderer (Soft Drop Shadows, No Sci-Fi Neon Glows)
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -498,10 +484,10 @@ export default function App() {
     if (isNonAttending) labelText = `${node.name} (Not Attending)`;
 
     ctx.save();
-    ctx.globalAlpha = isDimmed ? (isConstellationMode ? 0.05 : 0.12) : (isNonAttending ? 0.75 : 1.0);
+    ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.75 : 1.0);
 
     const fontSize = (isAnchor ? 13 : 11) / globalScale;
-    ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '500'} ${fontSize}px Inter, sans-serif`;
+    ctx.font = `${isAnchor || isHovered || isPathNode ? '600' : '500'} ${fontSize}px Inter, sans-serif`;
     
     const textWidth = ctx.measureText(labelText).width;
     const paddingX = (isAnchor ? 14 : 10) / globalScale;
@@ -513,11 +499,13 @@ export default function App() {
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
+    // Organic Soft Shadow on Hover
     if (isHovered || isAnchor || isPathNode) {
-      ctx.shadowColor = color;
-      ctx.shadowBlur = isHovered ? 25 : (isPathNode ? 20 : 15);
+      ctx.shadowColor = 'rgba(15, 23, 42, 0.4)';
+      ctx.shadowBlur = 14;
     }
 
+    // Elegant Pill Fill
     const gradient = ctx.createLinearGradient(x, y, x + badgeWidth, y + badgeHeight);
     if (isHovered || isPathNode) {
       gradient.addColorStop(0, color);
@@ -526,14 +514,14 @@ export default function App() {
       gradient.addColorStop(0, 'rgba(30, 41, 59, 0.45)');
       gradient.addColorStop(1, 'rgba(15, 23, 42, 0.45)');
     } else if (isHub) {
-      gradient.addColorStop(0, 'rgba(15, 23, 42, 0.95)');
-      gradient.addColorStop(1, 'rgba(14, 116, 144, 0.95)');
+      gradient.addColorStop(0, 'rgba(30, 41, 59, 0.95)');
+      gradient.addColorStop(1, 'rgba(51, 65, 85, 0.95)');
     } else if (isLightMode) {
       gradient.addColorStop(0, '#ffffff');
       gradient.addColorStop(1, '#f1f5f9');
     } else {
-      gradient.addColorStop(0, 'rgba(30, 41, 59, 0.95)');
-      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.95)');
+      gradient.addColorStop(0, 'rgba(30, 41, 59, 0.92)');
+      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.92)');
     }
 
     ctx.beginPath();
@@ -545,7 +533,7 @@ export default function App() {
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    ctx.lineWidth = isHovered || isPathNode ? 2.5 : (isAnchor ? 2 : 1.5);
+    ctx.lineWidth = isHovered || isPathNode ? 2 : (isAnchor ? 1.8 : 1.2);
     ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : color;
     
     if (isNonAttending) {
@@ -562,7 +550,7 @@ export default function App() {
     ctx.fillText(labelText, node.x, node.y);
 
     ctx.restore();
-  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, isConstellationMode, links]);
+  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links]);
 
   // Hit area detection
   const drawPointerArea = useCallback((node, color, ctx, globalScale) => {
@@ -593,7 +581,7 @@ export default function App() {
     >
       {/* Toast Notification Banner */}
       {toastMessage && (
-        <div className="glass-panel no-print" style={{ position: 'fixed', top: 90, left: '50%', transform: 'translateX(-50%)', zIndex: 100, padding: '10px 20px', background: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 30, boxShadow: '0 10px 30px rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="glass-panel no-print" style={{ position: 'fixed', top: 90, left: '50%', transform: 'translateX(-50%)', zIndex: 100, padding: '10px 20px', background: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, borderRadius: 9999, boxShadow: '0 10px 30px rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', gap: 8 }}>
           <CheckCircle2 style={{ width: 16, height: 16 }} />
           <span>{toastMessage}</span>
         </div>
@@ -609,13 +597,13 @@ export default function App() {
       <div className="top-bar no-print">
         <div className="top-bar-left flex-wrap">
           <div className="glass-panel brand-badge">
-            <div className="pulse-dot" />
-            <span>Wedding Graph</span>
+            <Heart style={{ width: 15, height: 15, color: '#38bdf8' }} />
+            <span>Maureen & Matt</span>
           </div>
 
           {/* Search Box */}
           <div className="glass-panel search-box">
-            <Search style={{ width: 16, height: 16, color: '#94a3b8', marginRight: 10 }} />
+            <Search style={{ width: 15, height: 15, color: '#94a3b8', marginRight: 8 }} />
             <input 
               type="text"
               placeholder="Search guests, cohorts, or interests..."
@@ -624,22 +612,22 @@ export default function App() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             {searchQuery && (
-              <X style={{ width: 16, height: 16, cursor: 'pointer', color: '#94a3b8' }} onClick={() => setSearchQuery('')} />
+              <X style={{ width: 15, height: 15, cursor: 'pointer', color: '#94a3b8' }} onClick={() => setSearchQuery('')} />
             )}
           </div>
 
           {/* Dynamic Interest Filter Ribbon */}
           <div className="glass-panel color-mode-bar">
-            <Filter style={{ width: 15, height: 15, color: '#10b981' }} />
-            <span style={{ color: '#94a3b8', marginRight: 4 }}>Filter Interest:</span>
+            <Filter style={{ width: 14, height: 14, color: '#10b981' }} />
+            <span style={{ color: '#94a3b8', marginRight: 4 }}>Interest:</span>
             {selectedInterest ? (
               <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
                 🏷️ {selectedInterest}
                 <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedInterest(null)} />
               </span>
             ) : (
-              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 240 }}>
-                {allInterests.slice(0, 5).map(interest => (
+              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 220 }}>
+                {allInterests.slice(0, 4).map(interest => (
                   <button 
                     key={interest}
                     onClick={() => setSelectedInterest(interest)}
@@ -660,11 +648,11 @@ export default function App() {
           <button 
             onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
             className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
-            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6, background: feedbackList.some(f => !f.applied) ? 'rgba(245, 158, 11, 0.2)' : '', border: feedbackList.some(f => !f.applied) ? '1px solid #f59e0b' : '' }}
+            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6, background: feedbackList.some(f => !f.applied) ? 'rgba(245, 158, 11, 0.2)' : '', border: feedbackList.some(f => !f.applied) ? '1px solid #f59e0b' : '' }}
             title="View Submitted Guest Metadata Corrections"
           >
-            <Inbox style={{ width: 16, height: 16, color: '#f59e0b' }} />
-            <span>Host Feedback ({feedbackList.filter(f => !f.applied).length})</span>
+            <Inbox style={{ width: 15, height: 15, color: '#f59e0b' }} />
+            <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
           </button>
 
           {/* Suggest Edit Trigger */}
@@ -674,10 +662,10 @@ export default function App() {
               setIsFeedbackModalOpen(true);
             }}
             className="glass-panel btn-mode"
-            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
             title="Report Missing or Incorrect Metadata"
           >
-            <Edit3 style={{ width: 16, height: 16, color: '#38bdf8' }} />
+            <Edit3 style={{ width: 15, height: 15, color: '#38bdf8' }} />
             <span>Suggest Edit</span>
           </button>
 
@@ -685,10 +673,10 @@ export default function App() {
           <button 
             onClick={() => setIsImportModalOpen(true)}
             className="glass-panel btn-mode"
-            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
             title="Import Live Google Sheets CSV Data"
           >
-            <Upload style={{ width: 16, height: 16, color: '#10b981' }} />
+            <Upload style={{ width: 15, height: 15, color: '#10b981' }} />
             <span>Import CSV</span>
           </button>
 
@@ -696,10 +684,10 @@ export default function App() {
           <button 
             onClick={() => setIsMatchmakerOpen(!isMatchmakerOpen)}
             className={`glass-panel btn-mode ${isMatchmakerOpen ? 'active' : ''}`}
-            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6, background: isMatchmakerOpen ? '#10b981' : '' }}
+            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6, background: isMatchmakerOpen ? '#10b981' : '' }}
             title="Cocktail Hour Matchmaker & Icebreakers"
           >
-            <Wand2 style={{ width: 16, height: 16, color: isMatchmakerOpen ? '#fff' : '#10b981' }} />
+            <Wand2 style={{ width: 15, height: 15, color: isMatchmakerOpen ? '#fff' : '#10b981' }} />
             <span>Matchmaker</span>
           </button>
 
@@ -711,17 +699,17 @@ export default function App() {
               setPathEnd(null);
             }} 
             className={`glass-panel btn-mode ${isPathMode ? 'active' : ''}`}
-            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
             title="Calculate shortest social connection path between 2 guests"
           >
-            <Compass style={{ width: 16, height: 16, color: isPathMode ? '#fff' : '#38bdf8' }} />
+            <Compass style={{ width: 15, height: 15, color: isPathMode ? '#fff' : '#38bdf8' }} />
             <span>Path Finder</span>
           </button>
 
           {/* Color Mode Selector */}
           <div className="glass-panel color-mode-bar">
-            <Palette style={{ width: 16, height: 16, color: '#38bdf8' }} />
-            <span style={{ color: '#94a3b8', marginRight: 4 }}>Color By:</span>
+            <Palette style={{ width: 15, height: 15, color: '#38bdf8' }} />
+            <span style={{ color: '#94a3b8', marginRight: 2 }}>Color:</span>
             <button 
               onClick={() => setColorMode('cohort')}
               className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`}
@@ -747,13 +735,13 @@ export default function App() {
             className="glass-panel btn-icon"
             title="Toggle Light/Dark Theme"
           >
-            {isLightMode ? <Moon style={{ width: 18, height: 18 }} /> : <Sun style={{ width: 18, height: 18, color: '#38bdf8' }} />}
+            {isLightMode ? <Moon style={{ width: 16, height: 16 }} /> : <Sun style={{ width: 16, height: 16, color: '#38bdf8' }} />}
           </button>
           <button 
             onClick={() => window.print()} 
             className="glass-panel btn-action"
           >
-            <Printer style={{ width: 16, height: 16, color: '#38bdf8' }} />
+            <Printer style={{ width: 15, height: 15, color: '#38bdf8' }} />
             <span>Export Poster</span>
           </button>
         </div>
@@ -762,7 +750,7 @@ export default function App() {
       {/* Path Finder Active Breadcrumb Banner */}
       {isPathMode && (
         <div className="glass-panel path-finder-banner no-print">
-          <GitCommit style={{ width: 18, height: 18, color: '#38bdf8' }} />
+          <GitCommit style={{ width: 16, height: 16, color: '#38bdf8' }} />
           {!pathStart && <span>Click the <b>First Guest</b> to start calculating connection path...</span>}
           {pathStart && !pathEnd && <span>Selected <span className="path-step">{pathStart.name}</span>. Now click the <b>Second Guest</b>...</span>}
           {pathStart && pathEnd && (
@@ -799,7 +787,7 @@ export default function App() {
                 <Inbox style={{ width: 12, height: 12 }} /> Host Feedback Queue
               </span>
               <button onClick={() => setIsHostQueueOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
-                <X style={{ width: 20, height: 20 }} />
+                <X style={{ width: 18, height: 18 }} />
               </button>
             </div>
 
@@ -822,7 +810,7 @@ export default function App() {
                     <button 
                       onClick={() => handleApplyCorrection(fb)}
                       className="btn-mode"
-                      style={{ padding: '6px 12px', background: '#10b981', color: '#fff', borderRadius: 8, fontSize: 11, display: 'flex', alignItems: 'center', gap: 6, width: '100%', justifyContent: 'center' }}
+                      style={{ padding: '6px 12px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 11, display: 'flex', alignItems: 'center', gap: 6, width: '100%', justifyContent: 'center' }}
                     >
                       <Check style={{ width: 12, height: 12 }} /> Apply Update to Graph
                     </button>
@@ -841,7 +829,7 @@ export default function App() {
       {/* Guest Report Correction Modal */}
       {isFeedbackModalOpen && (
         <div className="app-container no-print" style={{ position: 'fixed', zIndex: 50, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="glass-panel" style={{ width: 440, padding: 28 }}>
+          <div className="glass-panel" style={{ width: 440, padding: 28, borderRadius: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 800, fontSize: 18 }}>
                 <Edit3 style={{ width: 20, height: 20, color: '#38bdf8' }} />
@@ -861,7 +849,7 @@ export default function App() {
               <select 
                 value={feedbackTargetNode ? feedbackTargetNode.id : ''}
                 onChange={(e) => setFeedbackTargetNode(nodes.find(n => n.id === e.target.value))}
-                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12 }}
+                style={{ width: '100%', padding: '10px', borderRadius: 12, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none', fontSize: 12 }}
               >
                 {nodes.filter(n => n.type === 'GUEST').map(n => (
                   <option key={n.id} value={n.id}>{n.name}</option>
@@ -874,7 +862,7 @@ export default function App() {
               <select 
                 value={feedbackCategory}
                 onChange={(e) => setFeedbackCategory(e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12 }}
+                style={{ width: '100%', padding: '10px', borderRadius: 12, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none', fontSize: 12 }}
               >
                 <option value="Missing Interest">Missing Interest (e.g. "You forgot that I like Wine!")</option>
                 <option value="Family Status Update">Family Status Update (e.g. "My daughter is 17 now!")</option>
@@ -891,7 +879,7 @@ export default function App() {
                 placeholder="e.g. You forgot that I love Wine and Bicycling!"
                 value={feedbackNote}
                 onChange={(e) => setFeedbackNote(e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12, resize: 'none' }}
+                style={{ width: '100%', padding: '10px', borderRadius: 12, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none', fontSize: 12, resize: 'none' }}
               />
             </div>
 
@@ -899,7 +887,7 @@ export default function App() {
               <button 
                 onClick={() => setIsFeedbackModalOpen(false)}
                 className="btn-mode"
-                style={{ padding: '10px 16px', background: 'rgba(255, 255, 255, 0.08)', color: '#fff', borderRadius: 10 }}
+                style={{ padding: '10px 16px', background: 'rgba(255, 255, 255, 0.08)', color: '#fff', borderRadius: 9999 }}
               >
                 Cancel
               </button>
@@ -925,7 +913,7 @@ export default function App() {
                 <Wand2 style={{ width: 12, height: 12 }} /> Cocktail Matchmaker
               </span>
               <button onClick={() => setIsMatchmakerOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
-                <X style={{ width: 20, height: 20 }} />
+                <X style={{ width: 18, height: 18 }} />
               </button>
             </div>
 
@@ -937,7 +925,7 @@ export default function App() {
               <select 
                 value={myGuestId}
                 onChange={(e) => setMyGuestId(e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none' }}
+                style={{ width: '100%', padding: '10px', borderRadius: 12, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none' }}
               >
                 <option value="">-- Choose Guest --</option>
                 {nodes.filter(n => n.type === 'GUEST').map(n => (
@@ -977,7 +965,7 @@ export default function App() {
       {/* Google Sheets CSV Import Modal */}
       {isImportModalOpen && (
         <div className="app-container no-print" style={{ position: 'fixed', zIndex: 50, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="glass-panel" style={{ width: 480, padding: 28 }}>
+          <div className="glass-panel" style={{ width: 480, padding: 28, borderRadius: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 800, fontSize: 18 }}>
                 <Upload style={{ width: 20, height: 20, color: '#10b981' }} />
@@ -997,11 +985,11 @@ export default function App() {
               placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"
               value={sheetUrl}
               onChange={(e) => setSheetUrl(e.target.value)}
-              style={{ width: '100%', padding: '12px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12, marginBottom: 16 }}
+              style={{ width: '100%', padding: '12px', borderRadius: 12, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none', fontSize: 12, marginBottom: 16 }}
             />
 
             {importStatus && (
-              <div style={{ fontSize: 12, padding: 10, borderRadius: 8, marginBottom: 16, background: importStatus.type === 'error' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)', color: importStatus.type === 'error' ? '#ef4444' : '#10b981' }}>
+              <div style={{ fontSize: 12, padding: 10, borderRadius: 10, marginBottom: 16, background: importStatus.type === 'error' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)', color: importStatus.type === 'error' ? '#ef4444' : '#10b981' }}>
                 {importStatus.message}
               </div>
             )}
@@ -1014,7 +1002,7 @@ export default function App() {
                   setImportStatus({ type: 'success', message: 'Loaded Demo Dataset!' });
                 }}
                 className="btn-mode"
-                style={{ padding: '10px 16px', background: 'rgba(255, 255, 255, 0.08)', color: '#fff', borderRadius: 10 }}
+                style={{ padding: '10px 16px', background: 'rgba(255, 255, 255, 0.08)', color: '#fff', borderRadius: 9999 }}
               >
                 ⚡ Load Sample Demo
               </button>
@@ -1032,7 +1020,7 @@ export default function App() {
 
       {/* Dynamic Color Legend Footer */}
       <div className="glass-panel legend-bar no-print">
-        <span style={{ fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', fontSize: 10 }}>Legend ({colorMode}):</span>
+        <span style={{ fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', fontSize: 10, letterSpacing: '0.08em' }}>Legend ({colorMode}):</span>
         <div className="legend-items">
           {Object.entries(activeColorMap).map(([key, hex]) => (
             <div key={key} className="legend-item">
@@ -1076,7 +1064,7 @@ export default function App() {
               t === (hoverNode?.id || selectedNode?.id)
             );
             if (isHoveredLink) return '#38bdf8';
-            return isLightMode ? '#64748b' : '#94a3b8';
+            return isLightMode ? 'rgba(100, 116, 139, 0.4)' : 'rgba(148, 163, 184, 0.35)';
           }}
           linkWidth={(link) => {
             const s = link.source.id || link.source;
@@ -1090,13 +1078,13 @@ export default function App() {
                 }
               }
             }
-            if (isPathLink) return 4;
+            if (isPathLink) return 3.5;
 
             const isHoveredLink = (hoverNode || selectedNode) && (
               s === (hoverNode?.id || selectedNode?.id) ||
               t === (hoverNode?.id || selectedNode?.id)
             );
-            return isHoveredLink ? 3.5 : 2;
+            return isHoveredLink ? 3 : 1.5;
           }}
           linkDirectionalParticles={0}
           backgroundColor="transparent"
@@ -1118,7 +1106,7 @@ export default function App() {
                 fontSize: 10, 
                 fontWeight: 700, 
                 padding: '2px 8px', 
-                borderRadius: 10, 
+                borderRadius: 9999, 
                 color: '#fff',
                 backgroundColor: getNodeColor(hoverNode) 
               }}
@@ -1140,7 +1128,7 @@ export default function App() {
           {hoverNode.hobbies && (
             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 6 }}>
               {hoverNode.hobbies.map(h => (
-                <span key={h} style={{ fontSize: 10, padding: '2px 6px', borderRadius: 6, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', fontWeight: 600 }}>
+                <span key={h} style={{ fontSize: 10, padding: '2px 8px', borderRadius: 9999, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 600 }}>
                   🏷️ {h}
                 </span>
               ))}
@@ -1164,7 +1152,7 @@ export default function App() {
                 onClick={() => setSelectedNode(null)}
                 style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
               >
-                <X style={{ width: 20, height: 20 }} />
+                <X style={{ width: 18, height: 18 }} />
               </button>
             </div>
 
@@ -1214,7 +1202,7 @@ export default function App() {
                           fontSize: 11,
                           fontWeight: 600,
                           padding: '4px 10px',
-                          borderRadius: 8,
+                          borderRadius: 9999,
                           border: '1px solid rgba(16, 185, 129, 0.4)',
                           background: 'rgba(16, 185, 129, 0.15)',
                           color: '#34d399',
@@ -1230,22 +1218,22 @@ export default function App() {
             </div>
 
             {/* Suggest Edit Button inside Drawer */}
-            <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <button 
                 onClick={() => {
                   setFeedbackTargetNode(selectedNode);
                   setIsFeedbackModalOpen(true);
                 }}
                 className="btn-mode"
-                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontWeight: 600 }}
+                style={{ width: '100%', padding: '10px', borderRadius: 9999, background: 'rgba(56, 189, 248, 0.12)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontWeight: 600 }}
               >
                 <Edit3 style={{ width: 14, height: 14 }} />
-                <span>Suggest Profile Correction for {selectedNode.name}</span>
+                <span>Suggest Profile Edit for {selectedNode.name}</span>
               </button>
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94a3b8' }}>
+          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94a3b8' }}>
             <span>{selectedNode.type === 'CONTEXT_HUB' ? 'Location Hub Profile' : 'Guest Profile'}</span>
             <Heart style={{ width: 16, height: 16, color: '#38bdf8' }} />
           </div>

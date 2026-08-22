@@ -46,6 +46,13 @@
 ## [2026-08-22] Guest Metadata Correction Form & Host Feedback Admin Queue
 - **User Prompt**: "there shoudl eb a way for people to report misisng or incorrect metadata. like Nur-e may write to us and sya 'you forgot that i like wine' or Anne may tell us her daugher is 17"
 - **Actions**:
-  1. **`✏️ Suggest Edit` Modal**: Built a Glassmorphism modal allowing any guest (e.g. Nur-e or Anne Freedman) to report missing interests, family status updates, or hometown corrections directly from their profile drawer or top bar.
-  2. **Host Feedback Admin Queue (`📩 Host Feedback`)**: Added an amber badge in the top bar for Maureen & Matt. Clicking it opens a drawer displaying all submitted guest notes (e.g. *"Nur-e: You forgot that I like Wine!"* or *"Anne: My daughter is 17 now!"*).
-  3. **Real-time Canvas Application**: Hosts can click **"Apply Update to Graph"** on any guest note to instantly update that guest's hobbies or profile details on the live canvas!
+  1. `✏️ Suggest Edit` Modal & Host Feedback Queue (`📩 Host Feedback`).
+
+## [2026-08-22] Aesthetic Pivot: Clean Modern Editorial Redesign (De-Sci-Fi)
+- **User Prompt**: "so this feels very 'sci-fi' in terms of tone and design. what does the UX designer think? have htem provide 3-5 recommendaionts to mkae it clean and modern, but not look like the display on a cyberpunk screen or from star trek" / "do that all"
+- **Actions**:
+  1. **Removed Sci-Fi Starfields & HUD Overlays**: Removed space starfield graphics, neon glows, and pulse dots.
+  2. **Soft Organic Slate Background**: Applied multi-layered organic radial canvas background (`#1e293b` to `#0f172a`).
+  3. **Curved Pill Badges**: Converted all top control items, search bars, and filter chips to smooth rounded pill shapes (`border-radius: 9999px`).
+  4. **Refined Line Traces & Drop Shadows**: Rendered connection links as delicate 1.5px semi-transparent slate/sage lines (`rgba(148, 163, 184, 0.35)`). Replaced neon bloom halos with soft organic drop shadows (`rgba(15, 23, 42, 0.4)`).
+  5. **Editorial Brand Badge**: Replaced sci-fi pulse dot badge with an elegant heart badge (**Maureen & Matt**).
