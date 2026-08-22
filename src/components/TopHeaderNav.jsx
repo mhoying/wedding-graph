@@ -73,14 +73,14 @@ export default function TopHeaderNav({
           </div>
         )}
 
-        {/* Desktop Cluster Overlays Dropdown - 100% Clickable & Interactive */}
-        <div className="glass-panel color-mode-bar" style={{ padding: '6px 12px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12 }}>
+        {/* Desktop Cluster Overlays Dropdown */}
+        <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 36, padding: '0 10px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12, flexShrink: 0 }}>
           <Layers style={{ width: 14, height: 14, color: '#ec4899', marginRight: 4 }} />
-          <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 6 }}>Clusters:</span>
+          <span style={{ color: '#cbd5e1', fontSize: 12, fontWeight: 700, marginRight: 6 }}>Clusters:</span>
           <select 
             value={clusterMode}
             onChange={(e) => setClusterMode(e.target.value)}
-            style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '4px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
+            style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
           >
             <option value="cohort">Cohorts</option>
             <option value="locations">Locations</option>
@@ -94,9 +94,9 @@ export default function TopHeaderNav({
         {/* Desktop Orbit Motion Toggle */}
         <button 
           onClick={() => setIsOrbiting(!isOrbiting)}
-          className={`glass-panel btn-icon ${isOrbiting ? 'active' : ''}`}
+          className={`glass-panel btn-icon desktop-only-inline ${isOrbiting ? 'active' : ''}`}
           title="Toggle Celestial Orbit Rotation"
-          style={{ padding: '6px 10px', gap: 6, fontSize: 11, fontWeight: 700, color: isOrbiting ? '#a855f7' : '#94a3b8' }}
+          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: isOrbiting ? '#a855f7' : '#94a3b8', flexShrink: 0 }}
         >
           {isOrbiting ? <Pause style={{ width: 14, height: 14 }} /> : <Play style={{ width: 14, height: 14 }} />}
           <span>Orbit</span>
@@ -105,9 +105,9 @@ export default function TopHeaderNav({
         {/* Desktop Path Finder Toggle */}
         <button 
           onClick={() => setIsPathMode(!isPathMode)}
-          className={`glass-panel btn-icon ${isPathMode ? 'active' : ''}`}
+          className={`glass-panel btn-icon desktop-only-inline ${isPathMode ? 'active' : ''}`}
           title="Calculate Social Distance Path"
-          style={{ padding: '6px 10px', gap: 6, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#94a3b8' }}
+          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#94a3b8', flexShrink: 0 }}
         >
           <Compass style={{ width: 14, height: 14 }} />
           <span>Path Finder</span>
@@ -116,9 +116,9 @@ export default function TopHeaderNav({
         {/* Desktop Matchmaker Button */}
         <button 
           onClick={() => setIsMatchmakerOpen(true)}
-          className="glass-panel btn-icon"
+          className="glass-panel btn-icon desktop-only-inline"
           title="Find Guest Match Recommendations"
-          style={{ padding: '6px 10px', gap: 6, fontSize: 11, fontWeight: 700, color: '#34d399' }}
+          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: '#34d399', flexShrink: 0 }}
         >
           <Wand2 style={{ width: 14, height: 14 }} />
           <span>Matchmaker</span>
@@ -129,6 +129,7 @@ export default function TopHeaderNav({
           onClick={() => setIsLightMode(!isLightMode)} 
           className="glass-panel btn-icon"
           title="Toggle Light/Dark Theme"
+          style={{ width: 36, height: 36, padding: 0, justifyContent: 'center', flexShrink: 0 }}
         >
           {isLightMode ? <Moon style={{ width: 15, height: 15 }} /> : <Sun style={{ width: 15, height: 15, color: '#38bdf8' }} />}
         </button>
@@ -136,12 +137,12 @@ export default function TopHeaderNav({
         {/* 1-Click CSV Export Button */}
         <button 
           onClick={handleExportCsv} 
-          className="glass-panel btn-icon"
+          className="glass-panel btn-icon desktop-only-inline"
           title="Export Guest List to CSV for Google Sheets"
-          style={{ gap: 4, padding: '6px 10px', fontSize: 11, fontWeight: 600, color: '#34d399' }}
+          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: '#34d399', flexShrink: 0 }}
         >
           <Download style={{ width: 14, height: 14, color: '#34d399' }} />
-          <span className="desktop-only-inline">Export CSV</span>
+          <span>Export CSV</span>
         </button>
 
         {/* Hidden Host Admin Indicators (Only visible when unlocked via secret URL parameter) */}

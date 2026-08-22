@@ -600,7 +600,7 @@ export default function App() {
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
       />
 
-      {/* Floating 200px Mobile Micro-Dock Control Trigger */}
+      {/* Floating Mobile Micro-Dock Control Trigger & Sheet (CSS media queries control display) */}
       <button 
         className="mobile-drawer-toggle-fab no-print"
         onClick={() => setIsMobileControlsOpen(true)}
@@ -609,7 +609,6 @@ export default function App() {
         <span>Map Controls</span>
       </button>
 
-      {/* Floating 200px Mobile Micro-Dock Sheet */}
       <MobileControlsSheet 
         isOpen={isMobileControlsOpen}
         onClose={() => setIsMobileControlsOpen(false)}
@@ -623,8 +622,6 @@ export default function App() {
         setEdgeLengthMultiplier={setEdgeLengthMultiplier}
         showHeadshots={showHeadshots}
         setShowHeadshots={setShowHeadshots}
-        isLightMode={isLightMode}
-        setIsLightMode={setIsLightMode}
         clusterMode={clusterMode}
         setClusterMode={setClusterMode}
         colorMode={colorMode}
