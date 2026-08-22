@@ -33,6 +33,13 @@
 ## [2026-08-22] Couple Enclosure Hull & Moving Dots Removal
 - **User Prompt**: "can we remove the dots moving on the edges and the grid background; also , i was thinking that there woudl be a shape around maureen and matt to represent the coulple and the people part of that couple woudl be nodes inside it. is there a reason that owuldnt work"
 - **Actions**:
-  1. Removed moving directional particles on connection links (`linkDirectionalParticles={0}`).
-  2. Removed background grid pattern from `src/index.css`.
-  3. Added a dynamic canvas background layer (`onRenderFramePre`) that calculates the spatial bounds around Maureen & Matt and renders a glowing, dashed, translucent **Couple Enclosure Shape** labeled `"THE COUPLE (MAUREEN & MATT)"` around their nodes!
+  1. Removed moving directional particles on connection links.
+  2. Removed background grid pattern.
+  3. Added dynamic canvas Couple Enclosure Shape around Maureen & Matt.
+
+## [2026-08-22] Redundant Joint Node Removal & Edge Line Layering
+- **User Prompt**: "if we are doing this , then we shoudlnt ahve a joint node called 'mauree & Matt' right?" / "and the lines need to be vislble on top of these contianing nodes"
+- **Actions**:
+  1. Removed the redundant `maureen_matt` node.
+  2. Linked Maureen and Matt directly to each other with a "Married" edge.
+  3. Increased edge line width (`2px` default, `3.5px` hovered) and line contrast (`#94a3b8`), guaranteeing connection lines render cleanly on top of the container shape fill!

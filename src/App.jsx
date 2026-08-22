@@ -82,7 +82,7 @@ export default function App() {
       const minY = Math.min(maureen.y, matt.y);
       const maxY = Math.max(maureen.y, matt.y);
 
-      const padding = 45 / globalScale;
+      const padding = 50 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
@@ -92,10 +92,10 @@ export default function App() {
       ctx.save();
       // Hull Glow
       ctx.shadowColor = '#38bdf8';
-      ctx.shadowBlur = 20;
+      ctx.shadowBlur = 18;
 
       // Hull Background Fill
-      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.5)' : 'rgba(14, 165, 233, 0.12)';
+      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.55)' : 'rgba(14, 165, 233, 0.1)';
       ctx.beginPath();
       if (ctx.roundRect) {
         ctx.roundRect(x, y, width, height, cornerRadius);
@@ -321,16 +321,16 @@ export default function App() {
               (link.target.id || link.target) === (hoverNode?.id || selectedNode?.id)
             );
             if (isHoveredLink) return '#38bdf8';
-            return isLightMode ? 'rgba(148, 163, 184, 0.4)' : 'rgba(51, 65, 85, 0.5)';
+            return isLightMode ? '#64748b' : '#94a3b8'; // Crisp, high-contrast visible link color on top of hulls
           }}
           linkWidth={(link) => {
             const isHoveredLink = (hoverNode || selectedNode) && (
               (link.source.id || link.source) === (hoverNode?.id || selectedNode?.id) ||
               (link.target.id || link.target) === (hoverNode?.id || selectedNode?.id)
             );
-            return isHoveredLink ? 3 : 1.5;
+            return isHoveredLink ? 3.5 : 2;
           }}
-          linkDirectionalParticles={0} // Removed moving dots
+          linkDirectionalParticles={0}
           backgroundColor="transparent"
         />
       </div>

@@ -1,18 +1,5 @@
 export const SAMPLE_NODES = [
   {
-    id: "maureen_matt",
-    name: "Maureen & Matt",
-    type: "ANCHOR",
-    cohort: "The Couple",
-    side: "Joint",
-    state: "CA",
-    hometown: "San Francisco, CA",
-    icebreakers: "Hosts of the weekend!",
-    familyStatus: "Newlyweds",
-    relationship: "The Bride & Groom",
-    image: ""
-  },
-  {
     id: "maureen",
     name: "Maureen",
     type: "ANCHOR",
@@ -106,14 +93,14 @@ export const SAMPLE_NODES = [
 ];
 
 export const SAMPLE_LINKS = [
-  { source: "maureen", target: "maureen_matt", label: "" },
-  { source: "matt", target: "maureen_matt", label: "" },
+  { source: "maureen", target: "matt", label: "Married" },
   { source: "brian_kim", target: "maureen", label: "College Friends" },
   { source: "freedman_rahmans", target: "matt", label: "Grad School" },
+  { source: "freedman_rahmans", target: "maureen", label: "Family Friends" },
   { source: "eleanor_chen", target: "maureen", label: "Teammates" },
   { source: "david_vance", target: "avalon_dog_park", label: "Regulars" },
-  { source: "maureen_matt", target: "avalon_dog_park", label: "Weekend Spot" },
-  { source: "freedman_rahmans", target: "maureen_matt", label: "Family Friends" }
+  { source: "maureen", target: "avalon_dog_park", label: "Weekend Spot" },
+  { source: "matt", target: "avalon_dog_park", label: "Weekend Spot" }
 ];
 
 export const COHORT_COLORS = {
