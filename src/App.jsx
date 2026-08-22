@@ -652,12 +652,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       });
 
       fg.d3Force('charge')
-        .strength(-1800 * nodeScaleMultiplier * edgeLengthMultiplier)
-        .distanceMax(1800 * edgeLengthMultiplier);
+        .strength(-2400 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(2400 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
-      }).iterations(25));
+      }).iterations(40));
 
       // DYNAMIC ORBITAL GALAXY MOTION FORCE
       if (isOrbiting) {
@@ -2156,6 +2156,8 @@ function getConvexHull2D(points) {
           width={dimensions.width}
           height={dimensions.height}
           graphData={graphData}
+          warmupTicks={200}
+          cooldownTicks={250}
           nodeCanvasObject={drawNode}
           nodePointerAreaPaint={drawPointerArea}
           onNodeClick={handleNodeClick}
