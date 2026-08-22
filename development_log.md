@@ -9,10 +9,9 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Organic Convex Hull & Smooth Bezier Blob Cluster Renderer
-- **User Prompt**: "also, rather than squars, can we have a more orgnaic shape for clusters. one that sticktly doesnt cover nodes htat are not in that cluster"
+## [2026-08-22] Group Cluster Dragging & Non-Overlapping Cluster Titles
+- **User Prompt**: "can we make it so clusetrs can be dragged and labels dont overlap"
 - **Actions**:
-  1. **Convex Hull Algorithm**: Implemented Andrew's Monotone Chain 2D Convex Hull algorithm (`getConvexHull2D`) in `src/App.jsx` to tightly envelope only member nodes belonging to a cluster.
-  2. **Smooth Organic Spline Curves**: Replaced rigid rectangular bounding boxes with smooth quadratic Bezier spline curves (`ctx.quadraticCurveTo`), drawing fluid, cloud-like organic boundary bubbles.
-  3. **Strict Non-Member Exclusion**: Because the convex hull strictly wraps outer vertices of member nodes, cluster boundaries **never stretch across or cover outside non-member nodes**.
-  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Group Cluster Dragging (`handleNodeDrag` / `handleNodeDragEnd`)**: Dragging any node within a cluster now calculates the delta offset $(\Delta x, \Delta y)$ and translates all member nodes in that group simultaneously, preserving their internal layout while moving across the canvas.
+  2. **Non-Overlapping Cluster Titles**: Implemented real-time 2D bounding box collision detection (`placedLabelBoxes`) for cluster title headings. If two cluster labels overlap, the second label automatically offsets vertically (`-32px * nodeScaleMultiplier`) so title headings **never collide or overlap each other**.
+  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

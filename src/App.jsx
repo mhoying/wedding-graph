@@ -515,6 +515,62 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setEditHobbies(editHobbies.filter(h => h !== tag));
   };
 
+  // Group Cluster Dragging Handler: Moves all member nodes in the same cluster together!
+  const handleNodeDrag = useCallback((node) => {
+    if (node._prevX !== undefined && node._prevY !== undefined) {
+      const dx = node.x - node._prevX;
+      const dy = node.y - node._prevY;
+
+      if (dx !== 0 || dy !== 0) {
+        // Find member nodes in the same active cluster
+        let memberNodes = [];
+        if (clusterMode === 'cohort' && node.cohort) {
+          memberNodes = nodes.filter(n => n.cohort === node.cohort);
+        } else if (clusterMode === 'state') {
+          const loc = node.currentlyLivesIn || node.originallyFrom || node.state;
+          memberNodes = nodes.filter(n => (n.currentlyLivesIn || n.originallyFrom || n.state) === loc);
+        } else if (clusterMode === 'interests' && node.hobbies) {
+          const mainHobby = node.hobbies[0];
+          memberNodes = nodes.filter(n => n.hobbies && n.hobbies.includes(mainHobby));
+        }
+
+        if (memberNodes.length > 1) {
+          memberNodes.forEach(other => {
+            if (other.id !== node.id) {
+              other.x = (other.x || 0) + dx;
+              other.y = (other.y || 0) + dy;
+              other.fx = other.x;
+              other.fy = other.y;
+            }
+          });
+        }
+      }
+    }
+    node._prevX = node.x;
+    node._prevY = node.y;
+  }, [nodes, clusterMode]);
+
+  const handleNodeDragEnd = useCallback((node) => {
+    node._prevX = undefined;
+    node._prevY = undefined;
+
+    // Unfix cluster group nodes so celestial orbital motion resumes smoothly
+    let memberNodes = [];
+    if (clusterMode === 'cohort' && node.cohort) {
+      memberNodes = nodes.filter(n => n.cohort === node.cohort);
+    } else if (clusterMode === 'state') {
+      const loc = node.currentlyLivesIn || node.originallyFrom || node.state;
+      memberNodes = nodes.filter(n => (n.currentlyLivesIn || n.originallyFrom || n.state) === loc);
+    }
+
+    if (memberNodes.length > 1) {
+      memberNodes.forEach(other => {
+        other.fx = undefined;
+        other.fy = undefined;
+      });
+    }
+  }, [nodes, clusterMode]);
+
   // Update proposed edit value inside Host Queue items before approving
   const handleUpdateProposedValue = (fbId, val) => {
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
@@ -935,15 +991,39 @@ function getConvexHull2D(points) {
         ctx.setLineDash([6 / globalScale, 6 / globalScale]);
         ctx.stroke();
 
-        // Position cluster label title above top-left hull vertex
+        // Position cluster label title above top-left hull vertex with Non-Overlap Collision Avoidance!
         let topPoint = hull[0];
         hull.forEach(p => { if (p.y < topPoint.y) topPoint = p; });
 
+        let labelX = topPoint.x;
+        let labelY = topPoint.y - 14 * nodeScaleMultiplier;
+        const fontSize = 22 * nodeScaleMultiplier;
+        ctx.font = `800 ${fontSize}px Inter, sans-serif`;
+        const textWidth = ctx.measureText(label.toUpperCase()).width || (120 * nodeScaleMultiplier);
+        const textHeight = fontSize + 6;
+
+        // Collision avoidance against previously placed cluster labels
+        let hasCollision = true;
+        let attempts = 0;
+        while (hasCollision && attempts < 4) {
+          hasCollision = placedLabelBoxes.some(box => {
+            return (
+              Math.abs(labelX - box.x) < (textWidth / 2 + box.width / 2 + 10) &&
+              Math.abs(labelY - box.y) < (textHeight + 10)
+            );
+          });
+          if (hasCollision) {
+            labelY -= (textHeight + 10);
+            attempts++;
+          }
+        }
+        placedLabelBoxes.push({ x: labelX, y: labelY, width: textWidth, height: textHeight });
+
         ctx.setLineDash([]);
-        ctx.font = `800 ${22 * nodeScaleMultiplier}px Inter, sans-serif`;
+        ctx.font = `800 ${fontSize}px Inter, sans-serif`;
         ctx.fillStyle = clusterColor;
         ctx.textAlign = 'left';
-        ctx.fillText(label.toUpperCase(), topPoint.x, topPoint.y - 12 * nodeScaleMultiplier);
+        ctx.fillText(label.toUpperCase(), labelX, labelY);
         ctx.restore();
       }
     });
@@ -2016,6 +2096,8 @@ function getConvexHull2D(points) {
           nodeCanvasObject={drawNode}
           nodePointerAreaPaint={drawPointerArea}
           onNodeClick={handleNodeClick}
+          onNodeDrag={handleNodeDrag}
+          onNodeDragEnd={handleNodeDragEnd}
           onNodeHover={(node) => !isMobileViewport && setHoverNode(node)}
           onZoom={handleZoom}
           onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
