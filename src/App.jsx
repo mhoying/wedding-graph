@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -91,8 +91,9 @@ export default function App() {
   // Toggle state for headshot photos on node cards
   const [showHeadshots, setShowHeadshots] = useState(true);
 
-  // Independent Node Size Multiplier (0.5x to 2.0x, Default 1.0x)
+  // Independent Sliders: Node Size Multiplier & Map Density / Edge Length Multiplier
   const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(1.0);
+  const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(1.0);
   const [currentZoomLevel, setCurrentZoomLevel] = useState(1.0);
 
   // Initialize Nodes with localStorage fallback (strip any old D3 physics positions on init)
@@ -410,12 +411,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces: Re-optimizes node positions & edge lengths dynamically on Node Size Slider & Zoom level!
+  // Configure D3 forces: STRICT INTRA-COHORT HIERARCHICAL EDGE SPACING & MAP DENSITY SLIDER!
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
       
-      // Dynamic link distance in World Units incorporating nodeScaleMultiplier
       fg.d3Force('link').distance(l => {
         const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
         const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
@@ -428,22 +428,41 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (sId === 'maureen' && tId === 'matt') || (sId === 'matt' && tId === 'maureen');
+        
+        const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
+        const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
+
+        let basePadding;
         if (isCoupleLink) {
-          return sRadius + tRadius + 20 * nodeScaleMultiplier;
+          // Tightest core bond for Maureen & Matt
+          basePadding = 12 * nodeScaleMultiplier;
+        } else if (isSameCohort) {
+          // TIGHT INTRA-COHORT EDGE SPACING (Tightly grouped within cohort!)
+          basePadding = 22 * nodeScaleMultiplier;
+        } else if (isHubLink) {
+          // Radial distance for shared place hubs
+          basePadding = 100 * nodeScaleMultiplier;
+        } else {
+          // LONGER CROSS-COHORT BRIDGE EDGES (Separates distinct cohort groups!)
+          basePadding = 85 * nodeScaleMultiplier;
         }
-        return sRadius + tRadius + 55 * nodeScaleMultiplier;
+
+        // Multiply by Map Density / Edge Length Slider!
+        return (sRadius + tRadius + basePadding) * edgeLengthMultiplier;
       });
 
-      // Stable World Unit Repulsion & Collision Solver scaled by nodeScaleMultiplier
-      fg.d3Force('charge').strength(-3800 * nodeScaleMultiplier).distanceMax(1800 * nodeScaleMultiplier);
+      // Stable Repulsion & Collision Solver scaled by nodeScaleMultiplier & edgeLengthMultiplier
+      fg.d3Force('charge')
+        .strength(-3600 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(2000 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
-      }).iterations(22));
+      }).iterations(25));
 
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots, nodeScaleMultiplier]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier]);
 
   // Handle D3 Zoom Event: Re-optimizes simulation smoothly on page zoom
   const handleZoom = useCallback(({ k }) => {
@@ -1025,7 +1044,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         {/* Compact & Streamlined Action Controls Bar */}
         <div className="top-bar-right">
           {/* INDEPENDENT NODE SIZE SLIDER CONTROL */}
-          <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 8 }}>
+          <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
             <Sliders style={{ width: 14, height: 14, color: '#38bdf8' }} />
             <span style={{ color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>Size:</span>
             <input 
@@ -1035,11 +1054,30 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
               step="0.1"
               value={nodeScaleMultiplier}
               onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
-              style={{ width: 70, accentColor: '#38bdf8', cursor: 'pointer' }}
+              style={{ width: 60, accentColor: '#38bdf8', cursor: 'pointer' }}
               title="Independent Node Card Size Slider"
             />
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', minWidth: 28 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', minWidth: 26 }}>
               {nodeScaleMultiplier.toFixed(1)}x
+            </span>
+          </div>
+
+          {/* INDEPENDENT MAP DENSITY / EDGE LENGTH SLIDER CONTROL */}
+          <div className="glass-panel color-mode-bar" style={{ padding: '4px 10px', gap: 6 }}>
+            <MoveHorizontal style={{ width: 14, height: 14, color: '#10b981' }} />
+            <span style={{ color: '#94a3b8', fontSize: 11, fontWeight: 600 }}>Density:</span>
+            <input 
+              type="range"
+              min="0.5"
+              max="2.0"
+              step="0.1"
+              value={edgeLengthMultiplier}
+              onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
+              style={{ width: 60, accentColor: '#10b981', cursor: 'pointer' }}
+              title="Independent Map Density / Edge Length Slider"
+            />
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#10b981', minWidth: 26 }}>
+              {edgeLengthMultiplier.toFixed(1)}x
             </span>
           </div>
 

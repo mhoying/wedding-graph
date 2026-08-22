@@ -23,9 +23,13 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Independent Node Size Slider & Dynamic Zoom Re-Optimization
-- **User Prompt**: "can we add an independent slider that controls node size independent of page zoom? on page zoom it shoudl reoptimze node and edge size"
+## [2026-08-22] Map Density Slider & Cohort Hierarchical Edge Spacing
+- **User Prompt**: "lets do something that similary adjsuts tehy edge lenght/map density. also note that i think you lost hte requiremetn that people wihtin a cohort group (like the couple) shoudl have shorter edge lenghts (while still not coliding) than those outside the cohort"
 - **Actions**:
-  1. **Independent Node Size Slider (`nodeScaleMultiplier`)**: Added an interactive slider (`0.5x` to `2.0x`) in the top bar to adjust card node & headshot sizes independently of page zoom!
-  2. **Dynamic Physics & Collision Re-Simulation**: Dragging the size slider dynamically updates `getNodeBounds`, collision radii, link distances, and charge repulsion in real time, triggering `d3ReheatSimulation()` to re-optimize node positions and edge lengths on the fly.
-  3. **Page Zoom Layout Re-Optimization (`handleZoom`)**: Added an `onZoom` listener that automatically reheats the simulation on viewport zoom to optimize edge lengths and layout density for the active zoom level.
+  1. **Independent Map Density Slider (`Density: 1.0x`)**: Added an interactive slider (`0.5x` to `2.0x`) in the top bar to dynamically expand or condense edge connection distances across the map!
+  2. **Hierarchical Cohort Link Distance Logic**:
+     - **The Couple (Maureen & Matt)**: Ultra-tight core connection (`+12px`).
+     - **Intra-Cohort Cluster Edges (e.g. Cornell to Cornell)**: Tight cluster bonds (`+22px`), keeping cohort groups visually cohesive.
+     - **Cross-Cohort Bridge Edges (e.g. Cornell to High School or Family)**: Longer distinct inter-cluster bridge distances (`+85px`), physically separating different cohorts on the map.
+     - **Context / Event Hub Edges**: Spaced radial anchor distances (`+100px`).
+  3. **Strict Zero-Overlap Guarantee**: `d3.forceCollide()` continues to strictly prevent cards from touching even within tight intra-cohort clusters.
