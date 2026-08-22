@@ -1,8 +1,11 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Eye, EyeOff } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
+
+// Color generator for dynamic auto-discovered metadata clusters
+const DYNAMIC_CLUSTER_COLORS = ['#ec4899', '#8b5cf6', '#10b981', '#f59e0b', '#06b6d4', '#3b82f6', '#f43f5e', '#a855f7'];
 
 // Helper to convert Hex color to RGBA with custom opacity
 function hexToRgba(hex, alpha = 1) {
@@ -38,7 +41,10 @@ export default function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
-  const [showCohortHulls, setShowCohortHulls] = useState(true);
+  
+  // Cluster Overlays Mode: 'cohort' | 'interests' | 'state' | 'none'
+  const [clusterMode, setClusterMode] = useState('cohort');
+
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 
   // Path Finder State
@@ -101,6 +107,40 @@ export default function App() {
       }
     });
     return Array.from(set).sort();
+  }, [nodes]);
+
+  // Auto-Cluster Discovery Engine: Scans tags and metadata to form dynamic clusters (e.g., Wine, Dogs, Cycling, Kids)
+  const dynamicAutoClusters = useMemo(() => {
+    const clusterMap = {};
+
+    nodes.forEach(node => {
+      if (node.type === 'CONTEXT_HUB' || node.x === undefined) return;
+
+      // Group by Interests
+      if (node.hobbies && Array.isArray(node.hobbies)) {
+        node.hobbies.forEach(h => {
+          const key = `🏷️ ${h}`;
+          if (!clusterMap[key]) clusterMap[key] = [];
+          clusterMap[key].push(node);
+        });
+      }
+
+      // Group by Family Details (e.g. Kids / Children)
+      if (node.familyStatus && /kid|child|daughter|son/i.test(node.familyStatus)) {
+        const key = `👨‍👩‍👧 Guests with Kids`;
+        if (!clusterMap[key]) clusterMap[key] = [];
+        clusterMap[key].push(node);
+      }
+    });
+
+    // Filter clusters to those with at least 2 guests
+    const result = {};
+    Object.entries(clusterMap).forEach(([tag, arr]) => {
+      if (arr.length >= 2) {
+        result[tag] = arr;
+      }
+    });
+    return result;
   }, [nodes]);
 
   // Sync edit form fields whenever a node is selected
@@ -374,8 +414,9 @@ export default function App() {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Render organic background enclosure shapes around Maureen & Matt couple and Cohort Clusters
+  // Render organic background enclosure shapes based on selected Cluster Mode ('cohort' | 'interests' | 'state' | 'none')
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
+    // 1. Maureen & Matt Couple Enclosure
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -417,57 +458,76 @@ export default function App() {
       ctx.restore();
     }
 
-    if (showCohortHulls) {
-      const cohortGroups = {};
+    // 2. Render Cluster Overlays based on clusterMode selection
+    if (clusterMode === 'none') return; // User turned off cluster overlays
+
+    let clusterGroups = {};
+
+    if (clusterMode === 'interests') {
+      clusterGroups = dynamicAutoClusters;
+    } else if (clusterMode === 'state') {
       filteredNodes.forEach(node => {
-        if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
-          if (!cohortGroups[node.cohort]) cohortGroups[node.cohort] = [];
-          cohortGroups[node.cohort].push(node);
+        if (node.state && node.x !== undefined) {
+          const key = `📍 State: ${node.state}`;
+          if (!clusterGroups[key]) clusterGroups[key] = [];
+          clusterGroups[key].push(node);
         }
       });
-
-      Object.entries(cohortGroups).forEach(([cohort, nodesArr]) => {
-        if (nodesArr.length > 1) {
-          let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-          nodesArr.forEach(n => {
-            if (n.x < minX) minX = n.x;
-            if (n.x > maxX) maxX = n.x;
-            if (n.y < minY) minY = n.y;
-            if (n.y > maxY) maxY = n.y;
-          });
-
-          const pad = 38 / globalScale;
-          const w = (maxX - minX) + pad * 2;
-          const h = (maxY - minY) + pad * 2;
-          const x = minX - pad;
-          const y = minY - pad;
-          const cohortColor = COHORT_COLORS[cohort] || '#64748b';
-
-          ctx.save();
-          ctx.fillStyle = isLightMode ? 'rgba(241, 245, 249, 0.4)' : 'rgba(30, 41, 59, 0.15)';
-          ctx.beginPath();
-          if (ctx.roundRect) {
-            ctx.roundRect(x, y, w, h, 20 / globalScale);
-          } else {
-            ctx.rect(x, y, w, h);
-          }
-          ctx.fill();
-
-          ctx.lineWidth = 1 / globalScale;
-          ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
-          ctx.setLineDash([4 / globalScale, 4 / globalScale]);
-          ctx.stroke();
-
-          ctx.setLineDash([]);
-          ctx.font = `600 ${10 / globalScale}px Inter, sans-serif`;
-          ctx.fillStyle = cohortColor;
-          ctx.textAlign = 'left';
-          ctx.fillText(cohort.toUpperCase() + ' CLUSTER', x + 10 / globalScale, y + 14 / globalScale);
-          ctx.restore();
+    } else {
+      // Default: Cohort Clusters
+      filteredNodes.forEach(node => {
+        if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
+          const key = `${node.cohort} Cluster`;
+          if (!clusterGroups[key]) clusterGroups[key] = [];
+          clusterGroups[key].push(node);
         }
       });
     }
-  }, [filteredNodes, isLightMode, showCohortHulls]);
+
+    let colorIdx = 0;
+    Object.entries(clusterGroups).forEach(([label, nodesArr]) => {
+      if (nodesArr.length > 1) {
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        nodesArr.forEach(n => {
+          if (n.x < minX) minX = n.x;
+          if (n.x > maxX) maxX = n.x;
+          if (n.y < minY) minY = n.y;
+          if (n.y > maxY) maxY = n.y;
+        });
+
+        const pad = 38 / globalScale;
+        const w = (maxX - minX) + pad * 2;
+        const h = (maxY - minY) + pad * 2;
+        const x = minX - pad;
+        const y = minY - pad;
+        
+        const clusterColor = COHORT_COLORS[label.replace(' Cluster', '')] || DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
+        colorIdx++;
+
+        ctx.save();
+        ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(x, y, w, h, 20 / globalScale);
+        } else {
+          ctx.rect(x, y, w, h);
+        }
+        ctx.fill();
+
+        ctx.lineWidth = 1 / globalScale;
+        ctx.strokeStyle = hexToRgba(clusterColor, 0.4);
+        ctx.setLineDash([4 / globalScale, 4 / globalScale]);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+        ctx.font = `600 ${10 / globalScale}px Inter, sans-serif`;
+        ctx.fillStyle = clusterColor;
+        ctx.textAlign = 'left';
+        ctx.fillText(label.toUpperCase(), x + 10 / globalScale, y + 14 / globalScale);
+        ctx.restore();
+      }
+    });
+  }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters]);
 
   // Modern Square Card Badge Renderer with Legend Group Color Tint Shading
   const drawNode = useCallback((node, ctx, globalScale) => {
@@ -734,6 +794,22 @@ export default function App() {
 
         {/* Compact & Streamlined Action Controls Bar */}
         <div className="top-bar-right">
+          {/* Cluster Overlay Mode Dropdown Selector */}
+          <div className="glass-panel color-mode-bar">
+            <Layers style={{ width: 14, height: 14, color: '#ec4899' }} />
+            <span style={{ color: '#94a3b8', fontSize: 11 }}>Clusters:</span>
+            <select 
+              value={clusterMode}
+              onChange={(e) => setClusterMode(e.target.value)}
+              style={{ background: 'none', border: 'none', color: isLightMode ? '#0f172a' : '#f8fafc', fontSize: 11, fontWeight: 600, outline: 'none', cursor: 'pointer' }}
+            >
+              <option value="cohort" style={{ background: '#0f172a', color: '#fff' }}>Cohorts</option>
+              <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>✨ Auto Interests</option>
+              <option value="state" style={{ background: '#0f172a', color: '#fff' }}>States</option>
+              <option value="none" style={{ background: '#0f172a', color: '#fff' }}>🚫 Off (Hide)</option>
+            </select>
+          </div>
+
           {/* Path Finder Toggle */}
           <button 
             onClick={() => {

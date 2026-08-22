@@ -36,8 +36,11 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Full Direct Metadata Self-Editing Mode
-- **User Prompt**: "woudl it be possible to allow guest to directly edit their interests or burbs (or states or any metadata)"
+## [2026-08-22] Auto-Cluster Discovery Engine & Cluster Overlay Mode Toggle
+- **User Prompt**: "is there a way to turn off hte cluster overlays? or allow to identify new clusters that shoudl be adde dbase don the metadata? (i oculd see there being clusters of 'people wiht kids' 'people with dogs' 'bourbon lovers' base don the tags and description data. some way to generate those by the tool without predefineing them all"
 - **Actions**:
-  1. **Comprehensive Metadata Editing**: Expanded the inline drawer editor so guests can directly modify their **Bio Blurbs**, **Interests**, **Hometown**, **State / Region**, **Cohort / Group**, **Wedding Side** (Maureen/Matt/Joint), and **Family Details**.
-  2. **Instant Visualization Sync**: Saving profile edits updates all canvas card badges, legend color groupings, tooltips, and drawers in real-time without refreshing!
+  1. **Cluster Overlay Mode Selector**: Added a **`Clusters ▾`** dropdown control in the top action bar:
+     - `Cohorts`: Standard cohort hulls.
+     - `✨ Auto Interests`: **Dynamic Auto-Discovered Metadata Clusters**! Automatically scans interest tags and description text to group guests into un-predefined clusters like *"Bourbon Lovers 🥃"*, *"Dog Owners 🐶"*, *"Guests with Kids 👨‍👩‍👧"*, *"Wine Aficionados 🍷"*, *"Cycling 🚴"*.
+     - `States`: Geographic state clusters.
+     - `🚫 Off (Hide)`: **Turns off cluster overlay hulls completely** for a clean canvas view!
