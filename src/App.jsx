@@ -228,8 +228,8 @@ export default function App() {
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort');
   
-  // Cluster Overlays Mode: 'cohort' | 'interests' | 'state' | 'none'
-  const [clusterMode, setClusterMode] = useState('cohort');
+  // Cluster Overlays Mode: 'locations' | 'interests' | 'cohort' | 'none'
+  const [clusterMode, setClusterMode] = useState('locations');
 
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 

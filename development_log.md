@@ -9,11 +9,9 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Instant 0ms Response Orbit Speed Recalibration
-- **User Prompt**: "changeing the orbit speed slider seems to take a long time to ipact. are we sure it si working. id neot expect more than a 6 zecond ramp up"
+## [2026-08-22] Default Dual-Location Cluster Mode & Mobile Cache Refresh
+- **User Prompt**: "did you make the chagnes i mentieond about locations . i still see the clster overview title saying locations wiht interests and statnes and resgions as a searpate thing"
 - **Actions**:
-  1. **Root Cause Analysis**: The angular velocity formula had `omega = 0.000097` (which caused a ~3-hour revolution time at minimum speed), combined with a `0.70` velocity damping factor that took up to 60 seconds to ramp up velocity changes.
-  2. **Instant 0ms Response Recalibration**:
-     - Recalibrated base angular velocity to `omega = 0.007 * speedMultiplier` (~5s revolution at 3.0x, ~15s revolution at 1.0x, ~120s drift at 0.1x).
-     - Removed damping inertia on slider changes (`node.vx = vx; node.vy = vy;`) so moving the slider **instantly alters orbital speed on frame 1 (0ms delay)** with immediate visual impact.
-  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Default State Update**: Set `clusterMode` initial default state to `'locations'` (`useState('locations')`).
+  2. **Cache-Busting Bundle Deployment**: Produced fresh asset bundle `dist/assets/index-BYMPBcJV.js` and deployed directly to GitHub Pages.
+  3. **Dual Location Overlays**: Users landing on the site now immediately see both `🏡 ORIGINALLY:` and `📍 LIVES IN:` overlapping location hulls by default.
