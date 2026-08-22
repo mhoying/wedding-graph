@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal, SlidersHorizontal, Settings, RotateCw, Disc } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal, SlidersHorizontal, Settings, RotateCw, Disc, Key, Lock, Copy, FileSpreadsheet } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -133,6 +133,52 @@ export default function App() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('admin') === 'true' || localStorage.getItem('wedding_graph_admin') === 'true';
   });
+
+  // Event Passcode Gate State
+  const [eventPasscode, setEventPasscode] = useState(() => {
+    return localStorage.getItem('wedding_graph_passcode') || 'MaureenAndMatt2026';
+  });
+
+  const [isUnlocked, setIsUnlocked] = useState(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlCode = urlParams.get('passcode');
+    const savedPasscode = localStorage.getItem('wedding_graph_passcode') || 'MaureenAndMatt2026';
+    
+    // Auto-unlock via URL parameter ?passcode=MaureenAndMatt2026
+    if (urlCode && urlCode.toLowerCase() === savedPasscode.toLowerCase()) {
+      localStorage.setItem('wedding_graph_unlocked', 'true');
+      return true;
+    }
+    
+    // Auto-unlock for host admin ?admin=true
+    if (urlParams.get('admin') === 'true') {
+      return true;
+    }
+
+    return localStorage.getItem('wedding_graph_unlocked') === 'true';
+  });
+
+  const [inputPasscode, setInputPasscode] = useState('');
+  const [passcodeError, setPasscodeError] = useState('');
+
+  const handleUnlockPasscode = (e) => {
+    e.preventDefault();
+    if (inputPasscode.trim().toLowerCase() === eventPasscode.toLowerCase()) {
+      localStorage.setItem('wedding_graph_unlocked', 'true');
+      setIsUnlocked(true);
+      setPasscodeError('');
+    } else {
+      setPasscodeError('Incorrect passcode. Please check your wedding invitation!');
+    }
+  };
+
+  const handleCopyQrLink = () => {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const qrUrl = `${baseUrl}?passcode=${encodeURIComponent(eventPasscode)}`;
+    navigator.clipboard.writeText(qrUrl);
+    setToastMessage('Copied Auto-Unlock Invitation Link to clipboard!');
+    setTimeout(() => setToastMessage(''), 4000);
+  };
 
   // Mobile Viewport & Orientation Detection
   const [isMobileViewport, setIsMobileViewport] = useState(() => window.innerWidth < 768 || (window.innerHeight / window.innerWidth) > 1.25);
@@ -1009,6 +1055,52 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     return COHORT_COLORS;
   }, [colorMode]);
 
+  if (!isUnlocked) {
+    return (
+      <div className="passcode-gate-container">
+        <div className="glass-panel passcode-card">
+          <div className="passcode-icon-ring">
+            <Heart style={{ width: 30, height: 30, color: '#38bdf8' }} />
+          </div>
+
+          <h2 className="passcode-title">The Social Universe of Maureen & Matt</h2>
+          <p className="passcode-subtitle">
+            Enter the event passcode from your wedding invitation to unlock the interactive guest connection map.
+          </p>
+
+          <form onSubmit={handleUnlockPasscode} className="passcode-form">
+            <div className="passcode-input-wrapper">
+              <Key style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', width: 18, height: 18, color: '#38bdf8' }} />
+              <input 
+                type="password"
+                placeholder="Enter event passcode..."
+                className="passcode-input"
+                value={inputPasscode}
+                onChange={(e) => setInputPasscode(e.target.value)}
+                autoFocus
+              />
+            </div>
+
+            {passcodeError && (
+              <div className="passcode-error-msg">
+                {passcodeError}
+              </div>
+            )}
+
+            <button type="submit" className="passcode-submit-btn">
+              <Sparkles style={{ width: 18, height: 18 }} />
+              <span>Unlock Social Universe</span>
+            </button>
+          </form>
+
+          <div style={{ marginTop: 20, fontSize: 11, color: '#64748b' }}>
+            Hint: Default passcode is <b>MaureenAndMatt2026</b>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
       className={`app-container ${isLightMode ? 'light-mode' : ''}`}
@@ -1270,6 +1362,17 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             {/* ADMIN ONLY CONTROLS */}
             {isAdmin && (
               <>
+                {/* Copy Auto-Unlock QR Invitation Link */}
+                <button 
+                  onClick={handleCopyQrLink}
+                  className="glass-panel btn-mode"
+                  style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, borderColor: '#38bdf8' }}
+                  title="Copy pre-authenticated QR code invitation link with ?passcode="
+                >
+                  <Copy style={{ width: 14, height: 14, color: '#38bdf8' }} />
+                  <span>Copy QR Link</span>
+                </button>
+
                 {/* Host Feedback Admin Queue Button */}
                 {feedbackList.some(f => !f.applied) && (
                   <button 

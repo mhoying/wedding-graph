@@ -77,5 +77,6 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [react(), saveDatasetPlugin()],
 })

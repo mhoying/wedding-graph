@@ -58,69 +58,62 @@ body {
   right: 24px;
   z-index: 10;
   display: flex;
-  justify-content: space-between;
+  justify: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  pointer-events: none;
 }
 
 .top-bar-left, .top-bar-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  pointer-events: auto;
 }
 
 .brand-badge {
-  padding: 8px 16px;
-  border-radius: 9999px;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 8px 16px;
   font-weight: 700;
-  font-size: 13px;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+  font-size: 14px;
+  color: #f8fafc;
 }
 
 .search-box {
-  padding: 8px 16px;
-  border-radius: 9999px;
   display: flex;
   align-items: center;
-  width: 240px;
-  transition: width 0.3s ease;
+  padding: 8px 16px;
+  width: 280px;
 }
 
 .search-input {
-  background: transparent;
+  background: none;
   border: none;
-  outline: none;
   color: inherit;
   font-size: 13px;
   width: 100%;
-  font-family: inherit;
+  outline: none;
 }
 
 .color-mode-bar {
-  padding: 5px 12px;
-  border-radius: 9999px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
+  gap: 4px;
+  padding: 4px;
 }
 
 .btn-mode {
-  padding: 5px 12px;
-  border-radius: 9999px;
+  background: none;
   border: none;
-  background: transparent;
   color: #94a3b8;
-  cursor: pointer;
-  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 12px;
   font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s ease;
-  min-height: 34px;
 }
 
 .btn-mode.active {
@@ -129,29 +122,29 @@ body {
 }
 
 .btn-icon {
-  padding: 10px;
-  border-radius: 9999px;
-  cursor: pointer;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 38px;
-  min-height: 38px;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  border-radius: 12px;
 }
 
 .btn-action {
-  padding: 8px 16px;
-  border-radius: 9999px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  padding: 8px 16px;
+  background: rgba(2, 132, 199, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
   font-weight: 600;
-  border: none;
-  background: #0284c7;
-  color: #fff;
-  min-height: 36px;
+  font-size: 13px;
+  border-radius: 12px;
+  cursor: pointer;
 }
 
 .graph-container {
@@ -162,72 +155,46 @@ body {
   left: 0;
 }
 
-.legend-bar {
-  position: absolute;
-  bottom: 20px;
-  left: 24px;
-  z-index: 10;
-  padding: 8px 18px;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 12px;
-  max-width: calc(100vw - 48px);
-  overflow-x: auto;
+/* Hover Tooltip Popup Overlay */
+.hover-tooltip {
+  position: fixed;
+  padding: 12px 16px;
+  border-radius: 14px;
+  z-index: 50;
+  pointer-events: none;
+  max-width: 260px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.15s ease-out;
 }
 
-.legend-items {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.legend-color {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
+/* Metadata Drawer */
 .metadata-drawer {
   position: absolute;
-  right: 24px;
   top: 80px;
-  bottom: 24px;
-  width: 360px;
-  z-index: 20;
+  right: 24px;
+  width: 340px;
   padding: 24px;
-  border-radius: 24px;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow-y: auto;
 }
 
 .drawer-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 4px 12px;
-  border-radius: 9999px;
   color: #ffffff;
-  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
 .drawer-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
-  margin-top: 8px;
+  line-height: 1.2;
   margin-bottom: 4px;
-  letter-spacing: -0.02em;
 }
 
 .drawer-subtitle {
@@ -237,8 +204,6 @@ body {
 }
 
 .drawer-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 14px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -252,137 +217,212 @@ body {
 }
 
 .icebreaker-box {
-  background: rgba(30, 41, 59, 0.5);
-  padding: 14px;
-  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 13px;
-  line-height: 1.5;
-  margin-top: 6px;
-}
-
-.hover-tooltip {
-  position: fixed;
-  pointer-events: none;
-  z-index: 30;
-  padding: 14px;
-  border-radius: 16px;
-  width: 260px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  border-radius: 14px;
+  padding: 12px;
 }
 
 /* Path Finder Breadcrumb Banner */
 .path-finder-banner {
   position: absolute;
-  top: 76px;
+  top: 80px;
   left: 24px;
-  z-index: 10;
-  padding: 8px 18px;
-  border-radius: 9999px;
+  z-index: 20;
+  padding: 10px 18px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-size: 13px;
-  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-weight: 600;
+}
+
+.path-step {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+/* Legend Bar */
+.legend-bar {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
   max-width: calc(100vw - 48px);
   overflow-x: auto;
 }
 
-.path-step {
-  font-weight: 700;
-  color: #38bdf8;
-}
-
-/* Print Banner Header */
-.print-poster-header {
-  display: none;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/* ==========================================================================
-   MOBILE & TABLET RESPONSIVE STYLES (UI RATIO & SCREEN ADAPTATION)
-   ========================================================================== */
-
-/* Mobile Bottom Sheet Overlay Drawer */
-.mobile-controls-sheet {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 150;
-  background: rgba(15, 23, 42, 0.96);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-top-left-radius: 28px;
-  border-top-right-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
-  padding: 20px 24px 32px 24px;
-  max-height: 85vh;
-  overflow-y: auto;
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
-
-.mobile-sheet-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  z-index: 140;
-}
-
-.mobile-control-row {
+.legend-items {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 14px;
 }
 
-.mobile-control-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.legend-item {
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 12px;
 }
 
-@media screen and (max-width: 900px) {
-  .top-bar {
-    top: 12px;
-    left: 12px;
-    right: 12px;
-  }
-
-  .search-box {
-    width: 140px;
-  }
-
-  .brand-badge span {
-    display: none;
-  }
+.legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
 
-/* Mobile Devices (< 768px width or Portrait Ratio) */
+/* Print Poster Header */
+.print-poster-header {
+  display: none;
+}
+
+/* PASSCODE EVENT GATE STYLES */
+.passcode-gate-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: radial-gradient(circle at 50% 40%, #1e293b 0%, #0f172a 60%, #020617 100%);
+}
+
+.passcode-card {
+  width: 440px;
+  max-width: 100%;
+  padding: 36px 28px;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.passcode-icon-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+.passcode-title {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.passcode-subtitle {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.passcode-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.passcode-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.passcode-input {
+  width: 100%;
+  padding: 14px 16px 14px 44px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.passcode-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+.passcode-submit-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.4);
+  transition: all 0.2s;
+}
+
+.passcode-submit-btn:hover {
+  background: #0369a1;
+  transform: translateY(-1px);
+}
+
+.passcode-error-msg {
+  color: #f43f5e;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* RESPONSIVE MOBILE MEDIA QUERIES (<768px or tall aspect ratio) */
 @media screen and (max-width: 768px) {
   .top-bar {
     top: 12px;
     left: 12px;
     right: 12px;
-    gap: 8px;
   }
-
+  
   .search-box {
-    flex: 1;
-    width: auto;
+    width: 100%;
   }
 
   .desktop-only-controls {
@@ -390,55 +430,99 @@ body {
   }
 
   .metadata-drawer {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
+    position: fixed;
     top: auto;
-    width: auto;
-    max-height: 70vh;
-    border-radius: 24px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
   }
 
   .legend-bar {
-    left: 12px;
     bottom: 12px;
-    padding: 6px 14px;
-    font-size: 11px;
-  }
-
-  .path-finder-banner {
-    top: 66px;
     left: 12px;
     right: 12px;
-    font-size: 11px;
-  }
-
-  .hover-tooltip {
-    display: none; /* Hide hover tooltip on touch devices to avoid touch overlap */
+    max-width: calc(100vw - 24px);
   }
 }
 
+.mobile-sheet-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 140;
+}
+
+.mobile-controls-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: rgba(15, 23, 42, 0.96);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px 28px 0 0;
+  padding: 24px 20px;
+  z-index: 150;
+  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.25s ease-out;
+}
+
+.mobile-control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.mobile-control-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* High-Contrast Print Poster CSS Override */
 @media print {
   body {
-    background: #f8fafc !important;
-    color: #0f172a !important;
+    background: #ffffff !important;
+    color: #000000 !important;
   }
   .no-print {
     display: none !important;
   }
   .print-poster-header {
     display: block !important;
-    padding-top: 40px;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
   }
   .print-poster-header h1 {
     font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    font-family: 'Inter', sans-serif;
+    font-weight: 900;
     letter-spacing: 0.05em;
   }
   .print-poster-header p {
-    font-size: 14px;
-    color: #64748b;
+    font-size: 16px;
+    color: #475569;
   }
 }
