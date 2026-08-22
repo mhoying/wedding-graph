@@ -43,7 +43,7 @@ function extractProposedTag(note, category) {
   return note.trim();
 }
 
-// DYNAMIC LAYOUT MATH HELPER: Calculates exact mathematical bounds & collision radius in World Coordinates
+// DYNAMIC LAYOUT MATH HELPER: Calculates exact mathematical bounds & HIGH SAFETY FACTOR collision radius
 function getNodeBounds(node, showHeadshots) {
   const isAnchor = node.type === 'ANCHOR';
   const isHub = node.type === 'CONTEXT_HUB';
@@ -57,21 +57,20 @@ function getNodeBounds(node, showHeadshots) {
   // World Unit Dimensions (independent of zoom scale for layout stability)
   const avatarDiameter = isAnchor ? 70 : 58;
   const fontSize = isAnchor ? 14 : 12;
-  const textWidth = labelText.length * (fontSize * 0.58);
+  const textWidth = labelText.length * (fontSize * 0.62);
 
   let width, height;
   if (renderAvatar) {
-    width = Math.max(textWidth + 28, avatarDiameter + 24, isAnchor ? 130 : 110);
-    height = avatarDiameter + fontSize + 26;
+    width = Math.max(textWidth + 36, avatarDiameter + 32, isAnchor ? 140 : 120);
+    height = avatarDiameter + fontSize + 30;
   } else {
-    width = Math.max(textWidth + 28, 90);
-    height = fontSize + 22;
+    width = Math.max(textWidth + 32, 95);
+    height = fontSize + 24;
   }
 
-  // Exact mathematical diagonal bounding circle radius: r = sqrt((w/2)^2 + (h/2)^2) + safety margin
-  const halfW = width / 2;
-  const halfH = height / 2;
-  const collisionRadius = Math.hypot(halfW, halfH) + 14;
+  // HIGH SAFETY FACTOR Bounding Circle Radius: Ensures cards NEVER touch horizontally or vertically
+  const maxDimension = Math.max(width, height);
+  const collisionRadius = maxDimension * 0.85 + 24;
 
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
@@ -403,18 +402,18 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces using DYNAMIC MATHEMATICAL NODE BOUNDS & HYPOTENUSE COLLISION
+  // Configure D3 forces using HIGH SAFETY FACTOR MATH & HEAVY REPULSION
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
       
-      // Calculate dynamic link distance based on exact mathematical collision radii of connected nodes!
+      // Dynamic link distance with high safety buffer
       fg.d3Force('link').distance(l => {
         const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
         const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
         
-        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots).collisionRadius : 70;
-        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots).collisionRadius : 70;
+        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots).collisionRadius : 110;
+        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots).collisionRadius : 110;
         
         const sId = sObj ? sObj.id : l.source;
         const tId = tObj ? tObj.id : l.target;
@@ -422,17 +421,17 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (sId === 'maureen' && tId === 'matt') || (sId === 'matt' && tId === 'maureen');
         if (isCoupleLink) {
-          return sRadius + tRadius + 20;
+          return sRadius + tRadius + 30;
         }
-        return sRadius + tRadius + 70;
+        return sRadius + tRadius + 110;
       });
 
-      fg.d3Force('charge').strength(-6500).distanceMax(1400);
+      // HEAVY CHARGE REPULSION & HIGH ITERATION COLLISION SOLVER
+      fg.d3Force('charge').strength(-14000).distanceMax(2500);
       
-      // Dynamic mathematical collision radius based on exact card hypotenuse!
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots).collisionRadius;
-      }).iterations(12));
+      }).iterations(30));
 
       fg.d3ReheatSimulation();
     }
@@ -632,12 +631,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       const minY = Math.min(maureen.y - mBounds.height / 2, matt.y - tBounds.height / 2);
       const maxY = Math.max(maureen.y + mBounds.height / 2, matt.y + tBounds.height / 2);
 
-      const padding = 36 / globalScale;
+      const padding = 48 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
       const y = minY - padding;
-      const cornerRadius = 28 / globalScale;
+      const cornerRadius = 32 / globalScale;
 
       ctx.save();
       ctx.shadowColor = 'rgba(56, 189, 248, 0.15)';
@@ -706,7 +705,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         });
 
         // Exact Padding around outer card edges in World Coordinates
-        const pad = 28 / globalScale;
+        const pad = 40 / globalScale;
         const w = (maxX - minX) + pad * 2;
         const h = (maxY - minY) + pad * 2;
         const x = minX - pad;
@@ -719,7 +718,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
         ctx.beginPath();
         if (ctx.roundRect) {
-          ctx.roundRect(x, y, w, h, 24 / globalScale);
+          ctx.roundRect(x, y, w, h, 28 / globalScale);
         } else {
           ctx.rect(x, y, w, h);
         }
@@ -734,7 +733,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.font = `600 ${11 / globalScale}px Inter, sans-serif`;
         ctx.fillStyle = clusterColor;
         ctx.textAlign = 'left';
-        ctx.fillText(label.toUpperCase(), x + 12 / globalScale, y + 16 / globalScale);
+        ctx.fillText(label.toUpperCase(), x + 14 / globalScale, y + 18 / globalScale);
         ctx.restore();
       }
     });

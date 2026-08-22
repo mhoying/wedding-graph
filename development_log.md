@@ -23,13 +23,10 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Dynamic Mathematical Node Bounds & Hypotenuse Collision Engine
-- **User Prompt**: "they are still overlaapping.i htink you shodul be able to do someth math to prevent this dynamically"
+## [2026-08-22] High Safety Factor Math & Heavy Repulsion Engine
+- **User Prompt**: "it still has overlaps.. i think hte saftey factor needs ot be higher."
 - **Actions**:
-  1. **Dynamic Layout Math Helper (`getNodeBounds`)**: Replaced arbitrary static numbers with exact mathematical container bounds computation:
-     - `width` and `height` derived from `avatarDiameter`, text character length, and padding in World Coordinates.
-     - **Exact Hypotenuse Collision Radius**: `r = Math.hypot(width / 2, height / 2) + 14px safety margin`.
-  2. **Dynamic Link Distance Calculation**:
-     - Computed connection line length dynamically: `link.distance = sRadius + tRadius + 70px`. This guarantees that connected nodes NEVER overlap regardless of photo card sizes or toggle modes.
-  3. **Exact Bounding Box Enclosure Hulls**:
-     - `drawBackgroundHulls` computes exact outer extents (`n.x ± width/2`, `n.y ± height/2`) of every node card in a cohort cluster so background hull shapes wrap comfortably without clipping card edges.
+  1. **Boosted Safety Factor**: Increased bounding collision radius formula to `maxDimension * 0.85 + 24px` (~**140px–165px collision radius** per card node!).
+  2. **Heavy Charge Repulsion**: Increased D3 node repulsion force to **`-14000`** with a max distance of `2500px`.
+  3. **High-Precision Collision Solver**: Increased collision solver iterations to **`30 iterations per frame`**.
+  4. **Expanded Connection Distances**: Scaled connection link distances to `sRadius + tRadius + 110px` so connected cards have ample space between them.
