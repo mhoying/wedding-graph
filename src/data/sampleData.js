@@ -220,3 +220,17 @@ export const SAMPLE_LINKS = [
     "label": "Family Friend"
   }
 ];
+
+export const DYNAMIC_CLUSTER_COLORS = [
+  '#f472b6', '#38bdf8', '#34d399', '#a78bfa', '#fbbf24', 
+  '#f87171', '#818cf8', '#4ade80', '#fb923c', '#e879f9'
+];
+
+export function getInitials(name) {
+  if (!name) return '??';
+  const parts = name.trim().split(' ');
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+}

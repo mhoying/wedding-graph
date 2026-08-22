@@ -1,0 +1,258 @@
+import React from 'react';
+import { X, Edit3, Ghost, Landmark, Home, MapPin, Users, Sparkles } from 'lucide-react';
+
+export default function GuestProfileDrawer({
+  selectedNode,
+  onClose,
+  isEditingDrawer,
+  setIsEditingDrawer,
+  editRelationship,
+  setEditRelationship,
+  editOriginallyFrom,
+  setEditOriginallyFrom,
+  editCurrentlyLivesIn,
+  setEditCurrentlyLivesIn,
+  editCohort,
+  setEditCohort,
+  editSide,
+  setEditSide,
+  editFamilyStatus,
+  setEditFamilyStatus,
+  editHobbies,
+  newInterestInput,
+  setNewInterestInput,
+  handleAddInterestTag,
+  handleRemoveInterestTag,
+  handleSaveProfileEdits,
+  selectedInterests,
+  setSelectedInterests,
+  colorMode,
+  getNodeColor
+}) {
+  if (!selectedNode) return null;
+
+  const nodeColor = getNodeColor ? getNodeColor(selectedNode) : '#38bdf8';
+
+  return (
+    <div className="glass-panel metadata-drawer no-print">
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <span 
+            className="drawer-badge"
+            style={{ backgroundColor: nodeColor }}
+          >
+            {selectedNode.type === 'CONTEXT_HUB' ? '📍 Place Hub' : (selectedNode.type === 'NON_ATTENDING' ? '👻 Not Attending' : `${selectedNode.cohort} • ${selectedNode.side} Side`)}
+          </span>
+          <button 
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
+          >
+            <X style={{ width: 20, height: 20 }} />
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+          <h2 className="drawer-title" style={{ margin: 0 }}>{selectedNode.name}</h2>
+          {!isEditingDrawer && (
+            <button 
+              onClick={() => setIsEditingDrawer(true)}
+              className="btn-mode"
+              style={{ fontSize: 11, padding: '4px 10px', borderRadius: 9999, background: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              <Edit3 style={{ width: 12, height: 12 }} /> Edit Profile
+            </button>
+          )}
+        </div>
+
+        {!isEditingDrawer ? (
+          /* VIEW MODE */
+          <>
+            <p className="drawer-subtitle">{selectedNode.relationship}</p>
+
+            <div className="drawer-section">
+              {selectedNode.type === 'NON_ATTENDING' && (
+                <div className="drawer-info-row" style={{ color: '#f59e0b', fontWeight: 600 }}>
+                  <Ghost style={{ width: 16, height: 16, color: '#f59e0b' }} />
+                  <span>Not Attending Wedding (Connecting Bridge Person)</span>
+                </div>
+              )}
+              {selectedNode.type === 'CONTEXT_HUB' && (
+                <div className="drawer-info-row" style={{ color: '#38bdf8', fontWeight: 600 }}>
+                  <Landmark style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                  <span>Shared Meeting Location / Event Hub</span>
+                </div>
+              )}
+              {(selectedNode.originallyFrom || selectedNode.hometown) && (
+                <div className="drawer-info-row">
+                  <Home style={{ width: 16, height: 16, color: '#f59e0b' }} />
+                  <span>Originally from: {selectedNode.originallyFrom || selectedNode.hometown}</span>
+                </div>
+              )}
+              {(selectedNode.currentlyLivesIn || selectedNode.state) && (
+                <div className="drawer-info-row">
+                  <MapPin style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                  <span>Currently lives in: {selectedNode.currentlyLivesIn || selectedNode.state}</span>
+                </div>
+              )}
+              {selectedNode.familyStatus && (
+                <div className="drawer-info-row">
+                  <Users style={{ width: 16, height: 16, color: '#10b981' }} />
+                  <span>{selectedNode.familyStatus}</span>
+                </div>
+              )}
+              {selectedNode.hobbies && selectedNode.hobbies.length > 0 && (
+                <div style={{ marginTop: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
+                    <Sparkles style={{ width: 16, height: 16, color: '#10b981' }} />
+                    <span>Interests:</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {selectedNode.hobbies.map(h => (
+                      <button 
+                        key={h}
+                        onClick={() => {
+                          if (!selectedInterests.includes(h)) {
+                            setSelectedInterests([...selectedInterests, h]);
+                          }
+                          onClose();
+                        }}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 600,
+                          padding: '4px 10px',
+                          borderRadius: 9999,
+                          border: '1px solid rgba(16, 185, 129, 0.4)',
+                          background: 'rgba(16, 185, 129, 0.15)',
+                          color: '#34d399',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {h}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          /* DIRECT IN-SITU EDIT MODE FOR GUESTS */
+          <div className="drawer-section" style={{ marginTop: 12 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#10b981', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Edit3 style={{ width: 14, height: 14 }} /> Direct Profile Editor
+            </div>
+
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Relationship Note:</label>
+              <textarea 
+                rows={2}
+                value={editRelationship}
+                onChange={(e) => setEditRelationship(e.target.value)}
+                style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12, resize: 'none' }}
+              />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 10 }}>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Originally From:</label>
+                <input 
+                  type="text" 
+                  value={editOriginallyFrom}
+                  onChange={(e) => setEditOriginallyFrom(e.target.value)}
+                  style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Currently Lives In:</label>
+                <input 
+                  type="text" 
+                  value={editCurrentlyLivesIn}
+                  onChange={(e) => setEditCurrentlyLivesIn(e.target.value)}
+                  style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 10 }}>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Cohort Group:</label>
+                <input 
+                  type="text" 
+                  value={editCohort}
+                  onChange={(e) => setEditCohort(e.target.value)}
+                  style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Side:</label>
+                <select 
+                  value={editSide}
+                  onChange={(e) => setEditSide(e.target.value)}
+                  style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                >
+                  <option value="Maureen">Maureen</option>
+                  <option value="Matt">Matt</option>
+                  <option value="Joint">Joint</option>
+                </select>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Family Status / Notes:</label>
+              <input 
+                type="text" 
+                value={editFamilyStatus}
+                onChange={(e) => setEditFamilyStatus(e.target.value)}
+                style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+              />
+            </div>
+
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Interests (Click ✕ to remove):</label>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
+                {editHobbies.map(h => (
+                  <span key={h} style={{ fontSize: 11, padding: '3px 8px', borderRadius: 9999, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    {h}
+                    <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => handleRemoveInterestTag(h)} />
+                  </span>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <input 
+                  type="text" 
+                  placeholder="New interest (e.g. Sailing)..."
+                  value={newInterestInput}
+                  onChange={(e) => setNewInterestInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleAddInterestTag(); }}
+                  style={{ flex: 1, padding: 6, borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                />
+                <button 
+                  type="button"
+                  onClick={handleAddInterestTag}
+                  style={{ padding: '6px 12px', borderRadius: 8, background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 11, fontWeight: 700 }}
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+              <button 
+                onClick={handleSaveProfileEdits}
+                style={{ flex: 1, padding: '8px', borderRadius: 10, background: '#10b981', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: 12 }}
+              >
+                Save Changes
+              </button>
+              <button 
+                onClick={() => setIsEditingDrawer(false)}
+                style={{ padding: '8px 14px', borderRadius: 10, background: 'rgba(255, 255, 255, 0.1)', color: '#94a3b8', border: 'none', cursor: 'pointer', fontSize: 12 }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

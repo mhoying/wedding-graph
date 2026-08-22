@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Private Host Security Documentation
+docs/HOST_ADMIN_SECURITY.md
