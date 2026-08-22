@@ -411,7 +411,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces: STRICT INTRA-COHORT HIERARCHICAL EDGE SPACING & MAP DENSITY SLIDER!
+  // Configure D3 forces: PROPORTIONAL COHORT MULTIPLIERS (0.80x same cohort vs 1.85x cross cohort) & ACTIVE RE-HEATING!
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
@@ -432,35 +432,39 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
         const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
 
-        let basePadding;
+        // PROPORTIONAL MULTIPLIERS to preserve cohort hierarchy across all node size and density slider values!
+        let cohortMultiplier;
         if (isCoupleLink) {
-          // Tightest core bond for Maureen & Matt
-          basePadding = 12 * nodeScaleMultiplier;
+          cohortMultiplier = 0.65; // Tightest core bond for Maureen & Matt
         } else if (isSameCohort) {
-          // TIGHT INTRA-COHORT EDGE SPACING (Tightly grouped within cohort!)
-          basePadding = 22 * nodeScaleMultiplier;
+          cohortMultiplier = 0.80; // TIGHT INTRA-COHORT EDGE SPACING (Tightly grouped within cohort!)
         } else if (isHubLink) {
-          // Radial distance for shared place hubs
-          basePadding = 100 * nodeScaleMultiplier;
+          cohortMultiplier = 2.20; // Radial distance for shared place hubs
         } else {
-          // LONGER CROSS-COHORT BRIDGE EDGES (Separates distinct cohort groups!)
-          basePadding = 85 * nodeScaleMultiplier;
+          cohortMultiplier = 1.85; // LONGER CROSS-COHORT BRIDGE EDGES (Distinct inter-cluster bridge spacing!)
         }
 
-        // Multiply by Map Density / Edge Length Slider!
-        return (sRadius + tRadius + basePadding) * edgeLengthMultiplier;
+        const baseSum = sRadius + tRadius + 15 * nodeScaleMultiplier;
+        return baseSum * cohortMultiplier * edgeLengthMultiplier;
       });
 
-      // Stable Repulsion & Collision Solver scaled by nodeScaleMultiplier & edgeLengthMultiplier
+      // Moderate Charge Repulsion so link cohort distances dominate placement!
       fg.d3Force('charge')
-        .strength(-3600 * nodeScaleMultiplier * edgeLengthMultiplier)
-        .distanceMax(2000 * edgeLengthMultiplier);
+        .strength(-2200 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(1800 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
       }).iterations(25));
 
+      // Fully re-heat D3 simulation with temporary alpha target so nodes immediately move to exact new positions!
+      fg.d3AlphaTarget(0.3);
       fg.d3ReheatSimulation();
+      const timer = setTimeout(() => {
+        if (fgRef.current) fgRef.current.d3AlphaTarget(0);
+      }, 700);
+
+      return () => clearTimeout(timer);
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier]);
 

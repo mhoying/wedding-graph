@@ -23,13 +23,14 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Map Density Slider & Cohort Hierarchical Edge Spacing
-- **User Prompt**: "lets do something that similary adjsuts tehy edge lenght/map density. also note that i think you lost hte requiremetn that people wihtin a cohort group (like the couple) shoudl have shorter edge lenghts (while still not coliding) than those outside the cohort"
+## [2026-08-22] Proportional Cohort Multiplier & Active Alpha Re-Heating
+- **User Prompt**: "it seems that the edge spacing gets ignored if the node size or density are edited"
 - **Actions**:
-  1. **Independent Map Density Slider (`Density: 1.0x`)**: Added an interactive slider (`0.5x` to `2.0x`) in the top bar to dynamically expand or condense edge connection distances across the map!
-  2. **Hierarchical Cohort Link Distance Logic**:
-     - **The Couple (Maureen & Matt)**: Ultra-tight core connection (`+12px`).
-     - **Intra-Cohort Cluster Edges (e.g. Cornell to Cornell)**: Tight cluster bonds (`+22px`), keeping cohort groups visually cohesive.
-     - **Cross-Cohort Bridge Edges (e.g. Cornell to High School or Family)**: Longer distinct inter-cluster bridge distances (`+85px`), physically separating different cohorts on the map.
-     - **Context / Event Hub Edges**: Spaced radial anchor distances (`+100px`).
-  3. **Strict Zero-Overlap Guarantee**: `d3.forceCollide()` continues to strictly prevent cards from touching even within tight intra-cohort clusters.
+  1. **Root Cause Analysis**: Fixed issue where additive `basePadding` was getting drowned out whenever `nodeScaleMultiplier` or `edgeLengthMultiplier` changed.
+  2. **Proportional Cohort Multipliers**: Switched link distance calculation to use exact relative multipliers:
+     - **The Couple (Maureen & Matt)**: `0.65x` (Ultra-tight core).
+     - **Intra-Cohort Links**: `0.80x` (Tight, cohesive cohort grouping).
+     - **Cross-Cohort Bridge Links**: `1.85x` (More than **2.3x longer** inter-cohort bridge distance!).
+     - **Place Hub Links**: `2.20x` (Radial anchor distance).
+  3. **Preserved Ratio Invariance**: Because multipliers scale multiplicatively (`base * multiplier * slider`), the **2.3x ratio difference** between same-cohort and cross-cohort edges remains **100% invariant at any level of Node Size or Density slider values**!
+  4. **Active Physics Re-Heating (`d3AlphaTarget(0.3)`)**: Added temporary alpha target re-heating when sliders move so D3 physics immediately forces nodes into position.
