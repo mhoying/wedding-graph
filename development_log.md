@@ -36,23 +36,15 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Sprints 2, 3 & 4 Execution: Import Engine, Matchmaker & Constellation Mode
-- **User Prompt**: "/goal do three more spirnts with the goal of making the most useufl, beutiful, interactive solution possible"
-- **Actions**:
-  1. Sprint 2 (Live Google Sheets CSV Import Modal & Validation).
-  2. Sprint 3 (Cocktail Hour Matchmaker & Icebreaker Drawer).
-  3. Sprint 4 (Cinematic Camera Fly-To & Starry Constellation Mode).
-
 ## [2026-08-22] Guest Metadata Correction Form & Host Feedback Admin Queue
 - **User Prompt**: "there shoudl eb a way for people to report misisng or incorrect metadata. like Nur-e may write to us and sya 'you forgot that i like wine' or Anne may tell us her daugher is 17"
 - **Actions**:
   1. `✏️ Suggest Edit` Modal & Host Feedback Queue (`📩 Host Feedback`).
 
-## [2026-08-22] Aesthetic Pivot: Clean Modern Editorial Redesign (De-Sci-Fi)
-- **User Prompt**: "so this feels very 'sci-fi' in terms of tone and design. what does the UX designer think? have htem provide 3-5 recommendaionts to mkae it clean and modern, but not look like the display on a cyberpunk screen or from star trek" / "do that all"
+## [2026-08-22] Top Bar Streamlining & CSV Import UI Removal
+- **User Prompt**: "remove the csv import from teh ui, we shoudl just do this through directly editing the tables in git.the top bar seems overly wide and complex, maybe a few more of these can be collpased into more efficent ui control elements"
 - **Actions**:
-  1. **Removed Sci-Fi Starfields & HUD Overlays**: Removed space starfield graphics, neon glows, and pulse dots.
-  2. **Soft Organic Slate Background**: Applied multi-layered organic radial canvas background (`#1e293b` to `#0f172a`).
-  3. **Curved Pill Badges**: Converted all top control items, search bars, and filter chips to smooth rounded pill shapes (`border-radius: 9999px`).
-  4. **Refined Line Traces & Drop Shadows**: Rendered connection links as delicate 1.5px semi-transparent slate/sage lines (`rgba(148, 163, 184, 0.35)`). Replaced neon bloom halos with soft organic drop shadows (`rgba(15, 23, 42, 0.4)`).
-  5. **Editorial Brand Badge**: Replaced sci-fi pulse dot badge with an elegant heart badge (**Maureen & Matt**).
+  1. **Removed CSV Import Modal**: Dataset tables will be managed directly in Git repository (`src/data/sampleData.js`). Removed `Import CSV` modal & upload button from UI, reducing JS bundle size by >80KB!
+  2. **Streamlined & Compact Top Bar**:
+     - Consolidated action triggers into sleek compact pill buttons (`Compass Path Finder`, `Wand2 Matchmaker`, `Edit3 Suggest Edit`, `Inbox Feedback Queue`, `Palette Color Mode`).
+     - Reduced top bar padding and font size for clean, elegant responsiveness across screen sizes.

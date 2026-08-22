@@ -1,24 +1,8 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import Papa from 'papaparse';
-import { z } from 'zod';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Download, Upload, CheckCircle2, AlertCircle, RefreshCw, Wand2, Edit3, Inbox, Send, Check } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
-
-// Zod Schema for CSV / Dataset Validation
-const NodeSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  type: z.enum(['ANCHOR', 'GUEST', 'CONTEXT_HUB', 'NON_ATTENDING']).default('GUEST'),
-  cohort: z.string().default('General'),
-  side: z.enum(['Maureen', 'Matt', 'Joint']).default('Joint'),
-  state: z.string().optional().default(''),
-  hometown: z.string().optional().default(''),
-  hobbies: z.array(z.string()).default([]),
-  familyStatus: z.string().optional().default('Solo'),
-  relationship: z.string().optional().default('')
-});
 
 export default function App() {
   const fgRef = useRef();
@@ -43,11 +27,6 @@ export default function App() {
   // Matchmaker Mode State
   const [isMatchmakerOpen, setIsMatchmakerOpen] = useState(false);
   const [myGuestId, setMyGuestId] = useState('');
-
-  // CSV Import Modal State
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [sheetUrl, setSheetUrl] = useState('');
-  const [importStatus, setImportStatus] = useState(null);
 
   // Feedback & Metadata Correction System State
   const [feedbackList, setFeedbackList] = useState([
@@ -313,57 +292,6 @@ export default function App() {
     setTimeout(() => setToastMessage(''), 3000);
   };
 
-  // Google Sheets CSV Import Parser (PapaParse + Zod)
-  const handleImportCsv = () => {
-    if (!sheetUrl.trim()) return;
-    setImportStatus({ type: 'loading', message: 'Fetching and parsing CSV data...' });
-
-    Papa.parse(sheetUrl, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        try {
-          const parsedNodes = [];
-          results.data.forEach((row, index) => {
-            const rawId = row.ID || row.id || `node_${index}`;
-            const rawName = row.Name || row.name || `Guest ${index}`;
-            const rawCohort = row.Cohort || row.cohort || 'General';
-            const rawSide = row.Side || row.side || 'Joint';
-            const rawHobbies = row.Interests || row.Hobbies || row.hobbies || '';
-
-            const hobbiesArr = typeof rawHobbies === 'string' ? rawHobbies.split(',').map(x => x.trim()).filter(Boolean) : [];
-
-            const nodeObj = {
-              id: rawId.trim(),
-              name: rawName.trim(),
-              type: row.Type || 'GUEST',
-              cohort: rawCohort.trim(),
-              side: rawSide.trim(),
-              state: row.State || '',
-              hometown: row.Hometown || '',
-              hobbies: hobbiesArr,
-              familyStatus: row.FamilyStatus || 'Solo',
-              relationship: row.Relationship || ''
-            };
-
-            const validated = NodeSchema.parse(nodeObj);
-            parsedNodes.push(validated);
-          });
-
-          setNodes(parsedNodes);
-          setImportStatus({ type: 'success', message: `Successfully loaded ${parsedNodes.length} nodes!` });
-          setTimeout(() => setIsImportModalOpen(false), 1200);
-        } catch (err) {
-          setImportStatus({ type: 'error', message: `Schema Validation Error: ${err.message}` });
-        }
-      },
-      error: (err) => {
-        setImportStatus({ type: 'error', message: `Failed to fetch CSV: ${err.message}` });
-      }
-    });
-  };
-
   // Render organic background enclosure shapes around Maureen & Matt couple and Cohort Clusters
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
     const maureen = filteredNodes.find(n => n.id === 'maureen');
@@ -459,7 +387,7 @@ export default function App() {
     }
   }, [filteredNodes, isLightMode, showCohortHulls]);
 
-  // Clean Editorial Canvas Node Renderer (Soft Drop Shadows, No Sci-Fi Neon Glows)
+  // Clean Editorial Canvas Node Renderer
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -499,13 +427,11 @@ export default function App() {
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
-    // Organic Soft Shadow on Hover
     if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = 'rgba(15, 23, 42, 0.4)';
       ctx.shadowBlur = 14;
     }
 
-    // Elegant Pill Fill
     const gradient = ctx.createLinearGradient(x, y, x + badgeWidth, y + badgeHeight);
     if (isHovered || isPathNode) {
       gradient.addColorStop(0, color);
@@ -593,17 +519,17 @@ export default function App() {
         <p>A Visual Map of Family, Friends & Connections</p>
       </div>
 
-      {/* Top Controls Bar */}
+      {/* Streamlined & Sleek Top Controls Bar */}
       <div className="top-bar no-print">
-        <div className="top-bar-left flex-wrap">
+        <div className="top-bar-left">
           <div className="glass-panel brand-badge">
-            <Heart style={{ width: 15, height: 15, color: '#38bdf8' }} />
+            <Heart style={{ width: 14, height: 14, color: '#38bdf8' }} />
             <span>Maureen & Matt</span>
           </div>
 
           {/* Search Box */}
           <div className="glass-panel search-box">
-            <Search style={{ width: 15, height: 15, color: '#94a3b8', marginRight: 8 }} />
+            <Search style={{ width: 14, height: 14, color: '#94a3b8', marginRight: 8 }} />
             <input 
               type="text"
               placeholder="Search guests, cohorts, or interests..."
@@ -612,14 +538,13 @@ export default function App() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             {searchQuery && (
-              <X style={{ width: 15, height: 15, cursor: 'pointer', color: '#94a3b8' }} onClick={() => setSearchQuery('')} />
+              <X style={{ width: 14, height: 14, cursor: 'pointer', color: '#94a3b8' }} onClick={() => setSearchQuery('')} />
             )}
           </div>
 
           {/* Dynamic Interest Filter Ribbon */}
           <div className="glass-panel color-mode-bar">
-            <Filter style={{ width: 14, height: 14, color: '#10b981' }} />
-            <span style={{ color: '#94a3b8', marginRight: 4 }}>Interest:</span>
+            <Filter style={{ width: 13, height: 13, color: '#10b981' }} />
             {selectedInterest ? (
               <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
                 🏷️ {selectedInterest}
@@ -642,17 +567,32 @@ export default function App() {
           </div>
         </div>
 
-        {/* Dynamic Controls Bar */}
+        {/* Compact & Streamlined Action Controls Bar */}
         <div className="top-bar-right">
-          {/* Host Feedback Admin Queue Button */}
+          {/* Path Finder Toggle */}
           <button 
-            onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
-            className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
-            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6, background: feedbackList.some(f => !f.applied) ? 'rgba(245, 158, 11, 0.2)' : '', border: feedbackList.some(f => !f.applied) ? '1px solid #f59e0b' : '' }}
-            title="View Submitted Guest Metadata Corrections"
+            onClick={() => {
+              setIsPathMode(!isPathMode);
+              setPathStart(null);
+              setPathEnd(null);
+            }} 
+            className={`glass-panel btn-mode ${isPathMode ? 'active' : ''}`}
+            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            title="Calculate shortest social connection path between 2 guests"
           >
-            <Inbox style={{ width: 15, height: 15, color: '#f59e0b' }} />
-            <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
+            <Compass style={{ width: 14, height: 14, color: isPathMode ? '#fff' : '#38bdf8' }} />
+            <span>Path Finder</span>
+          </button>
+
+          {/* Matchmaker Toggle */}
+          <button 
+            onClick={() => setIsMatchmakerOpen(!isMatchmakerOpen)}
+            className={`glass-panel btn-mode ${isMatchmakerOpen ? 'active' : ''}`}
+            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: isMatchmakerOpen ? '#10b981' : '' }}
+            title="Cocktail Hour Matchmaker & Icebreakers"
+          >
+            <Wand2 style={{ width: 14, height: 14, color: isMatchmakerOpen ? '#fff' : '#10b981' }} />
+            <span>Matchmaker</span>
           </button>
 
           {/* Suggest Edit Trigger */}
@@ -662,54 +602,29 @@ export default function App() {
               setIsFeedbackModalOpen(true);
             }}
             className="glass-panel btn-mode"
-            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
+            style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
             title="Report Missing or Incorrect Metadata"
           >
-            <Edit3 style={{ width: 15, height: 15, color: '#38bdf8' }} />
+            <Edit3 style={{ width: 14, height: 14, color: '#38bdf8' }} />
             <span>Suggest Edit</span>
           </button>
 
-          {/* Import CSV */}
-          <button 
-            onClick={() => setIsImportModalOpen(true)}
-            className="glass-panel btn-mode"
-            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Import Live Google Sheets CSV Data"
-          >
-            <Upload style={{ width: 15, height: 15, color: '#10b981' }} />
-            <span>Import CSV</span>
-          </button>
-
-          {/* Cocktail Matchmaker Trigger */}
-          <button 
-            onClick={() => setIsMatchmakerOpen(!isMatchmakerOpen)}
-            className={`glass-panel btn-mode ${isMatchmakerOpen ? 'active' : ''}`}
-            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6, background: isMatchmakerOpen ? '#10b981' : '' }}
-            title="Cocktail Hour Matchmaker & Icebreakers"
-          >
-            <Wand2 style={{ width: 15, height: 15, color: isMatchmakerOpen ? '#fff' : '#10b981' }} />
-            <span>Matchmaker</span>
-          </button>
-
-          {/* Path Finder Toggle */}
-          <button 
-            onClick={() => {
-              setIsPathMode(!isPathMode);
-              setPathStart(null);
-              setPathEnd(null);
-            }} 
-            className={`glass-panel btn-mode ${isPathMode ? 'active' : ''}`}
-            style={{ padding: '7px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Calculate shortest social connection path between 2 guests"
-          >
-            <Compass style={{ width: 15, height: 15, color: isPathMode ? '#fff' : '#38bdf8' }} />
-            <span>Path Finder</span>
-          </button>
+          {/* Host Feedback Admin Queue Button (Shows badge when pending) */}
+          {feedbackList.some(f => !f.applied) && (
+            <button 
+              onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
+              className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
+              style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(245, 158, 11, 0.2)', border: '1px solid #f59e0b' }}
+              title="View Submitted Guest Metadata Corrections"
+            >
+              <Inbox style={{ width: 14, height: 14, color: '#f59e0b' }} />
+              <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
+            </button>
+          )}
 
           {/* Color Mode Selector */}
           <div className="glass-panel color-mode-bar">
-            <Palette style={{ width: 15, height: 15, color: '#38bdf8' }} />
-            <span style={{ color: '#94a3b8', marginRight: 2 }}>Color:</span>
+            <Palette style={{ width: 14, height: 14, color: '#38bdf8' }} />
             <button 
               onClick={() => setColorMode('cohort')}
               className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`}
@@ -741,7 +656,7 @@ export default function App() {
             onClick={() => window.print()} 
             className="glass-panel btn-action"
           >
-            <Printer style={{ width: 15, height: 15, color: '#38bdf8' }} />
+            <Printer style={{ width: 14, height: 14, color: '#38bdf8' }} />
             <span>Export Poster</span>
           </button>
         </div>
@@ -958,62 +873,6 @@ export default function App() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
-      )}
-
-      {/* Google Sheets CSV Import Modal */}
-      {isImportModalOpen && (
-        <div className="app-container no-print" style={{ position: 'fixed', zIndex: 50, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="glass-panel" style={{ width: 480, padding: 28, borderRadius: 24 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 800, fontSize: 18 }}>
-                <Upload style={{ width: 20, height: 20, color: '#10b981' }} />
-                <span>Import Google Sheets CSV</span>
-              </div>
-              <button onClick={() => setIsImportModalOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
-                <X style={{ width: 20, height: 20 }} />
-              </button>
-            </div>
-
-            <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 16, lineHeight: 1.5 }}>
-              Paste your <b>Published to Web</b> Google Sheets CSV link below to dynamically load guest nodes and connections into the canvas!
-            </p>
-
-            <input 
-              type="text" 
-              placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv"
-              value={sheetUrl}
-              onChange={(e) => setSheetUrl(e.target.value)}
-              style={{ width: '100%', padding: '12px', borderRadius: 12, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none', fontSize: 12, marginBottom: 16 }}
-            />
-
-            {importStatus && (
-              <div style={{ fontSize: 12, padding: 10, borderRadius: 10, marginBottom: 16, background: importStatus.type === 'error' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)', color: importStatus.type === 'error' ? '#ef4444' : '#10b981' }}>
-                {importStatus.message}
-              </div>
-            )}
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-              <button 
-                onClick={() => {
-                  setNodes(SAMPLE_NODES);
-                  setLinks(SAMPLE_LINKS);
-                  setImportStatus({ type: 'success', message: 'Loaded Demo Dataset!' });
-                }}
-                className="btn-mode"
-                style={{ padding: '10px 16px', background: 'rgba(255, 255, 255, 0.08)', color: '#fff', borderRadius: 9999 }}
-              >
-                ⚡ Load Sample Demo
-              </button>
-              <button 
-                onClick={handleImportCsv}
-                className="btn-action"
-                style={{ background: '#0284c7', color: '#fff' }}
-              >
-                <span>Import & Validate</span>
-              </button>
-            </div>
           </div>
         </div>
       )}
