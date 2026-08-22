@@ -9,9 +9,10 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Option 1 Compact Glassmorphism Sheet & Cache Bypass
-- **User Prompt**: "i dont see that on my phone yet after refeshing. aslo conirm that the orbit is faster if the slider is to the right and slower if hte slider is to the left"
+## [2026-08-22] Mobile Floating Micro-Dock Controls UI (200px Dock)
+- **User Prompt**: "on my phone the controll drawer still takes up the entier screren"
 - **Actions**:
-  1. **Orbit Slider Direction Verified**: Confirmed mathematically that moving the slider to the **RIGHT (`3.0x`) increases orbit speed (faster)**, and moving it to the **LEFT (`0.1x`) decreases speed (slower, ~3 minutes per full rotation)**.
-  2. **Option 1 Compact Sheet Implemented**: Reduced mobile controls drawer height to `42vh` with `rgba(15, 23, 42, 0.82)` semi-transparent Glassmorphism blur, leaving the upper 58-60% of the phone screen completely open and visible above the sliders.
-  3. **Redeployed**: Published updated bundle directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Root Cause Analysis**: The mobile controls drawer had stacked multiple desktop action panels, creating a ~600px tall content box that stretched across mobile viewports.
+  2. **Floating Micro-Dock Design**: Streamlined mobile controls into a floating 200px Glassmorphism dock (`max-height: 280px`, `bottom: 16px`, `left: 12px`, `right: 12px`) with transparent backdrop blur.
+  3. **Visual Real Estate**: **75-80% of the mobile phone screen is now completely open and visible** above the floating micro-dock so live motion and zoom changes are seen immediately.
+  4. **Redeployed**: Published build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

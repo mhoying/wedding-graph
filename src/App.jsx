@@ -1480,176 +1480,118 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             onTouchMove={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 18 }}>
-                <SlidersHorizontal style={{ width: 20, height: 20, color: '#38bdf8' }} />
-                <span>Map Controls & Motion</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 800, fontSize: 14 }}>
+                <SlidersHorizontal style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                <span>Map Controls</span>
               </div>
-              <button 
-                type="button"
-                onClick={() => setIsMobileControlsOpen(false)}
-                onTouchEnd={() => setIsMobileControlsOpen(false)}
-                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
-              >
-                <X style={{ width: 22, height: 22 }} />
-              </button>
-            </div>
-
-            {/* Orbit Galaxy Controls */}
-            <div style={{ background: 'rgba(139, 92, 246, 0.12)', border: '1px solid rgba(139, 92, 246, 0.3)', padding: 16, borderRadius: 16, marginBottom: 14 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                <span className="mobile-control-label" style={{ color: '#a855f7' }}>
-                  <RotateCw style={{ width: 14, height: 14 }} /> Celestial Orbit Motion:
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <button 
                   type="button"
                   onClick={() => setIsOrbiting(!isOrbiting)}
-                  onTouchEnd={() => setIsOrbiting(!isOrbiting)}
                   className={`btn-mode ${isOrbiting ? 'active' : ''}`}
-                  style={{ padding: '6px 14px', borderRadius: 9999, background: isOrbiting ? '#8b5cf6' : 'rgba(255, 255, 255, 0.1)', color: '#fff', fontWeight: 700 }}
+                  style={{ padding: '4px 10px', borderRadius: 9999, background: isOrbiting ? '#8b5cf6' : 'rgba(255, 255, 255, 0.1)', color: '#fff', fontSize: 11, fontWeight: 700 }}
                 >
-                  {isOrbiting ? 'ON (Orbiting)' : 'OFF (Paused)'}
+                  Orbit: {isOrbiting ? 'ON' : 'OFF'}
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setIsMobileControlsOpen(false)}
+                  onTouchEnd={() => setIsMobileControlsOpen(false)}
+                  style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <X style={{ width: 16, height: 16 }} />
                 </button>
               </div>
+            </div>
 
-              {isOrbiting && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
-                    <span style={{ color: '#cbd5e1' }}>Orbit Speed:</span>
-                    <span style={{ color: '#a855f7', fontWeight: 700 }}>{orbitSpeed.toFixed(1)}x</span>
-                  </div>
-                  <input 
-                    type="range"
-                    min="0.1"
-                    max="3.0"
-                    step="0.05"
-                    value={orbitSpeed}
-                    onChange={(e) => setOrbitSpeed(parseFloat(e.target.value))}
-                    onTouchStart={(e) => e.stopPropagation()}
-                    onTouchMove={(e) => e.stopPropagation()}
-                    style={{ width: '100%', accentColor: '#a855f7', height: 12, touchAction: 'none' }}
-                  />
+            {/* Orbit Speed Slider */}
+            {isOrbiting && (
+              <div style={{ marginBottom: 8, background: 'rgba(139, 92, 246, 0.12)', border: '1px solid rgba(139, 92, 246, 0.25)', padding: 8, borderRadius: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                  <span style={{ color: '#cbd5e1', fontWeight: 600 }}>Orbit Speed:</span>
+                  <span style={{ color: '#a855f7', fontWeight: 800 }}>{orbitSpeed.toFixed(1)}x</span>
                 </div>
-              )}
+                <input 
+                  type="range"
+                  min="0.1"
+                  max="3.0"
+                  step="0.05"
+                  value={orbitSpeed}
+                  onChange={(e) => setOrbitSpeed(parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
+                  style={{ width: '100%', accentColor: '#a855f7', height: 10, touchAction: 'none' }}
+                />
+              </div>
+            )}
+
+            {/* Card Node Size & Map Spacing Sliders */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
+              <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 8, borderRadius: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                  <span style={{ color: '#94a3b8', fontWeight: 600 }}>Node Size:</span>
+                  <span style={{ color: '#38bdf8', fontWeight: 800 }}>{nodeScaleMultiplier.toFixed(1)}x</span>
+                </div>
+                <input 
+                  type="range"
+                  min="0.5"
+                  max="2.0"
+                  step="0.1"
+                  value={nodeScaleMultiplier}
+                  onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
+                  style={{ width: '100%', accentColor: '#38bdf8', height: 10, touchAction: 'none' }}
+                />
+              </div>
+
+              <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 8, borderRadius: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                  <span style={{ color: '#94a3b8', fontWeight: 600 }}>Spacing:</span>
+                  <span style={{ color: '#10b981', fontWeight: 800 }}>{edgeLengthMultiplier.toFixed(1)}x</span>
+                </div>
+                <input 
+                  type="range"
+                  min="0.5"
+                  max="2.0"
+                  step="0.1"
+                  value={edgeLengthMultiplier}
+                  onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
+                  style={{ width: '100%', accentColor: '#10b981', height: 10, touchAction: 'none' }}
+                />
+              </div>
             </div>
 
-            {/* Sliders Section */}
-            <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 16, borderRadius: 16, marginBottom: 14, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="mobile-control-label"><Sliders style={{ width: 14, height: 14, color: '#38bdf8' }} /> Card Node Size:</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#38bdf8' }}>{nodeScaleMultiplier.toFixed(1)}x</span>
-              </div>
-              <input 
-                type="range"
-                min="0.5"
-                max="2.0"
-                step="0.1"
-                value={nodeScaleMultiplier}
-                onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
-                onTouchStart={(e) => e.stopPropagation()}
-                onTouchMove={(e) => e.stopPropagation()}
-                style={{ width: '100%', accentColor: '#38bdf8', height: 12, touchAction: 'none' }}
-              />
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
-                <span className="mobile-control-label"><MoveHorizontal style={{ width: 14, height: 14, color: '#10b981' }} /> Map Density / Spacing:</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#10b981' }}>{edgeLengthMultiplier.toFixed(1)}x</span>
-              </div>
-              <input 
-                type="range"
-                min="0.5"
-                max="2.0"
-                step="0.1"
-                value={edgeLengthMultiplier}
-                onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
-                onTouchStart={(e) => e.stopPropagation()}
-                onTouchMove={(e) => e.stopPropagation()}
-                style={{ width: '100%', accentColor: '#10b981', height: 12, touchAction: 'none' }}
-              />
-            </div>
-
-            {/* Toggles & Options */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
-              {/* Photo Toggle */}
+            {/* Quick Action Toggles */}
+            <div style={{ display: 'flex', gap: 6 }}>
               <button 
                 onClick={() => setShowHeadshots(!showHeadshots)}
                 className={`btn-mode ${showHeadshots ? 'active' : ''}`}
-                style={{ padding: '10px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: showHeadshots ? '#0284c7' : 'rgba(255, 255, 255, 0.08)' }}
+                style={{ flex: 1, padding: '6px', borderRadius: 10, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}
               >
-                <Camera style={{ width: 14, height: 14 }} />
-                <span>Photos: {showHeadshots ? 'ON' : 'OFF'}</span>
+                <Camera style={{ width: 12, height: 12 }} />
+                <span>Photos {showHeadshots ? 'ON' : 'OFF'}</span>
               </button>
-
-              {/* Theme Toggle */}
               <button 
                 onClick={() => setIsLightMode(!isLightMode)}
                 className="btn-mode"
-                style={{ padding: '10px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(255, 255, 255, 0.08)' }}
+                style={{ flex: 1, padding: '6px', borderRadius: 10, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, background: 'rgba(255, 255, 255, 0.08)' }}
               >
-                {isLightMode ? <Moon style={{ width: 14, height: 14 }} /> : <Sun style={{ width: 14, height: 14, color: '#38bdf8' }} />}
-                <span>Theme: {isLightMode ? 'Light' : 'Dark'}</span>
+                {isLightMode ? <Moon style={{ width: 12, height: 12 }} /> : <Sun style={{ width: 12, height: 12, color: '#38bdf8' }} />}
+                <span>{isLightMode ? 'Light' : 'Dark'}</span>
               </button>
-            </div>
-
-            {/* Color Mode Selector */}
-            <div className="mobile-control-row">
-              <span className="mobile-control-label"><Palette style={{ width: 14, height: 14, color: '#38bdf8' }} /> Color Mode:</span>
-              <div style={{ display: 'flex', gap: 6, background: 'rgba(30, 41, 59, 0.6)', padding: 4, borderRadius: 12 }}>
-                <button onClick={() => setColorMode('cohort')} className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`} style={{ flex: 1 }}>Cohort</button>
-                <button onClick={() => setColorMode('side')} className={`btn-mode ${colorMode === 'side' ? 'active' : ''}`} style={{ flex: 1 }}>Side</button>
-                <button onClick={() => setColorMode('state')} className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`} style={{ flex: 1 }}>State</button>
-              </div>
-            </div>
-
-            {/* Cluster Overlays */}
-            <div className="mobile-control-row">
-              <span className="mobile-control-label"><Layers style={{ width: 14, height: 14, color: '#ec4899' }} /> Cluster Overlays:</span>
-              <select 
-                value={clusterMode}
-                onChange={(e) => setClusterMode(e.target.value)}
-                style={{ width: '100%', padding: '10px', borderRadius: 12, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 13 }}
-              >
-                <option value="cohort">Cohorts</option>
-                <option value="interests">✨ Auto Interests</option>
-                <option value="state">States</option>
-                <option value="none">🚫 Off (Hide)</option>
-              </select>
-            </div>
-
-            {/* Action Tools */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 14 }}>
-              <button 
-                onClick={() => { setIsPathMode(!isPathMode); setIsMobileControlsOpen(false); }} 
-                className={`btn-mode ${isPathMode ? 'active' : ''}`}
-                style={{ padding: '12px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: isPathMode ? '#0284c7' : 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', fontWeight: 700 }}
-              >
-                <Compass style={{ width: 16, height: 16 }} /> Path Finder Calculator
-              </button>
-
               <button 
                 onClick={() => { setIsMatchmakerOpen(!isMatchmakerOpen); setIsMobileControlsOpen(false); }}
                 className="btn-mode"
-                style={{ padding: '12px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 700 }}
+                style={{ flex: 1, padding: '6px', borderRadius: 10, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 700 }}
               >
-                <Wand2 style={{ width: 16, height: 16 }} /> Cocktail Hour Matchmaker
-              </button>
-
-              <button 
-                onClick={() => { setFeedbackTargetNode(selectedNode || nodes[0]); setIsFeedbackModalOpen(true); setIsMobileControlsOpen(false); }}
-                className="btn-mode"
-                style={{ padding: '12px', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255, 255, 255, 0.08)', color: '#fff' }}
-              >
-                <Edit3 style={{ width: 16, height: 16 }} /> Suggest Profile Edit
+                <Wand2 style={{ width: 12, height: 12 }} />
+                <span>Matchmaker</span>
               </button>
             </div>
-
-            <button 
-              onClick={() => setIsMobileControlsOpen(false)}
-              className="btn-action"
-              style={{ width: '100%', marginTop: 18, padding: '12px', justifyContent: 'center', fontSize: 14 }}
-            >
-              Done / Close Controls
-            </button>
           </div>
         </>
       )}
