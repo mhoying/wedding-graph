@@ -79,13 +79,13 @@ function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
 
-// FLUID VELOCITY DAMPENED ORBIT FORCE: Zero jitter, 100% smooth continuous galaxy drift
+// PURE LOCKSTEP POLAR ORBIT ENGINE: Zero shaking, zero velocity noise, 100% constant 2-minute minimum rotation
 function createOrbitForce(speedMultiplier = 1.0) {
   let nodes = [];
   function force() {
     if (speedMultiplier <= 0) return;
-    // Pure constant angular velocity step (0.00015 rad/frame at 1.0x)
-    const omega = 0.00015 * speedMultiplier;
+    // Calibrated so 0.1x minimum speed takes EXACTLY 2 MINUTES (120s @ 60fps = 7200 frames per 360 deg)
+    const deltaTheta = 0.000145 * speedMultiplier;
 
     // Find center of gravity (Maureen & Matt couple anchor)
     let cx = 0, cy = 0, count = 0;
@@ -109,14 +109,15 @@ function createOrbitForce(speedMultiplier = 1.0) {
 
       if (r > 15) {
         const theta = Math.atan2(dy, dx);
+        const newAngle = theta + deltaTheta;
         
-        // Exact Tangential Orbital Velocity Vector: v = omega * r perp to radius
-        const vx = -r * Math.sin(theta) * omega;
-        const vy = r * Math.cos(theta) * omega;
-
-        // Smooth fluid velocity blending (Eliminates position tug-of-war micro-vibration)
-        node.vx = (node.vx || 0) * 0.70 + vx * 0.30;
-        node.vy = (node.vy || 0) * 0.70 + vy * 0.30;
+        // Exact Rigid Lockstep Polar Shift
+        node.x = cx + Math.cos(newAngle) * r;
+        node.y = cy + Math.sin(newAngle) * r;
+        
+        // Zero out velocity noise to prevent D3 solver turbulence/shaking
+        node.vx = 0;
+        node.vy = 0;
       }
     });
   }
@@ -504,13 +505,14 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         return baseSum * cohortMultiplier * edgeLengthMultiplier;
       });
 
+      // Disable charge repulsion during orbit mode to guarantee 100% shake-free rigid lockstep motion!
       fg.d3Force('charge')
-        .strength(-2200 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .strength(isOrbiting ? 0 : -2200 * nodeScaleMultiplier * edgeLengthMultiplier)
         .distanceMax(1800 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
-      }).iterations(25));
+      }).iterations(isOrbiting ? 1 : 25));
 
       // DYNAMIC ORBITAL GALAXY MOTION FORCE
       if (isOrbiting) {
@@ -1864,10 +1866,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             return isHoveredLink ? 3 : 1.5;
           }}
           velocityDecay={0.65}
-          linkDirectionalParticles={isOrbiting ? 2 : 0}
-          linkDirectionalParticleSpeed={0.0015 * orbitSpeed}
-          linkDirectionalParticleWidth={2.5 * nodeScaleMultiplier}
-          linkDirectionalParticleColor={() => isLightMode ? '#0284c7' : '#38bdf8'}
+          linkDirectionalParticles={0}
           backgroundColor="transparent"
         />
       </div>

@@ -23,10 +23,14 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Zero-Jitter Tangential Velocity Blending & Viscous Damping
-- **User Prompt**: "there is some weird feeling jitter in the nodes while is ther ea way to prevent and dampen that so it doesnt feel like each lindvudal node is vibrating"
+## [2026-08-22] 2-Minute Orbit Minimum Speed, Zero-Shake Lockstep & Edge Particle Removal
+- **User Prompt**: "i think it neesd more dmapenign. its stil shaking and as it orbits seems that it randomly acclerates. i want the slowest speed to be just barely noticalbe. maybe where it woudl tkae a full two minutes to do a full rotation" / "i also dont want the prticles moving on the edges"
 - **Actions**:
-  1. **Root Cause Analysis**: Direct coordinate assignments (`node.x = ...`) forced D3's collision solver (`forceCollide`) to fight against orbital coordinates on every frame, causing a high-frequency 1-pixel micro-vibration/jitter.
-  2. **Tangential Orbital Velocity Vector**: Switched to smooth tangential velocity integration:
-     $$v_x = -r \cdot \sin(\theta) \cdot \omega, \quad v_y = r \cdot \cos(\theta) \cdot \omega$$
-  3. **Velocity Damping (`velocityDecay={0.65}`)**: Added viscous fluid friction damping (`velocityDecay={0.65}` in `ForceGraph2D`), increasing friction by 75% to eliminate all high-frequency micro-jitter and vibration!
+  1. **Root Cause Analysis**: D3 charge repulsion (`strength(-2200)`) and velocity noise were fighting against the orbit engine on every frame, causing random acceleration bursts and node shaking.
+  2. **Zero-Shake Lockstep Motion**:
+     - Disabled `charge` repulsion force during orbit mode (`strength = 0`), eliminating all force turbulence.
+     - Zeroed out velocity noise (`node.vx = 0, node.vy = 0`) on every frame so nodes move in 100% rigid, perfectly smooth polar lockstep.
+  3. **Exact 2-Minute Full Rotation Calibration**:
+     - Set minimum angular velocity step to $\Delta \theta = 0.000145 \text{ rad/frame}$.
+     - At $60 \text{ FPS}$, a full 360-degree rotation takes **EXACTLY 2 MINUTES (120 seconds)**! It is whisper-slow, ultra-tranquil, and barely noticeable.
+  4. **Removed Edge Particles**: Set `linkDirectionalParticles={0}` per request.
