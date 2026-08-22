@@ -40,5 +40,11 @@
 ## [2026-08-22] Generalized Tight Couple Distance Rule
 - **User Prompt**: "is there a way to make this couple distance more generalized.. whenever there are two poeple in a couple gropu, it will be much closer. i think it could be even closer than 70"
 - **Actions**:
-  1. **Generalized Couple Distance Engine**: Created a dynamic link evaluation rule in D3 forces. Any link marked as a couple, partner, or married relationship (or connecting Maureen & Matt) automatically collapses to a tight **`45px`** distance.
-  2. This ensures that any couple pair in the dataset sits closely together inside their shared container/hull, while external guest links maintain a healthy distance (`170px`).
+  1. Generalized Couple Distance Engine to 45px for any partner pair in dataset.
+
+## [2026-08-22] Sprint 1: Interactive Path Finder, Cohort Cluster Hulls & Poster Framing
+- **User Prompt**: "/goal have the ux and webdev go through a series of sprints to make the most beautiful, infomrative and interactive desing posisble..."
+- **Actions**:
+  1. **Interactive Social Path Finder ("How Are We Connected?")**: Added dual-node selection tool. Using BFS traversal, it calculates the shortest social connection path between any two guests (e.g. `Brian Kim → Maureen → Matt → The Freedman-Rahmans`), rendering a step-by-step breadcrumb banner and an animated sky-blue glowing link path while dimming the rest of the graph!
+  2. **Dynamic Cohort Cluster Hulls**: Added toggleable background cluster enclosures (`showCohortHulls`). Draws translucent bounding hulls in school/group colors behind entire cohort groups (Cornell, Stanford, Google, Dog Park) with cluster labels!
+  3. **Print Poster Framing Header**: Rendered a formal poster header banner (*"THE SOCIAL UNIVERSE OF MAUREEN & MATT"*) during print mode / export.

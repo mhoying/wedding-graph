@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Share2 } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 export default function App() {
@@ -13,7 +13,13 @@ export default function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
+  const [showCohortHulls, setShowCohortHulls] = useState(true);
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
+
+  // Path Finder State
+  const [isPathMode, setIsPathMode] = useState(false);
+  const [pathStart, setPathStart] = useState(null);
+  const [pathEnd, setPathEnd] = useState(null);
 
   // Dynamically extract all unique Interests across the dataset
   const allInterests = useMemo(() => {
@@ -59,21 +65,19 @@ export default function App() {
     if (fgRef.current) {
       const fg = fgRef.current;
       
-      // Generalized Couple Distance Rule: Any couple/partner link gets a tight 45px distance!
       fg.d3Force('link').distance(l => {
         const s = l.source.id || l.source;
         const t = l.target.id || l.target;
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen');
         if (isCoupleLink) {
-          return 45; // Tight 45px distance for any couple pair
+          return 45;
         }
         return l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 170 : 130;
       });
 
-      fg.d3Force('charge').strength(-1200).distanceMax(650);
+      fg.d3Force('charge').strength(-1400).distanceMax(650);
       
-      // Dynamic collision radius based on exact node label width
       fg.d3Force('collide', forceCollide().radius(node => {
         const charCount = node.name ? node.name.length : 10;
         const estimatedWidth = Math.max(charCount * 7.5 + 24, 70);
@@ -83,6 +87,38 @@ export default function App() {
       fg.d3ReheatSimulation();
     }
   }, []);
+
+  // Calculate shortest social path between pathStart and pathEnd using BFS
+  const shortestPath = useMemo(() => {
+    if (!pathStart || !pathEnd || pathStart.id === pathEnd.id) return [];
+    
+    const queue = [[pathStart.id]];
+    const visited = new Set([pathStart.id]);
+
+    while (queue.length > 0) {
+      const path = queue.shift();
+      const curr = path[path.length - 1];
+
+      if (curr === pathEnd.id) {
+        return path;
+      }
+
+      // Find all neighbors connected to curr
+      const neighbors = [];
+      SAMPLE_LINKS.forEach(l => {
+        const s = l.source.id || l.source;
+        const t = l.target.id || l.target;
+        if (s === curr && !visited.has(t)) neighbors.push(t);
+        if (t === curr && !visited.has(s)) neighbors.push(s);
+      });
+
+      for (const neighbor of neighbors) {
+        visited.add(neighbor);
+        queue.push([...path, neighbor]);
+      }
+    }
+    return [];
+  }, [pathStart, pathEnd]);
 
   // Determine active node color based on selected Color Mode
   const getNodeColor = useCallback((node) => {
@@ -98,11 +134,9 @@ export default function App() {
   // Filter nodes based on search and selected interest
   const filteredNodes = useMemo(() => {
     return SAMPLE_NODES.filter(node => {
-      // Interest Tag Filter
       if (selectedInterest) {
         if (!node.hobbies || !node.hobbies.includes(selectedInterest)) return false;
       }
-      // Text Search Filter
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchesName = node.name.toLowerCase().includes(q);
@@ -125,8 +159,25 @@ export default function App() {
     };
   }, [filteredNodes]);
 
-  // Render background enclosure shape around Maureen & Matt couple nodes
+  // Handle Node Clicks (Path Finder vs Normal Drawer Selection)
+  const handleNodeClick = (node) => {
+    if (isPathMode) {
+      if (!pathStart) {
+        setPathStart(node);
+      } else if (!pathEnd && node.id !== pathStart.id) {
+        setPathEnd(node);
+      } else {
+        setPathStart(node);
+        setPathEnd(null);
+      }
+    } else {
+      setSelectedNode(node);
+    }
+  };
+
+  // Render background enclosure shapes around Maureen & Matt couple and Cohort Clusters
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
+    // 1. Couple Enclosure Hull around Maureen & Matt
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -144,11 +195,8 @@ export default function App() {
       const cornerRadius = 28 / globalScale;
 
       ctx.save();
-      // Hull Glow
       ctx.shadowColor = '#38bdf8';
       ctx.shadowBlur = 18;
-
-      // Hull Background Fill
       ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.55)' : 'rgba(14, 165, 233, 0.08)';
       ctx.beginPath();
       if (ctx.roundRect) {
@@ -157,29 +205,81 @@ export default function App() {
         ctx.rect(x, y, width, height);
       }
       ctx.fill();
-
-      // Hull Border
       ctx.lineWidth = 2 / globalScale;
       ctx.strokeStyle = '#38bdf8';
       ctx.setLineDash([6 / globalScale, 4 / globalScale]);
       ctx.stroke();
 
-      // Enclosure Title Label
       ctx.shadowBlur = 0;
       ctx.setLineDash([]);
       ctx.font = `700 ${11 / globalScale}px Inter, sans-serif`;
       ctx.fillStyle = '#38bdf8';
       ctx.textAlign = 'center';
       ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - (8 / globalScale));
-
       ctx.restore();
     }
-  }, [filteredNodes, isLightMode]);
+
+    // 2. Cohort Cluster Hulls (if enabled)
+    if (showCohortHulls) {
+      const cohortGroups = {};
+      filteredNodes.forEach(node => {
+        if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
+          if (!cohortGroups[node.cohort]) cohortGroups[node.cohort] = [];
+          cohortGroups[node.cohort].push(node);
+        }
+      });
+
+      Object.entries(cohortGroups).forEach(([cohort, nodes]) => {
+        if (nodes.length > 1) {
+          let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+          nodes.forEach(n => {
+            if (n.x < minX) minX = n.x;
+            if (n.x > maxX) maxX = n.x;
+            if (n.y < minY) minY = n.y;
+            if (n.y > maxY) maxY = n.y;
+          });
+
+          const pad = 35 / globalScale;
+          const w = (maxX - minX) + pad * 2;
+          const h = (maxY - minY) + pad * 2;
+          const x = minX - pad;
+          const y = minY - pad;
+          const cohortColor = COHORT_COLORS[cohort] || '#64748b';
+
+          ctx.save();
+          ctx.fillStyle = isLightMode ? 'rgba(241, 245, 249, 0.4)' : 'rgba(30, 41, 59, 0.25)';
+          ctx.beginPath();
+          if (ctx.roundRect) {
+            ctx.roundRect(x, y, w, h, 20 / globalScale);
+          } else {
+            ctx.rect(x, y, w, h);
+          }
+          ctx.fill();
+
+          ctx.lineWidth = 1 / globalScale;
+          ctx.strokeStyle = cohortColor;
+          ctx.setLineDash([4 / globalScale, 4 / globalScale]);
+          ctx.stroke();
+
+          ctx.setLineDash([]);
+          ctx.font = `600 ${10 / globalScale}px Inter, sans-serif`;
+          ctx.fillStyle = cohortColor;
+          ctx.textAlign = 'left';
+          ctx.fillText(cohort.toUpperCase() + ' CLUSTER', x + 10 / globalScale, y + 14 / globalScale);
+          ctx.restore();
+        }
+      });
+    }
+  }, [filteredNodes, isLightMode, showCohortHulls]);
 
   // Premium Node Canvas Renderer
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
+
+    // Check Path Finder active membership
+    const isPathNode = shortestPath.includes(node.id);
+    const isPathActive = shortestPath.length > 0;
 
     const isConnected = hoverNode || selectedNode ? 
       SAMPLE_LINKS.some(l => 
@@ -187,16 +287,16 @@ export default function App() {
         ((l.target.id || l.target) === node.id && ((l.source.id || l.source) === (hoverNode?.id || selectedNode?.id)))
       ) : false;
 
-    const isDimmed = (hoverNode || selectedNode) && !isHovered && !isConnected;
-    const color = getNodeColor(node);
+    const isDimmed = isPathActive ? !isPathNode : ((hoverNode || selectedNode) && !isHovered && !isConnected);
+    const color = isPathNode ? '#38bdf8' : getNodeColor(node);
     const isAnchor = node.type === 'ANCHOR';
 
     ctx.save();
-    ctx.globalAlpha = isDimmed ? 0.15 : 1.0;
+    ctx.globalAlpha = isDimmed ? 0.12 : 1.0;
 
     // Font Configuration
     const fontSize = (isAnchor ? 13 : 11) / globalScale;
-    ctx.font = `${isAnchor || isHovered ? '700' : '500'} ${fontSize}px Inter, sans-serif`;
+    ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '500'} ${fontSize}px Inter, sans-serif`;
     
     const textWidth = ctx.measureText(node.name).width;
     const paddingX = (isAnchor ? 14 : 10) / globalScale;
@@ -208,15 +308,15 @@ export default function App() {
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
-    // Outer Glow for hovered/selected
-    if (isHovered || isAnchor) {
+    // Outer Glow for hovered/selected/path
+    if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = color;
-      ctx.shadowBlur = isHovered ? 25 : 15;
+      ctx.shadowBlur = isHovered ? 25 : (isPathNode ? 20 : 15);
     }
 
     // Pill Fill
     const gradient = ctx.createLinearGradient(x, y, x + badgeWidth, y + badgeHeight);
-    if (isHovered) {
+    if (isHovered || isPathNode) {
       gradient.addColorStop(0, color);
       gradient.addColorStop(1, color);
     } else if (isLightMode) {
@@ -237,19 +337,19 @@ export default function App() {
     ctx.fill();
 
     // Border
-    ctx.lineWidth = isHovered ? 2.5 : (isAnchor ? 2 : 1.2);
-    ctx.strokeStyle = isHovered ? '#ffffff' : color;
+    ctx.lineWidth = isHovered || isPathNode ? 2.5 : (isAnchor ? 2 : 1.2);
+    ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : color;
     ctx.stroke();
 
     // Text Label
     ctx.shadowBlur = 0;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = isHovered ? '#ffffff' : (isLightMode ? '#0f172a' : '#f8fafc');
+    ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isLightMode ? '#0f172a' : '#f8fafc');
     ctx.fillText(node.name, node.x, node.y);
 
     ctx.restore();
-  }, [hoverNode, selectedNode, isLightMode, getNodeColor]);
+  }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath]);
 
   // Hit area detection
   const drawPointerArea = useCallback((node, color, ctx, globalScale) => {
@@ -278,6 +378,12 @@ export default function App() {
       className={`app-container ${isLightMode ? 'light-mode' : ''}`}
       onMouseMove={handleMouseMove}
     >
+      {/* Print Poster Header Banner (Only visible in Print Mode) */}
+      <div className="print-poster-header">
+        <h1>THE SOCIAL UNIVERSE OF MAUREEN & MATT</h1>
+        <p>A Visual Map of Family, Friends & Connections</p>
+      </div>
+
       {/* Top Controls Bar */}
       <div className="top-bar no-print">
         <div className="top-bar-left flex-wrap">
@@ -311,7 +417,7 @@ export default function App() {
                 <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedInterest(null)} />
               </span>
             ) : (
-              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 360 }}>
+              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 320 }}>
                 {allInterests.slice(0, 5).map(interest => (
                   <button 
                     key={interest}
@@ -327,8 +433,35 @@ export default function App() {
           </div>
         </div>
 
-        {/* Dynamic Color Mode Selector Controls */}
+        {/* Dynamic Color Mode & Tool Controls */}
         <div className="top-bar-right">
+          {/* Path Finder Toggle */}
+          <button 
+            onClick={() => {
+              setIsPathMode(!isPathMode);
+              setPathStart(null);
+              setPathEnd(null);
+            }} 
+            className={`glass-panel btn-mode ${isPathMode ? 'active' : ''}`}
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            title="Calculate shortest social connection path between 2 guests"
+          >
+            <Compass style={{ width: 16, height: 16, color: isPathMode ? '#fff' : '#38bdf8' }} />
+            <span>Path Finder</span>
+          </button>
+
+          {/* Cluster Hulls Toggle */}
+          <button 
+            onClick={() => setShowCohortHulls(!showCohortHulls)} 
+            className={`glass-panel btn-mode ${showCohortHulls ? 'active' : ''}`}
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            title="Toggle Cluster Hulls"
+          >
+            <Layers style={{ width: 16, height: 16, color: showCohortHulls ? '#fff' : '#38bdf8' }} />
+            <span>Clusters</span>
+          </button>
+
+          {/* Color Mode Selector */}
           <div className="glass-panel color-mode-bar">
             <Palette style={{ width: 16, height: 16, color: '#38bdf8' }} />
             <span style={{ color: '#94a3b8', marginRight: 4 }}>Color By:</span>
@@ -336,7 +469,7 @@ export default function App() {
               onClick={() => setColorMode('cohort')}
               className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`}
             >
-              Cohort ({allCohorts.length})
+              Cohort
             </button>
             <button 
               onClick={() => setColorMode('side')}
@@ -348,7 +481,7 @@ export default function App() {
               onClick={() => setColorMode('state')}
               className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`}
             >
-              State ({allStates.length})
+              State
             </button>
           </div>
 
@@ -368,6 +501,37 @@ export default function App() {
           </button>
         </div>
       </div>
+
+      {/* Path Finder Active Breadcrumb Banner */}
+      {isPathMode && (
+        <div className="glass-panel path-finder-banner no-print">
+          <GitCommit style={{ width: 18, height: 18, color: '#38bdf8' }} />
+          {!pathStart && <span>Click the <b>First Guest</b> to start calculating connection path...</span>}
+          {pathStart && !pathEnd && <span>Selected <span className="path-step">{pathStart.name}</span>. Now click the <b>Second Guest</b>...</span>}
+          {pathStart && pathEnd && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span>Connection Path:</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                {shortestPath.map((id, index) => {
+                  const n = SAMPLE_NODES.find(x => x.id === id);
+                  return (
+                    <React.Fragment key={id}>
+                      <span className="path-step">{n ? n.name : id}</span>
+                      {index < shortestPath.length - 1 && <span style={{ color: '#94a3b8' }}>➔</span>}
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+              <button 
+                onClick={() => { setPathStart(null); setPathEnd(null); }}
+                style={{ marginLeft: 10, background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+              >
+                <X style={{ width: 14, height: 14 }} />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Dynamic Color Legend Footer */}
       <div className="glass-panel legend-bar no-print">
@@ -391,21 +555,50 @@ export default function App() {
           graphData={graphData}
           nodeCanvasObject={drawNode}
           nodePointerAreaPaint={drawPointerArea}
-          onNodeClick={(node) => setSelectedNode(node)}
+          onNodeClick={handleNodeClick}
           onNodeHover={(node) => setHoverNode(node)}
           onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
           linkColor={(link) => {
+            const s = link.source.id || link.source;
+            const t = link.target.id || link.target;
+            
+            // Check if link is part of shortest path
+            let isPathLink = false;
+            if (shortestPath.length > 1) {
+              for (let i = 0; i < shortestPath.length - 1; i++) {
+                if ((shortestPath[i] === s && shortestPath[i+1] === t) || (shortestPath[i] === t && shortestPath[i+1] === s)) {
+                  isPathLink = true;
+                  break;
+                }
+              }
+            }
+
+            if (isPathLink) return '#38bdf8';
+
             const isHoveredLink = (hoverNode || selectedNode) && (
-              (link.source.id || link.source) === (hoverNode?.id || selectedNode?.id) ||
-              (link.target.id || link.target) === (hoverNode?.id || selectedNode?.id)
+              s === (hoverNode?.id || selectedNode?.id) ||
+              t === (hoverNode?.id || selectedNode?.id)
             );
             if (isHoveredLink) return '#38bdf8';
             return isLightMode ? '#64748b' : '#94a3b8';
           }}
           linkWidth={(link) => {
+            const s = link.source.id || link.source;
+            const t = link.target.id || link.target;
+            let isPathLink = false;
+            if (shortestPath.length > 1) {
+              for (let i = 0; i < shortestPath.length - 1; i++) {
+                if ((shortestPath[i] === s && shortestPath[i+1] === t) || (shortestPath[i] === t && shortestPath[i+1] === s)) {
+                  isPathLink = true;
+                  break;
+                }
+              }
+            }
+            if (isPathLink) return 4;
+
             const isHoveredLink = (hoverNode || selectedNode) && (
-              (link.source.id || link.source) === (hoverNode?.id || selectedNode?.id) ||
-              (link.target.id || link.target) === (hoverNode?.id || selectedNode?.id)
+              s === (hoverNode?.id || selectedNode?.id) ||
+              t === (hoverNode?.id || selectedNode?.id)
             );
             return isHoveredLink ? 3.5 : 2;
           }}
@@ -415,7 +608,7 @@ export default function App() {
       </div>
 
       {/* Instant Hover Tooltip Popup Overlay */}
-      {hoverNode && !selectedNode && (
+      {hoverNode && !selectedNode && !isPathMode && (
         <div 
           className="glass-panel hover-tooltip"
           style={{ 
@@ -441,7 +634,7 @@ export default function App() {
           <h4 style={{ fontWeight: 800, fontSize: 14, marginBottom: 2 }}>{hoverNode.name}</h4>
           <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>{hoverNode.relationship}</p>
           {hoverNode.hometown && (
-            <div style={{ display: 'flex', items: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 4 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 4 }}>
               <MapPin style={{ width: 12, height: 12, color: '#38bdf8' }} />
               <span>{hoverNode.hometown}</span>
             </div>
@@ -459,7 +652,7 @@ export default function App() {
       )}
 
       {/* Glassmorphism Metadata Side Drawer Popup (On Click) */}
-      {selectedNode && (
+      {selectedNode && !isPathMode && (
         <div className="glass-panel metadata-drawer no-print">
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>

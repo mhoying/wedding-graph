@@ -89,7 +89,7 @@ body {
   padding: 8px 14px;
   display: flex;
   align-items: center;
-  width: 320px;
+  width: 280px;
 }
 
 .search-input {
@@ -255,6 +255,32 @@ body {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
+/* Path Finder Breadcrumb Banner */
+.path-finder-banner {
+  position: absolute;
+  top: 76px;
+  left: 24px;
+  z-index: 10;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.path-step {
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* Print Banner Header */
+.print-poster-header {
+  display: none;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 @media print {
   body {
     background: #ffffff !important;
@@ -262,5 +288,19 @@ body {
   }
   .no-print {
     display: none !important;
+  }
+  .print-poster-header {
+    display: block !important;
+    padding-top: 40px;
+  }
+  .print-poster-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    font-family: 'Inter', sans-serif;
+  }
+  .print-poster-header p {
+    font-size: 14px;
+    color: #64748b;
   }
 }
