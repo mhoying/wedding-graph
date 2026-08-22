@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, ArrowRight, Tag } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -52,16 +52,26 @@ export default function App() {
     return urlParams.get('admin') === 'true' || localStorage.getItem('wedding_graph_admin') === 'true';
   });
 
-  // Initialize Nodes with localStorage fallback for durable browser persistence
+  // Initialize Nodes with localStorage fallback (strip any old D3 physics positions on init)
   const [nodes, setNodes] = useState(() => {
-    const saved = localStorage.getItem('wedding_graph_nodes_v2');
+    const saved = localStorage.getItem('wedding_graph_nodes_v3');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
+      try { 
+        const parsed = JSON.parse(saved); 
+        return parsed.map(({ x, y, vx, vy, index, __indexColor, ...rest }) => rest);
+      } catch (e) {}
     }
-    return SAMPLE_NODES;
+    return SAMPLE_NODES.map(({ x, y, vx, vy, index, __indexColor, ...rest }) => rest);
   });
 
-  const [links, setLinks] = useState(SAMPLE_LINKS);
+  // Clean links so source and target are strictly String IDs for D3 binding!
+  const [links, setLinks] = useState(() => {
+    return SAMPLE_LINKS.map(l => ({
+      source: typeof l.source === 'object' ? (l.source.id || l.source) : l.source,
+      target: typeof l.target === 'object' ? (l.target.id || l.target) : l.target,
+      label: l.label || ''
+    }));
+  });
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
@@ -100,7 +110,7 @@ export default function App() {
 
   // Host Feedback Queue State with localStorage Fallback
   const [feedbackList, setFeedbackList] = useState(() => {
-    const saved = localStorage.getItem('wedding_graph_feedback_v2');
+    const saved = localStorage.getItem('wedding_graph_feedback_v3');
     if (saved) {
       try { return JSON.parse(saved); } catch (e) {}
     }
@@ -138,22 +148,37 @@ export default function App() {
   // Image cache for avatar headshots
   const imageCacheRef = useRef({});
 
-  // Save Nodes & Feedback to LocalStorage whenever modified
+  // Clear obsolete localStorage caches
   useEffect(() => {
-    localStorage.setItem('wedding_graph_nodes_v2', JSON.stringify(nodes));
+    localStorage.removeItem('wedding_graph_nodes_v2');
+    localStorage.removeItem('wedding_graph_feedback_v2');
+    localStorage.removeItem('wedding_graph_nodes_v1');
+  }, []);
+
+  // Save Clean Nodes & Feedback to LocalStorage whenever modified
+  useEffect(() => {
+    const cleanNodes = nodes.map(({ x, y, vx, vy, index, __indexColor, ...rest }) => rest);
+    localStorage.setItem('wedding_graph_nodes_v3', JSON.stringify(cleanNodes));
   }, [nodes]);
 
   useEffect(() => {
-    localStorage.setItem('wedding_graph_feedback_v2', JSON.stringify(feedbackList));
+    localStorage.setItem('wedding_graph_feedback_v3', JSON.stringify(feedbackList));
   }, [feedbackList]);
 
   // Persist updated nodes to disk file src/data/sampleData.js via /api/save-dataset
   const persistNodesToDisk = useCallback(async (updatedNodes) => {
     try {
+      const cleanNodes = updatedNodes.map(({ x, y, vx, vy, index, __indexColor, ...rest }) => rest);
+      const cleanLinks = links.map(l => ({
+        source: typeof l.source === 'object' ? (l.source.id || l.source) : l.source,
+        target: typeof l.target === 'object' ? (l.target.id || l.target) : l.target,
+        label: l.label || ''
+      }));
+
       const res = await fetch('/api/save-dataset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nodes: updatedNodes, links, feedbackList })
+        body: JSON.stringify({ nodes: cleanNodes, links: cleanLinks, feedbackList })
       });
       const data = await res.json();
       if (data.success) {
@@ -166,11 +191,11 @@ export default function App() {
 
   // Download updated sampleData.js file directly for Git committing
   const downloadSampleDataJs = () => {
-    const cleanNodes = nodes.map(({ x, y, vx, vy, index, ...rest }) => rest);
+    const cleanNodes = nodes.map(({ x, y, vx, vy, index, __indexColor, ...rest }) => rest);
     const cleanLinks = links.map(l => ({
-      ...l,
-      source: l.source.id || l.source,
-      target: l.target.id || l.target
+      source: typeof l.source === 'object' ? (l.source.id || l.source) : l.source,
+      target: typeof l.target === 'object' ? (l.target.id || l.target) : l.target,
+      label: l.label || ''
     }));
 
     const fileContent = `// Auto-generated & updated from guest profile edits
@@ -336,15 +361,14 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       const fg = fgRef.current;
       
       fg.d3Force('link').distance(l => {
-        const s = l.source.id || l.source;
-        const t = l.target.id || l.target;
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen');
         if (isCoupleLink) {
           return 50;
         }
-        return (l.source.type === 'ANCHOR' || (l.source.id && l.source.type === 'ANCHOR')) || 
-               (l.target.type === 'ANCHOR' || (l.target.id && l.target.type === 'ANCHOR')) ? 175 : 135;
+        return (s === 'maureen' || s === 'matt' || t === 'maureen' || t === 'matt') ? 175 : 135;
       });
 
       fg.d3Force('charge').strength(-1450).distanceMax(650);
@@ -377,8 +401,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       const neighbors = [];
       links.forEach(l => {
-        const s = l.source.id || l.source;
-        const t = l.target.id || l.target;
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
         if (s === curr && !visited.has(t)) neighbors.push(t);
         if (t === curr && !visited.has(s)) neighbors.push(s);
       });
@@ -450,14 +474,19 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     });
   }, [nodes, searchQuery, selectedInterests]);
 
+  // Ensure graphData passes clean links array where source/target are guaranteed string IDs or valid node references
   const graphData = useMemo(() => {
     return {
       nodes: filteredNodes,
       links: links.filter(link => {
-        const sId = link.source.id || link.source;
-        const tId = link.target.id || link.target;
+        const sId = typeof link.source === 'object' ? link.source.id : link.source;
+        const tId = typeof link.target === 'object' ? link.target.id : link.target;
         return filteredNodes.some(n => n.id === sId) && filteredNodes.some(n => n.id === tId);
-      })
+      }).map(link => ({
+        ...link,
+        source: typeof link.source === 'object' ? link.source.id : link.source,
+        target: typeof link.target === 'object' ? link.target.id : link.target
+      }))
     };
   }, [filteredNodes, links]);
 
@@ -657,8 +686,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
     const isConnected = hoverNode || selectedNode ? 
       links.some(l => {
-        const sId = l.source.id || l.source;
-        const tId = l.target.id || l.target;
+        const sId = typeof l.source === 'object' ? l.source.id : l.source;
+        const tId = typeof l.target === 'object' ? l.target.id : l.target;
         const targetId = hoverNode?.id || selectedNode?.id;
         return (sId === node.id && tId === targetId) || (tId === node.id && sId === targetId);
       }) : false;
@@ -1350,8 +1379,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
           onNodeHover={(node) => setHoverNode(node)}
           onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
           linkColor={(link) => {
-            const s = link.source.id || link.source;
-            const t = link.target.id || link.target;
+            const s = typeof link.source === 'object' ? link.source.id : link.source;
+            const t = typeof link.target === 'object' ? link.target.id : link.target;
             
             let isPathLink = false;
             if (shortestPath.length > 1) {
@@ -1373,8 +1402,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             return isLightMode ? 'rgba(100, 116, 139, 0.4)' : 'rgba(148, 163, 184, 0.35)';
           }}
           linkWidth={(link) => {
-            const s = link.source.id || link.source;
-            const t = link.target.id || link.target;
+            const s = typeof link.source === 'object' ? link.source.id : link.source;
+            const t = typeof link.target === 'object' ? link.target.id : link.target;
             let isPathLink = false;
             if (shortestPath.length > 1) {
               for (let i = 0; i < shortestPath.length - 1; i++) {

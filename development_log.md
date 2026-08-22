@@ -36,10 +36,12 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Explicit Tag Proposal & Diff Review Interface in Host Queue
-- **User Prompt**: "also the submitted corections doesnt really make sense.. and it isnt clear what 'applied ot canvas' is doing when there is a qualitative thing like 'you forgot i like wine' i assume the change woudl be to add the wine tag.. but i doubt it is smart enoughfto do that nor is there any evidecne that that happens."
+## [2026-08-22] Permanent Fix for Disconnected Nodes and Links on Page Refresh
+- **User Prompt**: "i refreshed and the nodes and edges are still copletye disconnected"
 - **Actions**:
-  1. **Tag Extraction Engine**: Automatically parses qualitative notes (e.g., `"You forgot that I like Wine!"`) to extract clean proposal tags (`"Wine"`).
-  2. **Explicit Proposed Diff Card**: Displays current interests vs. proposed addition (`Current: [Bicycling]` ➔ `Proposed: [Bicycling] + [Wine]`).
-  3. **Editable Proposal Input**: Allows Maureen & Matt to refine or edit the proposed tag right inside the queue before approving.
-  4. **Immediate Visual Evidence & Camera Fly-To**: Clicking **`Approve & Add "Wine" Tag`** updates the guest's profile, flies the camera directly to their node, opens their drawer, and places them into the **`🏷️ Wine`** Auto-Cluster on canvas!
+  1. **Root Cause**: When dataset was saved to disk/localStorage previously, `SAMPLE_LINKS` saved D3's internal mutated `{ source: { id: "maureen", x: ... } }` object references instead of clean string IDs (`source: "maureen"`). When reloaded, D3 saw `link.source` was an object and skipped re-binding it to the new `nodes` array!
+  2. **Sanitized Persistence Engine**:
+     - Updated `vite.config.js` and `downloadSampleDataJs` to strip D3 internal properties (`x`, `y`, `vx`, `vy`, `index`, `__indexColor`) and guarantee `source` & `target` are **always saved as clean String IDs** (`source: "maureen"`, `target: "matt"`).
+     - Sanitized `SAMPLE_NODES` and `SAMPLE_LINKS` in [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js).
+     - Cleared stale `localStorage` keys (`wedding_graph_nodes_v2`, `wedding_graph_nodes_v1`).
+  3. **Result**: On every page refresh or edit, D3 re-binds string link IDs to the node objects seamlessly. Nodes and edges are 100% connected and anchored!

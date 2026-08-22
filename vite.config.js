@@ -17,6 +17,16 @@ function saveDatasetPlugin() {
               const { nodes, links } = JSON.parse(body);
               const sampleDataPath = path.resolve(process.cwd(), 'src/data/sampleData.js');
 
+              // Sanitize nodes (strip D3 transient physics props)
+              const cleanNodes = (nodes || []).map(({ x, y, vx, vy, index, __indexColor, ...rest }) => rest);
+              
+              // Sanitize links (ALWAYS convert source and target back to string IDs!)
+              const cleanLinks = (links || []).map(l => ({
+                source: typeof l.source === 'object' ? (l.source.id || l.source) : l.source,
+                target: typeof l.target === 'object' ? (l.target.id || l.target) : l.target,
+                label: l.label || ''
+              }));
+
               const fileContent = `// Auto-generated & updated from guest profile edits
 export const COHORT_COLORS = {
   "Maureen Family": "#e11d48",
@@ -42,9 +52,9 @@ export const STATE_COLORS = {
   "Default": "#64748b"
 };
 
-export const SAMPLE_NODES = ${JSON.stringify(nodes, null, 2)};
+export const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};
 
-export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
+export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 `;
 
               fs.writeFileSync(sampleDataPath, fileContent, 'utf-8');
