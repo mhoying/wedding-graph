@@ -115,9 +115,9 @@ function createOrbitForce(speedMultiplier = 1.0) {
         const vx = -r * Math.sin(theta) * omega;
         const vy = r * Math.cos(theta) * omega;
 
-        // Instantaneous direct velocity assignment for immediate 0ms slider response!
-        node.vx = vx;
-        node.vy = vy;
+        // Additive velocity blending so D3 collision & charge forces operate simultaneously with orbit!
+        node.vx += (vx - node.vx) * 0.15;
+        node.vy += (vy - node.vy) * 0.15;
       }
     });
   }
@@ -589,9 +589,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     let memberNodes = [];
     if (clusterMode === 'cohort' && node.cohort) {
       memberNodes = nodes.filter(n => n.cohort === node.cohort);
-    } else if (clusterMode === 'state') {
-      const loc = node.currentlyLivesIn || node.originallyFrom || node.state;
-      memberNodes = nodes.filter(n => (n.currentlyLivesIn || n.originallyFrom || n.state) === loc);
+    } else if (clusterMode === 'locations' || clusterMode === 'current_location' || clusterMode === 'original_location') {
+      const loc = node.currentlyLivesIn || node.originallyFrom;
+      memberNodes = nodes.filter(n => n.currentlyLivesIn === loc || n.originallyFrom === loc);
     }
 
     if (memberNodes.length > 1) {
@@ -599,6 +599,14 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         other.fx = undefined;
         other.fy = undefined;
       });
+    }
+
+    // Reheat D3 simulation solver so graph relaxes into its optimal non-overlapping state!
+    if (fgRef.current) {
+      fgRef.current.d3AlphaTarget(0.3).restart();
+      setTimeout(() => {
+        if (fgRef.current) fgRef.current.d3AlphaTarget(0);
+      }, 500);
     }
   }, [nodes, clusterMode]);
 
@@ -662,22 +670,14 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, isOrbiting, orbitSpeed]);
 
-  // PERPETUAL KINEMATIC ORBIT TICKER: Smooth 60fps refresh loop with 100% constant angular speed
+  // PERPETUAL KINEMATIC ORBIT TICKER: Gentle continuous physics alpha target for collision stability
   useEffect(() => {
-    let animId;
-    if (isOrbiting) {
-      const loop = () => {
-        if (fgRef.current) {
-          fgRef.current.d3ReheatSimulation();
-        }
-        animId = requestAnimationFrame(loop);
-      };
-      animId = requestAnimationFrame(loop);
+    if (isOrbiting && fgRef.current) {
+      fgRef.current.d3AlphaTarget(0.08).restart();
+    } else if (fgRef.current) {
+      fgRef.current.d3AlphaTarget(0);
     }
-    return () => {
-      if (animId) cancelAnimationFrame(animId);
-    };
-  }, [isOrbiting]);
+  }, [isOrbiting, orbitSpeed]);
 
   // Handle D3 Zoom Event: Re-optimizes simulation smoothly on page zoom
   const handleZoom = useCallback(({ k }) => {

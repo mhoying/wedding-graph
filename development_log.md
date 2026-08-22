@@ -9,16 +9,14 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Cohort Default, Clean Location Dropdown Options & Tag Emoji Removal
-- **User Prompt**: "cohort still shoudls tlil be defualt. the ttile for dula locations sohuld just be locations, and current location should have its own drowpdown. also the tag emoji isnt necessayr in any of hte ui"
+## [2026-08-22] D3 Physics Collision & Drag Recovery Fix
+- **User Prompt**: "it doesnt seem to be recoving to the most optimal state when things are dragged anymore. and there awas a ton of overlap on first load. why was this and can you fix it"
 - **Actions**:
-  1. **Cohort Default**: Reset `clusterMode` initial default state to `'cohort'`.
-  2. **Clean Location Options**: Added dedicated dropdown options:
-     - `Cohorts` (Default)
-     - `Locations` (Overloaded dual Origin & Current)
-     - `Current Location` (Lives in only)
-     - `Original Location` (Originally from only)
-     - `Interests`
-     - `Off (Hide)`
-  3. **Tag Emoji Removal**: Removed `🏷️` tag emojis across all profile badges, edit modals, selection pills, and dropdown options.
-  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Root Cause Diagnosis**:
+     - Hard-assigning `node.vx = vx` and `node.vy = vy` in `createOrbitForce` on every tick was overwriting and killing D3's `forceCollide()` and `charge` repulsion forces, causing cards to overlap on load.
+     - Calling `d3ReheatSimulation()` in a 60fps loop reset D3 `alpha` to `1.0` every frame, preventing the physics solver from settling into optimal non-overlapping positions.
+  2. **Additive Velocity & Reheat Fix**:
+     - Converted `createOrbitForce` to additive velocity blending (`node.vx += (vx - node.vx) * 0.15`), allowing collision repulsion forces to run concurrently with orbital motion.
+     - Replaced 60fps reheat loop with `d3AlphaTarget(0.08)` for steady collision equilibrium while orbiting.
+     - Added simulation reheat (`fgRef.current.d3AlphaTarget(0.3).restart()`) on `handleNodeDragEnd` so nodes automatically untangle and relax into non-overlapping positions after being dragged.
+  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
