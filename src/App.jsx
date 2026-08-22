@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Tag, Filter } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 export default function App() {
@@ -9,10 +9,22 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
   const [hoverNode, setHoverNode] = useState(null);
+  const [selectedHobby, setSelectedHobby] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
+
+  // Extract all unique hobbies across all nodes
+  const allHobbies = useMemo(() => {
+    const set = new Set();
+    SAMPLE_NODES.forEach(n => {
+      if (n.hobbies && Array.isArray(n.hobbies)) {
+        n.hobbies.forEach(h => set.add(h));
+      }
+    });
+    return Array.from(set).sort();
+  }, []);
 
   // Update canvas dimensions on window resize
   useEffect(() => {
@@ -28,13 +40,20 @@ export default function App() {
     setMousePos({ x: e.clientX, y: e.clientY });
   };
 
-  // Configure D3 forces: Strict collision prevention & strong link distance
+  // Configure D3 forces: Dynamic Label Collision radius & strong repulsion
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
-      fg.d3Force('link').distance(l => l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 180 : 130);
-      fg.d3Force('charge').strength(-900).distanceMax(500);
-      fg.d3Force('collide', forceCollide().radius(node => node.type === 'ANCHOR' ? 52 : 40).iterations(4));
+      fg.d3Force('link').distance(l => l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 190 : 140);
+      fg.d3Force('charge').strength(-1400).distanceMax(650);
+      
+      // Dynamic collision radius based on exact node label width
+      fg.d3Force('collide', forceCollide().radius(node => {
+        const charCount = node.name ? node.name.length : 10;
+        const estimatedWidth = Math.max(charCount * 7.5 + 24, 70);
+        return estimatedWidth / 2 + 14;
+      }).iterations(6));
+
       fg.d3ReheatSimulation();
     }
   }, []);
@@ -50,16 +69,25 @@ export default function App() {
     return COHORT_COLORS[node.cohort] || COHORT_COLORS.Default;
   }, [colorMode]);
 
-  // Filter nodes based on search
+  // Filter nodes based on search and selected hobby
   const filteredNodes = useMemo(() => {
-    if (!searchQuery.trim()) return SAMPLE_NODES;
-    return SAMPLE_NODES.filter(node => 
-      node.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      node.cohort.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (node.side && node.side.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (node.icebreakers && node.icebreakers.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  }, [searchQuery]);
+    return SAMPLE_NODES.filter(node => {
+      // Hobby Tag Filter
+      if (selectedHobby) {
+        if (!node.hobbies || !node.hobbies.includes(selectedHobby)) return false;
+      }
+      // Text Search Filter
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchesName = node.name.toLowerCase().includes(q);
+        const matchesCohort = node.cohort.toLowerCase().includes(q);
+        const matchesSide = node.side && node.side.toLowerCase().includes(q);
+        const matchesHobby = node.hobbies && node.hobbies.some(h => h.toLowerCase().includes(q));
+        return matchesName || matchesCohort || matchesSide || matchesHobby;
+      }
+      return true;
+    });
+  }, [searchQuery, selectedHobby]);
 
   const graphData = useMemo(() => {
     return {
@@ -82,12 +110,12 @@ export default function App() {
       const minY = Math.min(maureen.y, matt.y);
       const maxY = Math.max(maureen.y, matt.y);
 
-      const padding = 50 / globalScale;
+      const padding = 55 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
       const y = minY - padding;
-      const cornerRadius = 30 / globalScale;
+      const cornerRadius = 32 / globalScale;
 
       ctx.save();
       // Hull Glow
@@ -95,7 +123,7 @@ export default function App() {
       ctx.shadowBlur = 18;
 
       // Hull Background Fill
-      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.55)' : 'rgba(14, 165, 233, 0.1)';
+      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.55)' : 'rgba(14, 165, 233, 0.08)';
       ctx.beginPath();
       if (ctx.roundRect) {
         ctx.roundRect(x, y, width, height, cornerRadius);
@@ -226,7 +254,7 @@ export default function App() {
     >
       {/* Top Controls Bar */}
       <div className="top-bar no-print">
-        <div className="top-bar-left">
+        <div className="top-bar-left flex-wrap">
           <div className="glass-panel brand-badge">
             <div className="pulse-dot" />
             <span>Wedding Graph</span>
@@ -244,6 +272,31 @@ export default function App() {
             />
             {searchQuery && (
               <X style={{ width: 16, height: 16, cursor: 'pointer', color: '#94a3b8' }} onClick={() => setSearchQuery('')} />
+            )}
+          </div>
+
+          {/* Dynamic Hobby Filter Ribbon */}
+          <div className="glass-panel color-mode-bar">
+            <Filter style={{ width: 15, height: 15, color: '#10b981' }} />
+            <span style={{ color: '#94a3b8', marginRight: 4 }}>Filter Hobby:</span>
+            {selectedHobby ? (
+              <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
+                🏷️ {selectedHobby}
+                <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedHobby(null)} />
+              </span>
+            ) : (
+              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 360 }}>
+                {allHobbies.slice(0, 5).map(hobby => (
+                  <button 
+                    key={hobby}
+                    onClick={() => setSelectedHobby(hobby)}
+                    className="btn-mode"
+                    style={{ fontSize: 11, padding: '3px 8px' }}
+                  >
+                    {hobby}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
         </div>
@@ -278,7 +331,7 @@ export default function App() {
             className="glass-panel btn-icon"
             title="Toggle Light/Dark Theme"
           >
-            {isLightMode ? <Moon style={{ width: 18, height: 18 }} /> : <Sun style={{ width: 18, height: 18, color: '#fde047' }} />}
+            {isLightMode ? <Moon style={{ width: 18, height: 18 }} /> : <Sun style={{ width: 18, height: 18, color: '#38bdf8' }} />}
           </button>
           <button 
             onClick={() => window.print()} 
@@ -321,7 +374,7 @@ export default function App() {
               (link.target.id || link.target) === (hoverNode?.id || selectedNode?.id)
             );
             if (isHoveredLink) return '#38bdf8';
-            return isLightMode ? '#64748b' : '#94a3b8'; // Crisp, high-contrast visible link color on top of hulls
+            return isLightMode ? '#64748b' : '#94a3b8';
           }}
           linkWidth={(link) => {
             const isHoveredLink = (hoverNode || selectedNode) && (
@@ -367,9 +420,13 @@ export default function App() {
               <span>{hoverNode.hometown}</span>
             </div>
           )}
-          {hoverNode.icebreakers && (
-            <div style={{ fontSize: 11, color: '#fde047', fontWeight: 500, marginTop: 4 }}>
-              ✨ {hoverNode.icebreakers}
+          {hoverNode.hobbies && (
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 6 }}>
+              {hoverNode.hobbies.map(h => (
+                <span key={h} style={{ fontSize: 10, padding: '2px 6px', borderRadius: 6, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', fontWeight: 600 }}>
+                  🏷️ {h}
+                </span>
+              ))}
             </div>
           )}
         </div>
@@ -410,14 +467,34 @@ export default function App() {
                   <span>{selectedNode.familyStatus}</span>
                 </div>
               )}
-              {selectedNode.icebreakers && (
+              {selectedNode.hobbies && (
                 <div style={{ marginTop: 8 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 6 }}>
-                    <Sparkles style={{ width: 16, height: 16, color: '#fde047' }} />
-                    <span>Conversation Starters / Hobbies</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
+                    <Sparkles style={{ width: 16, height: 16, color: '#10b981' }} />
+                    <span>Click a Hobby to Find Matches:</span>
                   </div>
-                  <div className="icebreaker-box">
-                    {selectedNode.icebreakers}
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {selectedNode.hobbies.map(h => (
+                      <button 
+                        key={h}
+                        onClick={() => {
+                          setSelectedHobby(h);
+                          setSelectedNode(null);
+                        }}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 600,
+                          padding: '4px 10px',
+                          borderRadius: 8,
+                          border: '1px solid rgba(16, 185, 129, 0.4)',
+                          background: 'rgba(16, 185, 129, 0.15)',
+                          color: '#34d399',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        🏷️ {h}
+                      </button>
+                    ))}
                   </div>
                 </div>
               )}
@@ -426,7 +503,7 @@ export default function App() {
 
           <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94a3b8' }}>
             <span>Guest Network Profile</span>
-            <Heart style={{ width: 16, height: 16, color: '#f43f5e' }} />
+            <Heart style={{ width: 16, height: 16, color: '#38bdf8' }} />
           </div>
         </div>
       )}

@@ -7,7 +7,7 @@ export const SAMPLE_NODES = [
     side: "Maureen",
     state: "CA",
     hometown: "San Francisco, CA",
-    icebreakers: "Coffee, Trail Running, Pottery",
+    hobbies: ["Coffee", "Trail Running", "Pottery", "Dog Lover"],
     familyStatus: "Bride",
     relationship: "The Bride",
     image: ""
@@ -20,7 +20,7 @@ export const SAMPLE_NODES = [
     side: "Matt",
     state: "CA",
     hometown: "San Francisco, CA",
-    icebreakers: "Cycling, Mechanical Keyboards, Sourdough",
+    hobbies: ["Cycling", "Mechanical Keyboards", "Sourdough", "Coffee"],
     familyStatus: "Groom",
     relationship: "The Groom",
     image: ""
@@ -33,7 +33,7 @@ export const SAMPLE_NODES = [
     side: "Joint",
     state: "CA",
     hometown: "San Francisco, CA",
-    icebreakers: "Where dog lovers collide!",
+    hobbies: ["Dog Lover", "Outdoors"],
     familyStatus: "Community Hub",
     relationship: "Favorite Weekend Spot",
     image: ""
@@ -46,7 +46,7 @@ export const SAMPLE_NODES = [
     side: "Maureen",
     state: "WA",
     hometown: "Seattle, WA",
-    icebreakers: "Skiing, Indie Rock, Analog Photography",
+    hobbies: ["Skiing", "Indie Rock", "Analog Photography", "Coffee"],
     familyStatus: "Bringing +1 (Jessica)",
     relationship: "Survived college dorms with Maureen",
     image: ""
@@ -59,7 +59,7 @@ export const SAMPLE_NODES = [
     side: "Matt",
     state: "CA",
     hometown: "Palo Alto, CA",
-    icebreakers: "Bouldering, Matcha, Golden Retrievers",
+    hobbies: ["Bouldering", "Matcha", "Dog Lover", "Cycling"],
     familyStatus: "Family of 4 (bringing 2 kids, ages 4 & 6)",
     relationship: "Grad school cohort with Matt",
     image: ""
@@ -72,7 +72,7 @@ export const SAMPLE_NODES = [
     side: "Maureen",
     state: "NY",
     hometown: "New York, NY",
-    icebreakers: "Urban Planning, Espresso, Modern Art",
+    hobbies: ["Urban Planning", "Coffee", "Modern Art", "Wine"],
     familyStatus: "Solo",
     relationship: "Co-worker with Maureen at Google",
     image: ""
@@ -85,7 +85,7 @@ export const SAMPLE_NODES = [
     side: "Joint",
     state: "CA",
     hometown: "San Francisco, CA",
-    icebreakers: "Rescue Dogs, Camping, Craft Beer",
+    hobbies: ["Dog Lover", "Camping", "Craft Beer", "Hiking"],
     familyStatus: "Solo",
     relationship: "Met Maureen & Matt at Avalon Dog Park",
     image: ""
@@ -103,25 +103,28 @@ export const SAMPLE_LINKS = [
   { source: "matt", target: "avalon_dog_park", label: "Weekend Spot" }
 ];
 
+// Authentic Cohort Colors
 export const COHORT_COLORS = {
-  "The Couple": "#38bdf8",
-  "Cornell": "#ef4444",      // Cornell Red
-  "Stanford": "#b91c1c",     // Stanford Cardinal
-  "Google": "#64748b",       // Slate
-  "Dog Park": "#10b981",     // Sage Green
+  "The Couple": "#38bdf8",     // Sky Blue
+  "Cornell": "#b31b1b",        // Authentic Cornell Red
+  "Stanford": "#8c1515",       // Authentic Stanford Cardinal
+  "Google": "#64748b",         // Slate Blue-Grey
+  "Dog Park": "#10b981",       // Sage Green
   "Default": "#94a3b8"
 };
 
+// Strict Cool-Toned Spectrum for Sides (No pinks, no golds)
 export const SIDE_COLORS = {
-  "Maureen": "#ec4899",     // Pink/Rose accent for Maureen's side
-  "Matt": "#0284c7",        // Deep Sky Blue for Matt's side
-  "Joint": "#10b981",       // Emerald Green for Joint friends
+  "Maureen": "#52796f",        // Muted Forest Sage for Maureen
+  "Matt": "#0284c7",           // Pacific Slate Blue for Matt
+  "Joint": "#10b981",          // Emerald Green for Joint
   "The Couple": "#38bdf8"
 };
 
+// State Colors
 export const STATE_COLORS = {
-  "CA": "#0284c7",          // Pacific Ocean Blue
-  "WA": "#10b981",          // Evergreen State
-  "NY": "#8b5cf6",          // Purple
+  "CA": "#0284c7",             // Pacific Ocean Slate Blue
+  "WA": "#10b981",             // Evergreen State Sage
+  "NY": "#6366f1",             // Indigo State
   "Default": "#64748b"
 };

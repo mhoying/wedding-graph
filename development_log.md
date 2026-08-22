@@ -37,9 +37,11 @@
   2. Removed background grid pattern.
   3. Added dynamic canvas Couple Enclosure Shape around Maureen & Matt.
 
-## [2026-08-22] Redundant Joint Node Removal & Edge Line Layering
-- **User Prompt**: "if we are doing this , then we shoudlnt ahve a joint node called 'mauree & Matt' right?" / "and the lines need to be vislble on top of these contianing nodes"
+## [2026-08-22] Design Sprint: Dynamic Interest Tag Filter & Authentic School Colors
+- **User Prompt**: "/goal Run an autonomous multi-agent design sprint..."
 - **Actions**:
-  1. Removed the redundant `maureen_matt` node.
-  2. Linked Maureen and Matt directly to each other with a "Married" edge.
-  3. Increased edge line width (`2px` default, `3.5px` hovered) and line contrast (`#94a3b8`), guaranteeing connection lines render cleanly on top of the container shape fill!
+  1. Spawned `ui_ux_master` and `matt_persona` subagents for adversarial design critique.
+  2. Implemented **Dynamic Interest & Hobby Filter Ribbon** in `src/App.jsx`. Users can click any hobby pill (e.g. `Coffee`, `Skiing`, `Bouldering`, `Dog Lover`) to filter the graph in real-time.
+  3. Made interest badges in the guest profile drawer interactive: clicking a guest's hobby instantly filters the graph to discover all other guests with that shared interest!
+  4. Updated school colors: authentic Cornell Red (`#B31B1B`) and Stanford Cardinal (`#8C1515`).
+  5. Implemented dynamic label collision radius (`charCount * 7.5 + 24`) in D3 `forceCollide()` so text labels never touch regardless of length.
