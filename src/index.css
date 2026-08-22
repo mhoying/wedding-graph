@@ -458,7 +458,8 @@ body {
   height: 100vh;
   background: rgba(2, 6, 23, 0.7);
   backdrop-filter: blur(8px);
-  z-index: 140;
+  z-index: 900;
+  touch-action: manipulation;
 }
 
 .mobile-controls-sheet {
@@ -469,13 +470,26 @@ body {
   width: 100vw;
   max-height: 85vh;
   overflow-y: auto;
-  background: rgba(15, 23, 42, 0.96);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.98);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 28px 28px 0 0;
   padding: 24px 20px;
-  z-index: 150;
-  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.7);
   animation: slideUp 0.25s ease-out;
+  touch-action: pan-y;
+  pointer-events: auto;
+}
+
+.mobile-controls-sheet input[type="range"] {
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.mobile-controls-sheet button,
+.mobile-controls-sheet select {
+  touch-action: manipulation;
+  pointer-events: auto;
 }
 
 .mobile-control-row {

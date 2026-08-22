@@ -9,10 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Event Passcode Gate & Public Privacy Protection (Option A)
-- **User Prompt**: "can anyone go to that url and see the graph?" / "lets do A"
+## [2026-08-22] Android Chrome Mobile Controls Touch Isolation Fix
+- **User Prompt**: "the controls drwaer doesnt seem to do anyting when i use it on my android phone wiht chrome browser"
 - **Actions**:
-  1. **Passcode Screen Guard (`isUnlocked`)**: Implemented a full-screen Glassmorphism Passcode Gate screen that locks the graph canvas until guests enter the event passcode (`MaureenAndMatt2026`).
-  2. **Auto-Unlock QR Code Link Support**: Handled `?passcode=MaureenAndMatt2026` URL parameter for 1-tap auto-unlocking when guests scan QR codes on invitations.
-  3. **Host Admin Controls**: Added **`Copy QR Link`** button in Admin Mode to copy pre-authenticated invitation links.
-  4. **GitHub Pages Deployment**: Published live update to `https://mhoying.github.io/wedding-graph/`.
+  1. **Root Cause Analysis**: On Android Chrome, touch events (`touchstart`, `touchmove`, `touchend`) passed through fixed overlays into the underlying HTML5 Canvas element. Dragging `<input type="range">` sliders also caused Android Chrome to scroll the modal container vertically instead of moving slider thumbs horizontally.
+  2. **Touch Event Isolation (`e.stopPropagation()`)**: Added explicit `onTouchStart={(e) => e.stopPropagation()}` and `onTouchMove={(e) => e.stopPropagation()}` to `.mobile-controls-sheet` and all range sliders in `src/App.jsx`.
+  3. **CSS Touch Actions & Z-Index Layering**:
+     - Increased `.mobile-controls-sheet` `z-index` to `1000` with `touch-action: pan-y`.
+     - Set `touch-action: none` on range sliders and `touch-action: manipulation` on mobile buttons.
+     - Enforced `height: 12px` touch targets for range sliders on mobile.
+  4. **Redeployed**: Published build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

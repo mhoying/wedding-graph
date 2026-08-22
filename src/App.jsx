@@ -1443,15 +1443,22 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       {/* MOBILE CONTROLS BOTTOM SHEET DRAWER MODAL */}
       {isMobileControlsOpen && (
         <>
-          <div className="mobile-sheet-backdrop" onClick={() => setIsMobileControlsOpen(false)} />
-          <div className="mobile-controls-sheet no-print">
+          <div className="mobile-sheet-backdrop" onClick={() => setIsMobileControlsOpen(false)} onTouchEnd={() => setIsMobileControlsOpen(false)} />
+          <div 
+            className="mobile-controls-sheet no-print"
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 18 }}>
                 <SlidersHorizontal style={{ width: 20, height: 20, color: '#38bdf8' }} />
                 <span>Map Controls & Motion</span>
               </div>
               <button 
+                type="button"
                 onClick={() => setIsMobileControlsOpen(false)}
+                onTouchEnd={() => setIsMobileControlsOpen(false)}
                 style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
               >
                 <X style={{ width: 22, height: 22 }} />
@@ -1465,7 +1472,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                   <RotateCw style={{ width: 14, height: 14 }} /> Celestial Orbit Motion:
                 </span>
                 <button 
+                  type="button"
                   onClick={() => setIsOrbiting(!isOrbiting)}
+                  onTouchEnd={() => setIsOrbiting(!isOrbiting)}
                   className={`btn-mode ${isOrbiting ? 'active' : ''}`}
                   style={{ padding: '6px 14px', borderRadius: 9999, background: isOrbiting ? '#8b5cf6' : 'rgba(255, 255, 255, 0.1)', color: '#fff', fontWeight: 700 }}
                 >
@@ -1481,12 +1490,14 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                   </div>
                   <input 
                     type="range"
-                    min="0.2"
+                    min="0.1"
                     max="3.0"
-                    step="0.1"
+                    step="0.05"
                     value={orbitSpeed}
                     onChange={(e) => setOrbitSpeed(parseFloat(e.target.value))}
-                    style={{ width: '100%', accentColor: '#a855f7', height: 6 }}
+                    onTouchStart={(e) => e.stopPropagation()}
+                    onTouchMove={(e) => e.stopPropagation()}
+                    style={{ width: '100%', accentColor: '#a855f7', height: 12, touchAction: 'none' }}
                   />
                 </div>
               )}
@@ -1505,7 +1516,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                 step="0.1"
                 value={nodeScaleMultiplier}
                 onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
-                style={{ width: '100%', accentColor: '#38bdf8', height: 6 }}
+                onTouchStart={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+                style={{ width: '100%', accentColor: '#38bdf8', height: 12, touchAction: 'none' }}
               />
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
@@ -1519,7 +1532,9 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                 step="0.1"
                 value={edgeLengthMultiplier}
                 onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
-                style={{ width: '100%', accentColor: '#10b981', height: 6 }}
+                onTouchStart={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+                style={{ width: '100%', accentColor: '#10b981', height: 12, touchAction: 'none' }}
               />
             </div>
 
