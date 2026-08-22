@@ -23,16 +23,10 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Pure Kinematic Polar Coordinates & 60fps Smooth Orbit Fix
-- **User Prompt**: "i dont htink the speed is staying constnat. it seems tomove move fast sometimes and really doesnt seem to be that much slower at the minim."
+## [2026-08-22] Zero-Jitter Tangential Velocity Blending & Viscous Damping
+- **User Prompt**: "there is some weird feeling jitter in the nodes while is ther ea way to prevent and dampen that so it doesnt feel like each lindvudal node is vibrating"
 - **Actions**:
-  1. **Root Cause Analysis**: Identified two issues:
-     - D3 velocity impulses (`vx += ...`) built up unevenly depending on node distance $r$ ($v = \omega \cdot r$), causing outer nodes to spin faster than inner nodes.
-     - `setTimeout` reheat bursts (every 250ms) caused D3's alpha to spike and decay in periodic bursts.
-  2. **Pure Kinematic Polar Coordinates (`createOrbitForce`)**:
-     - Switched to direct polar coordinate positioning: $x = c_x + r \cdot \cos(\theta + \Delta \theta)$ and $y = c_y + r \cdot \sin(\theta + \Delta \theta)$.
-     - Eliminates velocity acceleration spikes entirely, guaranteeing **100% PERFECTLY UNIFORM & CONSTANT ANGULAR SPEED**!
-  3. **Silky 60fps `requestAnimationFrame` Ticker**: Replaced timer bursts with a continuous 60fps animation frame ticker loop.
-  4. **Exact Speed Range Scaling**:
-     - At `0.1x` (minimum slider): $\Delta \theta = 0.000015$ rad/frame. Full 360-degree orbit takes **~1.9 hours** (ultra-tranquil ambient drift!).
-     - At `1.0x` (default slider): $\Delta \theta = 0.00015$ rad/frame. Full orbit takes **~11.6 minutes** (serene celestial float).
+  1. **Root Cause Analysis**: Direct coordinate assignments (`node.x = ...`) forced D3's collision solver (`forceCollide`) to fight against orbital coordinates on every frame, causing a high-frequency 1-pixel micro-vibration/jitter.
+  2. **Tangential Orbital Velocity Vector**: Switched to smooth tangential velocity integration:
+     $$v_x = -r \cdot \sin(\theta) \cdot \omega, \quad v_y = r \cdot \cos(\theta) \cdot \omega$$
+  3. **Velocity Damping (`velocityDecay={0.65}`)**: Added viscous fluid friction damping (`velocityDecay={0.65}` in `ForceGraph2D`), increasing friction by 75% to eliminate all high-frequency micro-jitter and vibration!

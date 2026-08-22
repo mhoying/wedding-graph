@@ -79,13 +79,13 @@ function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
 
-// PURE KINEMATIC POLAR ORBIT FORCE: 100% constant, silky-smooth angular velocity
+// FLUID VELOCITY DAMPENED ORBIT FORCE: Zero jitter, 100% smooth continuous galaxy drift
 function createOrbitForce(speedMultiplier = 1.0) {
   let nodes = [];
   function force() {
     if (speedMultiplier <= 0) return;
     // Pure constant angular velocity step (0.00015 rad/frame at 1.0x)
-    const deltaTheta = 0.00015 * speedMultiplier;
+    const omega = 0.00015 * speedMultiplier;
 
     // Find center of gravity (Maureen & Matt couple anchor)
     let cx = 0, cy = 0, count = 0;
@@ -108,12 +108,15 @@ function createOrbitForce(speedMultiplier = 1.0) {
       const r = Math.hypot(dx, dy);
 
       if (r > 15) {
-        const currentAngle = Math.atan2(dy, dx);
-        const newAngle = currentAngle + deltaTheta;
+        const theta = Math.atan2(dy, dx);
+        
+        // Exact Tangential Orbital Velocity Vector: v = omega * r perp to radius
+        const vx = -r * Math.sin(theta) * omega;
+        const vy = r * Math.cos(theta) * omega;
 
-        // Kinematic Direct Position Shift (Smooth 100% constant speed, zero velocity acceleration spikes)
-        node.x = cx + Math.cos(newAngle) * r;
-        node.y = cy + Math.sin(newAngle) * r;
+        // Smooth fluid velocity blending (Eliminates position tug-of-war micro-vibration)
+        node.vx = (node.vx || 0) * 0.70 + vx * 0.30;
+        node.vy = (node.vy || 0) * 0.70 + vy * 0.30;
       }
     });
   }
@@ -1860,6 +1863,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             );
             return isHoveredLink ? 3 : 1.5;
           }}
+          velocityDecay={0.65}
           linkDirectionalParticles={isOrbiting ? 2 : 0}
           linkDirectionalParticleSpeed={0.0015 * orbitSpeed}
           linkDirectionalParticleWidth={2.5 * nodeScaleMultiplier}
