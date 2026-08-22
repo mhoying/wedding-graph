@@ -30,21 +30,10 @@
   2. Added Dynamic Color Mode Selector (`colorMode`).
   3. Added Interactive Color Legend footer.
 
-## [2026-08-22] Dynamic Metadata Extraction & Spacing Refinements
-- **User Prompt**: "it seems that the nodes inside of a grouping (like the coupe) dont need to have the same distane between them than mos tothers. als o the goruping node shoudl repell the externa nodes as mucha s the people nodes. the list of interests (i'd rather all it that than 'hobbies') shoudl be dynamically generated from the data in the data set as shoudl the location and cohorts"
+## [2026-08-22] Visual Distinction for Place Hubs & Non-Attending Ghost Nodes
+- **User Prompt**: "we shoudl be able to tell the differnce visually between people and connecting nodes (liek the dog park) also, rememebr we may need an intermediate node for a person taht isnt atending and it shoudl be clear visulaly that htey are not attending in some way"
 - **Actions**:
-  1. Dynamic Metadata Extraction for Interests, Cohorts, and States.
-  2. Renamed UI terminology to Interests.
-  3. Tightened couple link distance.
-
-## [2026-08-22] Generalized Tight Couple Distance Rule
-- **User Prompt**: "is there a way to make this couple distance more generalized.. whenever there are two poeple in a couple gropu, it will be much closer. i think it could be even closer than 70"
-- **Actions**:
-  1. Generalized Couple Distance Engine to 45px for any partner pair in dataset.
-
-## [2026-08-22] Sprint 1: Interactive Path Finder, Cohort Cluster Hulls & Poster Framing
-- **User Prompt**: "/goal have the ux and webdev go through a series of sprints to make the most beautiful, infomrative and interactive desing posisble..."
-- **Actions**:
-  1. **Interactive Social Path Finder ("How Are We Connected?")**: Added dual-node selection tool. Using BFS traversal, it calculates the shortest social connection path between any two guests (e.g. `Brian Kim → Maureen → Matt → The Freedman-Rahmans`), rendering a step-by-step breadcrumb banner and an animated sky-blue glowing link path while dimming the rest of the graph!
-  2. **Dynamic Cohort Cluster Hulls**: Added toggleable background cluster enclosures (`showCohortHulls`). Draws translucent bounding hulls in school/group colors behind entire cohort groups (Cornell, Stanford, Google, Dog Park) with cluster labels!
-  3. **Print Poster Framing Header**: Rendered a formal poster header banner (*"THE SOCIAL UNIVERSE OF MAUREEN & MATT"*) during print mode / export.
+  1. **Place Hub Nodes (`CONTEXT_HUB`)**: Rendered as crisp **rectangular location badges** with location pin prefix (`📍 Avalon Dog Park`) and dark slate-cyan gradient styling, clearly distinguishing places/hubs from people.
+  2. **Non-Attending Ghost Nodes (`NON_ATTENDING`)**: Rendered as **semi-transparent ghost pills** (`alpha 0.75`) with **dashed borders** and `(Not Attending)` text tags so guests immediately see they are connecting bridge people who are not physically attending the wedding.
+  3. Added non-attending sample node (`Uncle Bob`) connecting Matt and family friends.
+  4. Updated Tooltips and Drawer with special status indicators (`👻 Not Attending (Connecting Bridge Person)` and `📍 Place Hub`).

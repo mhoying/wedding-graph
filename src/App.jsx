@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Share2 } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 export default function App() {
@@ -79,7 +79,8 @@ export default function App() {
       fg.d3Force('charge').strength(-1400).distanceMax(650);
       
       fg.d3Force('collide', forceCollide().radius(node => {
-        const charCount = node.name ? node.name.length : 10;
+        const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
+        const charCount = nameStr ? nameStr.length : 10;
         const estimatedWidth = Math.max(charCount * 7.5 + 24, 70);
         return estimatedWidth / 2 + 10;
       }).iterations(6));
@@ -103,7 +104,6 @@ export default function App() {
         return path;
       }
 
-      // Find all neighbors connected to curr
       const neighbors = [];
       SAMPLE_LINKS.forEach(l => {
         const s = l.source.id || l.source;
@@ -159,7 +159,7 @@ export default function App() {
     };
   }, [filteredNodes]);
 
-  // Handle Node Clicks (Path Finder vs Normal Drawer Selection)
+  // Handle Node Clicks
   const handleNodeClick = (node) => {
     if (isPathMode) {
       if (!pathStart) {
@@ -177,7 +177,6 @@ export default function App() {
 
   // Render background enclosure shapes around Maureen & Matt couple and Cohort Clusters
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
-    // 1. Couple Enclosure Hull around Maureen & Matt
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -219,7 +218,6 @@ export default function App() {
       ctx.restore();
     }
 
-    // 2. Cohort Cluster Hulls (if enabled)
     if (showCohortHulls) {
       const cohortGroups = {};
       filteredNodes.forEach(node => {
@@ -272,12 +270,11 @@ export default function App() {
     }
   }, [filteredNodes, isLightMode, showCohortHulls]);
 
-  // Premium Node Canvas Renderer
+  // Premium Node Canvas Renderer with distinct visual shapes for Hubs & Non-Attending Nodes
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
 
-    // Check Path Finder active membership
     const isPathNode = shortestPath.includes(node.id);
     const isPathActive = shortestPath.length > 0;
 
@@ -290,25 +287,32 @@ export default function App() {
     const isDimmed = isPathActive ? !isPathNode : ((hoverNode || selectedNode) && !isHovered && !isConnected);
     const color = isPathNode ? '#38bdf8' : getNodeColor(node);
     const isAnchor = node.type === 'ANCHOR';
+    const isHub = node.type === 'CONTEXT_HUB';
+    const isNonAttending = node.type === 'NON_ATTENDING';
+
+    // Label String
+    let labelText = node.name;
+    if (isHub) labelText = `📍 ${node.name}`;
+    if (isNonAttending) labelText = `${node.name} (Not Attending)`;
 
     ctx.save();
-    ctx.globalAlpha = isDimmed ? 0.12 : 1.0;
+    ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.75 : 1.0); // Translucent / Ghost for non-attending
 
     // Font Configuration
     const fontSize = (isAnchor ? 13 : 11) / globalScale;
     ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '500'} ${fontSize}px Inter, sans-serif`;
     
-    const textWidth = ctx.measureText(node.name).width;
+    const textWidth = ctx.measureText(labelText).width;
     const paddingX = (isAnchor ? 14 : 10) / globalScale;
     const paddingY = (isAnchor ? 8 : 6) / globalScale;
     const badgeWidth = textWidth + paddingX * 2;
     const badgeHeight = fontSize + paddingY * 2;
-    const cornerRadius = badgeHeight / 2;
+    const cornerRadius = isHub ? 4 / globalScale : badgeHeight / 2; // Rectangular/Diamond box for Places/Hubs
 
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
-    // Outer Glow for hovered/selected/path
+    // Outer Glow
     if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = color;
       ctx.shadowBlur = isHovered ? 25 : (isPathNode ? 20 : 15);
@@ -319,6 +323,14 @@ export default function App() {
     if (isHovered || isPathNode) {
       gradient.addColorStop(0, color);
       gradient.addColorStop(1, color);
+    } else if (isNonAttending) {
+      // Ghost / Translucent fill for non-attending
+      gradient.addColorStop(0, 'rgba(30, 41, 59, 0.45)');
+      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.45)');
+    } else if (isHub) {
+      // Dark slate background with cyan tint for Place Hubs
+      gradient.addColorStop(0, 'rgba(15, 23, 42, 0.95)');
+      gradient.addColorStop(1, 'rgba(14, 116, 144, 0.95)');
     } else if (isLightMode) {
       gradient.addColorStop(0, '#ffffff');
       gradient.addColorStop(1, '#f1f5f9');
@@ -337,16 +349,23 @@ export default function App() {
     ctx.fill();
 
     // Border
-    ctx.lineWidth = isHovered || isPathNode ? 2.5 : (isAnchor ? 2 : 1.2);
+    ctx.lineWidth = isHovered || isPathNode ? 2.5 : (isAnchor ? 2 : 1.5);
     ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : color;
+    
+    // Dashed border for non-attending ghost nodes!
+    if (isNonAttending) {
+      ctx.setLineDash([4 / globalScale, 3 / globalScale]);
+    } else {
+      ctx.setLineDash([]);
+    }
     ctx.stroke();
 
     // Text Label
     ctx.shadowBlur = 0;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isLightMode ? '#0f172a' : '#f8fafc');
-    ctx.fillText(node.name, node.x, node.y);
+    ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isNonAttending ? '#94a3b8' : (isLightMode ? '#0f172a' : '#f8fafc'));
+    ctx.fillText(labelText, node.x, node.y);
 
     ctx.restore();
   }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath]);
@@ -356,7 +375,8 @@ export default function App() {
     const isAnchor = node.type === 'ANCHOR';
     const fontSize = (isAnchor ? 13 : 11) / globalScale;
     ctx.font = `500 ${fontSize}px Inter, sans-serif`;
-    const textWidth = ctx.measureText(node.name).width;
+    const labelStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
+    const textWidth = ctx.measureText(labelStr).width;
     const badgeWidth = textWidth + (24 / globalScale);
     const badgeHeight = fontSize + (14 / globalScale);
 
@@ -378,7 +398,7 @@ export default function App() {
       className={`app-container ${isLightMode ? 'light-mode' : ''}`}
       onMouseMove={handleMouseMove}
     >
-      {/* Print Poster Header Banner (Only visible in Print Mode) */}
+      {/* Print Poster Header Banner */}
       <div className="print-poster-header">
         <h1>THE SOCIAL UNIVERSE OF MAUREEN & MATT</h1>
         <p>A Visual Map of Family, Friends & Connections</p>
@@ -562,7 +582,6 @@ export default function App() {
             const s = link.source.id || link.source;
             const t = link.target.id || link.target;
             
-            // Check if link is part of shortest path
             let isPathLink = false;
             if (shortestPath.length > 1) {
               for (let i = 0; i < shortestPath.length - 1; i++) {
@@ -627,11 +646,13 @@ export default function App() {
                 backgroundColor: getNodeColor(hoverNode) 
               }}
             >
-              {hoverNode.cohort}
+              {hoverNode.type === 'CONTEXT_HUB' ? '📍 Place Hub' : (hoverNode.type === 'NON_ATTENDING' ? '👻 Not Attending' : hoverNode.cohort)}
             </span>
             <span style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8' }}>{hoverNode.side} Side</span>
           </div>
-          <h4 style={{ fontWeight: 800, fontSize: 14, marginBottom: 2 }}>{hoverNode.name}</h4>
+          <h4 style={{ fontWeight: 800, fontSize: 14, marginBottom: 2 }}>
+            {hoverNode.type === 'CONTEXT_HUB' ? `📍 ${hoverNode.name}` : hoverNode.name}
+          </h4>
           <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>{hoverNode.relationship}</p>
           {hoverNode.hometown && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 4 }}>
@@ -660,7 +681,7 @@ export default function App() {
                 className="drawer-badge"
                 style={{ backgroundColor: getNodeColor(selectedNode) }}
               >
-                {selectedNode.cohort} • {selectedNode.side} Side
+                {selectedNode.type === 'CONTEXT_HUB' ? '📍 Place Hub' : (selectedNode.type === 'NON_ATTENDING' ? '👻 Not Attending' : `${selectedNode.cohort} • ${selectedNode.side} Side`)}
               </span>
               <button 
                 onClick={() => setSelectedNode(null)}
@@ -674,6 +695,18 @@ export default function App() {
             <p className="drawer-subtitle">{selectedNode.relationship}</p>
 
             <div className="drawer-section">
+              {selectedNode.type === 'NON_ATTENDING' && (
+                <div className="drawer-info-row" style={{ color: '#f59e0b', fontWeight: 600 }}>
+                  <Ghost style={{ width: 16, height: 16, color: '#f59e0b' }} />
+                  <span>Not Attending Wedding (Connecting Bridge Person)</span>
+                </div>
+              )}
+              {selectedNode.type === 'CONTEXT_HUB' && (
+                <div className="drawer-info-row" style={{ color: '#38bdf8', fontWeight: 600 }}>
+                  <Landmark style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                  <span>Shared Meeting Location / Event Hub</span>
+                </div>
+              )}
               {selectedNode.hometown && (
                 <div className="drawer-info-row">
                   <MapPin style={{ width: 16, height: 16, color: '#38bdf8' }} />
@@ -721,7 +754,7 @@ export default function App() {
           </div>
 
           <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94a3b8' }}>
-            <span>Guest Network Profile</span>
+            <span>{selectedNode.type === 'CONTEXT_HUB' ? 'Location Hub Profile' : 'Guest Profile'}</span>
             <Heart style={{ width: 16, height: 16, color: '#38bdf8' }} />
           </div>
         </div>
