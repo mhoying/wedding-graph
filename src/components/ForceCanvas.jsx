@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import { forceCollide } from 'd3-force-3d';
+import { forceCollide } from 'd3-force';
 import { getNodeBounds, hexToRgba } from '../utils/nodeGeometry';
 import { getConvexHull2D } from '../utils/convexHull';
 import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/sampleData';
