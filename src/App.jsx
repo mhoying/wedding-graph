@@ -860,41 +860,74 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       });
     }
 
+// 2D Andrew's Monotone Chain Convex Hull Algorithm for Organic Blob Clusters
+function getConvexHull2D(points) {
+  if (!points || points.length <= 2) return points;
+  const sorted = [...points].sort((a, b) => a.x === b.x ? a.y - b.y : a.x - b.x);
+  const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+
+  const lower = [];
+  for (const p of sorted) {
+    while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) {
+      lower.pop();
+    }
+    lower.push(p);
+  }
+
+  const upper = [];
+  for (let i = sorted.length - 1; i >= 0; i--) {
+    const p = sorted[i];
+    while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) {
+      upper.pop();
+    }
+    upper.push(p);
+  }
+
+  lower.pop();
+  upper.pop();
+  return lower.concat(upper);
+}
+
     let colorIdx = 0;
     Object.entries(clusterGroups).forEach(([label, nodesArr]) => {
       if (nodesArr.length > 1) {
-        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        // Collect padded bounding corners of member nodes for convex hull calculation
+        const points = [];
+        const pad = 24 * nodeScaleMultiplier;
+
         nodesArr.forEach(n => {
           const b = getNodeBounds(n, showHeadshots, nodeScaleMultiplier);
-          const left = n.x - b.width / 2;
-          const right = n.x + b.width / 2;
-          const top = n.y - b.height / 2;
-          const bottom = n.y + b.height / 2;
+          const halfW = b.width / 2 + pad;
+          const halfH = b.height / 2 + pad;
 
-          if (left < minX) minX = left;
-          if (right > maxX) maxX = right;
-          if (top < minY) minY = top;
-          if (bottom > maxY) maxY = bottom;
+          points.push({ x: n.x - halfW, y: n.y - halfH });
+          points.push({ x: n.x + halfW, y: n.y - halfH });
+          points.push({ x: n.x + halfW, y: n.y + halfH });
+          points.push({ x: n.x - halfW, y: n.y + halfH });
         });
 
-        // Exact Uniform Padding in World Units around outer card edges
-        const pad = 30 * nodeScaleMultiplier;
-        const w = (maxX - minX) + pad * 2;
-        const h = (maxY - minY) + pad * 2;
-        const x = minX - pad;
-        const y = minY - pad;
-        
+        const hull = getConvexHull2D(points);
         const clusterColor = COHORT_COLORS[label.replace(' Cluster', '')] || DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
         colorIdx++;
 
         ctx.save();
         ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
         ctx.beginPath();
-        if (ctx.roundRect) {
-          ctx.roundRect(x, y, w, h, 20 * nodeScaleMultiplier);
-        } else {
-          ctx.rect(x, y, w, h);
+
+        const numPoints = hull.length;
+        if (numPoints > 2) {
+          const xc0 = (hull[numPoints - 1].x + hull[0].x) / 2;
+          const yc0 = (hull[numPoints - 1].y + hull[0].y) / 2;
+          ctx.moveTo(xc0, yc0);
+
+          for (let i = 0; i < numPoints; i++) {
+            const next = hull[(i + 1) % numPoints];
+            const xc = (hull[i].x + next.x) / 2;
+            const yc = (hull[i].y + next.y) / 2;
+            ctx.quadraticCurveTo(hull[i].x, hull[i].y, xc, yc);
+          }
         }
+        ctx.closePath();
         ctx.fill();
 
         ctx.lineWidth = 1.5 / globalScale;
@@ -902,12 +935,15 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.setLineDash([6 / globalScale, 6 / globalScale]);
         ctx.stroke();
 
+        // Position cluster label title above top-left hull vertex
+        let topPoint = hull[0];
+        hull.forEach(p => { if (p.y < topPoint.y) topPoint = p; });
+
         ctx.setLineDash([]);
-        // 2X LARGER CLUSTER TITLE LABELS (22px * nodeScaleMultiplier, Bold 800)
         ctx.font = `800 ${22 * nodeScaleMultiplier}px Inter, sans-serif`;
         ctx.fillStyle = clusterColor;
         ctx.textAlign = 'left';
-        ctx.fillText(label.toUpperCase(), x + 16 * nodeScaleMultiplier, y + 26 * nodeScaleMultiplier);
+        ctx.fillText(label.toUpperCase(), topPoint.x, topPoint.y - 12 * nodeScaleMultiplier);
         ctx.restore();
       }
     });
