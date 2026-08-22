@@ -4,6 +4,18 @@ import { forceCollide } from 'd3-force-3d';
 import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
+// Helper to convert Hex color to RGBA with custom opacity
+function hexToRgba(hex, alpha = 1) {
+  if (!hex) return `rgba(100, 116, 139, ${alpha})`;
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c.split('').map(x => x + x).join('');
+  const num = parseInt(c, 16);
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 // Helper to extract uppercase initials for guest monogram headshots
 function getInitials(name) {
   if (!name) return '??';
@@ -132,7 +144,7 @@ export default function App() {
       fg.d3Force('collide', forceCollide().radius(node => {
         const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
         const charCount = nameStr ? nameStr.length : 10;
-        const estimatedWidth = Math.max(charCount * 7.5 + 44, 90); // Extra width for headshot avatar
+        const estimatedWidth = Math.max(charCount * 7.5 + 44, 90);
         return estimatedWidth / 2 + 12;
       }).iterations(6));
 
@@ -395,7 +407,7 @@ export default function App() {
     }
   }, [filteredNodes, isLightMode, showCohortHulls]);
 
-  // Modern Square Card Badge Renderer with Circular Monogram / Headshot Avatar
+  // Modern Square Card Badge Renderer with Legend Group Color Tint Shading
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -410,7 +422,7 @@ export default function App() {
       ) : false;
 
     const isDimmed = isPathActive ? !isPathNode : ((hoverNode || selectedNode) && !isHovered && !isConnected);
-    const color = isPathNode ? '#38bdf8' : getNodeColor(node);
+    const groupColor = isPathNode ? '#38bdf8' : getNodeColor(node);
     const isAnchor = node.type === 'ANCHOR';
     const isHub = node.type === 'CONTEXT_HUB';
     const isNonAttending = node.type === 'NON_ATTENDING';
@@ -430,10 +442,9 @@ export default function App() {
     const paddingX = (isAnchor ? 14 : 10) / globalScale;
     const paddingY = (isAnchor ? 10 : 8) / globalScale;
     
-    // Square-ish card dimensions with avatar spacing
     const badgeWidth = textWidth + paddingX * 2 + (isHub ? 0 : avatarDiameter + 8 / globalScale);
     const badgeHeight = Math.max(fontSize + paddingY * 2, avatarDiameter + paddingY * 1.5);
-    const cornerRadius = 10 / globalScale; // Modern square-ish rounded corners
+    const cornerRadius = 10 / globalScale;
 
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
@@ -444,7 +455,7 @@ export default function App() {
       ctx.shadowBlur = 12;
     }
 
-    // Square Card Background Fill
+    // Square Card Background Path
     ctx.beginPath();
     if (ctx.roundRect) {
       ctx.roundRect(x, y, badgeWidth, badgeHeight, cornerRadius);
@@ -452,29 +463,33 @@ export default function App() {
       ctx.rect(x, y, badgeWidth, badgeHeight);
     }
 
+    // LEGEND GROUP COLOR SHADING LOGIC:
+    // Tint the entire card background with the active legend grouping color!
     if (isHovered || isPathNode) {
-      ctx.fillStyle = color;
+      ctx.fillStyle = groupColor; // Full vibrant group color on hover/path
     } else if (isNonAttending) {
-      ctx.fillStyle = isLightMode ? '#f1f5f9' : 'rgba(30, 41, 59, 0.6)';
+      ctx.fillStyle = isLightMode ? hexToRgba(groupColor, 0.15) : hexToRgba(groupColor, 0.22);
     } else if (isHub) {
       ctx.fillStyle = isLightMode ? '#e2e8f0' : 'rgba(51, 65, 85, 0.85)';
     } else if (isLightMode) {
-      ctx.fillStyle = '#ffffff';
+      // Light Mode: Delicate pastel tint of legend group color
+      ctx.fillStyle = hexToRgba(groupColor, 0.16);
     } else {
-      ctx.fillStyle = 'rgba(30, 41, 59, 0.95)';
+      // Dark Mode: Rich jewel-toned tint of legend group color (e.g. Cornell crimson, Family emerald)
+      ctx.fillStyle = hexToRgba(groupColor, 0.28);
     }
     ctx.fill();
 
-    // Soft Card Border
-    ctx.lineWidth = isHovered || isPathNode ? 1.8 : 1;
+    // Matching Color Border Accent
+    ctx.lineWidth = isHovered || isPathNode ? 1.8 : 1.2;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
     } else if (isNonAttending) {
-      ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+      ctx.strokeStyle = hexToRgba(groupColor, 0.4);
     } else if (isLightMode) {
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.strokeStyle = hexToRgba(groupColor, 0.45);
     } else {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.strokeStyle = hexToRgba(groupColor, 0.5); // Rich colored border matching legend group
     }
     
     if (isNonAttending) {
@@ -507,13 +522,13 @@ export default function App() {
 
       if (!node.image || !imageCacheRef.current[node.image]) {
         // Draw Monogram Initials Circle Avatar
-        ctx.fillStyle = color;
+        ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : groupColor;
         ctx.fill();
 
         ctx.font = `700 ${(isAnchor ? 9 : 8) / globalScale}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = isHovered || isPathNode ? groupColor : '#ffffff';
         ctx.fillText(getInitials(node.name), avatarX, avatarY);
       }
       ctx.restore();

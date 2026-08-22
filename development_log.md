@@ -36,8 +36,8 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Square Card Node Badges with Headshot Avatars & Monograms
-- **User Prompt**: "can the nodes also have a headshot of the indvidual and be more square shaped than pill shaped"
+## [2026-08-22] Legend Group Color Tint Shading on Card Node Backgrounds
+- **User Prompt**: "maybe we can use the shading of the nodes to dictate teh legend grouping rather htan just the monogram thing"
 - **Actions**:
-  1. **Square-ish Card Badge Geometry**: Converted nodes from round pill shapes to modern rounded rectangle card badges (`border-radius: 10px`).
-  2. **Headshot Avatar & Monogram System**: Added circular headshot avatars on the left side of every guest card node badge. Loads headshot photos dynamically or renders custom uppercase initials monograms (e.g. `"MC"`, `"MK"`, `"EC"`).
+  1. **Legend Color Shading**: Applied soft, rich color tint fills (`hexToRgba(groupColor, 0.28)`) directly to the entire card background and border stroke (`hexToRgba(groupColor, 0.5)`).
+  2. **Dynamic Group Shading**: Switching between **Cohort**, **Side**, and **State** now dynamically re-shades every node card canvas fill in real-time, providing immediate visual group recognition matching the legend!
