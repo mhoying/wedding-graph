@@ -228,8 +228,8 @@ export default function App() {
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort');
   
-  // Cluster Overlays Mode: 'locations' | 'interests' | 'cohort' | 'none'
-  const [clusterMode, setClusterMode] = useState('locations');
+  // Cluster Overlays Mode: 'cohort' | 'locations' | 'current_location' | 'original_location' | 'interests' | 'none'
+  const [clusterMode, setClusterMode] = useState('cohort');
 
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
 
@@ -391,7 +391,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     return Array.from(set).sort();
   }, [nodes]);
 
-  // Auto-Cluster Discovery Engine: Scans interest tags and hobbies
+  // Auto-Cluster Discovery Engine: Scans interest tags and hobbies (without 🏷️ emoji)
   const dynamicAutoClusters = useMemo(() => {
     const clusterMap = {};
 
@@ -400,7 +400,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       if (node.hobbies && Array.isArray(node.hobbies)) {
         node.hobbies.forEach(h => {
-          const key = `🏷️ ${h}`;
+          const key = h;
           if (!clusterMap[key]) clusterMap[key] = [];
           clusterMap[key].push(node);
         });
@@ -422,31 +422,38 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     return result;
   }, [nodes]);
 
-  // Dual-Location Overlapping Cluster Engine: Simultaneously clusters guests by Originally From AND Currently Lives In!
-  const dynamicLocationClusters = useMemo(() => {
+  // Current Location Cluster Engine
+  const dynamicCurrentLocationClusters = useMemo(() => {
     const clusterMap = {};
-
     nodes.forEach(node => {
       if (node.type === 'CONTEXT_HUB') return;
-
-      if (node.originallyFrom) {
-        const key = `🏡 Originally: ${node.originallyFrom}`;
-        if (!clusterMap[key]) clusterMap[key] = [];
-        clusterMap[key].push(node);
-      }
-
       if (node.currentlyLivesIn) {
         const key = `📍 Lives in: ${node.currentlyLivesIn}`;
         if (!clusterMap[key]) clusterMap[key] = [];
         clusterMap[key].push(node);
       }
     });
-
     const result = {};
     Object.entries(clusterMap).forEach(([tag, arr]) => {
-      if (arr.length >= 2) {
-        result[tag] = arr;
+      if (arr.length >= 2) result[tag] = arr;
+    });
+    return result;
+  }, [nodes]);
+
+  // Original Location Cluster Engine
+  const dynamicOriginalLocationClusters = useMemo(() => {
+    const clusterMap = {};
+    nodes.forEach(node => {
+      if (node.type === 'CONTEXT_HUB') return;
+      if (node.originallyFrom) {
+        const key = `🏡 Originally: ${node.originallyFrom}`;
+        if (!clusterMap[key]) clusterMap[key] = [];
+        clusterMap[key].push(node);
       }
+    });
+    const result = {};
+    Object.entries(clusterMap).forEach(([tag, arr]) => {
+      if (arr.length >= 2) result[tag] = arr;
     });
     return result;
   }, [nodes]);
@@ -938,6 +945,10 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       clusterGroups = dynamicAutoClusters;
     } else if (clusterMode === 'locations') {
       clusterGroups = dynamicLocationClusters;
+    } else if (clusterMode === 'current_location') {
+      clusterGroups = dynamicCurrentLocationClusters;
+    } else if (clusterMode === 'original_location') {
+      clusterGroups = dynamicOriginalLocationClusters;
     } else {
       filteredNodes.forEach(node => {
         if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
@@ -1379,7 +1390,7 @@ function getConvexHull2D(points) {
                           style={{ accentColor: '#10b981', cursor: 'pointer' }}
                         />
                         <span style={{ color: isChecked ? '#34d399' : 'inherit', fontWeight: isChecked ? 700 : 400 }}>
-                          🏷️ {interest}
+                          {interest}
                         </span>
                       </label>
                     );
@@ -1515,9 +1526,11 @@ function getConvexHull2D(points) {
                 style={{ background: 'none', border: 'none', color: isLightMode ? '#0f172a' : '#f8fafc', fontSize: 11, fontWeight: 600, outline: 'none', cursor: 'pointer' }}
               >
                 <option value="cohort" style={{ background: '#0f172a', color: '#fff' }}>Cohorts</option>
-                <option value="locations" style={{ background: '#0f172a', color: '#fff' }}>🗺️ Dual Locations (Origin & Current)</option>
-                <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>🏷️ Interest Tags & Hobbies</option>
-                <option value="none" style={{ background: '#0f172a', color: '#fff' }}>🚫 Off (Hide)</option>
+                <option value="locations" style={{ background: '#0f172a', color: '#fff' }}>Locations</option>
+                <option value="current_location" style={{ background: '#0f172a', color: '#fff' }}>Current Location</option>
+                <option value="original_location" style={{ background: '#0f172a', color: '#fff' }}>Original Location</option>
+                <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>Interests</option>
+                <option value="none" style={{ background: '#0f172a', color: '#fff' }}>Off (Hide)</option>
               </select>
             </div>
 
@@ -1775,9 +1788,11 @@ function getConvexHull2D(points) {
                 style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}
               >
                 <option value="cohort">Cohorts</option>
-                <option value="locations">🗺️ Dual Locations (Origin & Current)</option>
-                <option value="interests">🏷️ Interest Tags & Hobbies</option>
-                <option value="none">🚫 Off (Hide)</option>
+                <option value="locations">Locations</option>
+                <option value="current_location">Current Location</option>
+                <option value="original_location">Original Location</option>
+                <option value="interests">Interests</option>
+                <option value="none">Off (Hide)</option>
               </select>
             </div>
 
@@ -2242,7 +2257,7 @@ function getConvexHull2D(points) {
             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 6 }}>
               {hoverNode.hobbies.map(h => (
                 <span key={h} style={{ fontSize: 10, padding: '2px 8px', borderRadius: 9999, background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 600 }}>
-                  🏷️ {h}
+                  {h}
                 </span>
               ))}
             </div>
@@ -2345,7 +2360,7 @@ function getConvexHull2D(points) {
                               cursor: 'pointer'
                             }}
                           >
-                            🏷️ {h}
+                            {h}
                           </button>
                         ))}
                       </div>
@@ -2375,7 +2390,7 @@ function getConvexHull2D(points) {
                   <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
                     {editHobbies.map(h => (
                       <span key={h} style={{ fontSize: 11, padding: '3px 8px', borderRadius: 9999, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', gap: 4 }}>
-                        🏷️ {h}
+                        {h}
                         <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => handleRemoveInterestTag(h)} />
                       </span>
                     ))}
