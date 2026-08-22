@@ -982,13 +982,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     let clusterGroups = {};
 
     if (clusterMode === 'interests') {
-      clusterGroups = dynamicAutoClusters;
+      clusterGroups = dynamicAutoClusters || {};
     } else if (clusterMode === 'locations') {
-      clusterGroups = dynamicLocationClusters;
+      clusterGroups = dynamicLocationClusters || {};
     } else if (clusterMode === 'current_location') {
-      clusterGroups = dynamicCurrentLocationClusters;
+      clusterGroups = dynamicCurrentLocationClusters || {};
     } else if (clusterMode === 'original_location') {
-      clusterGroups = dynamicOriginalLocationClusters;
+      clusterGroups = dynamicOriginalLocationClusters || {};
     } else {
       filteredNodes.forEach(node => {
         if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
