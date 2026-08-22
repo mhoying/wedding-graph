@@ -36,8 +36,10 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Legend Group Color Tint Shading on Card Node Backgrounds
-- **User Prompt**: "maybe we can use the shading of the nodes to dictate teh legend grouping rather htan just the monogram thing"
+## [2026-08-22] Direct Guest Self-Editing for Interests & Blurbs
+- **User Prompt**: "woudl it be possible to allow guest to directly edit their interests or burbs?"
 - **Actions**:
-  1. **Legend Color Shading**: Applied soft, rich color tint fills (`hexToRgba(groupColor, 0.28)`) directly to the entire card background and border stroke (`hexToRgba(groupColor, 0.5)`).
-  2. **Dynamic Group Shading**: Switching between **Cohort**, **Side**, and **State** now dynamically re-shades every node card canvas fill in real-time, providing immediate visual group recognition matching the legend!
+  1. **Inline Self-Edit Mode**: Added an **`✏️ Edit Profile`** button inside every guest side drawer.
+  2. **Direct Interest Tag Management**: Guests can delete existing interest tags (`x`) or type and add new interest tags directly (`+ Add`).
+  3. **Direct Blurb & Details Edit**: Added editable text fields for Relationship Blurbs, Hometown, and Family Status.
+  4. **Instant Canvas Update**: Clicking **`Save Changes`** immediately updates the node data in state, re-rendering canvas node cards and tooltips in real-time!

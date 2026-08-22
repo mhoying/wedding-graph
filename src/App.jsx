@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Helper to convert Hex color to RGBA with custom opacity
@@ -50,6 +50,14 @@ export default function App() {
   const [isMatchmakerOpen, setIsMatchmakerOpen] = useState(false);
   const [myGuestId, setMyGuestId] = useState('');
 
+  // Direct Guest Profile Inline Editing State
+  const [isEditingDrawer, setIsEditingDrawer] = useState(false);
+  const [editRelationship, setEditRelationship] = useState('');
+  const [editHometown, setEditHometown] = useState('');
+  const [editFamilyStatus, setEditFamilyStatus] = useState('');
+  const [editHobbies, setEditHobbies] = useState([]);
+  const [newInterestInput, setNewInterestInput] = useState('');
+
   // Feedback & Metadata Correction System State
   const [feedbackList, setFeedbackList] = useState([
     {
@@ -92,6 +100,17 @@ export default function App() {
     return Array.from(set).sort();
   }, [nodes]);
 
+  // Sync edit form fields whenever a node is selected
+  useEffect(() => {
+    if (selectedNode) {
+      setEditRelationship(selectedNode.relationship || '');
+      setEditHometown(selectedNode.hometown || '');
+      setEditFamilyStatus(selectedNode.familyStatus || '');
+      setEditHobbies(selectedNode.hobbies ? [...selectedNode.hobbies] : []);
+      setIsEditingDrawer(false);
+    }
+  }, [selectedNode]);
+
   // Update canvas dimensions on window resize
   useEffect(() => {
     const handleResize = () => {
@@ -121,6 +140,40 @@ export default function App() {
     } else {
       setSelectedInterests([...selectedInterests, interest]);
     }
+  };
+
+  // Save Direct Profile Edits
+  const handleSaveProfileEdits = () => {
+    if (!selectedNode) return;
+
+    const updatedNode = {
+      ...selectedNode,
+      relationship: editRelationship,
+      hometown: editHometown,
+      familyStatus: editFamilyStatus,
+      hobbies: editHobbies
+    };
+
+    setNodes(prev => prev.map(n => n.id === selectedNode.id ? updatedNode : n));
+    setSelectedNode(updatedNode);
+    setIsEditingDrawer(false);
+    setToastMessage(`Saved profile changes for ${selectedNode.name}!`);
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Add a new interest tag in edit mode
+  const handleAddInterestTag = () => {
+    if (!newInterestInput.trim()) return;
+    const tag = newInterestInput.trim();
+    if (!editHobbies.includes(tag)) {
+      setEditHobbies([...editHobbies, tag]);
+    }
+    setNewInterestInput('');
+  };
+
+  // Remove an interest tag in edit mode
+  const handleRemoveInterestTag = (tag) => {
+    setEditHobbies(editHobbies.filter(h => h !== tag));
   };
 
   // Configure D3 forces: Generalized Couple Distance & Dynamic Collision for Square Badges
@@ -463,19 +516,15 @@ export default function App() {
       ctx.rect(x, y, badgeWidth, badgeHeight);
     }
 
-    // LEGEND GROUP COLOR SHADING LOGIC:
-    // Tint the entire card background with the active legend grouping color!
     if (isHovered || isPathNode) {
-      ctx.fillStyle = groupColor; // Full vibrant group color on hover/path
+      ctx.fillStyle = groupColor;
     } else if (isNonAttending) {
       ctx.fillStyle = isLightMode ? hexToRgba(groupColor, 0.15) : hexToRgba(groupColor, 0.22);
     } else if (isHub) {
       ctx.fillStyle = isLightMode ? '#e2e8f0' : 'rgba(51, 65, 85, 0.85)';
     } else if (isLightMode) {
-      // Light Mode: Delicate pastel tint of legend group color
       ctx.fillStyle = hexToRgba(groupColor, 0.16);
     } else {
-      // Dark Mode: Rich jewel-toned tint of legend group color (e.g. Cornell crimson, Family emerald)
       ctx.fillStyle = hexToRgba(groupColor, 0.28);
     }
     ctx.fill();
@@ -489,7 +538,7 @@ export default function App() {
     } else if (isLightMode) {
       ctx.strokeStyle = hexToRgba(groupColor, 0.45);
     } else {
-      ctx.strokeStyle = hexToRgba(groupColor, 0.5); // Rich colored border matching legend group
+      ctx.strokeStyle = hexToRgba(groupColor, 0.5);
     }
     
     if (isNonAttending) {
@@ -510,18 +559,15 @@ export default function App() {
       ctx.clip();
 
       if (node.image && imageCacheRef.current[node.image]) {
-        // Draw Headshot Image if available
         const img = imageCacheRef.current[node.image];
         ctx.drawImage(img, avatarX - avatarDiameter / 2, avatarY - avatarDiameter / 2, avatarDiameter, avatarDiameter);
       } else if (node.image && !imageCacheRef.current[node.image]) {
-        // Load image into cache
         const img = new Image();
         img.src = node.image;
         img.onload = () => { imageCacheRef.current[node.image] = img; };
       }
 
       if (!node.image || !imageCacheRef.current[node.image]) {
-        // Draw Monogram Initials Circle Avatar
         ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : groupColor;
         ctx.fill();
 
@@ -1106,7 +1152,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Glassmorphism Metadata Side Drawer Popup (On Click) */}
+      {/* Glassmorphism Metadata Side Drawer Popup (On Click & Self-Editing Mode) */}
       {selectedNode && !isPathMode && (
         <div className="glass-panel metadata-drawer no-print">
           <div>
@@ -1125,83 +1171,168 @@ export default function App() {
               </button>
             </div>
 
-            <h2 className="drawer-title">{selectedNode.name}</h2>
-            <p className="drawer-subtitle">{selectedNode.relationship}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <h2 className="drawer-title" style={{ margin: 0 }}>{selectedNode.name}</h2>
+              {!isEditingDrawer && (
+                <button 
+                  onClick={() => setIsEditingDrawer(true)}
+                  className="btn-mode"
+                  style={{ fontSize: 11, padding: '4px 10px', borderRadius: 9999, background: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', gap: 4 }}
+                >
+                  <Edit3 style={{ width: 12, height: 12 }} /> Edit Profile
+                </button>
+              )}
+            </div>
 
-            <div className="drawer-section">
-              {selectedNode.type === 'NON_ATTENDING' && (
-                <div className="drawer-info-row" style={{ color: '#f59e0b', fontWeight: 600 }}>
-                  <Ghost style={{ width: 16, height: 16, color: '#f59e0b' }} />
-                  <span>Not Attending Wedding (Connecting Bridge Person)</span>
+            {!isEditingDrawer ? (
+              /* VIEW MODE */
+              <>
+                <p className="drawer-subtitle">{selectedNode.relationship}</p>
+
+                <div className="drawer-section">
+                  {selectedNode.type === 'NON_ATTENDING' && (
+                    <div className="drawer-info-row" style={{ color: '#f59e0b', fontWeight: 600 }}>
+                      <Ghost style={{ width: 16, height: 16, color: '#f59e0b' }} />
+                      <span>Not Attending Wedding (Connecting Bridge Person)</span>
+                    </div>
+                  )}
+                  {selectedNode.type === 'CONTEXT_HUB' && (
+                    <div className="drawer-info-row" style={{ color: '#38bdf8', fontWeight: 600 }}>
+                      <Landmark style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                      <span>Shared Meeting Location / Event Hub</span>
+                    </div>
+                  )}
+                  {selectedNode.hometown && (
+                    <div className="drawer-info-row">
+                      <MapPin style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                      <span>{selectedNode.hometown}</span>
+                    </div>
+                  )}
+                  {selectedNode.familyStatus && (
+                    <div className="drawer-info-row">
+                      <Users style={{ width: 16, height: 16, color: '#10b981' }} />
+                      <span>{selectedNode.familyStatus}</span>
+                    </div>
+                  )}
+                  {selectedNode.hobbies && (
+                    <div style={{ marginTop: 8 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
+                        <Sparkles style={{ width: 16, height: 16, color: '#10b981' }} />
+                        <span>Interests:</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                        {selectedNode.hobbies.map(h => (
+                          <button 
+                            key={h}
+                            onClick={() => {
+                              if (!selectedInterests.includes(h)) {
+                                setSelectedInterests([...selectedInterests, h]);
+                              }
+                              setSelectedNode(null);
+                            }}
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 600,
+                              padding: '4px 10px',
+                              borderRadius: 9999,
+                              border: '1px solid rgba(16, 185, 129, 0.4)',
+                              background: 'rgba(16, 185, 129, 0.15)',
+                              color: '#34d399',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            🏷️ {h}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-              {selectedNode.type === 'CONTEXT_HUB' && (
-                <div className="drawer-info-row" style={{ color: '#38bdf8', fontWeight: 600 }}>
-                  <Landmark style={{ width: 16, height: 16, color: '#38bdf8' }} />
-                  <span>Shared Meeting Location / Event Hub</span>
+              </>
+            ) : (
+              /* DIRECT IN-SITU EDIT MODE FOR GUESTS */
+              <div className="drawer-section" style={{ marginTop: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: '#10b981', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Edit3 style={{ width: 14, height: 14 }} /> Edit Profile Details
                 </div>
-              )}
-              {selectedNode.hometown && (
-                <div className="drawer-info-row">
-                  <MapPin style={{ width: 16, height: 16, color: '#38bdf8' }} />
-                  <span>{selectedNode.hometown}</span>
+
+                <div style={{ marginBottom: 12 }}>
+                  <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Profile Blurb / Relationship Note:</label>
+                  <textarea 
+                    rows={3}
+                    value={editRelationship}
+                    onChange={(e) => setEditRelationship(e.target.value)}
+                    style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12, resize: 'none' }}
+                  />
                 </div>
-              )}
-              {selectedNode.familyStatus && (
-                <div className="drawer-info-row">
-                  <Users style={{ width: 16, height: 16, color: '#10b981' }} />
-                  <span>{selectedNode.familyStatus}</span>
-                </div>
-              )}
-              {selectedNode.hobbies && (
-                <div style={{ marginTop: 8 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
-                    <Sparkles style={{ width: 16, height: 16, color: '#10b981' }} />
-                    <span>Click an Interest to Find Matches:</span>
-                  </div>
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                    {selectedNode.hobbies.map(h => (
-                      <button 
-                        key={h}
-                        onClick={() => {
-                          if (!selectedInterests.includes(h)) {
-                            setSelectedInterests([...selectedInterests, h]);
-                          }
-                          setSelectedNode(null);
-                        }}
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 600,
-                          padding: '4px 10px',
-                          borderRadius: 9999,
-                          border: '1px solid rgba(16, 185, 129, 0.4)',
-                          background: 'rgba(16, 185, 129, 0.15)',
-                          color: '#34d399',
-                          cursor: 'pointer'
-                        }}
-                      >
+
+                <div style={{ marginBottom: 12 }}>
+                  <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Interests (Click ✕ to remove or add below):</label>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 }}>
+                    {editHobbies.map(h => (
+                      <span key={h} style={{ fontSize: 11, padding: '3px 8px', borderRadius: 9999, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', gap: 4 }}>
                         🏷️ {h}
-                      </button>
+                        <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => handleRemoveInterestTag(h)} />
+                      </span>
                     ))}
                   </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <input 
+                      type="text"
+                      placeholder="Add interest (e.g. Wine, Hiking)"
+                      value={newInterestInput}
+                      onChange={(e) => setNewInterestInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleAddInterestTag()}
+                      style={{ flex: 1, padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                    />
+                    <button 
+                      onClick={handleAddInterestTag}
+                      className="btn-mode"
+                      style={{ padding: '6px 12px', background: '#10b981', color: '#fff', borderRadius: 8, fontSize: 12 }}
+                    >
+                      <Plus style={{ width: 14, height: 14 }} /> Add
+                    </button>
+                  </div>
                 </div>
-              )}
-            </div>
 
-            {/* Suggest Edit Button inside Drawer */}
-            <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              <button 
-                onClick={() => {
-                  setFeedbackTargetNode(selectedNode);
-                  setIsFeedbackModalOpen(true);
-                }}
-                className="btn-mode"
-                style={{ width: '100%', padding: '10px', borderRadius: 9999, background: 'rgba(56, 189, 248, 0.12)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontWeight: 600 }}
-              >
-                <Edit3 style={{ width: 14, height: 14 }} />
-                <span>Suggest Profile Edit for {selectedNode.name}</span>
-              </button>
-            </div>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Hometown:</label>
+                  <input 
+                    type="text"
+                    value={editHometown}
+                    onChange={(e) => setEditHometown(e.target.value)}
+                    style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Family Status / Notes:</label>
+                  <input 
+                    type="text"
+                    value={editFamilyStatus}
+                    onChange={(e) => setEditFamilyStatus(e.target.value)}
+                    style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: 10 }}>
+                  <button 
+                    onClick={() => setIsEditingDrawer(false)}
+                    className="btn-mode"
+                    style={{ flex: 1, padding: '8px', background: 'rgba(255, 255, 255, 0.1)', color: '#fff', borderRadius: 9999, fontSize: 12, justifyContent: 'center' }}
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={handleSaveProfileEdits}
+                    className="btn-action"
+                    style={{ flex: 1, padding: '8px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 12, justifyContent: 'center' }}
+                  >
+                    <Save style={{ width: 14, height: 14 }} /> Save Changes
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94a3b8' }}>
