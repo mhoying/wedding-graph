@@ -390,7 +390,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     return Array.from(set).sort();
   }, [nodes]);
 
-  // Auto-Cluster Discovery Engine: Scans tags, interests, origins, and metadata to form dynamic clusters
+  // Auto-Cluster Discovery Engine: Scans interest tags and hobbies
   const dynamicAutoClusters = useMemo(() => {
     const clusterMap = {};
 
@@ -410,9 +410,32 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         if (!clusterMap[key]) clusterMap[key] = [];
         clusterMap[key].push(node);
       }
+    });
+
+    const result = {};
+    Object.entries(clusterMap).forEach(([tag, arr]) => {
+      if (arr.length >= 2) {
+        result[tag] = arr;
+      }
+    });
+    return result;
+  }, [nodes]);
+
+  // Dual-Location Overlapping Cluster Engine: Simultaneously clusters guests by Originally From AND Currently Lives In!
+  const dynamicLocationClusters = useMemo(() => {
+    const clusterMap = {};
+
+    nodes.forEach(node => {
+      if (node.type === 'CONTEXT_HUB') return;
+
+      if (node.originallyFrom) {
+        const key = `🏡 Originally: ${node.originallyFrom}`;
+        if (!clusterMap[key]) clusterMap[key] = [];
+        clusterMap[key].push(node);
+      }
 
       if (node.currentlyLivesIn) {
-        const key = `📍 ${node.currentlyLivesIn}`;
+        const key = `📍 Lives in: ${node.currentlyLivesIn}`;
         if (!clusterMap[key]) clusterMap[key] = [];
         clusterMap[key].push(node);
       }
@@ -912,15 +935,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
     if (clusterMode === 'interests') {
       clusterGroups = dynamicAutoClusters;
-    } else if (clusterMode === 'state') {
-      filteredNodes.forEach(node => {
-        const loc = node.currentlyLivesIn || node.originallyFrom || node.state;
-        if (loc && node.x !== undefined) {
-          const key = `📍 ${loc}`;
-          if (!clusterGroups[key]) clusterGroups[key] = [];
-          clusterGroups[key].push(node);
-        }
-      });
+    } else if (clusterMode === 'locations') {
+      clusterGroups = dynamicLocationClusters;
     } else {
       filteredNodes.forEach(node => {
         if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
@@ -978,7 +994,15 @@ function getConvexHull2D(points) {
         });
 
         const hull = getConvexHull2D(points);
-        const clusterColor = COHORT_COLORS[label.replace(' Cluster', '')] || DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
+
+        let clusterColor;
+        if (label.startsWith('🏡 Originally:')) {
+          clusterColor = '#f59e0b'; // Warm Amber Gold for Origins
+        } else if (label.startsWith('📍 Lives in:')) {
+          clusterColor = '#06b6d4'; // Vibrant Cyan for Current Living Locations
+        } else {
+          clusterColor = COHORT_COLORS[label.replace(' Cluster', '')] || DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
+        }
         colorIdx++;
 
         ctx.save();
@@ -1490,8 +1514,8 @@ function getConvexHull2D(points) {
                 style={{ background: 'none', border: 'none', color: isLightMode ? '#0f172a' : '#f8fafc', fontSize: 11, fontWeight: 600, outline: 'none', cursor: 'pointer' }}
               >
                 <option value="cohort" style={{ background: '#0f172a', color: '#fff' }}>Cohorts</option>
-                <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>✨ Auto Interests</option>
-                <option value="state" style={{ background: '#0f172a', color: '#fff' }}>States</option>
+                <option value="locations" style={{ background: '#0f172a', color: '#fff' }}>🗺️ Dual Locations (Origin & Current)</option>
+                <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>🏷️ Interest Tags & Hobbies</option>
                 <option value="none" style={{ background: '#0f172a', color: '#fff' }}>🚫 Off (Hide)</option>
               </select>
             </div>
@@ -1750,8 +1774,8 @@ function getConvexHull2D(points) {
                 style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}
               >
                 <option value="cohort">Cohorts</option>
-                <option value="interests">✨ Auto Interests & Locations</option>
-                <option value="state">States & Regions</option>
+                <option value="locations">🗺️ Dual Locations (Origin & Current)</option>
+                <option value="interests">🏷️ Interest Tags & Hobbies</option>
                 <option value="none">🚫 Off (Hide)</option>
               </select>
             </div>
