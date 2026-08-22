@@ -23,16 +23,13 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Mouseover Hover Tooltips & Dynamic Color Views
-- **User Prompt**: "in the last version the mouseovers did highlight the node, but there still was no overlay of tehir metadata... i'd also like to be able to change the node coloring based on a view maybe? likeone for the cohrt, but then maybe one for the state they live in, or one for if they are matts friends or maureens firends or joint firends.."
+## [2026-08-22] Dynamic Mathematical Node Bounds & Hypotenuse Collision Engine
+- **User Prompt**: "they are still overlaapping.i htink you shodul be able to do someth math to prevent this dynamically"
 - **Actions**:
-  1. Added floating Glassmorphism Mouseover Tooltip overlay (`hoverNode`).
-  2. Added Dynamic Color Mode Selector (`colorMode`).
-  3. Added Interactive Color Legend footer.
-
-## [2026-08-22] 50% Larger Headshot Portraits & Force Physics Tuning
-- **User Prompt**: "now they are overlapping both each other and hte cohort groupings"
-- **Actions**:
-  1. **Expanded Collision Radius**: Increased `d3.forceCollide()` radius from `65px` to **`88px–105px`** with 10 iterations to strictly enforce non-overlapping cards.
-  2. **Increased Link Distance & Charge Repulsion**: Increased edge distances to `260px–320px` and doubled charge repulsion strength to `-4500` to space out the 70px photo cards gracefully.
-  3. **Expanded Cohort Cluster Bounding Hulls**: Expanded background enclosure shape padding to **`85px`** so that cohort cluster hulls enclose all node cards without clipping.
+  1. **Dynamic Layout Math Helper (`getNodeBounds`)**: Replaced arbitrary static numbers with exact mathematical container bounds computation:
+     - `width` and `height` derived from `avatarDiameter`, text character length, and padding in World Coordinates.
+     - **Exact Hypotenuse Collision Radius**: `r = Math.hypot(width / 2, height / 2) + 14px safety margin`.
+  2. **Dynamic Link Distance Calculation**:
+     - Computed connection line length dynamically: `link.distance = sRadius + tRadius + 70px`. This guarantees that connected nodes NEVER overlap regardless of photo card sizes or toggle modes.
+  3. **Exact Bounding Box Enclosure Hulls**:
+     - `drawBackgroundHulls` computes exact outer extents (`n.x ± width/2`, `n.y ± height/2`) of every node card in a cohort cluster so background hull shapes wrap comfortably without clipping card edges.

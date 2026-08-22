@@ -43,6 +43,39 @@ function extractProposedTag(note, category) {
   return note.trim();
 }
 
+// DYNAMIC LAYOUT MATH HELPER: Calculates exact mathematical bounds & collision radius in World Coordinates
+function getNodeBounds(node, showHeadshots) {
+  const isAnchor = node.type === 'ANCHOR';
+  const isHub = node.type === 'CONTEXT_HUB';
+  const isNonAttending = node.type === 'NON_ATTENDING';
+  const renderAvatar = showHeadshots && !isHub;
+
+  let labelText = node.name || 'Guest';
+  if (isHub) labelText = `📍 ${node.name}`;
+  if (isNonAttending) labelText = `${node.name} (Not Attending)`;
+
+  // World Unit Dimensions (independent of zoom scale for layout stability)
+  const avatarDiameter = isAnchor ? 70 : 58;
+  const fontSize = isAnchor ? 14 : 12;
+  const textWidth = labelText.length * (fontSize * 0.58);
+
+  let width, height;
+  if (renderAvatar) {
+    width = Math.max(textWidth + 28, avatarDiameter + 24, isAnchor ? 130 : 110);
+    height = avatarDiameter + fontSize + 26;
+  } else {
+    width = Math.max(textWidth + 28, 90);
+    height = fontSize + 22;
+  }
+
+  // Exact mathematical diagonal bounding circle radius: r = sqrt((w/2)^2 + (h/2)^2) + safety margin
+  const halfW = width / 2;
+  const halfH = height / 2;
+  const collisionRadius = Math.hypot(halfW, halfH) + 14;
+
+  return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
+}
+
 export default function App() {
   const fgRef = useRef();
   
@@ -370,35 +403,36 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces: Generous Spacing for 70px Photo Cards & Strict Collision
+  // Configure D3 forces using DYNAMIC MATHEMATICAL NODE BOUNDS & HYPOTENUSE COLLISION
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
       
+      // Calculate dynamic link distance based on exact mathematical collision radii of connected nodes!
       fg.d3Force('link').distance(l => {
-        const s = typeof l.source === 'object' ? l.source.id : l.source;
-        const t = typeof l.target === 'object' ? l.target.id : l.target;
+        const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
+        const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
+        
+        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots).collisionRadius : 70;
+        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots).collisionRadius : 70;
+        
+        const sId = sObj ? sObj.id : l.source;
+        const tId = tObj ? tObj.id : l.target;
+
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
-                             (s === 'maureen' && t === 'matt') || (s === 'matt' && t === 'maureen');
+                             (sId === 'maureen' && tId === 'matt') || (sId === 'matt' && tId === 'maureen');
         if (isCoupleLink) {
-          return 140;
+          return sRadius + tRadius + 20;
         }
-        return (s === 'maureen' || s === 'matt' || t === 'maureen' || t === 'matt') ? 320 : 260;
+        return sRadius + tRadius + 70;
       });
 
-      fg.d3Force('charge').strength(-4500).distanceMax(1200);
+      fg.d3Force('charge').strength(-6500).distanceMax(1400);
       
+      // Dynamic mathematical collision radius based on exact card hypotenuse!
       fg.d3Force('collide', forceCollide().radius(node => {
-        const isAnchor = node.type === 'ANCHOR';
-        if (showHeadshots && node.type !== 'CONTEXT_HUB') {
-          // Generous non-overlapping collision radius for 70px card nodes
-          return isAnchor ? 105 : 88;
-        }
-        const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
-        const charCount = nameStr ? nameStr.length : 10;
-        const estimatedWidth = Math.max(charCount * 7.5 + 24, 90);
-        return estimatedWidth / 2 + 16;
-      }).iterations(10));
+        return getNodeBounds(node, showHeadshots).collisionRadius;
+      }).iterations(12));
 
       fg.d3ReheatSimulation();
     }
@@ -584,18 +618,21 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setTimeout(() => setToastMessage(''), 4000);
   };
 
-  // Render organic background enclosure shapes based on selected Cluster Mode ('cohort' | 'interests' | 'state' | 'none')
+  // Dynamic Layout Math: Calculates exact outer extents of node cards for cohort cluster background shapes
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
     if (maureen && matt && maureen.x !== undefined && matt.x !== undefined) {
-      const minX = Math.min(maureen.x, matt.x);
-      const maxX = Math.max(maureen.x, matt.x);
-      const minY = Math.min(maureen.y, matt.y);
-      const maxY = Math.max(maureen.y, matt.y);
+      const mBounds = getNodeBounds(maureen, showHeadshots);
+      const tBounds = getNodeBounds(matt, showHeadshots);
 
-      const padding = 110 / globalScale;
+      const minX = Math.min(maureen.x - mBounds.width / 2, matt.x - tBounds.width / 2);
+      const maxX = Math.max(maureen.x + mBounds.width / 2, matt.x + tBounds.width / 2);
+      const minY = Math.min(maureen.y - mBounds.height / 2, matt.y - tBounds.height / 2);
+      const maxY = Math.max(maureen.y + mBounds.height / 2, matt.y + tBounds.height / 2);
+
+      const padding = 36 / globalScale;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
@@ -656,14 +693,20 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       if (nodesArr.length > 1) {
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         nodesArr.forEach(n => {
-          if (n.x < minX) minX = n.x;
-          if (n.x > maxX) maxX = n.x;
-          if (n.y < minY) minY = n.y;
-          if (n.y > maxY) maxY = n.y;
+          const b = getNodeBounds(n, showHeadshots);
+          const left = n.x - b.width / 2;
+          const right = n.x + b.width / 2;
+          const top = n.y - b.height / 2;
+          const bottom = n.y + b.height / 2;
+
+          if (left < minX) minX = left;
+          if (right > maxX) maxX = right;
+          if (top < minY) minY = top;
+          if (bottom > maxY) maxY = bottom;
         });
 
-        // Bounding Box Padding scaled to accommodate 70px photo cards!
-        const pad = (showHeadshots ? 85 : 55) / globalScale;
+        // Exact Padding around outer card edges in World Coordinates
+        const pad = 28 / globalScale;
         const w = (maxX - minX) + pad * 2;
         const h = (maxY - minY) + pad * 2;
         const x = minX - pad;
@@ -697,7 +740,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     });
   }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters, showHeadshots]);
 
-  // Modern Square Card Badge Renderer with 50% LARGER HEADSHOTS (58px-70px)
+  // Modern Square Card Badge Renderer with DYNAMIC MATHEMATICAL BOUNDS
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -719,7 +762,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     const isHub = node.type === 'CONTEXT_HUB';
     const isNonAttending = node.type === 'NON_ATTENDING';
 
-    let labelText = node.name;
+    let labelText = node.name || 'Guest';
     if (isHub) labelText = `📍 ${node.name}`;
     if (isNonAttending) labelText = `${node.name} (Not Attending)`;
 
@@ -727,26 +770,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.75 : 1.0);
 
     const renderAvatar = showHeadshots && !isHub;
-    
-    // 50% LARGER HEADSHOT AVATARS: 70px for Anchors (Maureen & Matt), 58px for Guests!
-    const avatarDiameter = (isAnchor ? 70 : 58) / globalScale;
-    const fontSize = (isAnchor ? 14 : 12) / globalScale;
-    ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '600'} ${fontSize}px Inter, sans-serif`;
-    const textWidth = ctx.measureText(labelText).width;
+    const bounds = getNodeBounds(node, showHeadshots);
 
-    let badgeWidth, badgeHeight;
-
-    if (renderAvatar) {
-      // VERTICAL PROMINENT CARD BADGE (50% Larger Avatar on Top, Bold Name Below)
-      badgeWidth = Math.max(textWidth + 28 / globalScale, avatarDiameter + 24 / globalScale, (isAnchor ? 125 : 105) / globalScale);
-      badgeHeight = avatarDiameter + fontSize + (26 / globalScale);
-    } else {
-      // COMPACT EDITORIAL TEXT BADGE
-      const paddingX = (isAnchor ? 16 : 12) / globalScale;
-      const paddingY = (isAnchor ? 12 : 9) / globalScale;
-      badgeWidth = textWidth + paddingX * 2;
-      badgeHeight = fontSize + paddingY * 2;
-    }
+    // Calculate rendering scale parameters in Canvas viewport pixels
+    const badgeWidth = bounds.width / globalScale;
+    const badgeHeight = bounds.height / globalScale;
+    const avatarDiameter = bounds.avatarDiameter / globalScale;
+    const fontSize = bounds.fontSize / globalScale;
 
     const cornerRadius = 14 / globalScale;
     const x = node.x - badgeWidth / 2;
@@ -794,7 +824,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
     ctx.stroke();
 
-    // RENDER 50% LARGER CIRCULAR HEADSHOT AVATAR PHOTO / MONOGRAM
+    // RENDER CIRCULAR HEADSHOT AVATAR PHOTO / MONOGRAM
     if (renderAvatar) {
       const avatarX = node.x;
       const avatarY = y + (avatarDiameter / 2) + (10 / globalScale);
@@ -852,24 +882,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     ctx.restore();
   }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links, showHeadshots]);
 
-  // Hit area detection
+  // Hit area detection using exact getNodeBounds
   const drawPointerArea = useCallback((node, color, ctx, globalScale) => {
-    const isAnchor = node.type === 'ANCHOR';
-    const fontSize = (isAnchor ? 14 : 12) / globalScale;
-    const avatarDiameter = (isAnchor ? 70 : 58) / globalScale;
-    
-    let badgeWidth, badgeHeight;
-
-    if (showHeadshots && node.type !== 'CONTEXT_HUB') {
-      badgeWidth = (isAnchor ? 125 : 105) / globalScale;
-      badgeHeight = avatarDiameter + fontSize + (26 / globalScale);
-    } else {
-      ctx.font = `600 ${fontSize}px Inter, sans-serif`;
-      const labelStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
-      const textWidth = ctx.measureText(labelStr).width;
-      badgeWidth = textWidth + (28 / globalScale);
-      badgeHeight = fontSize + (18 / globalScale);
-    }
+    const bounds = getNodeBounds(node, showHeadshots);
+    const badgeWidth = bounds.width / globalScale;
+    const badgeHeight = bounds.height / globalScale;
 
     ctx.fillStyle = color;
     ctx.beginPath();
