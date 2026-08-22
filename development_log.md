@@ -36,15 +36,8 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Guest Metadata Correction Form & Host Feedback Admin Queue
-- **User Prompt**: "there shoudl eb a way for people to report misisng or incorrect metadata. like Nur-e may write to us and sya 'you forgot that i like wine' or Anne may tell us her daugher is 17"
+## [2026-08-22] Aesthetic Refinements: Soft Matte Badges & Multi-Select Interest Dropdown
+- **User Prompt**: "the ode outlsines still read much too cyberpunk" / "can the interest filter be reneded as a dropdown iwth chekcboxes or something instead"
 - **Actions**:
-  1. `✏️ Suggest Edit` Modal & Host Feedback Queue (`📩 Host Feedback`).
-
-## [2026-08-22] Top Bar Streamlining & CSV Import UI Removal
-- **User Prompt**: "remove the csv import from teh ui, we shoudl just do this through directly editing the tables in git.the top bar seems overly wide and complex, maybe a few more of these can be collpased into more efficent ui control elements"
-- **Actions**:
-  1. **Removed CSV Import Modal**: Dataset tables will be managed directly in Git repository (`src/data/sampleData.js`). Removed `Import CSV` modal & upload button from UI, reducing JS bundle size by >80KB!
-  2. **Streamlined & Compact Top Bar**:
-     - Consolidated action triggers into sleek compact pill buttons (`Compass Path Finder`, `Wand2 Matchmaker`, `Edit3 Suggest Edit`, `Inbox Feedback Queue`, `Palette Color Mode`).
-     - Reduced top bar padding and font size for clean, elegant responsiveness across screen sizes.
+  1. **Eliminated Cyberpunk Outlines**: Replaced harsh bright node outlines with soft, matte organic slate pill badges (`rgba(30, 41, 59, 0.95)`). Added an elegant colored dot indicator (`●`) on each guest pill to indicate cohort/side/state color cleanly without bright neon box strokes!
+  2. **Multi-Select Interest Checkbox Dropdown**: Replaced horizontal interest ribbon with a compact **`Filter Interests ▾`** dropdown menu featuring checkboxes (`[x] Wine`, `[x] Cycling`, `[x] Coffee`). Guests can check multiple interests simultaneously to filter the graph in real time!

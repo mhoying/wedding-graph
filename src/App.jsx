@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Tag } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 export default function App() {
@@ -12,7 +12,9 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
   const [hoverNode, setHoverNode] = useState(null);
-  const [selectedInterest, setSelectedInterest] = useState(null);
+  const [selectedInterests, setSelectedInterests] = useState([]); // Multi-select array
+  const [isInterestDropdownOpen, setIsInterestDropdownOpen] = useState(false);
+
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
@@ -67,20 +69,6 @@ export default function App() {
     return Array.from(set).sort();
   }, [nodes]);
 
-  // Dynamically extract all unique Cohorts across the dataset
-  const allCohorts = useMemo(() => {
-    const set = new Set();
-    nodes.forEach(n => n.cohort && set.add(n.cohort));
-    return Array.from(set).sort();
-  }, [nodes]);
-
-  // Dynamically extract all unique States/Locations across the dataset
-  const allStates = useMemo(() => {
-    const set = new Set();
-    nodes.forEach(n => n.state && set.add(n.state));
-    return Array.from(set).sort();
-  }, [nodes]);
-
   // Update canvas dimensions on window resize
   useEffect(() => {
     const handleResize = () => {
@@ -103,6 +91,15 @@ export default function App() {
     }
   }, []);
 
+  // Toggle interest checkbox in multi-select array
+  const toggleInterest = (interest) => {
+    if (selectedInterests.includes(interest)) {
+      setSelectedInterests(selectedInterests.filter(i => i !== interest));
+    } else {
+      setSelectedInterests([...selectedInterests, interest]);
+    }
+  };
+
   // Configure D3 forces: Generalized Couple Distance & Dynamic Collision
   useEffect(() => {
     if (fgRef.current) {
@@ -124,7 +121,7 @@ export default function App() {
       fg.d3Force('collide', forceCollide().radius(node => {
         const nameStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
         const charCount = nameStr ? nameStr.length : 10;
-        const estimatedWidth = Math.max(charCount * 7.5 + 24, 70);
+        const estimatedWidth = Math.max(charCount * 7.5 + 32, 80);
         return estimatedWidth / 2 + 10;
       }).iterations(6));
 
@@ -204,11 +201,12 @@ export default function App() {
     return COHORT_COLORS[node.cohort] || COHORT_COLORS.Default;
   }, [colorMode]);
 
-  // Filter nodes based on search and selected interest
+  // Filter nodes based on search and selected interest checkboxes
   const filteredNodes = useMemo(() => {
     return nodes.filter(node => {
-      if (selectedInterest) {
-        if (!node.hobbies || !node.hobbies.includes(selectedInterest)) return false;
+      // Interest Checkbox Filter (Match ANY selected interest)
+      if (selectedInterests.length > 0) {
+        if (!node.hobbies || !selectedInterests.some(i => node.hobbies.includes(i))) return false;
       }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -220,7 +218,7 @@ export default function App() {
       }
       return true;
     });
-  }, [nodes, searchQuery, selectedInterest]);
+  }, [nodes, searchQuery, selectedInterests]);
 
   const graphData = useMemo(() => {
     return {
@@ -311,9 +309,9 @@ export default function App() {
       const cornerRadius = 28 / globalScale;
 
       ctx.save();
-      ctx.shadowColor = 'rgba(56, 189, 248, 0.2)';
+      ctx.shadowColor = 'rgba(56, 189, 248, 0.15)';
       ctx.shadowBlur = 12;
-      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.55)' : 'rgba(14, 165, 233, 0.05)';
+      ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.45)' : 'rgba(14, 165, 233, 0.04)';
       ctx.beginPath();
       if (ctx.roundRect) {
         ctx.roundRect(x, y, width, height, cornerRadius);
@@ -321,9 +319,9 @@ export default function App() {
         ctx.rect(x, y, width, height);
       }
       ctx.fill();
-      ctx.lineWidth = 1.5 / globalScale;
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-      ctx.setLineDash([5 / globalScale, 4 / globalScale]);
+      ctx.lineWidth = 1 / globalScale;
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)';
+      ctx.setLineDash([4 / globalScale, 4 / globalScale]);
       ctx.stroke();
 
       ctx.shadowBlur = 0;
@@ -362,7 +360,7 @@ export default function App() {
           const cohortColor = COHORT_COLORS[cohort] || '#64748b';
 
           ctx.save();
-          ctx.fillStyle = isLightMode ? 'rgba(241, 245, 249, 0.4)' : 'rgba(30, 41, 59, 0.2)';
+          ctx.fillStyle = isLightMode ? 'rgba(241, 245, 249, 0.4)' : 'rgba(30, 41, 59, 0.15)';
           ctx.beginPath();
           if (ctx.roundRect) {
             ctx.roundRect(x, y, w, h, 20 / globalScale);
@@ -372,7 +370,7 @@ export default function App() {
           ctx.fill();
 
           ctx.lineWidth = 1 / globalScale;
-          ctx.strokeStyle = cohortColor;
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
           ctx.setLineDash([4 / globalScale, 4 / globalScale]);
           ctx.stroke();
 
@@ -418,9 +416,10 @@ export default function App() {
     ctx.font = `${isAnchor || isHovered || isPathNode ? '600' : '500'} ${fontSize}px Inter, sans-serif`;
     
     const textWidth = ctx.measureText(labelText).width;
+    const dotRadius = 4 / globalScale;
     const paddingX = (isAnchor ? 14 : 10) / globalScale;
     const paddingY = (isAnchor ? 8 : 6) / globalScale;
-    const badgeWidth = textWidth + paddingX * 2;
+    const badgeWidth = textWidth + paddingX * 2 + (isHub || isNonAttending ? 0 : dotRadius * 2 + 6 / globalScale);
     const badgeHeight = fontSize + paddingY * 2;
     const cornerRadius = isHub ? 4 / globalScale : badgeHeight / 2;
 
@@ -428,26 +427,8 @@ export default function App() {
     const y = node.y - badgeHeight / 2;
 
     if (isHovered || isAnchor || isPathNode) {
-      ctx.shadowColor = 'rgba(15, 23, 42, 0.4)';
-      ctx.shadowBlur = 14;
-    }
-
-    const gradient = ctx.createLinearGradient(x, y, x + badgeWidth, y + badgeHeight);
-    if (isHovered || isPathNode) {
-      gradient.addColorStop(0, color);
-      gradient.addColorStop(1, color);
-    } else if (isNonAttending) {
-      gradient.addColorStop(0, 'rgba(30, 41, 59, 0.45)');
-      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.45)');
-    } else if (isHub) {
-      gradient.addColorStop(0, 'rgba(30, 41, 59, 0.95)');
-      gradient.addColorStop(1, 'rgba(51, 65, 85, 0.95)');
-    } else if (isLightMode) {
-      gradient.addColorStop(0, '#ffffff');
-      gradient.addColorStop(1, '#f1f5f9');
-    } else {
-      gradient.addColorStop(0, 'rgba(30, 41, 59, 0.92)');
-      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.92)');
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+      ctx.shadowBlur = 10;
     }
 
     ctx.beginPath();
@@ -456,24 +437,53 @@ export default function App() {
     } else {
       ctx.rect(x, y, badgeWidth, badgeHeight);
     }
-    ctx.fillStyle = gradient;
+
+    if (isHovered || isPathNode) {
+      ctx.fillStyle = color;
+    } else if (isNonAttending) {
+      ctx.fillStyle = isLightMode ? '#f1f5f9' : 'rgba(30, 41, 59, 0.6)';
+    } else if (isHub) {
+      ctx.fillStyle = isLightMode ? '#e2e8f0' : 'rgba(51, 65, 85, 0.85)';
+    } else if (isLightMode) {
+      ctx.fillStyle = '#ffffff';
+    } else {
+      ctx.fillStyle = 'rgba(30, 41, 59, 0.95)';
+    }
     ctx.fill();
 
-    ctx.lineWidth = isHovered || isPathNode ? 2 : (isAnchor ? 1.8 : 1.2);
-    ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : color;
+    ctx.lineWidth = isHovered || isPathNode ? 1.5 : 1;
+    if (isHovered || isPathNode) {
+      ctx.strokeStyle = '#ffffff';
+    } else if (isNonAttending) {
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+    } else if (isLightMode) {
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+    } else {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    }
     
     if (isNonAttending) {
-      ctx.setLineDash([4 / globalScale, 3 / globalScale]);
+      ctx.setLineDash([3 / globalScale, 3 / globalScale]);
     } else {
       ctx.setLineDash([]);
     }
     ctx.stroke();
 
+    if (!isHub && !isNonAttending) {
+      const dotX = x + paddingX + dotRadius;
+      ctx.beginPath();
+      ctx.arc(dotX, node.y, dotRadius, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
     ctx.shadowBlur = 0;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isNonAttending ? '#94a3b8' : (isLightMode ? '#0f172a' : '#f8fafc'));
-    ctx.fillText(labelText, node.x, node.y);
+    
+    const textOffsetX = (!isHub && !isNonAttending) ? (dotRadius + 3 / globalScale) / 2 : 0;
+    ctx.fillText(labelText, node.x + textOffsetX, node.y);
 
     ctx.restore();
   }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links]);
@@ -485,7 +495,7 @@ export default function App() {
     ctx.font = `500 ${fontSize}px Inter, sans-serif`;
     const labelStr = node.type === 'NON_ATTENDING' ? `${node.name} (Not Attending)` : (node.type === 'CONTEXT_HUB' ? `📍 ${node.name}` : node.name);
     const textWidth = ctx.measureText(labelStr).width;
-    const badgeWidth = textWidth + (24 / globalScale);
+    const badgeWidth = textWidth + (28 / globalScale);
     const badgeHeight = fontSize + (14 / globalScale);
 
     ctx.fillStyle = color;
@@ -519,7 +529,7 @@ export default function App() {
         <p>A Visual Map of Family, Friends & Connections</p>
       </div>
 
-      {/* Streamlined & Sleek Top Controls Bar */}
+      {/* Streamlined Top Controls Bar */}
       <div className="top-bar no-print">
         <div className="top-bar-left">
           <div className="glass-panel brand-badge">
@@ -542,26 +552,67 @@ export default function App() {
             )}
           </div>
 
-          {/* Dynamic Interest Filter Ribbon */}
-          <div className="glass-panel color-mode-bar">
-            <Filter style={{ width: 13, height: 13, color: '#10b981' }} />
-            {selectedInterest ? (
-              <span className="btn-mode active" style={{ background: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
-                🏷️ {selectedInterest}
-                <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedInterest(null)} />
+          {/* Multi-Select Interest Dropdown with Checkboxes */}
+          <div style={{ position: 'relative' }}>
+            <button 
+              onClick={() => setIsInterestDropdownOpen(!isInterestDropdownOpen)}
+              className={`glass-panel btn-mode ${selectedInterests.length > 0 ? 'active' : ''}`}
+              style={{ padding: '6px 14px', display: 'flex', alignItems: 'center', gap: 6 }}
+            >
+              <Filter style={{ width: 13, height: 13, color: selectedInterests.length > 0 ? '#fff' : '#10b981' }} />
+              <span>
+                {selectedInterests.length > 0 ? `Interests (${selectedInterests.length})` : 'Filter Interests'}
               </span>
-            ) : (
-              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 220 }}>
-                {allInterests.slice(0, 4).map(interest => (
-                  <button 
-                    key={interest}
-                    onClick={() => setSelectedInterest(interest)}
-                    className="btn-mode"
-                    style={{ fontSize: 11, padding: '3px 8px' }}
-                  >
-                    {interest}
-                  </button>
-                ))}
+              <ChevronDown style={{ width: 12, height: 12 }} />
+            </button>
+
+            {isInterestDropdownOpen && (
+              <div 
+                className="glass-panel"
+                style={{ 
+                  position: 'absolute', 
+                  top: '120%', 
+                  left: 0, 
+                  width: 220, 
+                  maxHeight: 280, 
+                  overflowY: 'auto', 
+                  padding: '12px', 
+                  zIndex: 60,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Filter by Interests</span>
+                  {selectedInterests.length > 0 && (
+                    <button 
+                      onClick={() => setSelectedInterests([])} 
+                      style={{ background: 'none', border: 'none', color: '#38bdf8', fontSize: 11, cursor: 'pointer', fontWeight: 600 }}
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+                {allInterests.map(interest => {
+                  const isChecked = selectedInterests.includes(interest);
+                  return (
+                    <label 
+                      key={interest}
+                      style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, cursor: 'pointer', userSelect: 'none' }}
+                    >
+                      <input 
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleInterest(interest)}
+                        style={{ accentColor: '#10b981', cursor: 'pointer' }}
+                      />
+                      <span style={{ color: isChecked ? '#34d399' : 'inherit', fontWeight: isChecked ? 700 : 400 }}>
+                        🏷️ {interest}
+                      </span>
+                    </label>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -609,7 +660,7 @@ export default function App() {
             <span>Suggest Edit</span>
           </button>
 
-          {/* Host Feedback Admin Queue Button (Shows badge when pending) */}
+          {/* Host Feedback Admin Queue Button */}
           {feedbackList.some(f => !f.applied) && (
             <button 
               onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
@@ -1054,7 +1105,9 @@ export default function App() {
                       <button 
                         key={h}
                         onClick={() => {
-                          setSelectedInterest(h);
+                          if (!selectedInterests.includes(h)) {
+                            setSelectedInterests([...selectedInterests, h]);
+                          }
                           setSelectedNode(null);
                         }}
                         style={{
