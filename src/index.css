@@ -64,11 +64,11 @@ body {
   pointer-events: none;
 }
 
-.top-bar-left, .top-bar-right {
+.top-bar-left, .top-bar-right, .top-bar button {
   display: flex;
   align-items: center;
   gap: 12px;
-  pointer-events: auto;
+  pointer-events: auto !important;
 }
 
 .brand-badge {

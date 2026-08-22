@@ -1214,12 +1214,35 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         {/* MOBILE CONTROLS DRAWER TRIGGER BUTTON */}
         {isMobileViewport ? (
           <button 
-            onClick={() => setIsMobileControlsOpen(true)}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsMobileControlsOpen(true);
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsMobileControlsOpen(true);
+            }}
             className="glass-panel btn-action"
-            style={{ padding: '8px 14px', background: '#0284c7', color: '#fff', borderRadius: 9999, display: 'flex', alignItems: 'center', gap: 6 }}
+            style={{ 
+              padding: '10px 18px', 
+              background: '#0284c7', 
+              color: '#ffffff', 
+              borderRadius: 9999, 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 6,
+              pointerEvents: 'auto',
+              zIndex: 300,
+              cursor: 'pointer',
+              boxShadow: '0 8px 25px rgba(2, 132, 199, 0.5)',
+              fontWeight: 800
+            }}
           >
-            <SlidersHorizontal style={{ width: 16, height: 16 }} />
-            <span>Controls</span>
+            <SlidersHorizontal style={{ width: 18, height: 18 }} />
+            <span>Controls 🎛️</span>
           </button>
         ) : (
           /* DESKTOP CONTROLS BAR */
