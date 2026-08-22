@@ -79,13 +79,13 @@ function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
 
-// COLLISION-PROTECTED ORBIT ENGINE: Zero overlaps, smooth 2-minute minimum celestial drift
+// COLLISION-PROTECTED ORBIT ENGINE: Zero overlaps, calibrated 3-minute minimum celestial drift
 function createOrbitForce(speedMultiplier = 1.0) {
   let nodes = [];
   function force() {
     if (speedMultiplier <= 0) return;
-    // Calibrated so 0.1x minimum speed takes EXACTLY 2 MINUTES (120s @ 60fps)
-    const omega = 0.000145 * speedMultiplier;
+    // Calibrated so 0.1x minimum speed takes EXACTLY 3 MINUTES (180s @ 60fps = 10,800 frames per 360 deg)
+    const omega = 0.000097 * speedMultiplier;
 
     // Find center of gravity (Maureen & Matt couple anchor)
     let cx = 0, cy = 0, count = 0;
@@ -143,7 +143,7 @@ export default function App() {
 
   // Dynamic Orbital Galaxy Motion Engine (ON by default as requested!)
   const [isOrbiting, setIsOrbiting] = useState(true);
-  const [orbitSpeed, setOrbitSpeed] = useState(1.0);
+  const [orbitSpeed, setOrbitSpeed] = useState(0.3);
 
   // Independent Sliders: Node Size Multiplier & Map Density / Edge Length Multiplier (Auto-tuned default for mobile)
   const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(() => isMobileViewport ? 0.85 : 1.0);
