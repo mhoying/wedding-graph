@@ -39,6 +39,13 @@
 ## [2026-08-22] Sprints 2, 3 & 4 Execution: Import Engine, Matchmaker & Constellation Mode
 - **User Prompt**: "/goal do three more spirnts with the goal of making the most useufl, beutiful, interactive solution possible"
 - **Actions**:
-  1. **Sprint 2 (Live Google Sheets CSV Import Modal & Validation)**: Built full-screen Glassmorphism import modal (`Import CSV`). Integrates PapaParse and Zod runtime schema validation (`NodeSchema`). Allows pasting any published Google Sheets URL or clicking `⚡ Load Sample Demo` with live health meters!
-  2. **Sprint 3 (Cocktail Hour Matchmaker & Icebreaker Drawer)**: Built `🍸 Matchmaker` drawer mode. Guests pick their name from a dropdown; the algorithm calculates interest intersections and geographic overlaps, generating top 3 match cards with vibe scores (`85% Vibe Match`) and conversation starters!
-  3. **Sprint 4 (Cinematic Camera Fly-To & Starry Constellation Mode)**: Added smooth camera panning and zooming (`flyToNode` using `centerAt(x,y,900)` & `zoom(2.6,900)`) whenever clicking nodes or matchmaker cards. Added `⭐ Constellation` toggle mode that renders 45 canvas background stars while dimming non-active nodes into glowing star clusters!
+  1. Sprint 2 (Live Google Sheets CSV Import Modal & Validation).
+  2. Sprint 3 (Cocktail Hour Matchmaker & Icebreaker Drawer).
+  3. Sprint 4 (Cinematic Camera Fly-To & Starry Constellation Mode).
+
+## [2026-08-22] Guest Metadata Correction Form & Host Feedback Admin Queue
+- **User Prompt**: "there shoudl eb a way for people to report misisng or incorrect metadata. like Nur-e may write to us and sya 'you forgot that i like wine' or Anne may tell us her daugher is 17"
+- **Actions**:
+  1. **`✏️ Suggest Edit` Modal**: Built a Glassmorphism modal allowing any guest (e.g. Nur-e or Anne Freedman) to report missing interests, family status updates, or hometown corrections directly from their profile drawer or top bar.
+  2. **Host Feedback Admin Queue (`📩 Host Feedback`)**: Added an amber badge in the top bar for Maureen & Matt. Clicking it opens a drawer displaying all submitted guest notes (e.g. *"Nur-e: You forgot that I like Wine!"* or *"Anne: My daughter is 17 now!"*).
+  3. **Real-time Canvas Application**: Hosts can click **"Apply Update to Graph"** on any guest note to instantly update that guest's hobbies or profile details on the live canvas!

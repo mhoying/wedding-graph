@@ -3,7 +3,7 @@ import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
 import Papa from 'papaparse';
 import { z } from 'zod';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Download, Upload, CheckCircle2, AlertCircle, RefreshCw, Wand2, Star } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Download, Upload, CheckCircle2, AlertCircle, RefreshCw, Wand2, Star, Edit3, MessageSquare, Inbox, Send, Check } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Zod Schema for CSV / Dataset Validation
@@ -49,6 +49,34 @@ export default function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [sheetUrl, setSheetUrl] = useState('');
   const [importStatus, setImportStatus] = useState(null);
+
+  // Feedback & Metadata Correction System State
+  const [feedbackList, setFeedbackList] = useState([
+    {
+      id: 'fb_1',
+      guestId: 'eleanor_chen',
+      guestName: 'Nur-e',
+      category: 'Missing Interest',
+      note: 'You forgot that I like Wine!',
+      timestamp: 'Just now',
+      applied: false
+    },
+    {
+      id: 'fb_2',
+      guestId: 'freedman_rahmans',
+      guestName: 'Anne Freedman',
+      category: 'Family Status Update',
+      note: 'My daughter is 17 now!',
+      timestamp: '5 mins ago',
+      applied: false
+    }
+  ]);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [feedbackTargetNode, setFeedbackTargetNode] = useState(null);
+  const [feedbackCategory, setFeedbackCategory] = useState('Missing Interest');
+  const [feedbackNote, setFeedbackNote] = useState('');
+  const [isHostQueueOpen, setIsHostQueueOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   // Dynamically extract all unique Interests across the dataset
   const allInterests = useMemo(() => {
@@ -170,7 +198,6 @@ export default function App() {
       if (n.id === myGuestId || n.type === 'ANCHOR' || n.type === 'CONTEXT_HUB') return;
       if (!n.hobbies) return;
 
-      // Intersection of interests
       const sharedInterests = n.hobbies.filter(h => myHobbies.has(h));
       const sharedHometown = myNode.hometown && n.hometown && (myNode.hometown === n.hometown || myNode.state === n.state);
 
@@ -244,6 +271,49 @@ export default function App() {
     }
   };
 
+  // Submit Guest Metadata Correction Form
+  const handleSubmitCorrection = () => {
+    if (!feedbackNote.trim()) return;
+    
+    const newFb = {
+      id: `fb_${Date.now()}`,
+      guestId: feedbackTargetNode ? feedbackTargetNode.id : 'unknown',
+      guestName: feedbackTargetNode ? feedbackTargetNode.name : 'Guest',
+      category: feedbackCategory,
+      note: feedbackNote,
+      timestamp: 'Just now',
+      applied: false
+    };
+
+    setFeedbackList([newFb, ...feedbackList]);
+    setIsFeedbackModalOpen(false);
+    setFeedbackNote('');
+    setToastMessage(`Thank you! Maureen & Matt have received your suggestion.`);
+    setTimeout(() => setToastMessage(''), 4000);
+  };
+
+  // Apply Feedback Correction directly to Node Data in real-time
+  const handleApplyCorrection = (fb) => {
+    setNodes(prev => prev.map(n => {
+      if (n.id === fb.guestId || n.name.toLowerCase() === fb.guestName.toLowerCase()) {
+        const updatedHobbies = [...(n.hobbies || [])];
+        if (fb.category === 'Missing Interest' && !updatedHobbies.includes(fb.note)) {
+          updatedHobbies.push(fb.note.replace(/^like\s+/i, '').trim());
+        }
+        return {
+          ...n,
+          hobbies: updatedHobbies,
+          familyStatus: fb.category === 'Family Status Update' ? fb.note : n.familyStatus
+        };
+      }
+      return n;
+    }));
+
+    setFeedbackList(prev => prev.map(item => item.id === fb.id ? { ...item, applied: true } : item));
+    setToastMessage(`Updated ${fb.guestName}'s profile on canvas!`);
+    setTimeout(() => setToastMessage(''), 3000);
+  };
+
   // Google Sheets CSV Import Parser (PapaParse + Zod)
   const handleImportCsv = () => {
     if (!sheetUrl.trim()) return;
@@ -256,9 +326,6 @@ export default function App() {
       complete: (results) => {
         try {
           const parsedNodes = [];
-          const parsedLinks = [];
-          const nameToIdMap = {};
-
           results.data.forEach((row, index) => {
             const rawId = row.ID || row.id || `node_${index}`;
             const rawName = row.Name || row.name || `Guest ${index}`;
@@ -283,7 +350,6 @@ export default function App() {
 
             const validated = NodeSchema.parse(nodeObj);
             parsedNodes.push(validated);
-            nameToIdMap[validated.name.toLowerCase()] = validated.id;
           });
 
           setNodes(parsedNodes);
@@ -301,7 +367,6 @@ export default function App() {
 
   // Render background enclosure shapes & twinkling constellation stars
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
-    // Starry Night Background (Constellation Mode)
     if (isConstellationMode) {
       ctx.save();
       ctx.fillStyle = isLightMode ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.4)';
@@ -315,7 +380,6 @@ export default function App() {
       ctx.restore();
     }
 
-    // 1. Couple Enclosure Hull around Maureen & Matt
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -357,7 +421,6 @@ export default function App() {
       ctx.restore();
     }
 
-    // 2. Cohort Cluster Hulls (if enabled)
     if (showCohortHulls) {
       const cohortGroups = {};
       filteredNodes.forEach(node => {
@@ -528,6 +591,14 @@ export default function App() {
       className={`app-container ${isLightMode ? 'light-mode' : ''}`}
       onMouseMove={handleMouseMove}
     >
+      {/* Toast Notification Banner */}
+      {toastMessage && (
+        <div className="glass-panel no-print" style={{ position: 'fixed', top: 90, left: '50%', transform: 'translateX(-50%)', zIndex: 100, padding: '10px 20px', background: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 700, borderRadius: 30, boxShadow: '0 10px 30px rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <CheckCircle2 style={{ width: 16, height: 16 }} />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {/* Print Poster Header Banner */}
       <div className="print-poster-header">
         <h1>THE SOCIAL UNIVERSE OF MAUREEN & MATT</h1>
@@ -567,7 +638,7 @@ export default function App() {
                 <X style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => setSelectedInterest(null)} />
               </span>
             ) : (
-              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 280 }}>
+              <div style={{ display: 'flex', gap: 4, overflowX: 'auto', maxWidth: 240 }}>
                 {allInterests.slice(0, 5).map(interest => (
                   <button 
                     key={interest}
@@ -585,7 +656,32 @@ export default function App() {
 
         {/* Dynamic Controls Bar */}
         <div className="top-bar-right">
-          {/* Import Data Modal Trigger */}
+          {/* Host Feedback Admin Queue Button */}
+          <button 
+            onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
+            className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6, background: feedbackList.some(f => !f.applied) ? 'rgba(245, 158, 11, 0.2)' : '', border: feedbackList.some(f => !f.applied) ? '1px solid #f59e0b' : '' }}
+            title="View Submitted Guest Metadata Corrections"
+          >
+            <Inbox style={{ width: 16, height: 16, color: '#f59e0b' }} />
+            <span>Host Feedback ({feedbackList.filter(f => !f.applied).length})</span>
+          </button>
+
+          {/* Suggest Edit Trigger */}
+          <button 
+            onClick={() => {
+              setFeedbackTargetNode(selectedNode || nodes[0]);
+              setIsFeedbackModalOpen(true);
+            }}
+            className="glass-panel btn-mode"
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
+            title="Report Missing or Incorrect Metadata"
+          >
+            <Edit3 style={{ width: 16, height: 16, color: '#38bdf8' }} />
+            <span>Suggest Edit</span>
+          </button>
+
+          {/* Import CSV */}
           <button 
             onClick={() => setIsImportModalOpen(true)}
             className="glass-panel btn-mode"
@@ -620,17 +716,6 @@ export default function App() {
           >
             <Compass style={{ width: 16, height: 16, color: isPathMode ? '#fff' : '#38bdf8' }} />
             <span>Path Finder</span>
-          </button>
-
-          {/* Constellation Mode Toggle */}
-          <button 
-            onClick={() => setIsConstellationMode(!isConstellationMode)}
-            className={`glass-panel btn-mode ${isConstellationMode ? 'active' : ''}`}
-            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Toggle Starry Constellation Mode"
-          >
-            <Star style={{ width: 16, height: 16, color: isConstellationMode ? '#fff' : '#38bdf8' }} />
-            <span>Constellation</span>
           </button>
 
           {/* Color Mode Selector */}
@@ -705,7 +790,133 @@ export default function App() {
         </div>
       )}
 
-      {/* Cocktail Hour Matchmaker Drawer (Sprint 3) */}
+      {/* Host Feedback Admin Queue Drawer */}
+      {isHostQueueOpen && (
+        <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto', zIndex: 40 }}>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <span className="drawer-badge" style={{ backgroundColor: '#f59e0b', display: 'flex', alignItems: 'center', gap: 6, color: '#000' }}>
+                <Inbox style={{ width: 12, height: 12 }} /> Host Feedback Queue
+              </span>
+              <button onClick={() => setIsHostQueueOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X style={{ width: 20, height: 20 }} />
+              </button>
+            </div>
+
+            <h2 className="drawer-title" style={{ fontSize: 20 }}>Submitted Corrections</h2>
+            <p className="drawer-subtitle">Guest updates to review & apply to canvas:</p>
+
+            <div className="drawer-section">
+              {feedbackList.map(fb => (
+                <div key={fb.id} className="icebreaker-box" style={{ borderColor: fb.applied ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.4)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: 13 }}>
+                    <span>{fb.guestName}</span>
+                    <span style={{ fontSize: 11, color: '#94a3b8' }}>{fb.timestamp}</span>
+                  </div>
+                  <div style={{ fontSize: 11, color: '#f59e0b', fontWeight: 600, margin: '2px 0 6px 0' }}>
+                    Category: {fb.category}
+                  </div>
+                  <p style={{ fontSize: 12, color: '#cbd5e1', marginBottom: 10 }}>"{fb.note}"</p>
+
+                  {!fb.applied ? (
+                    <button 
+                      onClick={() => handleApplyCorrection(fb)}
+                      className="btn-mode"
+                      style={{ padding: '6px 12px', background: '#10b981', color: '#fff', borderRadius: 8, fontSize: 11, display: 'flex', alignItems: 'center', gap: 6, width: '100%', justifyContent: 'center' }}
+                    >
+                      <Check style={{ width: 12, height: 12 }} /> Apply Update to Graph
+                    </button>
+                  ) : (
+                    <div style={{ fontSize: 11, color: '#10b981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <CheckCircle2 style={{ width: 12, height: 12 }} /> Applied to Canvas
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Guest Report Correction Modal */}
+      {isFeedbackModalOpen && (
+        <div className="app-container no-print" style={{ position: 'fixed', zIndex: 50, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="glass-panel" style={{ width: 440, padding: 28 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 800, fontSize: 18 }}>
+                <Edit3 style={{ width: 20, height: 20, color: '#38bdf8' }} />
+                <span>Suggest Profile Edit</span>
+              </div>
+              <button onClick={() => setIsFeedbackModalOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X style={{ width: 20, height: 20 }} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 16, lineHeight: 1.5 }}>
+              Spotted missing interests or an outdated detail? Send a quick note directly to Maureen & Matt!
+            </p>
+
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Your Name / Guest:</label>
+              <select 
+                value={feedbackTargetNode ? feedbackTargetNode.id : ''}
+                onChange={(e) => setFeedbackTargetNode(nodes.find(n => n.id === e.target.value))}
+                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12 }}
+              >
+                {nodes.filter(n => n.type === 'GUEST').map(n => (
+                  <option key={n.id} value={n.id}>{n.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Update Type:</label>
+              <select 
+                value={feedbackCategory}
+                onChange={(e) => setFeedbackCategory(e.target.value)}
+                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12 }}
+              >
+                <option value="Missing Interest">Missing Interest (e.g. "You forgot that I like Wine!")</option>
+                <option value="Family Status Update">Family Status Update (e.g. "My daughter is 17 now!")</option>
+                <option value="Hometown / State Edit">Hometown / State Correction</option>
+                <option value="Relationship Correction">Relationship Connection Edit</option>
+                <option value="Other">Other Suggestion</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Your Suggestion / Detail:</label>
+              <textarea 
+                rows={3}
+                placeholder="e.g. You forgot that I love Wine and Bicycling!"
+                value={feedbackNote}
+                onChange={(e) => setFeedbackNote(e.target.value)}
+                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(15, 23, 42, 0.9)', color: '#fff', border: '1px solid rgba(56, 189, 248, 0.3)', outline: 'none', fontSize: 12, resize: 'none' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+              <button 
+                onClick={() => setIsFeedbackModalOpen(false)}
+                className="btn-mode"
+                style={{ padding: '10px 16px', background: 'rgba(255, 255, 255, 0.08)', color: '#fff', borderRadius: 10 }}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleSubmitCorrection}
+                className="btn-action"
+                style={{ background: '#0284c7', color: '#fff' }}
+              >
+                <Send style={{ width: 14, height: 14 }} />
+                <span>Send to Maureen & Matt</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cocktail Hour Matchmaker Drawer */}
       {isMatchmakerOpen && (
         <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto' }}>
           <div>
@@ -763,7 +974,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Google Sheets CSV Import Modal (Sprint 2) */}
+      {/* Google Sheets CSV Import Modal */}
       {isImportModalOpen && (
         <div className="app-container no-print" style={{ position: 'fixed', zIndex: 50, background: 'rgba(2, 6, 23, 0.85)', backdropFilter: 'blur(16px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <div className="glass-panel" style={{ width: 480, padding: 28 }}>
@@ -1016,6 +1227,21 @@ export default function App() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Suggest Edit Button inside Drawer */}
+            <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <button 
+                onClick={() => {
+                  setFeedbackTargetNode(selectedNode);
+                  setIsFeedbackModalOpen(true);
+                }}
+                className="btn-mode"
+                style={{ width: '100%', padding: '10px', borderRadius: 10, background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontWeight: 600 }}
+              >
+                <Edit3 style={{ width: 14, height: 14 }} />
+                <span>Suggest Profile Correction for {selectedNode.name}</span>
+              </button>
             </div>
           </div>
 
