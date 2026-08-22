@@ -668,7 +668,24 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, isOrbiting, orbitSpeed]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, isOrbiting, orbitSpeed, clusterMode]);
+
+  // Unfix node drag locks and reheat D3 simulation whenever cluster grouping mode changes!
+  useEffect(() => {
+    nodes.forEach(node => {
+      if (node.id !== 'maureen' && node.id !== 'matt') {
+        node.fx = undefined;
+        node.fy = undefined;
+      }
+    });
+
+    if (fgRef.current) {
+      fgRef.current.d3AlphaTarget(0.35).restart();
+      setTimeout(() => {
+        if (fgRef.current) fgRef.current.d3AlphaTarget(0);
+      }, 600);
+    }
+  }, [clusterMode, nodes]);
 
   // PERPETUAL KINEMATIC ORBIT TICKER: Gentle continuous physics alpha target for collision stability
   useEffect(() => {

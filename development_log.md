@@ -9,12 +9,14 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Zero-Overlap Synchronous Warmup Ticks & Enhanced Charge Repulsion
-- **User Prompt**: "angain, on intial load everyting was super overlapped"
+## [2026-08-22] Grouping Change Lock-Release & Simulation Reheat Fix
+- **User Prompt**: "now as soon as i change hte grouping it basically shows me a non rsponsive screen with only the coupls group and the freindmand rahmans"
 - **Actions**:
-  1. **Root Cause Analysis**: `<ForceGraph2D>` rendered its first canvas frame on tick 0 before D3's physics solver had time to push nodes apart.
-  2. **Synchronous Warmup Ticks (`warmupTicks={200}`)**:
-     - Configured `warmupTicks={200}` and `cooldownTicks={250}` on `<ForceGraph2D>`. D3 now calculates 200 layout ticks offscreen in ~4ms **BEFORE frame 1 renders to the screen**.
-     - Strengthened charge repulsion strength to `-2400` and increased collision constraint iterations from 25 to 40.
-  3. **Result**: On first load or page refresh, the graph now appears **100% perfectly spaced with zero overlapping cards on frame 1**.
-  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Root Cause Analysis**:
+     - Dragging group clusters locked member node coordinates (`fx`, `fy`).
+     - Switching `clusterMode` (grouping mode) left these fixed drag coordinates locked on nodes without reheating D3, causing nodes to freeze in place and canvas to become non-responsive.
+  2. **Automatic Drag Lock Release & Reheat**:
+     - Added a dedicated `useEffect` triggered whenever `clusterMode` changes:
+       - Automatically un-fixes all drag locks (`node.fx = undefined; node.fy = undefined;`).
+       - Reheats D3 simulation (`d3AlphaTarget(0.35).restart()`) so nodes immediately untangle and spread out cleanly into the newly selected cluster mode.
+  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
