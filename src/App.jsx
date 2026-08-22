@@ -847,6 +847,21 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
   // Dynamic Layout Math: Renders Cohort Hulls in 100% Native World Space
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
+    const placedLabelBoxes = [];
+
+    // Pre-populate placedLabelBoxes with visible node card bounding boxes so cluster titles avoid covering guest cards
+    filteredNodes.forEach(n => {
+      if (n.x !== undefined && n.y !== undefined) {
+        const b = getNodeBounds(n, showHeadshots, nodeScaleMultiplier);
+        placedLabelBoxes.push({
+          x: n.x - b.width / 2,
+          y: n.y - b.height / 2,
+          width: b.width,
+          height: b.height
+        });
+      }
+    });
+
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -991,7 +1006,7 @@ function getConvexHull2D(points) {
         ctx.setLineDash([6 / globalScale, 6 / globalScale]);
         ctx.stroke();
 
-        // Position cluster label title above top-left hull vertex with Non-Overlap Collision Avoidance!
+        // Position cluster label title above top-left hull vertex with AABB Non-Overlap Collision Avoidance!
         let topPoint = hull[0];
         hull.forEach(p => { if (p.y < topPoint.y) topPoint = p; });
 
@@ -1000,24 +1015,32 @@ function getConvexHull2D(points) {
         const fontSize = 22 * nodeScaleMultiplier;
         ctx.font = `800 ${fontSize}px Inter, sans-serif`;
         const textWidth = ctx.measureText(label.toUpperCase()).width || (120 * nodeScaleMultiplier);
-        const textHeight = fontSize + 6;
+        const textHeight = fontSize + 8;
 
-        // Collision avoidance against previously placed cluster labels
+        // Collision avoidance against guest cards and existing cluster titles
         let hasCollision = true;
         let attempts = 0;
-        while (hasCollision && attempts < 4) {
+        while (hasCollision && attempts < 6) {
           hasCollision = placedLabelBoxes.some(box => {
-            return (
-              Math.abs(labelX - box.x) < (textWidth / 2 + box.width / 2 + 10) &&
-              Math.abs(labelY - box.y) < (textHeight + 10)
+            return !(
+              labelX + textWidth < box.x ||
+              labelX > box.x + box.width ||
+              labelY < box.y ||
+              labelY - textHeight > box.y + box.height
             );
           });
           if (hasCollision) {
-            labelY -= (textHeight + 10);
+            labelY -= (textHeight + 12 * nodeScaleMultiplier);
             attempts++;
           }
         }
-        placedLabelBoxes.push({ x: labelX, y: labelY, width: textWidth, height: textHeight });
+
+        placedLabelBoxes.push({
+          x: labelX,
+          y: labelY - textHeight,
+          width: textWidth,
+          height: textHeight
+        });
 
         ctx.setLineDash([]);
         ctx.font = `800 ${fontSize}px Inter, sans-serif`;

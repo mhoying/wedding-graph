@@ -9,9 +9,11 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Group Cluster Dragging & Non-Overlapping Cluster Titles
-- **User Prompt**: "can we make it so clusetrs can be dragged and labels dont overlap"
+## [2026-08-22] AABB Cluster Title Collision Avoidance Engine
+- **User Prompt**: "labels of clusters are still overlapping"
 - **Actions**:
-  1. **Group Cluster Dragging (`handleNodeDrag` / `handleNodeDragEnd`)**: Dragging any node within a cluster now calculates the delta offset $(\Delta x, \Delta y)$ and translates all member nodes in that group simultaneously, preserving their internal layout while moving across the canvas.
-  2. **Non-Overlapping Cluster Titles**: Implemented real-time 2D bounding box collision detection (`placedLabelBoxes`) for cluster title headings. If two cluster labels overlap, the second label automatically offsets vertically (`-32px * nodeScaleMultiplier`) so title headings **never collide or overlap each other**.
+  1. **Root Cause Diagnosis**: `placedLabelBoxes` tracking array was missing from `drawBackgroundHulls` scope, preventing the collision avoidance loop from executing.
+  2. **AABB Collision Avoidance**:
+     - Initialized `placedLabelBoxes` with all visible guest node card bounding boxes.
+     - Implemented AABB bounding box collision detection for cluster titles. If a title collides with guest cards or another cluster label, it dynamically shifts upward (`- (textHeight + 12px * nodeScaleMultiplier)`) until clear.
   3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
