@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, ArrowRight, Tag } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -25,6 +25,22 @@ function getInitials(name) {
   const parts = name.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/);
   if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// Helper to extract clean single/multi-word tag proposals from qualitative feedback notes
+function extractProposedTag(note, category) {
+  if (!note) return '';
+  if (category === 'Missing Interest') {
+    const match = note.match(/(?:like|love|enjoy|into|about|play)\s+([a-zA-Z0-9\s]+)/i);
+    if (match && match[1]) {
+      const tag = match[1].trim();
+      return tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
+    }
+    const words = note.trim().split(/\s+/);
+    const lastWord = words[words.length - 1].replace(/[^a-zA-Z]/g, '');
+    return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
+  }
+  return note.trim();
 }
 
 export default function App() {
@@ -95,6 +111,7 @@ export default function App() {
         guestName: 'Nur-e',
         category: 'Missing Interest',
         note: 'You forgot that I like Wine!',
+        proposedValue: 'Wine',
         timestamp: 'Just now',
         applied: false
       },
@@ -104,6 +121,7 @@ export default function App() {
         guestName: 'Anne Freedman',
         category: 'Family Status Update',
         note: 'My daughter is 17 now!',
+        proposedValue: 'Daughter is 17',
         timestamp: '5 mins ago',
         applied: false
       }
@@ -271,7 +289,6 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
   const handleSaveProfileEdits = () => {
     if (!selectedNode) return;
 
-    // Mutate properties in-place on existing node reference to prevent link pointer disconnection
     const targetNode = nodes.find(n => n.id === selectedNode.id);
     if (targetNode) {
       targetNode.relationship = editRelationship;
@@ -306,6 +323,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
   // Remove an interest tag in edit mode
   const handleRemoveInterestTag = (tag) => {
     setEditHobbies(editHobbies.filter(h => h !== tag));
+  };
+
+  // Update proposed edit value inside Host Queue items before approving
+  const handleUpdateProposedValue = (fbId, val) => {
+    setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
   // Configure D3 forces: Generalized Couple Distance & Dynamic Collision for Square Badges
@@ -456,9 +478,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
   };
 
-  // Automated Guest Submission Handler
+  // Automated Guest Submission Handler with Clean Tag Proposal Extraction
   const handleSubmitCorrection = () => {
     if (!feedbackNote.trim()) return;
+
+    const proposedVal = extractProposedTag(feedbackNote, feedbackCategory);
     
     const newFb = {
       id: `fb_${Date.now()}`,
@@ -466,6 +490,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       guestName: feedbackTargetNode ? feedbackTargetNode.name : 'Guest',
       category: feedbackCategory,
       note: feedbackNote,
+      proposedValue: proposedVal,
       timestamp: 'Just now',
       applied: false
     };
@@ -474,30 +499,40 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setIsFeedbackModalOpen(false);
     setFeedbackNote('');
 
-    setToastMessage(`Thank you! Maureen & Matt have received your suggestion.`);
+    setToastMessage(`Thank you! Maureen & Matt received your edit suggestion.`);
     setTimeout(() => setToastMessage(''), 4000);
   };
 
-  // Apply Feedback Correction directly IN-PLACE so Node references and Edges NEVER disconnect!
+  // Apply Feedback Correction with EXPLICIT Visual Diff Confirmation and Camera Focus!
   const handleApplyCorrection = (fb) => {
     const targetNode = nodes.find(n => n.id === fb.guestId || n.name.toLowerCase() === fb.guestName.toLowerCase());
-    if (targetNode) {
-      const updatedHobbies = [...(targetNode.hobbies || [])];
-      if (fb.category === 'Missing Interest' && !updatedHobbies.includes(fb.note)) {
-        updatedHobbies.push(fb.note.replace(/^like\s+/i, '').trim());
+    const finalVal = fb.proposedValue || extractProposedTag(fb.note, fb.category);
+
+    if (targetNode && finalVal) {
+      if (fb.category === 'Missing Interest') {
+        const updatedHobbies = [...(targetNode.hobbies || [])];
+        if (!updatedHobbies.includes(finalVal)) {
+          updatedHobbies.push(finalVal);
+        }
+        targetNode.hobbies = updatedHobbies;
+        setToastMessage(`Added "${finalVal}" tag to ${targetNode.name}'s profile!`);
+      } else if (fb.category === 'Family Status Update') {
+        targetNode.familyStatus = finalVal;
+        setToastMessage(`Updated ${targetNode.name}'s family status to "${finalVal}"!`);
+      } else {
+        targetNode.relationship = finalVal;
+        setToastMessage(`Updated ${targetNode.name}'s note to "${finalVal}"!`);
       }
-      targetNode.hobbies = updatedHobbies;
-      if (fb.category === 'Family Status Update') {
-        targetNode.familyStatus = fb.note;
-      }
+
+      flyToNode(targetNode);
+      setSelectedNode({ ...targetNode });
     }
 
     setNodes([...nodes]);
     setFeedbackList(prev => prev.map(item => item.id === fb.id ? { ...item, applied: true } : item));
     persistNodesToDisk(nodes);
 
-    setToastMessage(`Updated ${fb.guestName}'s profile!`);
-    setTimeout(() => setToastMessage(''), 3000);
+    setTimeout(() => setToastMessage(''), 4000);
   };
 
   // Render organic background enclosure shapes based on selected Cluster Mode ('cohort' | 'interests' | 'state' | 'none')
@@ -1030,49 +1065,111 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         </div>
       )}
 
-      {/* Host Feedback Admin Queue Drawer (Admin Only) */}
+      {/* Host Feedback Admin Queue Drawer (Admin Only with EXPLICIT TAG & METADATA DIFF REVIEW) */}
       {isAdmin && isHostQueueOpen && (
-        <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto', zIndex: 40 }}>
+        <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto', zIndex: 40, width: 380 }}>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span className="drawer-badge" style={{ backgroundColor: '#f59e0b', display: 'flex', alignItems: 'center', gap: 6, color: '#000' }}>
-                <Inbox style={{ width: 12, height: 12 }} /> Host Feedback Queue (Admin Mode)
+                <Inbox style={{ width: 12, height: 12 }} /> Host Feedback Queue (Admin)
               </span>
               <button onClick={() => setIsHostQueueOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
                 <X style={{ width: 18, height: 18 }} />
               </button>
             </div>
 
-            <h2 className="drawer-title" style={{ fontSize: 20 }}>Submitted Corrections</h2>
-            <p className="drawer-subtitle">Guest updates to review & apply to canvas:</p>
+            <h2 className="drawer-title" style={{ fontSize: 20 }}>Review Guest Edit Submissions</h2>
+            <p className="drawer-subtitle">Inspect proposed tag diffs before applying to graph:</p>
 
             <div className="drawer-section">
-              {feedbackList.map(fb => (
-                <div key={fb.id} className="icebreaker-box" style={{ borderColor: fb.applied ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.4)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: 13 }}>
-                    <span>{fb.guestName}</span>
-                    <span style={{ fontSize: 11, color: '#94a3b8' }}>{fb.timestamp}</span>
-                  </div>
-                  <div style={{ fontSize: 11, color: '#f59e0b', fontWeight: 600, margin: '2px 0 6px 0' }}>
-                    Category: {fb.category}
-                  </div>
-                  <p style={{ fontSize: 12, color: '#cbd5e1', marginBottom: 10 }}>"{fb.note}"</p>
+              {feedbackList.map(fb => {
+                const target = nodes.find(n => n.id === fb.guestId || n.name.toLowerCase() === fb.guestName.toLowerCase());
+                const proposedTag = fb.proposedValue || extractProposedTag(fb.note, fb.category);
 
-                  {!fb.applied ? (
-                    <button 
-                      onClick={() => handleApplyCorrection(fb)}
-                      className="btn-mode"
-                      style={{ padding: '6px 12px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 11, display: 'flex', alignItems: 'center', gap: 6, width: '100%', justifyContent: 'center' }}
-                    >
-                      <Check style={{ width: 12, height: 12 }} /> Apply Update to Graph
-                    </button>
-                  ) : (
-                    <div style={{ fontSize: 11, color: '#10b981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <CheckCircle2 style={{ width: 12, height: 12 }} /> Applied to Canvas
+                return (
+                  <div key={fb.id} className="icebreaker-box" style={{ borderColor: fb.applied ? 'rgba(16, 185, 129, 0.4)' : 'rgba(245, 158, 11, 0.5)', padding: 14 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: 13 }}>
+                      <span>{fb.guestName}</span>
+                      <span style={{ fontSize: 11, color: '#94a3b8' }}>{fb.timestamp}</span>
                     </div>
-                  )}
-                </div>
-              ))}
+
+                    <p style={{ fontSize: 12, color: '#cbd5e1', margin: '4px 0 10px 0', fontStyle: 'italic' }}>
+                      "{fb.note}"
+                    </p>
+
+                    {/* EXPLICIT METADATA DIFF PROPOSAL CARD */}
+                    {!fb.applied ? (
+                      <div style={{ background: 'rgba(15, 23, 42, 0.8)', padding: 10, borderRadius: 10, border: '1px solid rgba(255, 255, 255, 0.1)', marginBottom: 10 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Tag style={{ width: 12, height: 12 }} /> Proposed Change ({fb.category}):
+                        </div>
+
+                        {fb.category === 'Missing Interest' && (
+                          <div style={{ fontSize: 12 }}>
+                            <span style={{ color: '#94a3b8' }}>Current Interests: </span>
+                            <span style={{ color: '#fff', fontWeight: 600 }}>
+                              {target && target.hobbies ? target.hobbies.join(', ') : 'None'}
+                            </span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+                              <span style={{ color: '#10b981', fontWeight: 700 }}>+ Add Tag:</span>
+                              <input 
+                                type="text"
+                                value={proposedTag}
+                                onChange={(e) => handleUpdateProposedValue(fb.id, e.target.value)}
+                                style={{ flex: 1, padding: '4px 8px', borderRadius: 6, background: 'rgba(30, 41, 59, 0.9)', color: '#34d399', border: '1px solid #10b981', fontWeight: 700, fontSize: 12, outline: 'none' }}
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {fb.category === 'Family Status Update' && (
+                          <div style={{ fontSize: 12 }}>
+                            <span style={{ color: '#94a3b8' }}>Current Family: </span>
+                            <span style={{ color: '#fff' }}>{target ? target.familyStatus || 'None' : ''}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+                              <span style={{ color: '#f59e0b', fontWeight: 700 }}>➔ Update to:</span>
+                              <input 
+                                type="text"
+                                value={proposedTag}
+                                onChange={(e) => handleUpdateProposedValue(fb.id, e.target.value)}
+                                style={{ flex: 1, padding: '4px 8px', borderRadius: 6, background: 'rgba(30, 41, 59, 0.9)', color: '#fbbf24', border: '1px solid #f59e0b', fontWeight: 700, fontSize: 12, outline: 'none' }}
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {fb.category !== 'Missing Interest' && fb.category !== 'Family Status Update' && (
+                          <div style={{ fontSize: 12 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                              <span style={{ color: '#38bdf8', fontWeight: 700 }}>➔ Note Edit:</span>
+                              <input 
+                                type="text"
+                                value={proposedTag}
+                                onChange={(e) => handleUpdateProposedValue(fb.id, e.target.value)}
+                                style={{ flex: 1, padding: '4px 8px', borderRadius: 6, background: 'rgba(30, 41, 59, 0.9)', color: '#38bdf8', border: '1px solid #38bdf8', fontWeight: 700, fontSize: 12, outline: 'none' }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div style={{ fontSize: 11, color: '#10b981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
+                        <CheckCircle2 style={{ width: 14, height: 14 }} /> Applied Tag: "{proposedTag}" to Canvas & Focus Camera
+                      </div>
+                    )}
+
+                    {!fb.applied && (
+                      <button 
+                        onClick={() => handleApplyCorrection(fb)}
+                        className="btn-mode"
+                        style={{ padding: '8px 12px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 11, display: 'flex', alignItems: 'center', gap: 6, width: '100%', justifyContent: 'center', fontWeight: 700 }}
+                      >
+                        <Check style={{ width: 14, height: 14 }} /> Approve & Add "{proposedTag}" Tag to Canvas
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Download updated sampleData.js for Git */}

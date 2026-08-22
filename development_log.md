@@ -36,9 +36,10 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Edge Disconnection Prevention & In-Place Node Object Mutation Fix
-- **User Prompt**: "it looks liek the nodes are cetting disconnected fromt eh edges when changes are made"
+## [2026-08-22] Explicit Tag Proposal & Diff Review Interface in Host Queue
+- **User Prompt**: "also the submitted corections doesnt really make sense.. and it isnt clear what 'applied ot canvas' is doing when there is a qualitative thing like 'you forgot i like wine' i assume the change woudl be to add the wine tag.. but i doubt it is smart enoughfto do that nor is there any evidecne that that happens."
 - **Actions**:
-  1. Fixed link disconnection bug where replacing node objects caused D3's internal link pointers (`link.source`, `link.target`) to lose coordinates (`x`, `y`).
-  2. Mutated node metadata properties in-place on existing node object references (`targetNode.hobbies = ...`).
-  3. Passed explicit `nodeId="id"` prop to `ForceGraph2D` to guarantee link pointers remain 100% attached through all profile edits!
+  1. **Tag Extraction Engine**: Automatically parses qualitative notes (e.g., `"You forgot that I like Wine!"`) to extract clean proposal tags (`"Wine"`).
+  2. **Explicit Proposed Diff Card**: Displays current interests vs. proposed addition (`Current: [Bicycling]` ➔ `Proposed: [Bicycling] + [Wine]`).
+  3. **Editable Proposal Input**: Allows Maureen & Matt to refine or edit the proposed tag right inside the queue before approving.
+  4. **Immediate Visual Evidence & Camera Fly-To**: Clicking **`Approve & Add "Wine" Tag`** updates the guest's profile, flies the camera directly to their node, opens their drawer, and places them into the **`🏷️ Wine`** Auto-Cluster on canvas!
