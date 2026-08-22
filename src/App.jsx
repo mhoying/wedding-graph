@@ -306,10 +306,18 @@ export default function App() {
   }, []);
 
   const handleNodeClick = useCallback((node) => {
+    if (isPathMode) {
+      if (!pathStartId) {
+        setPathStartId(node.id);
+      } else if (node.id !== pathStartId) {
+        setPathEndId(node.id);
+      }
+      return;
+    }
     setSelectedNode(node);
     setIsEditingDrawer(false);
     flyToNode(node);
-  }, [flyToNode]);
+  }, [isPathMode, pathStartId, flyToNode]);
 
   const handleNodeDrag = useCallback((node, translate) => {
     const dx = translate.x;
@@ -604,35 +612,84 @@ export default function App() {
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
       />
 
-      {/* Path Finder Floating Status Banner (Positioned cleanly below header at top: 84px) */}
+      {/* Path Finder Floating Interactive Toolbar (Positioned cleanly below top header at top: 80px) */}
       {isPathMode && (
         <div className="glass-panel no-print" style={{
           position: 'absolute',
-          top: 84,
+          top: 80,
           left: '50%',
           transform: 'translateX(-50%)',
-          zIndex: 200,
-          padding: '10px 20px',
-          borderRadius: 16,
+          zIndex: 500,
+          padding: '12px 20px',
+          borderRadius: 20,
           display: 'flex',
           alignItems: 'center',
           gap: 12,
-          background: 'rgba(15, 23, 42, 0.92)',
+          background: 'rgba(15, 23, 42, 0.94)',
           border: '1px solid rgba(56, 189, 248, 0.4)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)'
+          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
+          maxWidth: '90vw',
+          flexWrap: 'wrap'
         }}>
-          <Compass style={{ width: 18, height: 18, color: '#38bdf8' }} />
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#f8fafc' }}>Path Finder Active</div>
-            <div style={{ fontSize: 11, color: '#94a3b8' }}>
-              {pathStartId ? `From: ${nodes.find(n => n.id === pathStartId)?.name || 'Guest'} • Select 2nd Guest` : 'Click 1st guest to set starting node'}
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <Compass style={{ width: 18, height: 18, color: '#38bdf8' }} />
+            <span style={{ fontSize: 13, fontWeight: 800, color: '#f8fafc', whiteSpace: 'nowrap' }}>Path Finder:</span>
           </div>
+
+          {/* 1st Guest Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600 }}>From:</span>
+            <select 
+              value={pathStartId}
+              onChange={(e) => setPathStartId(e.target.value)}
+              style={{ background: '#0f172a', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
+            >
+              <option value="">-- Click or Pick 1st --</option>
+              {nodes.filter(n => n.type === 'GUEST').map(n => (
+                <option key={n.id} value={n.id}>{n.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <span style={{ color: '#94a3b8', fontSize: 12 }}>➔</span>
+
+          {/* 2nd Guest Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600 }}>To:</span>
+            <select 
+              value={pathEndId}
+              onChange={(e) => setPathEndId(e.target.value)}
+              style={{ background: '#0f172a', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
+            >
+              <option value="">-- Click or Pick 2nd --</option>
+              {nodes.filter(n => n.type === 'GUEST' && n.id !== pathStartId).map(n => (
+                <option key={n.id} value={n.id}>{n.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Shortest Path Result Badge */}
+          {shortestPath.length > 1 && (
+            <div style={{ fontSize: 12, fontWeight: 800, color: '#34d399', background: 'rgba(52, 211, 153, 0.15)', padding: '4px 10px', borderRadius: 9999, border: '1px solid rgba(52, 211, 153, 0.3)' }}>
+              Connected in {shortestPath.length - 1} {shortestPath.length - 1 === 1 ? 'hop' : 'hops'}!
+            </div>
+          )}
+
+          {/* Clear Path Button */}
+          <button 
+            onClick={() => { setPathStartId(''); setPathEndId(''); setShortestPath([]); }}
+            style={{ fontSize: 11, color: '#ec4899', background: 'rgba(236, 72, 153, 0.15)', border: '1px solid rgba(236, 72, 153, 0.3)', padding: '4px 10px', borderRadius: 8, cursor: 'pointer', fontWeight: 700 }}
+          >
+            Reset
+          </button>
+
+          {/* Close Path Finder Banner */}
           <button 
             onClick={() => { setIsPathMode(false); setPathStartId(''); setPathEndId(''); setShortestPath([]); }}
-            style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', marginLeft: 8 }}
+            style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', marginLeft: 4 }}
+            title="Exit Path Finder Mode"
           >
-            <X style={{ width: 16, height: 16 }} />
+            <X style={{ width: 18, height: 18 }} />
           </button>
         </div>
       )}
