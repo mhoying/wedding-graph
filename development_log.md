@@ -26,9 +26,13 @@
 ## [2026-08-22] Mouseover Hover Tooltips & Dynamic Color Views
 - **User Prompt**: "in the last version the mouseovers did highlight the node, but there still was no overlay of tehir metadata... i'd also like to be able to change the node coloring based on a view maybe? likeone for the cohrt, but then maybe one for the state they live in, or one for if they are matts friends or maureens firends or joint firends.."
 - **Actions**:
-  1. Added a floating **Glassmorphism Mouseover Tooltip** overlay (`hoverNode`) that follows mouse movement instantly showing guest name, cohort, side, hometown, and icebreaker hobbies snippet without requiring a click.
-  2. Added **Dynamic Color Mode Selector** in top control bar with 3 active views:
-     - **By Cohort** (Cornell, Stanford, Google, Dog Park)
-     - **By Side** (Matt's Friends vs Maureen's Friends vs Joint Friends)
-     - **By State** (Home state/region)
-  3. Added dynamic **Interactive Color Legend** footer bar that updates live when switching color modes.
+  1. Added floating Glassmorphism Mouseover Tooltip overlay (`hoverNode`).
+  2. Added Dynamic Color Mode Selector (`colorMode`).
+  3. Added Interactive Color Legend footer.
+
+## [2026-08-22] Layout Sizing & Pure Vanilla CSS Migration
+- **User Prompt**: "there are no erros, but it si still a completley blank page.. shoudl i start using the pro model for this"
+- **Actions**:
+  1. Identified root cause: `App.jsx` was attempting to use Tailwind utility classes (`w-full`, `h-screen`, `flex-1`) without Tailwind being installed, causing the canvas container element to collapse to 0 height.
+  2. Converted all styling to pure Vanilla CSS in `src/index.css` with zero external dependencies.
+  3. Passed explicit dynamic pixel width and height props (`dimensions.width`, `dimensions.height`) to `<ForceGraph2D />` with auto-resizing event listeners. The canvas and UI elements now render 100% reliably.

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import * as d3 from 'd3-force';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Layers } from 'lucide-react';
+import { forceCollide } from 'd3-force-3d';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 export default function App() {
@@ -12,6 +12,16 @@ export default function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLightMode, setIsLightMode] = useState(false);
   const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
+  const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
+
+  // Update canvas dimensions on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Track mouse coordinates for hover tooltip positioning
   const handleMouseMove = (e) => {
@@ -24,7 +34,7 @@ export default function App() {
       const fg = fgRef.current;
       fg.d3Force('link').distance(l => l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 180 : 130);
       fg.d3Force('charge').strength(-900).distanceMax(500);
-      fg.d3Force('collide', d3.forceCollide().radius(node => node.type === 'ANCHOR' ? 52 : 40).iterations(4));
+      fg.d3Force('collide', forceCollide().radius(node => node.type === 'ANCHOR' ? 52 : 40).iterations(4));
       fg.d3ReheatSimulation();
     }
   }, []);
@@ -37,7 +47,6 @@ export default function App() {
     if (colorMode === 'state') {
       return STATE_COLORS[node.state] || STATE_COLORS.Default;
     }
-    // Default: Cohort
     return COHORT_COLORS[node.cohort] || COHORT_COLORS.Default;
   }, [colorMode]);
 
@@ -161,53 +170,53 @@ export default function App() {
 
   return (
     <div 
-      className={`w-full h-screen relative flex bg-grid-pattern ${isLightMode ? 'light-mode' : ''}`}
+      className={`app-container bg-grid-pattern ${isLightMode ? 'light-mode' : ''}`}
       onMouseMove={handleMouseMove}
     >
       {/* Top Controls Bar */}
-      <div className="absolute top-5 left-6 right-6 z-10 flex flex-wrap gap-3 justify-between items-center no-print">
-        <div className="flex items-center space-x-3">
-          <div className="glass-panel px-4 py-2.5 flex items-center space-x-3">
-            <div className="w-3 h-3 rounded-full bg-sky-400 animate-pulse" />
-            <span className="font-bold tracking-tight text-sm">Wedding Graph</span>
+      <div className="top-bar no-print">
+        <div className="top-bar-left">
+          <div className="glass-panel brand-badge">
+            <div className="pulse-dot" />
+            <span>Wedding Graph</span>
           </div>
 
           {/* Search Box */}
-          <div className="glass-panel flex items-center px-4 py-2 w-64 md:w-80">
-            <Search className="w-4 h-4 text-slate-400 mr-2.5" />
+          <div className="glass-panel search-box">
+            <Search style={{ width: 16, height: 16, color: '#94a3b8', marginRight: 10 }} />
             <input 
               type="text"
               placeholder="Search guests, cohorts, or hobbies..."
-              className="bg-transparent border-none outline-none text-xs md:text-sm w-full text-current placeholder-slate-400 font-medium"
+              className="search-input"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             {searchQuery && (
-              <X className="w-4 h-4 cursor-pointer text-slate-400 hover:text-white" onClick={() => setSearchQuery('')} />
+              <X style={{ width: 16, height: 16, cursor: 'pointer', color: '#94a3b8' }} onClick={() => setSearchQuery('')} />
             )}
           </div>
         </div>
 
         {/* Dynamic Color Mode Selector Controls */}
-        <div className="flex items-center space-x-3">
-          <div className="glass-panel px-3 py-1.5 flex items-center space-x-2 text-xs font-semibold">
-            <Palette className="w-4 h-4 text-sky-400" />
-            <span className="text-slate-400 mr-1 hidden md:inline">Color By:</span>
+        <div className="top-bar-right">
+          <div className="glass-panel color-mode-bar">
+            <Palette style={{ width: 16, height: 16, color: '#38bdf8' }} />
+            <span style={{ color: '#94a3b8', marginRight: 4 }}>Color By:</span>
             <button 
               onClick={() => setColorMode('cohort')}
-              className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${colorMode === 'cohort' ? 'bg-sky-500 text-white' : 'hover:bg-slate-700/50 text-slate-300'}`}
+              className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`}
             >
               Cohort
             </button>
             <button 
               onClick={() => setColorMode('side')}
-              className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${colorMode === 'side' ? 'bg-sky-500 text-white' : 'hover:bg-slate-700/50 text-slate-300'}`}
+              className={`btn-mode ${colorMode === 'side' ? 'active' : ''}`}
             >
-              Side (Matt/Maureen)
+              Side
             </button>
             <button 
               onClick={() => setColorMode('state')}
-              className={`px-2.5 py-1 rounded-lg transition cursor-pointer ${colorMode === 'state' ? 'bg-sky-500 text-white' : 'hover:bg-slate-700/50 text-slate-300'}`}
+              className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`}
             >
               State
             </button>
@@ -215,38 +224,40 @@ export default function App() {
 
           <button 
             onClick={() => setIsLightMode(!isLightMode)} 
-            className="glass-panel p-2.5 rounded-xl hover:bg-slate-700/40 transition cursor-pointer"
+            className="glass-panel btn-icon"
             title="Toggle Light/Dark Theme"
           >
-            {isLightMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4 text-amber-300" />}
+            {isLightMode ? <Moon style={{ width: 18, height: 18 }} /> : <Sun style={{ width: 18, height: 18, color: '#fde047' }} />}
           </button>
           <button 
             onClick={() => window.print()} 
-            className="glass-panel px-4 py-2 rounded-xl flex items-center space-x-2 text-xs md:text-sm font-semibold hover:bg-slate-700/40 transition cursor-pointer"
+            className="glass-panel btn-action"
           >
-            <Printer className="w-4 h-4 text-sky-400" />
+            <Printer style={{ width: 16, height: 16, color: '#38bdf8' }} />
             <span>Export Poster</span>
           </button>
         </div>
       </div>
 
       {/* Dynamic Color Legend Footer */}
-      <div className="absolute bottom-5 left-6 z-10 glass-panel px-4 py-2 flex items-center space-x-4 text-xs no-print">
-        <span className="font-bold text-slate-400 uppercase tracking-wider text-[10px]">Legend ({colorMode}):</span>
-        <div className="flex items-center space-x-3 flex-wrap">
+      <div className="glass-panel legend-bar no-print">
+        <span style={{ fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', fontSize: 10 }}>Legend ({colorMode}):</span>
+        <div className="legend-items">
           {Object.entries(activeColorMap).map(([key, hex]) => (
-            <div key={key} className="flex items-center space-x-1.5">
-              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: hex }} />
-              <span className="font-medium text-slate-300">{key}</span>
+            <div key={key} className="legend-item">
+              <span className="legend-color" style={{ backgroundColor: hex }} />
+              <span style={{ fontWeight: 500, color: '#cbd5e1' }}>{key}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Force Graph Canvas */}
-      <div className="flex-1 w-full h-full">
+      {/* Force Graph Canvas (Explicit Pixel Dimensions) */}
+      <div className="graph-container">
         <ForceGraph2D
           ref={fgRef}
+          width={dimensions.width}
+          height={dimensions.height}
           graphData={graphData}
           nodeCanvasObject={drawNode}
           nodePointerAreaPaint={drawPointerArea}
@@ -275,34 +286,40 @@ export default function App() {
         />
       </div>
 
-      {/* Instant Hover Tooltip Popup Overlay (Follows Mouse) */}
+      {/* Instant Hover Tooltip Popup Overlay */}
       {hoverNode && !selectedNode && (
         <div 
-          className="fixed pointer-events-none z-30 glass-panel p-3.5 w-64 shadow-2xl transition-opacity animate-in fade-in duration-150"
+          className="glass-panel hover-tooltip"
           style={{ 
-            left: Math.min(mousePos.x + 15, window.innerWidth - 270), 
-            top: Math.min(mousePos.y + 15, window.innerHeight - 180) 
+            left: Math.min(mousePos.x + 15, window.innerWidth - 280), 
+            top: Math.min(mousePos.y + 15, window.innerHeight - 200) 
           }}
         >
-          <div className="flex justify-between items-center mb-1.5">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
             <span 
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white"
-              style={{ backgroundColor: getNodeColor(hoverNode) }}
+              style={{ 
+                fontSize: 10, 
+                fontWeight: 700, 
+                padding: '2px 8px', 
+                borderRadius: 10, 
+                color: '#fff',
+                backgroundColor: getNodeColor(hoverNode) 
+              }}
             >
               {hoverNode.cohort}
             </span>
-            <span className="text-[10px] font-semibold text-slate-400">{hoverNode.side} Side</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: '#94a3b8' }}>{hoverNode.side} Side</span>
           </div>
-          <h4 className="font-bold text-sm text-current leading-tight">{hoverNode.name}</h4>
-          <p className="text-xs text-slate-400 mb-2">{hoverNode.relationship}</p>
+          <h4 style={{ fontWeight: 800, fontSize: 14, marginBottom: 2 }}>{hoverNode.name}</h4>
+          <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>{hoverNode.relationship}</p>
           {hoverNode.hometown && (
-            <div className="flex items-center space-x-1.5 text-xs text-slate-300 mb-1">
-              <MapPin className="w-3 h-3 text-sky-400" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 4 }}>
+              <MapPin style={{ width: 12, height: 12, color: '#38bdf8' }} />
               <span>{hoverNode.hometown}</span>
             </div>
           )}
           {hoverNode.icebreakers && (
-            <div className="text-[11px] text-amber-300/90 font-medium truncate mt-1">
+            <div style={{ fontSize: 11, color: '#fde047', fontWeight: 500, marginTop: 4 }}>
               ✨ {hoverNode.icebreakers}
             </div>
           )}
@@ -311,60 +328,56 @@ export default function App() {
 
       {/* Glassmorphism Metadata Side Drawer Popup (On Click) */}
       {selectedNode && (
-        <div className="absolute right-6 top-20 bottom-6 w-80 md:w-96 glass-panel p-6 z-20 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right no-print">
+        <div className="glass-panel metadata-drawer no-print">
           <div>
-            <div className="flex justify-between items-start mb-5">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span 
-                className="text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm"
+                className="drawer-badge"
                 style={{ backgroundColor: getNodeColor(selectedNode) }}
               >
                 {selectedNode.cohort} • {selectedNode.side} Side
               </span>
               <button 
                 onClick={() => setSelectedNode(null)}
-                className="text-slate-400 hover:text-white transition cursor-pointer p-1"
+                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
               >
-                <X className="w-5 h-5" />
+                <X style={{ width: 20, height: 20 }} />
               </button>
             </div>
 
-            <h2 className="text-2xl font-extrabold mb-1 tracking-tight text-current">{selectedNode.name}</h2>
-            <p className="text-sm font-medium text-slate-400 mb-5">{selectedNode.relationship}</p>
+            <h2 className="drawer-title">{selectedNode.name}</h2>
+            <p className="drawer-subtitle">{selectedNode.relationship}</p>
 
-            <div className="space-y-4 text-sm border-t border-slate-700/50 pt-5">
+            <div className="drawer-section">
               {selectedNode.hometown && (
-                <div className="flex items-center space-x-3 text-slate-300">
-                  <div className="p-2 rounded-lg bg-sky-500/10 border border-sky-500/20">
-                    <MapPin className="w-4 h-4 text-sky-400 shrink-0" />
-                  </div>
-                  <span className="font-medium text-current">{selectedNode.hometown}</span>
+                <div className="drawer-info-row">
+                  <MapPin style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                  <span>{selectedNode.hometown}</span>
                 </div>
               )}
               {selectedNode.familyStatus && (
-                <div className="flex items-center space-x-3 text-slate-300">
-                  <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                    <Users className="w-4 h-4 text-emerald-400 shrink-0" />
-                  </div>
-                  <span className="font-medium text-current">{selectedNode.familyStatus}</span>
+                <div className="drawer-info-row">
+                  <Users style={{ width: 16, height: 16, color: '#10b981' }} />
+                  <span>{selectedNode.familyStatus}</span>
                 </div>
               )}
               {selectedNode.icebreakers && (
-                <div className="space-y-2 pt-2">
-                  <div className="flex items-center space-x-2 font-semibold text-slate-200">
-                    <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span className="text-current">Conversation Starters / Hobbies</span>
+                <div style={{ marginTop: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 6 }}>
+                    <Sparkles style={{ width: 16, height: 16, color: '#fde047' }} />
+                    <span>Conversation Starters / Hobbies</span>
                   </div>
-                  <p className="text-current leading-relaxed bg-slate-800/50 p-3.5 rounded-xl border border-slate-700/40 text-xs md:text-sm font-normal">
+                  <div className="icebreaker-box">
                     {selectedNode.icebreakers}
-                  </p>
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-700/50 flex justify-between items-center text-xs font-medium text-slate-400">
+          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: '#94a3b8' }}>
             <span>Guest Network Profile</span>
-            <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
+            <Heart style={{ width: 16, height: 16, color: '#f43f5e' }} />
           </div>
         </div>
       )}
