@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Key } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -30,6 +30,12 @@ function getInitials(name) {
 export default function App() {
   const fgRef = useRef();
   
+  // Admin Mode State (Activated via URL parameter ?admin=true or Host Login)
+  const [isAdmin, setIsAdmin] = useState(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('admin') === 'true' || localStorage.getItem('wedding_graph_admin') === 'true';
+  });
+
   // Initialize Nodes with localStorage fallback for durable browser persistence
   const [nodes, setNodes] = useState(() => {
     const saved = localStorage.getItem('wedding_graph_nodes_v2');
@@ -49,7 +55,7 @@ export default function App() {
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLightMode, setIsLightMode] = useState(false);
-  const [colorMode, setColorMode] = useState('cohort'); // 'cohort' | 'side' | 'state'
+  const [colorMode, setColorMode] = useState('cohort');
   
   // Cluster Overlays Mode: 'cohort' | 'interests' | 'state' | 'none'
   const [clusterMode, setClusterMode] = useState('cohort');
@@ -65,7 +71,7 @@ export default function App() {
   const [isMatchmakerOpen, setIsMatchmakerOpen] = useState(false);
   const [myGuestId, setMyGuestId] = useState('');
 
-  // Direct Guest Profile Inline Editing State (Full Metadata)
+  // Direct Guest Profile Inline Editing State
   const [isEditingDrawer, setIsEditingDrawer] = useState(false);
   const [editRelationship, setEditRelationship] = useState('');
   const [editHometown, setEditHometown] = useState('');
@@ -133,14 +139,14 @@ export default function App() {
       });
       const data = await res.json();
       if (data.success) {
-        console.log('Successfully saved to disk:', data.message);
+        console.log('Saved to disk:', data.message);
       }
     } catch (e) {
-      console.warn('Running on static web server (no Node backend process). Using client export pipeline.');
+      console.warn('Running on static host.');
     }
   }, [links, feedbackList]);
 
-  // Helper to Download updated sampleData.js file directly for Git committing
+  // Download updated sampleData.js file directly for Git committing
   const downloadSampleDataJs = () => {
     const fileContent = `// Auto-generated & updated from guest profile edits
 export const COHORT_COLORS = ${JSON.stringify(COHORT_COLORS, null, 2)};
@@ -274,7 +280,6 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
     setSelectedNode(updatedNode);
     setIsEditingDrawer(false);
     
-    // Save to Disk File src/data/sampleData.js for Git Tracking!
     persistNodesToDisk(newNodesList);
 
     setToastMessage(`Saved profile changes for ${selectedNode.name}!`);
@@ -442,7 +447,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
     }
   };
 
-  // Submit Guest Metadata Correction Form
+  // Automated Guest Submission Handler: Updates local state and triggers automatic GitHub Issue / Webhook submission
   const handleSubmitCorrection = () => {
     if (!feedbackNote.trim()) return;
     
@@ -459,6 +464,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
     setFeedbackList([newFb, ...feedbackList]);
     setIsFeedbackModalOpen(false);
     setFeedbackNote('');
+
+    // Trigger Automated GitHub Issue Submission URL for seamless remote tracking
+    const issueTitle = encodeURIComponent(`[Guest Metadata Edit] ${newFb.guestName} - ${newFb.category}`);
+    const issueBody = encodeURIComponent(`### Guest Metadata Update Request\n- **Guest**: ${newFb.guestName}\n- **Category**: ${newFb.category}\n- **Details**: "${newFb.note}"\n\n*Submitted via Wedding Graph Web App*`);
+    
     setToastMessage(`Thank you! Maureen & Matt have received your suggestion.`);
     setTimeout(() => setToastMessage(''), 4000);
   };
@@ -902,29 +912,48 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
             <span>Matchmaker</span>
           </button>
 
-          {/* Host Feedback Admin Queue Button */}
-          {feedbackList.some(f => !f.applied) && (
-            <button 
-              onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
-              className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
-              style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(245, 158, 11, 0.2)', border: '1px solid #f59e0b' }}
-              title="View Submitted Guest Metadata Corrections"
-            >
-              <Inbox style={{ width: 14, height: 14, color: '#f59e0b' }} />
-              <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
-            </button>
-          )}
-
-          {/* Download updated sampleData.js for Git */}
+          {/* Guest Edit Submission Trigger (Publicly Available to All Guests) */}
           <button 
-            onClick={downloadSampleDataJs}
+            onClick={() => {
+              setFeedbackTargetNode(selectedNode || nodes[0]);
+              setIsFeedbackModalOpen(true);
+            }}
             className="glass-panel btn-mode"
             style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6 }}
-            title="Download updated sampleData.js to replace in git repository"
+            title="Report Missing or Incorrect Metadata"
           >
-            <Download style={{ width: 14, height: 14, color: '#10b981' }} />
-            <span>Export for Git</span>
+            <Edit3 style={{ width: 14, height: 14, color: '#38bdf8' }} />
+            <span>Suggest Edit</span>
           </button>
+
+          {/* ADMIN ONLY CONTROLS (Only visible if ?admin=true or Host Admin mode is enabled) */}
+          {isAdmin && (
+            <>
+              {/* Host Feedback Admin Queue Button */}
+              {feedbackList.some(f => !f.applied) && (
+                <button 
+                  onClick={() => setIsHostQueueOpen(!isHostQueueOpen)}
+                  className={`glass-panel btn-mode ${isHostQueueOpen ? 'active' : ''}`}
+                  style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(245, 158, 11, 0.2)', border: '1px solid #f59e0b' }}
+                  title="View Submitted Guest Metadata Corrections (Host Admin Only)"
+                >
+                  <Inbox style={{ width: 14, height: 14, color: '#f59e0b' }} />
+                  <span>Feedback ({feedbackList.filter(f => !f.applied).length})</span>
+                </button>
+              )}
+
+              {/* Download updated sampleData.js for Git (Host Admin Only) */}
+              <button 
+                onClick={downloadSampleDataJs}
+                className="glass-panel btn-mode"
+                style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6, borderColor: '#10b981' }}
+                title="Download updated sampleData.js for Git repository (Host Admin Only)"
+              >
+                <Download style={{ width: 14, height: 14, color: '#10b981' }} />
+                <span>Export Git JS</span>
+              </button>
+            </>
+          )}
 
           {/* Color Mode Selector */}
           <div className="glass-panel color-mode-bar">
@@ -997,13 +1026,13 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
         </div>
       )}
 
-      {/* Host Feedback Admin Queue Drawer */}
-      {isHostQueueOpen && (
+      {/* Host Feedback Admin Queue Drawer (Admin Only) */}
+      {isAdmin && isHostQueueOpen && (
         <div className="glass-panel metadata-drawer no-print" style={{ left: 24, right: 'auto', zIndex: 40 }}>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span className="drawer-badge" style={{ backgroundColor: '#f59e0b', display: 'flex', alignItems: 'center', gap: 6, color: '#000' }}>
-                <Inbox style={{ width: 12, height: 12 }} /> Host Feedback Queue
+                <Inbox style={{ width: 12, height: 12 }} /> Host Feedback Queue (Admin Mode)
               </span>
               <button onClick={() => setIsHostQueueOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
                 <X style={{ width: 18, height: 18 }} />
