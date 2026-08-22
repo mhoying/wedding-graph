@@ -79,12 +79,13 @@ function getNodeBounds(node, showHeadshots, scaleMult = 1.0) {
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
 
-// CUSTOM D3 CELESTIAL ORBIT FORCE: Rotates social galaxy around Maureen & Matt
+// CUSTOM D3 CELESTIAL ORBIT FORCE: Rotates social galaxy around Maureen & Matt continuously
 function createOrbitForce(speedMultiplier = 1.0) {
   let nodes = [];
   function force(alpha) {
     if (speedMultiplier <= 0) return;
-    const baseSpeed = 0.0022 * speedMultiplier * alpha;
+    // Constant angular speed step independent of decaying D3 alpha!
+    const baseSpeed = 0.0028 * speedMultiplier;
 
     // Find center of gravity (Maureen & Matt couple anchor)
     let cx = 0, cy = 0, count = 0;
@@ -520,6 +521,21 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       fg.d3ReheatSimulation();
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, isOrbiting, orbitSpeed]);
+
+  // PERPETUAL KEEP-ALIVE TICKER FOR ORBIT MOTION: Ensures orbit never stalls out!
+  useEffect(() => {
+    let timer;
+    if (isOrbiting) {
+      const keepAlive = () => {
+        if (fgRef.current) {
+          fgRef.current.d3ReheatSimulation();
+        }
+        timer = setTimeout(keepAlive, 250);
+      };
+      keepAlive();
+    }
+    return () => clearTimeout(timer);
+  }, [isOrbiting]);
 
   // Handle D3 Zoom Event: Re-optimizes simulation smoothly on page zoom
   const handleZoom = useCallback(({ k }) => {

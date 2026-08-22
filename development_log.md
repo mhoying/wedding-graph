@@ -23,9 +23,9 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Celestial Orbit Motion Engine & Energy Particles
-- **User Prompt**: "can we add a orbiting sytle animation to it by defualt that can be toggled on and off and speed adjsutemed. or some type of dynamic movement that adds to visual interst"
+## [2026-08-22] Perpetual Orbit Motion Keep-Alive Fix
+- **User Prompt**: "the orbit ony happens for a seone an hten stalls out"
 - **Actions**:
-  1. **Celestial Orbit Force Engine (`createOrbitForce`)**: Implemented a D3 tangential rotational force that gently orbits the entire social galaxy around Maureen & Matt (**ON by default**)!
-  2. **Orbit Controls**: Added an **`Orbit: ON / OFF`** toggle button and an **`Orbit Speed`** slider (`0.2x` - `3.0x`, default `1.0x`) in both desktop header and mobile controls drawer.
-  3. **Social Connection Energy Particles (`linkDirectionalParticles`)**: Added glowing cyan energy particles flowing along social connection lines between friends and family when Orbit mode is active!
+  1. **Root Cause**: D3 force simulations naturally decay their energy parameter `alpha` from `1.0` down to `0.0`, causing custom forces to stall out once alpha hits zero.
+  2. **Constant Speed Step**: Removed `* alpha` multiplier from `createOrbitForce` so angular velocity remains constant.
+  3. **Perpetual Keep-Alive Ticker (`useEffect`)**: Added a 250ms keep-alive interval while `isOrbiting` is active, continuously reheating D3 simulation energy so the social galaxy rotates smoothly **24/7 without ever stalling out**!
