@@ -30,12 +30,10 @@
   2. Added Dynamic Color Mode Selector (`colorMode`).
   3. Added Interactive Color Legend footer.
 
-## [2026-08-22] Headshot Photo Avatars & Toggle Button
-- **User Prompt**: "okay the peopel nodes still look like rectangles, can you put placehodler shapes that represent what it woudl look like wiht the headhsot in there? (also, images should be toggleable)"
+## [2026-08-22] Prominent Portrait Cards & Large Headshots
+- **User Prompt**: "i dont see the sirgular placeholders... i see a little badge to the left of hte names, but this is going to be much too small to be readable."
 - **Actions**:
-  1. **Headshot Photo Avatars**: Populated portrait photo URLs for Maureen, Matt, Brian, Eleanor, Anne, Uncle Bob, David in [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js).
-  2. **Headshots Photo Toggle**: Added **`📷 Photos: ON / OFF`** button in the top navigation bar (`showHeadshots`).
-  3. **Visual Card Badges**:
-     - **Photos ON**: Renders a circular headshot portrait avatar on the left side of the card badge with monogram initials fallback.
-     - **Photos OFF**: Renders a compact editorial pill badge.
-  4. **D3 Collision & Hit Box Resizing**: Dynamically recalculates card badge widths and collision radii based on photo visibility.
+  1. **Prominent 38px–46px Headshot Photos**: Expanded avatar diameter from tiny 18px to a large, clear 38px (guests) and 46px (anchors) circular portrait!
+  2. **Glowing Legend Border Ring**: Added a colored accent ring matching the active legend group around each circular photo.
+  3. **High-Contrast Monogram Fallback**: Displaying bold 12px–15px monogram initials centered inside the avatar frame when photo is loading.
+  4. **Vertical Card Layout**: Structured node cards as vertical social directory cards with photo on top and bold guest name centered below.
