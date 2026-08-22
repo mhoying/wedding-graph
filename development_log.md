@@ -9,12 +9,10 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] GitHub Pages Base Path Fix (`/wedding-graph/`)
-- **User Prompt**: "still blank wiht eht following source code: <!doctype html>... <script src="./assets/index-BraZlQLD.js">..."
+## [2026-08-22] React ErrorBoundary & Complete Nullish Guard Protections
+- **User Prompt**: "still blank check ed on mulitple browsers and devides"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - The previous build used `base: './'`, causing `<script src="./assets/index-BraZlQLD.js">` to resolve relatively to `https://mhoying.github.io/assets/...` (which returned 404 Not Found on GitHub Pages), resulting in JavaScript failing to load and the screen remaining blank.
-  2. **Explicit Base Path Configuration**:
-     - Updated `vite.config.js` to `base: '/wedding-graph/'`.
-     - Generated canonical script tags: `<script src="/wedding-graph/assets/index-DX94D0jC.js">`.
-  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+     - Added a top-level React `ErrorBoundary` wrapper in `src/main.jsx`. If any uncaught runtime error occurs on any device/browser, instead of unmounting React and leaving a blank screen, it displays an error fallback with a 1-click **Reset App & Reload** button.
+     - Added strict nullish guards to `imageCacheRef` and canvas image loading in `ForceCanvas.jsx`.
+  2. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

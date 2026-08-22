@@ -39,15 +39,17 @@ export default function ForceCanvas({
 }) {
   // Pre-load guest photo images into ref cache
   useEffect(() => {
-    nodes.forEach(node => {
-      if (node.image && !imageCacheRef.current[node.image]) {
-        const img = new Image();
-        img.src = node.image;
-        img.onload = () => {
-          imageCacheRef.current[node.image] = img;
-        };
-      }
-    });
+    if (nodes && imageCacheRef && imageCacheRef.current) {
+      nodes.forEach(node => {
+        if (node.image && !imageCacheRef.current[node.image]) {
+          const img = new Image();
+          img.src = node.image;
+          img.onload = () => {
+            if (imageCacheRef.current) imageCacheRef.current[node.image] = img;
+          };
+        }
+      });
+    }
   }, [nodes, imageCacheRef]);
 
   // Configure D3 forces: PROPORTIONAL COHORT MULTIPLIERS & DYNAMIC ORBITAL GALAXY FORCE!
@@ -401,7 +403,7 @@ export default function ForceCanvas({
       ctx.arc(avatarX, avatarY, avatarDiameter / 2, 0, Math.PI * 2);
       ctx.clip();
 
-      if (node.image && imageCacheRef.current[node.image]) {
+      if (node.image && imageCacheRef && imageCacheRef.current && imageCacheRef.current[node.image]) {
         const img = imageCacheRef.current[node.image];
         ctx.drawImage(img, avatarX - avatarDiameter / 2, avatarY - avatarDiameter / 2, avatarDiameter, avatarDiameter);
       } else {
