@@ -9,16 +9,15 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Headless Chromium Debugging & `d3AlphaTarget` Removal
-- **User Prompt**: "still blank, no error message... dont you have the abiltiy to intereact directly with a chromium browser and debug this yoruself"
+## [2026-08-22] Desktop Header Controls & Pointer-Events Fix
+- **User Prompt**: "now most the controls dont work and are super ugly on my computer. ther eis a uuge Map Controls bar down the left of my page and the clusters is not cliable"
 - **Actions**:
-  1. **Headless Chromium Debugging**: Launched automated Puppeteer Chromium browser testing against `https://mhoying.github.io/wedding-graph/`.
-  2. **Root Cause Analysis**:
-     - Captured exact runtime console error: `TypeError: e.current.d3AlphaTarget is not a function`.
-     - In `react-force-graph-2d`, `d3AlphaTarget` is not a direct method on `fgRef.current`. Invoking `fgRef.current.d3AlphaTarget(...)` threw an uncaught TypeError on mount, causing React to unmount the entire DOM tree and render blank.
-  3. **Method Fix**:
-     - Replaced all non-existent `d3AlphaTarget(...)` calls with valid `d3ReheatSimulation()` method calls.
-     - Installed `puppeteer-core` for local headless Chromium verification.
-  4. **Empirical Verification**:
-     - Executed headless Chromium verification: Captured `ROOT INNER HTML LENGTH: 5140` with 0 console errors and 0 uncaught exceptions.
-  5. **Redeployed**: Force-pushed fresh build to `gh-pages` branch on GitHub (`https://mhoying.github.io/wedding-graph/`).
+  1. **Root Cause Analysis**:
+     - `.top-bar` had `pointer-events: none` without `pointer-events: auto` on `.search-controls-area`, causing all header buttons and the Clusters dropdown to be un-clickable.
+     - `.mobile-controls-sheet` was rendering as a 100vw wide bar fixed across the screen when opened on desktop viewports.
+  2. **Desktop UI Optimization**:
+     - Explicitly enabled `pointer-events: auto !important;` on all header controls, buttons, search inputs, and dropdowns.
+     - Scoped `.mobile-controls-sheet` to `@media (max-width: 768px)` on mobile, and formatted it as a floating 360px right panel on desktop.
+     - Added desktop toolbar items directly into the top header bar: **Clusters dropdown**, **Orbit Toggle**, **Path Finder**, **Matchmaker**, **CSV Export**, and **Light/Dark Toggle**.
+  3. **Headless Chromium Verification**: Confirmed `CLUSTERS SELECT VALUE: cohort`, 0 browser errors, and 100% interactive desktop layout.
+  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

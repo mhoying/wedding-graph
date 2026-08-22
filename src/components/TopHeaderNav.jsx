@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert } from 'lucide-react';
+import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause } from 'lucide-react';
 
 export default function TopHeaderNav({
   searchQuery,
@@ -10,6 +10,11 @@ export default function TopHeaderNav({
   setIsLightMode,
   clusterMode,
   setClusterMode,
+  isOrbiting,
+  setIsOrbiting,
+  isPathMode,
+  setIsPathMode,
+  setIsMatchmakerOpen,
   isAdmin,
   handleExportCsv,
   handleExportGitJs,
@@ -26,7 +31,7 @@ export default function TopHeaderNav({
         <span className="logo-subtitle">Sept 12, 2026 • Wedding Guest Universe</span>
       </div>
 
-      <div className="search-controls-area">
+      <div className="search-controls-area" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         {/* Search Bar Input */}
         <div className="search-box">
           <Search style={{ width: 14, height: 14, color: '#94a3b8' }} />
@@ -68,23 +73,56 @@ export default function TopHeaderNav({
           </div>
         )}
 
-        {/* Desktop Cluster Overlays Dropdown */}
-        <div className="glass-panel color-mode-bar desktop-only-inline">
-          <Layers style={{ width: 14, height: 14, color: '#ec4899' }} />
-          <span style={{ color: '#94a3b8', fontSize: 11 }}>Clusters:</span>
+        {/* Desktop Cluster Overlays Dropdown - 100% Clickable & Interactive */}
+        <div className="glass-panel color-mode-bar" style={{ padding: '6px 12px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12 }}>
+          <Layers style={{ width: 14, height: 14, color: '#ec4899', marginRight: 4 }} />
+          <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 6 }}>Clusters:</span>
           <select 
             value={clusterMode}
             onChange={(e) => setClusterMode(e.target.value)}
-            style={{ background: 'none', border: 'none', color: isLightMode ? '#0f172a' : '#f8fafc', fontSize: 11, fontWeight: 600, outline: 'none', cursor: 'pointer' }}
+            style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '4px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
           >
-            <option value="cohort" style={{ background: '#0f172a', color: '#fff' }}>Cohorts</option>
-            <option value="locations" style={{ background: '#0f172a', color: '#fff' }}>Locations</option>
-            <option value="current_location" style={{ background: '#0f172a', color: '#fff' }}>Current Location</option>
-            <option value="original_location" style={{ background: '#0f172a', color: '#fff' }}>Original Location</option>
-            <option value="interests" style={{ background: '#0f172a', color: '#fff' }}>Interests</option>
-            <option value="none" style={{ background: '#0f172a', color: '#fff' }}>Off (Hide)</option>
+            <option value="cohort">Cohorts</option>
+            <option value="locations">Locations</option>
+            <option value="current_location">Current Location</option>
+            <option value="original_location">Original Location</option>
+            <option value="interests">Interests</option>
+            <option value="none">Off (Hide)</option>
           </select>
         </div>
+
+        {/* Desktop Orbit Motion Toggle */}
+        <button 
+          onClick={() => setIsOrbiting(!isOrbiting)}
+          className={`glass-panel btn-icon ${isOrbiting ? 'active' : ''}`}
+          title="Toggle Celestial Orbit Rotation"
+          style={{ padding: '6px 10px', gap: 6, fontSize: 11, fontWeight: 700, color: isOrbiting ? '#a855f7' : '#94a3b8' }}
+        >
+          {isOrbiting ? <Pause style={{ width: 14, height: 14 }} /> : <Play style={{ width: 14, height: 14 }} />}
+          <span>Orbit</span>
+        </button>
+
+        {/* Desktop Path Finder Toggle */}
+        <button 
+          onClick={() => setIsPathMode(!isPathMode)}
+          className={`glass-panel btn-icon ${isPathMode ? 'active' : ''}`}
+          title="Calculate Social Distance Path"
+          style={{ padding: '6px 10px', gap: 6, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#94a3b8' }}
+        >
+          <Compass style={{ width: 14, height: 14 }} />
+          <span>Path Finder</span>
+        </button>
+
+        {/* Desktop Matchmaker Button */}
+        <button 
+          onClick={() => setIsMatchmakerOpen(true)}
+          className="glass-panel btn-icon"
+          title="Find Guest Match Recommendations"
+          style={{ padding: '6px 10px', gap: 6, fontSize: 11, fontWeight: 700, color: '#34d399' }}
+        >
+          <Wand2 style={{ width: 14, height: 14 }} />
+          <span>Matchmaker</span>
+        </button>
 
         {/* Light / Dark Mode Toggle Button */}
         <button 

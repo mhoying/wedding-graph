@@ -588,6 +588,11 @@ export default function App() {
         setIsLightMode={setIsLightMode}
         clusterMode={clusterMode}
         setClusterMode={setClusterMode}
+        isOrbiting={isOrbiting}
+        setIsOrbiting={setIsOrbiting}
+        isPathMode={isPathMode}
+        setIsPathMode={setIsPathMode}
+        setIsMatchmakerOpen={setIsMatchmakerOpen}
         isAdmin={isAdmin}
         handleExportCsv={handleExportCsv}
         handleExportGitJs={handleExportGitJs}
