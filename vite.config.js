@@ -49,6 +49,8 @@ export const STATE_COLORS = {
   "GA": "#f59e0b",
   "NY": "#b31b1b",
   "CA": "#06b6d4",
+  "UK": "#8b5cf6",
+  "Canada": "#ef4444",
   "Default": "#64748b"
 };
 

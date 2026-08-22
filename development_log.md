@@ -9,11 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Mobile Controls Trigger Button Pointer-Events Fix
-- **User Prompt**: "no, the cotorls buton still isnt able to be clicked"
+## [2026-08-22] Location Metadata Refactoring (Originally From & Currently Lives In)
+- **User Prompt**: "two more changes. lets have Originally from, and Currently lives (rather than home town. and state). also we'll have people coming from outside of the US, so the location desing shoudl handle that (even ghotuh almost everyone else will be in the us)"
 - **Actions**:
-  1. **Root Cause Analysis**: The top-level `.top-bar` container had `pointer-events: none`, and the mobile `Controls 🎛️` button sat outside `.top-bar-left` as a direct child of `.top-bar`, causing Android Chrome to inherit `pointer-events: none` and pass touch taps down to the canvas underneath.
-  2. **Enforced Pointer Events & High Z-Index Layering**:
-     - Added `.top-bar button { pointer-events: auto !important; }` in `src/index.css`.
-     - Explicitly set `pointerEvents: 'auto'`, `zIndex: 300`, and added `onTouchEnd` & `onClick` handlers to the `Controls 🎛️` button in `src/App.jsx`.
-  3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Schema & Model Refactoring**: Replaced `hometown` and `state` with `originallyFrom` and `currentlyLivesIn` on guest nodes in `src/data/sampleData.js` and `vite.config.js`.
+  2. **International Guest Support**: Added support for international location strings (e.g. `originallyFrom: "Seoul, South Korea"`, `currentlyLivesIn: "London, UK"`).
+  3. **UI Enhancements**:
+     - Updated hover tooltips with 🏡 **Originally from** and 📍 **Currently lives in**.
+     - Updated metadata side drawer and direct profile editor with `Home` and `MapPin` location badges.
+     - Updated Cocktail Hour Matchmaker scoring algorithm to match guests by shared origins (`originallyFrom`) or shared current living locations (`currentlyLivesIn`).
+  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

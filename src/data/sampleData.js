@@ -20,6 +20,8 @@ export const STATE_COLORS = {
   "GA": "#f59e0b",
   "NY": "#b31b1b",
   "CA": "#06b6d4",
+  "UK": "#8b5cf6",
+  "Canada": "#ef4444",
   "Default": "#64748b"
 };
 
@@ -30,8 +32,8 @@ export const SAMPLE_NODES = [
     "type": "ANCHOR",
     "cohort": "The Couple",
     "side": "Maureen",
-    "state": "CA",
-    "hometown": "San Francisco, CA",
+    "originallyFrom": "Boston, MA",
+    "currentlyLivesIn": "San Francisco, CA",
     "hobbies": [
       "Coffee",
       "Trail Running",
@@ -48,15 +50,15 @@ export const SAMPLE_NODES = [
     "type": "ANCHOR",
     "cohort": "The Couple",
     "side": "Matt",
-    "state": "CA",
-    "hometown": "San Francisco, CA",
+    "originallyFrom": "Chicago, IL",
+    "currentlyLivesIn": "San Francisco, CA",
     "hobbies": [
       "Cycling",
       "Mechanical Keyboards",
       "Sourdough"
     ],
     "familyStatus": "Groom",
-    "relationship": "The Groom and baddass",
+    "relationship": "The Groom",
     "image": ""
   },
   {
@@ -65,8 +67,8 @@ export const SAMPLE_NODES = [
     "type": "CONTEXT_HUB",
     "cohort": "Dog Park",
     "side": "Joint",
-    "state": "CA",
-    "hometown": "San Francisco, CA",
+    "originallyFrom": "San Francisco, CA",
+    "currentlyLivesIn": "San Francisco, CA",
     "hobbies": [
       "Dog Lover",
       "Outdoors"
@@ -81,8 +83,8 @@ export const SAMPLE_NODES = [
     "type": "NON_ATTENDING",
     "cohort": "Family",
     "side": "Matt",
-    "state": "TX",
-    "hometown": "Austin, TX",
+    "originallyFrom": "Austin, TX",
+    "currentlyLivesIn": "Austin, TX",
     "hobbies": [
       "Barbecue",
       "Guitars"
@@ -97,8 +99,8 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "side": "Maureen",
-    "state": "WA",
-    "hometown": "Seattle, WA",
+    "originallyFrom": "Seoul, South Korea",
+    "currentlyLivesIn": "Seattle, WA",
     "hobbies": [
       "Skiing",
       "Indie Rock",
@@ -115,15 +117,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Stanford",
     "side": "Matt",
-    "state": "CA",
-    "hometown": "Palo Alto, CA",
+    "originallyFrom": "London, UK",
+    "currentlyLivesIn": "Palo Alto, CA",
     "hobbies": [
       "Bouldering",
       "Matcha",
       "Dog Lover",
       "Cycling"
     ],
-    "familyStatus": "My daughter is 17 now!",
+    "familyStatus": "Daughter is 17 now!",
     "relationship": "Grad school cohort with Matt",
     "image": ""
   },
@@ -133,8 +135,8 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Google",
     "side": "Maureen",
-    "state": "NY",
-    "hometown": "New York, NY",
+    "originallyFrom": "Toronto, Canada",
+    "currentlyLivesIn": "New York, NY",
     "hobbies": [
       "Urban Planning",
       "Coffee",
@@ -151,8 +153,8 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Dog Park",
     "side": "Joint",
-    "state": "CA",
-    "hometown": "San Francisco, CA",
+    "originallyFrom": "Dublin, Ireland",
+    "currentlyLivesIn": "San Francisco, CA",
     "hobbies": [
       "Dog Lover",
       "Camping",

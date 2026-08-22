@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal, SlidersHorizontal, Settings, RotateCw, Disc, Key, Lock, Copy, FileSpreadsheet } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Tag, Camera, Maximize2, Sliders, MoveHorizontal, SlidersHorizontal, Settings, RotateCw, Disc, Key, Lock, Copy, FileSpreadsheet, Home } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -244,8 +244,8 @@ export default function App() {
   // Direct Guest Profile Inline Editing State
   const [isEditingDrawer, setIsEditingDrawer] = useState(false);
   const [editRelationship, setEditRelationship] = useState('');
-  const [editHometown, setEditHometown] = useState('');
-  const [editState, setEditState] = useState('');
+  const [editOriginallyFrom, setEditOriginallyFrom] = useState('');
+  const [editCurrentlyLivesIn, setEditCurrentlyLivesIn] = useState('');
   const [editCohort, setEditCohort] = useState('');
   const [editSide, setEditSide] = useState('Maureen');
   const [editFamilyStatus, setEditFamilyStatus] = useState('');
@@ -425,8 +425,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
   useEffect(() => {
     if (selectedNode) {
       setEditRelationship(selectedNode.relationship || '');
-      setEditHometown(selectedNode.hometown || '');
-      setEditState(selectedNode.state || '');
+      setEditOriginallyFrom(selectedNode.originallyFrom || selectedNode.hometown || '');
+      setEditCurrentlyLivesIn(selectedNode.currentlyLivesIn || selectedNode.state || '');
       setEditCohort(selectedNode.cohort || '');
       setEditSide(selectedNode.side || 'Maureen');
       setEditFamilyStatus(selectedNode.familyStatus || '');
@@ -476,8 +476,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     const targetNode = nodes.find(n => n.id === selectedNode.id);
     if (targetNode) {
       targetNode.relationship = editRelationship;
-      targetNode.hometown = editHometown;
-      targetNode.state = editState;
+      targetNode.originallyFrom = editOriginallyFrom;
+      targetNode.currentlyLivesIn = editCurrentlyLivesIn;
       targetNode.cohort = editCohort;
       targetNode.side = editSide;
       targetNode.familyStatus = editFamilyStatus;
@@ -641,15 +641,22 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       if (!n.hobbies) return;
 
       const sharedInterests = n.hobbies.filter(h => myHobbies.has(h));
-      const sharedHometown = myNode.hometown && n.hometown && (myNode.hometown === n.hometown || myNode.state === n.state);
+      const myOrigin = myNode.originallyFrom || myNode.hometown || '';
+      const nOrigin = n.originallyFrom || n.hometown || '';
+      const myCurrent = myNode.currentlyLivesIn || myNode.state || '';
+      const nCurrent = n.currentlyLivesIn || n.state || '';
 
-      if (sharedInterests.length > 0 || sharedHometown) {
-        let score = sharedInterests.length * 30 + (sharedHometown ? 20 : 0);
+      const sharedOrigin = myOrigin && nOrigin && myOrigin === nOrigin;
+      const sharedCurrent = myCurrent && nCurrent && myCurrent === nCurrent;
+
+      if (sharedInterests.length > 0 || sharedOrigin || sharedCurrent) {
+        let score = sharedInterests.length * 30 + (sharedOrigin ? 20 : 0) + (sharedCurrent ? 15 : 0);
         results.push({
           node: n,
           score: Math.min(score + 25, 98),
           sharedInterests,
-          sharedHometown
+          sharedOrigin,
+          sharedCurrent
         });
       }
     });
@@ -2038,10 +2045,16 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             {hoverNode.type === 'CONTEXT_HUB' ? `📍 ${hoverNode.name}` : hoverNode.name}
           </h4>
           <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>{hoverNode.relationship}</p>
-          {hoverNode.hometown && (
+          {hoverNode.originallyFrom && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 2 }}>
+              <Home style={{ width: 12, height: 12, color: '#f59e0b' }} />
+              <span>Originally from: {hoverNode.originallyFrom}</span>
+            </div>
+          )}
+          {hoverNode.currentlyLivesIn && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#cbd5e1', marginBottom: 4 }}>
               <MapPin style={{ width: 12, height: 12, color: '#38bdf8' }} />
-              <span>{hoverNode.hometown}</span>
+              <span>Currently lives in: {hoverNode.currentlyLivesIn}</span>
             </div>
           )}
           {hoverNode.hobbies && (
@@ -2106,10 +2119,16 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
                       <span>Shared Meeting Location / Event Hub</span>
                     </div>
                   )}
-                  {selectedNode.hometown && (
+                  {(selectedNode.originallyFrom || selectedNode.hometown) && (
+                    <div className="drawer-info-row">
+                      <Home style={{ width: 16, height: 16, color: '#f59e0b' }} />
+                      <span>Originally from: {selectedNode.originallyFrom || selectedNode.hometown}</span>
+                    </div>
+                  )}
+                  {(selectedNode.currentlyLivesIn || selectedNode.state) && (
                     <div className="drawer-info-row">
                       <MapPin style={{ width: 16, height: 16, color: '#38bdf8' }} />
-                      <span>{selectedNode.hometown}</span>
+                      <span>Currently lives in: {selectedNode.currentlyLivesIn || selectedNode.state}</span>
                     </div>
                   )}
                   {selectedNode.familyStatus && (
@@ -2201,21 +2220,22 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
                 <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
                   <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Hometown:</label>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Originally from:</label>
                     <input 
                       type="text"
-                      value={editHometown}
-                      onChange={(e) => setEditHometown(e.target.value)}
+                      value={editOriginallyFrom}
+                      onChange={(e) => setEditOriginallyFrom(e.target.value)}
+                      placeholder="e.g. Seattle, WA or London, UK"
                       style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
                     />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>State / Region:</label>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Currently lives in:</label>
                     <input 
                       type="text"
-                      value={editState}
-                      onChange={(e) => setEditState(e.target.value)}
-                      placeholder="e.g. GA, NY"
+                      value={editCurrentlyLivesIn}
+                      onChange={(e) => setEditCurrentlyLivesIn(e.target.value)}
+                      placeholder="e.g. Atlanta, GA or Tokyo, Japan"
                       style={{ width: '100%', padding: '6px 10px', borderRadius: 8, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
                     />
                   </div>
