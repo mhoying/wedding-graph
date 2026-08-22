@@ -9,13 +9,9 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Location Metadata Refactoring (Originally From & Currently Lives In)
-- **User Prompt**: "two more changes. lets have Originally from, and Currently lives (rather than home town. and state). also we'll have people coming from outside of the US, so the location desing shoudl handle that (even ghotuh almost everyone else will be in the us)"
+## [2026-08-22] Option 1 Compact Glassmorphism Sheet & Cache Bypass
+- **User Prompt**: "i dont see that on my phone yet after refeshing. aslo conirm that the orbit is faster if the slider is to the right and slower if hte slider is to the left"
 - **Actions**:
-  1. **Schema & Model Refactoring**: Replaced `hometown` and `state` with `originallyFrom` and `currentlyLivesIn` on guest nodes in `src/data/sampleData.js` and `vite.config.js`.
-  2. **International Guest Support**: Added support for international location strings (e.g. `originallyFrom: "Seoul, South Korea"`, `currentlyLivesIn: "London, UK"`).
-  3. **UI Enhancements**:
-     - Updated hover tooltips with 🏡 **Originally from** and 📍 **Currently lives in**.
-     - Updated metadata side drawer and direct profile editor with `Home` and `MapPin` location badges.
-     - Updated Cocktail Hour Matchmaker scoring algorithm to match guests by shared origins (`originallyFrom`) or shared current living locations (`currentlyLivesIn`).
-  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Orbit Slider Direction Verified**: Confirmed mathematically that moving the slider to the **RIGHT (`3.0x`) increases orbit speed (faster)**, and moving it to the **LEFT (`0.1x`) decreases speed (slower, ~3 minutes per full rotation)**.
+  2. **Option 1 Compact Sheet Implemented**: Reduced mobile controls drawer height to `42vh` with `rgba(15, 23, 42, 0.82)` semi-transparent Glassmorphism blur, leaving the upper 58-60% of the phone screen completely open and visible above the sliders.
+  3. **Redeployed**: Published updated bundle directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
