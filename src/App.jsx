@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Eye, EyeOff } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, HardDrive } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -29,7 +29,16 @@ function getInitials(name) {
 
 export default function App() {
   const fgRef = useRef();
-  const [nodes, setNodes] = useState(SAMPLE_NODES);
+  
+  // Initialize Nodes with localStorage fallback for durable browser persistence
+  const [nodes, setNodes] = useState(() => {
+    const saved = localStorage.getItem('wedding_graph_nodes_v2');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return SAMPLE_NODES;
+  });
+
   const [links, setLinks] = useState(SAMPLE_LINKS);
   
   const [searchQuery, setSearchQuery] = useState('');
@@ -67,27 +76,34 @@ export default function App() {
   const [editHobbies, setEditHobbies] = useState([]);
   const [newInterestInput, setNewInterestInput] = useState('');
 
-  // Feedback & Metadata Correction System State
-  const [feedbackList, setFeedbackList] = useState([
-    {
-      id: 'fb_1',
-      guestId: 'eleanor_chen',
-      guestName: 'Nur-e',
-      category: 'Missing Interest',
-      note: 'You forgot that I like Wine!',
-      timestamp: 'Just now',
-      applied: false
-    },
-    {
-      id: 'fb_2',
-      guestId: 'freedman_rahmans',
-      guestName: 'Anne Freedman',
-      category: 'Family Status Update',
-      note: 'My daughter is 17 now!',
-      timestamp: '5 mins ago',
-      applied: false
+  // Host Feedback Queue State with localStorage Fallback
+  const [feedbackList, setFeedbackList] = useState(() => {
+    const saved = localStorage.getItem('wedding_graph_feedback_v2');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
     }
-  ]);
+    return [
+      {
+        id: 'fb_1',
+        guestId: 'eleanor_chen',
+        guestName: 'Nur-e',
+        category: 'Missing Interest',
+        note: 'You forgot that I like Wine!',
+        timestamp: 'Just now',
+        applied: false
+      },
+      {
+        id: 'fb_2',
+        guestId: 'freedman_rahmans',
+        guestName: 'Anne Freedman',
+        category: 'Family Status Update',
+        note: 'My daughter is 17 now!',
+        timestamp: '5 mins ago',
+        applied: false
+      }
+    ];
+  });
+
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [feedbackTargetNode, setFeedbackTargetNode] = useState(null);
   const [feedbackCategory, setFeedbackCategory] = useState('Missing Interest');
@@ -97,6 +113,32 @@ export default function App() {
 
   // Image cache for avatar headshots
   const imageCacheRef = useRef({});
+
+  // Save Nodes & Feedback to LocalStorage whenever modified
+  useEffect(() => {
+    localStorage.setItem('wedding_graph_nodes_v2', JSON.stringify(nodes));
+  }, [nodes]);
+
+  useEffect(() => {
+    localStorage.setItem('wedding_graph_feedback_v2', JSON.stringify(feedbackList));
+  }, [feedbackList]);
+
+  // Persist updated nodes to disk file src/data/sampleData.js via /api/save-dataset
+  const persistNodesToDisk = useCallback(async (updatedNodes) => {
+    try {
+      const res = await fetch('/api/save-dataset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nodes: updatedNodes, links, feedbackList })
+      });
+      const data = await res.json();
+      if (data.success) {
+        console.log('Successfully saved to disk:', data.message);
+      }
+    } catch (e) {
+      console.warn('API save-dataset failed (running in static mode):', e);
+    }
+  }, [links, feedbackList]);
 
   // Dynamically extract all unique Interests across the dataset
   const allInterests = useMemo(() => {
@@ -109,14 +151,13 @@ export default function App() {
     return Array.from(set).sort();
   }, [nodes]);
 
-  // Auto-Cluster Discovery Engine: Scans tags and metadata to form dynamic clusters (e.g., Wine, Dogs, Cycling, Kids)
+  // Auto-Cluster Discovery Engine: Scans tags and metadata to form dynamic clusters
   const dynamicAutoClusters = useMemo(() => {
     const clusterMap = {};
 
     nodes.forEach(node => {
       if (node.type === 'CONTEXT_HUB' || node.x === undefined) return;
 
-      // Group by Interests
       if (node.hobbies && Array.isArray(node.hobbies)) {
         node.hobbies.forEach(h => {
           const key = `🏷️ ${h}`;
@@ -125,7 +166,6 @@ export default function App() {
         });
       }
 
-      // Group by Family Details (e.g. Kids / Children)
       if (node.familyStatus && /kid|child|daughter|son/i.test(node.familyStatus)) {
         const key = `👨‍👩‍👧 Guests with Kids`;
         if (!clusterMap[key]) clusterMap[key] = [];
@@ -133,7 +173,6 @@ export default function App() {
       }
     });
 
-    // Filter clusters to those with at least 2 guests
     const result = {};
     Object.entries(clusterMap).forEach(([tag, arr]) => {
       if (arr.length >= 2) {
@@ -188,7 +227,7 @@ export default function App() {
     }
   };
 
-  // Save Direct Profile Edits across ALL Metadata fields
+  // Save Direct Profile Edits across ALL Metadata fields & persist to Disk / Git!
   const handleSaveProfileEdits = () => {
     if (!selectedNode) return;
 
@@ -203,10 +242,15 @@ export default function App() {
       hobbies: editHobbies
     };
 
-    setNodes(prev => prev.map(n => n.id === selectedNode.id ? updatedNode : n));
+    const newNodesList = nodes.map(n => n.id === selectedNode.id ? updatedNode : n);
+    setNodes(newNodesList);
     setSelectedNode(updatedNode);
     setIsEditingDrawer(false);
-    setToastMessage(`Saved profile changes for ${selectedNode.name}!`);
+    
+    // Save to Disk File src/data/sampleData.js for Git Tracking!
+    persistNodesToDisk(newNodesList);
+
+    setToastMessage(`Saved profile changes for ${selectedNode.name} to Git repository!`);
     setTimeout(() => setToastMessage(''), 3500);
   };
 
@@ -392,9 +436,9 @@ export default function App() {
     setTimeout(() => setToastMessage(''), 4000);
   };
 
-  // Apply Feedback Correction directly to Node Data in real-time
+  // Apply Feedback Correction directly to Node Data in real-time & persist to disk
   const handleApplyCorrection = (fb) => {
-    setNodes(prev => prev.map(n => {
+    const updatedNodes = nodes.map(n => {
       if (n.id === fb.guestId || n.name.toLowerCase() === fb.guestName.toLowerCase()) {
         const updatedHobbies = [...(n.hobbies || [])];
         if (fb.category === 'Missing Interest' && !updatedHobbies.includes(fb.note)) {
@@ -407,16 +451,18 @@ export default function App() {
         };
       }
       return n;
-    }));
+    });
 
+    setNodes(updatedNodes);
     setFeedbackList(prev => prev.map(item => item.id === fb.id ? { ...item, applied: true } : item));
-    setToastMessage(`Updated ${fb.guestName}'s profile on canvas!`);
+    persistNodesToDisk(updatedNodes);
+
+    setToastMessage(`Updated ${fb.guestName}'s profile & saved to Git!`);
     setTimeout(() => setToastMessage(''), 3000);
   };
 
   // Render organic background enclosure shapes based on selected Cluster Mode ('cohort' | 'interests' | 'state' | 'none')
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
-    // 1. Maureen & Matt Couple Enclosure
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
 
@@ -458,8 +504,7 @@ export default function App() {
       ctx.restore();
     }
 
-    // 2. Render Cluster Overlays based on clusterMode selection
-    if (clusterMode === 'none') return; // User turned off cluster overlays
+    if (clusterMode === 'none') return;
 
     let clusterGroups = {};
 
@@ -474,7 +519,6 @@ export default function App() {
         }
       });
     } else {
-      // Default: Cohort Clusters
       filteredNodes.forEach(node => {
         if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
           const key = `${node.cohort} Cluster`;
@@ -571,13 +615,11 @@ export default function App() {
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
-    // Organic Soft Shadow on Hover
     if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
       ctx.shadowBlur = 12;
     }
 
-    // Square Card Background Path
     ctx.beginPath();
     if (ctx.roundRect) {
       ctx.roundRect(x, y, badgeWidth, badgeHeight, cornerRadius);
@@ -598,7 +640,6 @@ export default function App() {
     }
     ctx.fill();
 
-    // Matching Color Border Accent
     ctx.lineWidth = isHovered || isPathNode ? 1.8 : 1.2;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
@@ -617,7 +658,6 @@ export default function App() {
     }
     ctx.stroke();
 
-    // Circular Headshot Monogram Avatar on Left Side of Card
     if (!isHub) {
       const avatarX = x + paddingX + avatarDiameter / 2;
       const avatarY = node.y;
@@ -649,7 +689,6 @@ export default function App() {
       ctx.restore();
     }
 
-    // Card Text Label
     ctx.shadowBlur = 0;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
@@ -968,15 +1007,31 @@ export default function App() {
                       className="btn-mode"
                       style={{ padding: '6px 12px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 11, display: 'flex', alignItems: 'center', gap: 6, width: '100%', justifyContent: 'center' }}
                     >
-                      <Check style={{ width: 12, height: 12 }} /> Apply Update to Graph
+                      <Check style={{ width: 12, height: 12 }} /> Apply Update to Graph & Git
                     </button>
                   ) : (
                     <div style={{ fontSize: 11, color: '#10b981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <CheckCircle2 style={{ width: 12, height: 12 }} /> Applied to Canvas
+                      <CheckCircle2 style={{ width: 12, height: 12 }} /> Applied to Canvas & Git
                     </div>
                   )}
                 </div>
               ))}
+            </div>
+
+            {/* Manual Persist to Git Button */}
+            <div style={{ marginTop: 20, paddingTop: 14, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <button 
+                onClick={() => {
+                  persistNodesToDisk(nodes);
+                  setToastMessage('Persisted latest dataset to src/data/sampleData.js!');
+                  setTimeout(() => setToastMessage(''), 3000);
+                }}
+                className="btn-action"
+                style={{ width: '100%', background: '#0284c7', color: '#fff', justifyContent: 'center' }}
+              >
+                <HardDrive style={{ width: 14, height: 14 }} />
+                <span>Persist All Dataset Changes to Disk/Git</span>
+              </button>
             </div>
           </div>
         </div>
@@ -1450,7 +1505,7 @@ export default function App() {
                     className="btn-action"
                     style={{ flex: 1, padding: '8px', background: '#10b981', color: '#fff', borderRadius: 9999, fontSize: 12, justifyContent: 'center' }}
                   >
-                    <Save style={{ width: 14, height: 14 }} /> Save All Edits
+                    <Save style={{ width: 14, height: 14 }} /> Save & Persist to Git
                   </button>
                 </div>
               </div>

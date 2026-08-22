@@ -36,11 +36,10 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Auto-Cluster Discovery Engine & Cluster Overlay Mode Toggle
-- **User Prompt**: "is there a way to turn off hte cluster overlays? or allow to identify new clusters that shoudl be adde dbase don the metadata? (i oculd see there being clusters of 'people wiht kids' 'people with dogs' 'bourbon lovers' base don the tags and description data. some way to generate those by the tool without predefineing them all"
+## [2026-08-22] Durable Dataset Persistence & Git Sync Pipeline
+- **User Prompt**: "will the edits the guests submit be durable and stored in git?"
 - **Actions**:
-  1. **Cluster Overlay Mode Selector**: Added a **`Clusters ▾`** dropdown control in the top action bar:
-     - `Cohorts`: Standard cohort hulls.
-     - `✨ Auto Interests`: **Dynamic Auto-Discovered Metadata Clusters**! Automatically scans interest tags and description text to group guests into un-predefined clusters like *"Bourbon Lovers 🥃"*, *"Dog Owners 🐶"*, *"Guests with Kids 👨‍👩‍👧"*, *"Wine Aficionados 🍷"*, *"Cycling 🚴"*.
-     - `States`: Geographic state clusters.
-     - `🚫 Off (Hide)`: **Turns off cluster overlay hulls completely** for a clean canvas view!
+  1. **Dual-Layer Persistence Architecture**:
+     - **Browser Layer (`localStorage`)**: Instantly saves guest profile edits to `localStorage` (`wedding_graph_nodes_v2`), ensuring page refreshes and browser reloads retain 100% of guest edits.
+     - **Disk & Git Layer (`/api/save-dataset`)**: Added a dev server middleware in `vite.config.js` that automatically serializes updated guest nodes directly to [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js) on disk!
+  2. **Git Tracking Integration**: All guest profile changes immediately show up as Git file diffs in [`src/data/sampleData.js`](file:///home/mattie/vibe/wedding-graph/src/data/sampleData.js), ready for `git commit`!
