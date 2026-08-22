@@ -23,9 +23,9 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Perpetual Orbit Motion Keep-Alive Fix
-- **User Prompt**: "the orbit ony happens for a seone an hten stalls out"
+## [2026-08-22] Ultra-Tranquil Orbit Speed & Dynamic Damping Tuning
+- **User Prompt**: "orbit seems too fast even on he slowest setting and the slider doesnt seemt o change hte speed a lot"
 - **Actions**:
-  1. **Root Cause**: D3 force simulations naturally decay their energy parameter `alpha` from `1.0` down to `0.0`, causing custom forces to stall out once alpha hits zero.
-  2. **Constant Speed Step**: Removed `* alpha` multiplier from `createOrbitForce` so angular velocity remains constant.
-  3. **Perpetual Keep-Alive Ticker (`useEffect`)**: Added a 250ms keep-alive interval while `isOrbiting` is active, continuously reheating D3 simulation energy so the social galaxy rotates smoothly **24/7 without ever stalling out**!
+  1. **Root Cause Analysis**: Fixed issue where hardcoded velocity impulses (`0.12`) over-accelerated nodes regardless of the angular speed setting.
+  2. **Ultra-Tranquil Base Speed**: Reduced `baseSpeed` scaling factor down from `0.0028` to `0.00045` (6.2x slower, creating a serene, floating ambient galaxy drift).
+  3. **Dynamic Damping**: Scaled the velocity damping vector dynamically with `speedMultiplier` (`0.025 * Math.min(speedMultiplier, 1.8)`), making the speed slider **dramatically responsive across its entire range** (`0.1x` to `3.0x`).

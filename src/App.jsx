@@ -84,8 +84,10 @@ function createOrbitForce(speedMultiplier = 1.0) {
   let nodes = [];
   function force(alpha) {
     if (speedMultiplier <= 0) return;
-    // Constant angular speed step independent of decaying D3 alpha!
-    const baseSpeed = 0.0028 * speedMultiplier;
+    // Ultra-tranquil base speed scale (0.00045 rad/tick at 1.0x)
+    const baseSpeed = 0.00045 * speedMultiplier;
+    // Velocity impulse damping scales dynamically with slider!
+    const damping = 0.025 * Math.min(speedMultiplier, 1.8);
 
     // Find center of gravity (Maureen & Matt couple anchor)
     let cx = 0, cy = 0, count = 0;
@@ -114,8 +116,8 @@ function createOrbitForce(speedMultiplier = 1.0) {
         const targetX = cx + Math.cos(nextAngle) * dist;
         const targetY = cy + Math.sin(nextAngle) * dist;
 
-        node.vx += (targetX - node.x) * 0.12;
-        node.vy += (targetY - node.y) * 0.12;
+        node.vx += (targetX - node.x) * damping;
+        node.vy += (targetY - node.y) * damping;
       }
     });
   }
@@ -1861,7 +1863,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
             return isHoveredLink ? 3 : 1.5;
           }}
           linkDirectionalParticles={isOrbiting ? 2 : 0}
-          linkDirectionalParticleSpeed={0.0035 * orbitSpeed}
+          linkDirectionalParticleSpeed={0.0015 * orbitSpeed}
           linkDirectionalParticleWidth={2.5 * nodeScaleMultiplier}
           linkDirectionalParticleColor={() => isLightMode ? '#0284c7' : '#38bdf8'}
           backgroundColor="transparent"
