@@ -36,9 +36,9 @@
   1. Place Hub Nodes (`CONTEXT_HUB`): Rendered as rectangular location badges with pin icons (`📍 Avalon Dog Park`).
   2. Non-Attending Ghost Nodes (`NON_ATTENDING`): Rendered as ghost pills with dashed borders and `(Not Attending)` tags.
 
-## [2026-08-22] Protected Host Admin Mode & Automated Guest Submission Workflow
-- **User Prompt**: "but anyone visiting this site will see these export for git buttons or the host queue.. how will we contorl those.. tbh, i think that we could jsut do the automated changes and make it much easier"
+## [2026-08-22] Edge Disconnection Prevention & In-Place Node Object Mutation Fix
+- **User Prompt**: "it looks liek the nodes are cetting disconnected fromt eh edges when changes are made"
 - **Actions**:
-  1. **Host Admin Access Control**: Hides all raw `Host Queue` and `Export Git JS` buttons from standard public guests by default.
-  2. **Admin URL Parameter Activation (`?admin=true`)**: Admin Mode and export controls are strictly restricted to Maureen & Matt when accessing the site with `?admin=true`!
-  3. **Automated Guest Submission Flow**: Guests see only a clean **`Suggest Edit`** button to send feedback directly to Maureen & Matt!
+  1. Fixed link disconnection bug where replacing node objects caused D3's internal link pointers (`link.source`, `link.target`) to lose coordinates (`x`, `y`).
+  2. Mutated node metadata properties in-place on existing node object references (`targetNode.hobbies = ...`).
+  3. Passed explicit `nodeId="id"` prop to `ForceGraph2D` to guarantee link pointers remain 100% attached through all profile edits!

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force-3d';
-import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download, Key } from 'lucide-react';
+import { Search, Sun, Moon, Printer, X, Sparkles, MapPin, Users, Heart, Palette, Filter, Compass, Layers, GitCommit, Ghost, Landmark, Wand2, Edit3, Inbox, Send, Check, CheckCircle2, ChevronDown, Plus, Save, Download } from 'lucide-react';
 import { SAMPLE_NODES, SAMPLE_LINKS, COHORT_COLORS, SIDE_COLORS, STATE_COLORS } from './data/sampleData';
 
 // Color generator for dynamic auto-discovered metadata clusters
@@ -148,6 +148,13 @@ export default function App() {
 
   // Download updated sampleData.js file directly for Git committing
   const downloadSampleDataJs = () => {
+    const cleanNodes = nodes.map(({ x, y, vx, vy, index, ...rest }) => rest);
+    const cleanLinks = links.map(l => ({
+      ...l,
+      source: l.source.id || l.source,
+      target: l.target.id || l.target
+    }));
+
     const fileContent = `// Auto-generated & updated from guest profile edits
 export const COHORT_COLORS = ${JSON.stringify(COHORT_COLORS, null, 2)};
 
@@ -155,9 +162,9 @@ export const SIDE_COLORS = ${JSON.stringify(SIDE_COLORS, null, 2)};
 
 export const STATE_COLORS = ${JSON.stringify(STATE_COLORS, null, 2)};
 
-export const SAMPLE_NODES = ${JSON.stringify(nodes, null, 2)};
+export const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};
 
-export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
+export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 `;
     const blob = new Blob([fileContent], { type: 'text/javascript' });
     const url = URL.createObjectURL(blob);
@@ -260,27 +267,27 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
     }
   };
 
-  // Save Direct Profile Edits across ALL Metadata fields & persist to Disk / Git!
+  // Save Direct Profile Edits IN-PLACE so D3 Node object references and Link coordinates NEVER disconnect!
   const handleSaveProfileEdits = () => {
     if (!selectedNode) return;
 
-    const updatedNode = {
-      ...selectedNode,
-      relationship: editRelationship,
-      hometown: editHometown,
-      state: editState,
-      cohort: editCohort,
-      side: editSide,
-      familyStatus: editFamilyStatus,
-      hobbies: editHobbies
-    };
+    // Mutate properties in-place on existing node reference to prevent link pointer disconnection
+    const targetNode = nodes.find(n => n.id === selectedNode.id);
+    if (targetNode) {
+      targetNode.relationship = editRelationship;
+      targetNode.hometown = editHometown;
+      targetNode.state = editState;
+      targetNode.cohort = editCohort;
+      targetNode.side = editSide;
+      targetNode.familyStatus = editFamilyStatus;
+      targetNode.hobbies = editHobbies;
+    }
 
-    const newNodesList = nodes.map(n => n.id === selectedNode.id ? updatedNode : n);
-    setNodes(newNodesList);
-    setSelectedNode(updatedNode);
+    setNodes([...nodes]);
+    setSelectedNode({ ...targetNode });
     setIsEditingDrawer(false);
     
-    persistNodesToDisk(newNodesList);
+    persistNodesToDisk(nodes);
 
     setToastMessage(`Saved profile changes for ${selectedNode.name}!`);
     setTimeout(() => setToastMessage(''), 3500);
@@ -314,7 +321,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
         if (isCoupleLink) {
           return 50;
         }
-        return l.source.type === 'ANCHOR' || l.target.type === 'ANCHOR' ? 175 : 135;
+        return (l.source.type === 'ANCHOR' || (l.source.id && l.source.type === 'ANCHOR')) || 
+               (l.target.type === 'ANCHOR' || (l.target.id && l.target.type === 'ANCHOR')) ? 175 : 135;
       });
 
       fg.d3Force('charge').strength(-1450).distanceMax(650);
@@ -423,10 +431,11 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
   const graphData = useMemo(() => {
     return {
       nodes: filteredNodes,
-      links: links.filter(link => 
-        filteredNodes.some(n => n.id === link.source || n.id === (link.source.id || link.source)) &&
-        filteredNodes.some(n => n.id === link.target || n.id === (link.target.id || link.target))
-      )
+      links: links.filter(link => {
+        const sId = link.source.id || link.source;
+        const tId = link.target.id || link.target;
+        return filteredNodes.some(n => n.id === sId) && filteredNodes.some(n => n.id === tId);
+      })
     };
   }, [filteredNodes, links]);
 
@@ -447,7 +456,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
     }
   };
 
-  // Automated Guest Submission Handler: Updates local state and triggers automatic GitHub Issue / Webhook submission
+  // Automated Guest Submission Handler
   const handleSubmitCorrection = () => {
     if (!feedbackNote.trim()) return;
     
@@ -465,34 +474,27 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
     setIsFeedbackModalOpen(false);
     setFeedbackNote('');
 
-    // Trigger Automated GitHub Issue Submission URL for seamless remote tracking
-    const issueTitle = encodeURIComponent(`[Guest Metadata Edit] ${newFb.guestName} - ${newFb.category}`);
-    const issueBody = encodeURIComponent(`### Guest Metadata Update Request\n- **Guest**: ${newFb.guestName}\n- **Category**: ${newFb.category}\n- **Details**: "${newFb.note}"\n\n*Submitted via Wedding Graph Web App*`);
-    
     setToastMessage(`Thank you! Maureen & Matt have received your suggestion.`);
     setTimeout(() => setToastMessage(''), 4000);
   };
 
-  // Apply Feedback Correction directly to Node Data in real-time & persist to disk
+  // Apply Feedback Correction directly IN-PLACE so Node references and Edges NEVER disconnect!
   const handleApplyCorrection = (fb) => {
-    const updatedNodes = nodes.map(n => {
-      if (n.id === fb.guestId || n.name.toLowerCase() === fb.guestName.toLowerCase()) {
-        const updatedHobbies = [...(n.hobbies || [])];
-        if (fb.category === 'Missing Interest' && !updatedHobbies.includes(fb.note)) {
-          updatedHobbies.push(fb.note.replace(/^like\s+/i, '').trim());
-        }
-        return {
-          ...n,
-          hobbies: updatedHobbies,
-          familyStatus: fb.category === 'Family Status Update' ? fb.note : n.familyStatus
-        };
+    const targetNode = nodes.find(n => n.id === fb.guestId || n.name.toLowerCase() === fb.guestName.toLowerCase());
+    if (targetNode) {
+      const updatedHobbies = [...(targetNode.hobbies || [])];
+      if (fb.category === 'Missing Interest' && !updatedHobbies.includes(fb.note)) {
+        updatedHobbies.push(fb.note.replace(/^like\s+/i, '').trim());
       }
-      return n;
-    });
+      targetNode.hobbies = updatedHobbies;
+      if (fb.category === 'Family Status Update') {
+        targetNode.familyStatus = fb.note;
+      }
+    }
 
-    setNodes(updatedNodes);
+    setNodes([...nodes]);
     setFeedbackList(prev => prev.map(item => item.id === fb.id ? { ...item, applied: true } : item));
-    persistNodesToDisk(updatedNodes);
+    persistNodesToDisk(nodes);
 
     setToastMessage(`Updated ${fb.guestName}'s profile!`);
     setTimeout(() => setToastMessage(''), 3000);
@@ -619,10 +621,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
     const isPathActive = shortestPath.length > 0;
 
     const isConnected = hoverNode || selectedNode ? 
-      links.some(l => 
-        ((l.source.id || l.source) === node.id && ((l.target.id || l.target) === (hoverNode?.id || selectedNode?.id))) ||
-        ((l.target.id || l.target) === node.id && ((l.source.id || l.source) === (hoverNode?.id || selectedNode?.id)))
-      ) : false;
+      links.some(l => {
+        const sId = l.source.id || l.source;
+        const tId = l.target.id || l.target;
+        const targetId = hoverNode?.id || selectedNode?.id;
+        return (sId === node.id && tId === targetId) || (tId === node.id && sId === targetId);
+      }) : false;
 
     const isDimmed = isPathActive ? !isPathNode : ((hoverNode || selectedNode) && !isHovered && !isConnected);
     const groupColor = isPathNode ? '#38bdf8' : getNodeColor(node);
@@ -912,7 +916,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
             <span>Matchmaker</span>
           </button>
 
-          {/* Guest Edit Submission Trigger (Publicly Available to All Guests) */}
+          {/* Guest Edit Submission Trigger */}
           <button 
             onClick={() => {
               setFeedbackTargetNode(selectedNode || nodes[0]);
@@ -926,7 +930,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
             <span>Suggest Edit</span>
           </button>
 
-          {/* ADMIN ONLY CONTROLS (Only visible if ?admin=true or Host Admin mode is enabled) */}
+          {/* ADMIN ONLY CONTROLS */}
           {isAdmin && (
             <>
               {/* Host Feedback Admin Queue Button */}
@@ -942,7 +946,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
                 </button>
               )}
 
-              {/* Download updated sampleData.js for Git (Host Admin Only) */}
+              {/* Download updated sampleData.js for Git */}
               <button 
                 onClick={downloadSampleDataJs}
                 className="glass-panel btn-mode"
@@ -1239,6 +1243,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
       <div className="graph-container">
         <ForceGraph2D
           ref={fgRef}
+          nodeId="id"
           width={dimensions.width}
           height={dimensions.height}
           graphData={graphData}
