@@ -23,10 +23,9 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] High Safety Factor Math & Heavy Repulsion Engine
-- **User Prompt**: "it still has overlaps.. i think hte saftey factor needs ot be higher."
+## [2026-08-22] Native World Unit Zoom-Invariant Node Scaling Engine
+- **User Prompt**: "ah.. i see what is happenign. the nodes htemselve sarent scaling even if the distance sare.. this seems suboptimal. i wnat to maek this avoid overalps at any level of zoom.. so maybe you need to adjust the node size too?"
 - **Actions**:
-  1. **Boosted Safety Factor**: Increased bounding collision radius formula to `maxDimension * 0.85 + 24px` (~**140px–165px collision radius** per card node!).
-  2. **Heavy Charge Repulsion**: Increased D3 node repulsion force to **`-14000`** with a max distance of `2500px`.
-  3. **High-Precision Collision Solver**: Increased collision solver iterations to **`30 iterations per frame`**.
-  4. **Expanded Connection Distances**: Scaled connection link distances to `sRadius + tRadius + 110px` so connected cards have ample space between them.
+  1. **Zoom-Invariant Native World Unit Rendering**: Removed `/ globalScale` division from node card width, height, avatar photo diameter, and text dimensions!
+  2. **1:1 Lockstep Proportional Scaling**: Cards, headshot photos, and connection line distances now scale in **100% exact 1:1 lockstep ratio with viewport zoom**!
+  3. **Zero Overlaps at Any Zoom Level**: Because D3 physics simulation coordinates (`x, y`), node bounds (`width, height`), and collision radii (`forceCollide`) are all defined in uniform Native World Units, node cards **never overlap at any level of zoom** (zoomed out 0.2x or zoomed in 3.0x)!

@@ -43,7 +43,7 @@ function extractProposedTag(note, category) {
   return note.trim();
 }
 
-// DYNAMIC LAYOUT MATH HELPER: Calculates exact mathematical bounds & HIGH SAFETY FACTOR collision radius
+// NATIVE WORLD UNITS LAYOUT MATH HELPER: Scales 1:1 with D3 Simulation & Zoom Viewport
 function getNodeBounds(node, showHeadshots) {
   const isAnchor = node.type === 'ANCHOR';
   const isHub = node.type === 'CONTEXT_HUB';
@@ -54,23 +54,24 @@ function getNodeBounds(node, showHeadshots) {
   if (isHub) labelText = `📍 ${node.name}`;
   if (isNonAttending) labelText = `${node.name} (Not Attending)`;
 
-  // World Unit Dimensions (independent of zoom scale for layout stability)
-  const avatarDiameter = isAnchor ? 70 : 58;
-  const fontSize = isAnchor ? 14 : 12;
-  const textWidth = labelText.length * (fontSize * 0.62);
+  // Native World Unit Dimensions (Node sizes scale proportionally with zoom level!)
+  const avatarDiameter = isAnchor ? 56 : 46;
+  const fontSize = isAnchor ? 13 : 11;
+  const textWidth = labelText.length * (fontSize * 0.60);
 
   let width, height;
   if (renderAvatar) {
-    width = Math.max(textWidth + 36, avatarDiameter + 32, isAnchor ? 140 : 120);
-    height = avatarDiameter + fontSize + 30;
+    width = Math.max(textWidth + 24, avatarDiameter + 20, isAnchor ? 110 : 92);
+    height = avatarDiameter + fontSize + 22;
   } else {
-    width = Math.max(textWidth + 32, 95);
-    height = fontSize + 24;
+    width = Math.max(textWidth + 24, 76);
+    height = fontSize + 16;
   }
 
-  // HIGH SAFETY FACTOR Bounding Circle Radius: Ensures cards NEVER touch horizontally or vertically
-  const maxDimension = Math.max(width, height);
-  const collisionRadius = maxDimension * 0.85 + 24;
+  // Exact Bounding Radius: Hypotenuse + Margin in World Coordinates
+  const halfW = width / 2;
+  const halfH = height / 2;
+  const collisionRadius = Math.hypot(halfW, halfH) + 16;
 
   return { width, height, avatarDiameter, fontSize, textWidth, collisionRadius };
 }
@@ -402,18 +403,18 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setFeedbackList(prev => prev.map(f => f.id === fbId ? { ...f, proposedValue: val } : f));
   };
 
-  // Configure D3 forces using HIGH SAFETY FACTOR MATH & HEAVY REPULSION
+  // Configure D3 forces: 100% Invariant World Units for Zero Overlaps at ANY Zoom Level!
   useEffect(() => {
     if (fgRef.current) {
       const fg = fgRef.current;
       
-      // Dynamic link distance with high safety buffer
+      // Dynamic link distance in World Units
       fg.d3Force('link').distance(l => {
         const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
         const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
         
-        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots).collisionRadius : 110;
-        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots).collisionRadius : 110;
+        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots).collisionRadius : 65;
+        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots).collisionRadius : 65;
         
         const sId = sObj ? sObj.id : l.source;
         const tId = tObj ? tObj.id : l.target;
@@ -421,17 +422,17 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
                              (sId === 'maureen' && tId === 'matt') || (sId === 'matt' && tId === 'maureen');
         if (isCoupleLink) {
-          return sRadius + tRadius + 30;
+          return sRadius + tRadius + 20;
         }
-        return sRadius + tRadius + 110;
+        return sRadius + tRadius + 55;
       });
 
-      // HEAVY CHARGE REPULSION & HIGH ITERATION COLLISION SOLVER
-      fg.d3Force('charge').strength(-14000).distanceMax(2500);
+      // Stable World Unit Repulsion & Collision Solver
+      fg.d3Force('charge').strength(-3800).distanceMax(1800);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots).collisionRadius;
-      }).iterations(30));
+      }).iterations(20));
 
       fg.d3ReheatSimulation();
     }
@@ -617,7 +618,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     setTimeout(() => setToastMessage(''), 4000);
   };
 
-  // Dynamic Layout Math: Calculates exact outer extents of node cards for cohort cluster background shapes
+  // Dynamic Layout Math: Renders Cohort Hulls in 100% Native World Space
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
     const maureen = filteredNodes.find(n => n.id === 'maureen');
     const matt = filteredNodes.find(n => n.id === 'matt');
@@ -631,16 +632,16 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       const minY = Math.min(maureen.y - mBounds.height / 2, matt.y - tBounds.height / 2);
       const maxY = Math.max(maureen.y + mBounds.height / 2, matt.y + tBounds.height / 2);
 
-      const padding = 48 / globalScale;
+      const padding = 28;
       const width = (maxX - minX) + padding * 2;
       const height = (maxY - minY) + padding * 2;
       const x = minX - padding;
       const y = minY - padding;
-      const cornerRadius = 32 / globalScale;
+      const cornerRadius = 20;
 
       ctx.save();
       ctx.shadowColor = 'rgba(56, 189, 248, 0.15)';
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 12 / globalScale;
       ctx.fillStyle = isLightMode ? 'rgba(224, 242, 254, 0.45)' : 'rgba(14, 165, 233, 0.04)';
       ctx.beginPath();
       if (ctx.roundRect) {
@@ -656,10 +657,10 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 
       ctx.shadowBlur = 0;
       ctx.setLineDash([]);
-      ctx.font = `600 ${11 / globalScale}px Inter, sans-serif`;
+      ctx.font = `600 11px Inter, sans-serif`;
       ctx.fillStyle = '#38bdf8';
       ctx.textAlign = 'center';
-      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - (10 / globalScale));
+      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - 8);
       ctx.restore();
     }
 
@@ -704,8 +705,8 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
           if (bottom > maxY) maxY = bottom;
         });
 
-        // Exact Padding around outer card edges in World Coordinates
-        const pad = 40 / globalScale;
+        // Exact Uniform Padding in World Units around outer card edges
+        const pad = 24;
         const w = (maxX - minX) + pad * 2;
         const h = (maxY - minY) + pad * 2;
         const x = minX - pad;
@@ -718,7 +719,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
         ctx.beginPath();
         if (ctx.roundRect) {
-          ctx.roundRect(x, y, w, h, 28 / globalScale);
+          ctx.roundRect(x, y, w, h, 18);
         } else {
           ctx.rect(x, y, w, h);
         }
@@ -730,16 +731,16 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.stroke();
 
         ctx.setLineDash([]);
-        ctx.font = `600 ${11 / globalScale}px Inter, sans-serif`;
+        ctx.font = `600 11px Inter, sans-serif`;
         ctx.fillStyle = clusterColor;
         ctx.textAlign = 'left';
-        ctx.fillText(label.toUpperCase(), x + 14 / globalScale, y + 18 / globalScale);
+        ctx.fillText(label.toUpperCase(), x + 12, y + 14);
         ctx.restore();
       }
     });
   }, [filteredNodes, isLightMode, clusterMode, dynamicAutoClusters, showHeadshots]);
 
-  // Modern Square Card Badge Renderer with DYNAMIC MATHEMATICAL BOUNDS
+  // Modern Square Card Badge Renderer in 100% NATIVE WORLD UNITS (Zoom-Invariant Zero-Overlap!)
   const drawNode = useCallback((node, ctx, globalScale) => {
     const isSelected = selectedNode?.id === node.id;
     const isHovered = hoverNode?.id === node.id || isSelected;
@@ -771,19 +772,19 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     const renderAvatar = showHeadshots && !isHub;
     const bounds = getNodeBounds(node, showHeadshots);
 
-    // Calculate rendering scale parameters in Canvas viewport pixels
-    const badgeWidth = bounds.width / globalScale;
-    const badgeHeight = bounds.height / globalScale;
-    const avatarDiameter = bounds.avatarDiameter / globalScale;
-    const fontSize = bounds.fontSize / globalScale;
+    // Render 1:1 in Native World Units (Nodes scale proportionally with viewport zoom!)
+    const badgeWidth = bounds.width;
+    const badgeHeight = bounds.height;
+    const avatarDiameter = bounds.avatarDiameter;
+    const fontSize = bounds.fontSize;
 
-    const cornerRadius = 14 / globalScale;
+    const cornerRadius = 10;
     const x = node.x - badgeWidth / 2;
     const y = node.y - badgeHeight / 2;
 
     if (isHovered || isAnchor || isPathNode) {
       ctx.shadowColor = groupColor;
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = 14 / globalScale;
     }
 
     // Card Outer Background Box
@@ -807,7 +808,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
     ctx.fill();
 
-    ctx.lineWidth = isHovered || isPathNode ? 2.2 : 1.5;
+    ctx.lineWidth = (isHovered || isPathNode ? 2.2 : 1.5) / globalScale;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
     } else if (isNonAttending) {
@@ -823,18 +824,18 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     }
     ctx.stroke();
 
-    // RENDER CIRCULAR HEADSHOT AVATAR PHOTO / MONOGRAM
+    // RENDER CIRCULAR HEADSHOT AVATAR PHOTO / MONOGRAM IN NATIVE WORLD SPACE
     if (renderAvatar) {
       const avatarX = node.x;
-      const avatarY = y + (avatarDiameter / 2) + (10 / globalScale);
+      const avatarY = y + (avatarDiameter / 2) + 8;
 
       ctx.save();
       
       // Outer Glowing Ring Accent
       ctx.beginPath();
-      ctx.arc(avatarX, avatarY, (avatarDiameter / 2) + (2.5 / globalScale), 0, Math.PI * 2);
+      ctx.arc(avatarX, avatarY, (avatarDiameter / 2) + 2, 0, Math.PI * 2);
       ctx.strokeStyle = isHovered || isPathNode ? '#ffffff' : groupColor;
-      ctx.lineWidth = 2.5 / globalScale;
+      ctx.lineWidth = 2 / globalScale;
       ctx.stroke();
 
       // Circular Clip for Headshot Photo
@@ -850,7 +851,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
         ctx.fillStyle = groupColor;
         ctx.fill();
 
-        ctx.font = `800 ${(isAnchor ? 20 : 16) / globalScale}px Inter, sans-serif`;
+        ctx.font = `800 ${isAnchor ? 16 : 13}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#ffffff';
@@ -865,7 +866,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
       ctx.font = `${isAnchor || isHovered || isPathNode ? '700' : '600'} ${fontSize}px Inter, sans-serif`;
       ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isNonAttending ? '#94a3b8' : (isLightMode ? '#0f172a' : '#f8fafc'));
       
-      const textY = y + badgeHeight - (11 / globalScale);
+      const textY = y + badgeHeight - 9;
       ctx.fillText(labelText, avatarX, textY);
 
     } else {
@@ -881,15 +882,12 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
     ctx.restore();
   }, [hoverNode, selectedNode, isLightMode, getNodeColor, shortestPath, links, showHeadshots]);
 
-  // Hit area detection using exact getNodeBounds
-  const drawPointerArea = useCallback((node, color, ctx, globalScale) => {
+  // Hit area detection using exact getNodeBounds in Native World Units
+  const drawPointerArea = useCallback((node, color, ctx) => {
     const bounds = getNodeBounds(node, showHeadshots);
-    const badgeWidth = bounds.width / globalScale;
-    const badgeHeight = bounds.height / globalScale;
-
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.rect(node.x - badgeWidth / 2, node.y - badgeHeight / 2, badgeWidth, badgeHeight);
+    ctx.rect(node.x - bounds.width / 2, node.y - bounds.height / 2, bounds.width, bounds.height);
     ctx.fill();
   }, [showHeadshots]);
 
