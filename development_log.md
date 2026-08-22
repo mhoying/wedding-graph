@@ -9,13 +9,12 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Full-Screen Container Layout Fix (`.app-container` / `.app-root`)
-- **User Prompt**: "nope. i opend int in chromium which iev not used at all today and it is still blank; the source code is : https://mhoying.github.io/wedding-graph/"
+## [2026-08-22] GitHub Pages Base Path Fix (`/wedding-graph/`)
+- **User Prompt**: "still blank wiht eht following source code: <!doctype html>... <script src="./assets/index-BraZlQLD.js">..."
 - **Actions**:
   1. **Root Cause Analysis**:
-     - The outer wrapper `div` rendered with `className="app-root"`, but `index.css` only defined `.app-container` with `width: 100vw; height: 100vh; position: relative;`.
-     - Because `.app-root` lacked height styling, the main layout container collapsed to `height: 0px`, causing the HTML5 canvas and top navigation bar to render invisible at 0 height on clean browser viewports.
-  2. **Full Layout Restoration**:
-     - Added `.app-container, .app-root` selectors to `src/index.css` (`width: 100vw; height: 100vh; position: relative; display: flex; overflow: hidden;`).
-     - Aligned class names across `App.jsx` and `index.css`.
+     - The previous build used `base: './'`, causing `<script src="./assets/index-BraZlQLD.js">` to resolve relatively to `https://mhoying.github.io/assets/...` (which returned 404 Not Found on GitHub Pages), resulting in JavaScript failing to load and the screen remaining blank.
+  2. **Explicit Base Path Configuration**:
+     - Updated `vite.config.js` to `base: '/wedding-graph/'`.
+     - Generated canonical script tags: `<script src="/wedding-graph/assets/index-DX94D0jC.js">`.
   3. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
