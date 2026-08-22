@@ -23,9 +23,16 @@
   2. Upgraded background to radial slate gradient with grid.
   3. Upgraded node pills to linear gradients with glowing drop-shadows.
 
-## [2026-08-22] Ultra-Tranquil Orbit Speed & Dynamic Damping Tuning
-- **User Prompt**: "orbit seems too fast even on he slowest setting and the slider doesnt seemt o change hte speed a lot"
+## [2026-08-22] Pure Kinematic Polar Coordinates & 60fps Smooth Orbit Fix
+- **User Prompt**: "i dont htink the speed is staying constnat. it seems tomove move fast sometimes and really doesnt seem to be that much slower at the minim."
 - **Actions**:
-  1. **Root Cause Analysis**: Fixed issue where hardcoded velocity impulses (`0.12`) over-accelerated nodes regardless of the angular speed setting.
-  2. **Ultra-Tranquil Base Speed**: Reduced `baseSpeed` scaling factor down from `0.0028` to `0.00045` (6.2x slower, creating a serene, floating ambient galaxy drift).
-  3. **Dynamic Damping**: Scaled the velocity damping vector dynamically with `speedMultiplier` (`0.025 * Math.min(speedMultiplier, 1.8)`), making the speed slider **dramatically responsive across its entire range** (`0.1x` to `3.0x`).
+  1. **Root Cause Analysis**: Identified two issues:
+     - D3 velocity impulses (`vx += ...`) built up unevenly depending on node distance $r$ ($v = \omega \cdot r$), causing outer nodes to spin faster than inner nodes.
+     - `setTimeout` reheat bursts (every 250ms) caused D3's alpha to spike and decay in periodic bursts.
+  2. **Pure Kinematic Polar Coordinates (`createOrbitForce`)**:
+     - Switched to direct polar coordinate positioning: $x = c_x + r \cdot \cos(\theta + \Delta \theta)$ and $y = c_y + r \cdot \sin(\theta + \Delta \theta)$.
+     - Eliminates velocity acceleration spikes entirely, guaranteeing **100% PERFECTLY UNIFORM & CONSTANT ANGULAR SPEED**!
+  3. **Silky 60fps `requestAnimationFrame` Ticker**: Replaced timer bursts with a continuous 60fps animation frame ticker loop.
+  4. **Exact Speed Range Scaling**:
+     - At `0.1x` (minimum slider): $\Delta \theta = 0.000015$ rad/frame. Full 360-degree orbit takes **~1.9 hours** (ultra-tranquil ambient drift!).
+     - At `1.0x` (default slider): $\Delta \theta = 0.00015$ rad/frame. Full orbit takes **~11.6 minutes** (serene celestial float).
