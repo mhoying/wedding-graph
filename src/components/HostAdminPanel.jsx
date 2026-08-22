@@ -8,7 +8,8 @@ export default function HostAdminPanel({
   handleExportGitJs,
   feedbackQueueCount,
   setIsFeedbackQueueOpen,
-  handleCopyQrLink
+  handleCopyQrLink,
+  setIsBulkImportOpen
 }) {
   if (!isAdmin) return null;
 
@@ -46,6 +47,16 @@ export default function HostAdminPanel({
 
       {/* Admin Action Buttons */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {/* 0. Import 2-Table CSV */}
+        <button 
+          onClick={() => setIsBulkImportOpen(true)}
+          className="btn-mode"
+          style={{ padding: '10px 12px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg, rgba(2, 132, 199, 0.3) 0%, rgba(13, 148, 136, 0.3) 100%)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.4)', fontWeight: 800, cursor: 'pointer' }}
+        >
+          <FileSpreadsheet style={{ width: 16, height: 16, color: '#38bdf8' }} />
+          <span>Import 2-Table CSV Data</span>
+        </button>
+
         {/* 1. Export CSV */}
         <button 
           onClick={handleExportCsv}

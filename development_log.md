@@ -9,19 +9,15 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Dedicated Host Admin Control Panel
-- **User Prompt**: "in the admin view, put the admin specific contorls in a separate pannel"
+## [2026-08-22] Phase 4: 2-Table Data Population & Tuple Importer
+- **User Prompt**: "how are edges represented int he files... shouldnt there be a dedictad table of the tuples that is written by me to tell you tehose replatioshpis? ... so, after i start changing htese templates and uploading htem, i can do that with out antigravity and the website will just stay updated?"
 - **Actions**:
-  1. **Dedicated Host Admin Panel Architecture**:
-     - Extracted all administrative controls out of the top header bar and built a dedicated floating glass panel (`<HostAdminPanel />`).
-     - Rendered conditionally when `isAdmin` is true (`top: 80px`, `right: 20px`).
-  2. **Host Administrative Suite Features**:
-     - **Export Guest List CSV**: Download guest list for Excel / Google Sheets.
-     - **Export Git sampleData.js**: Download updated dataset for local codebase persistence.
-     - **Moderation Queue**: Badge indicator and viewer for guest profile edit suggestions (`Moderation Queue (X)`).
-     - **Copy Host QR Link**: Copy host invitation deep link to clipboard.
-     - **Lock Host Mode**: 1-click lock button to exit administrative mode.
-  3. **Empirical Headless Chromium Verification**:
-     - `HOST ADMIN PANEL TITLE: Host Admin Suite`
-     - Verified all 5 administrative control tools rendered inside the separate panel with 0 errors.
-  4. **Redeployed**: Force-pushed fresh build to `gh-pages` branch on GitHub (`https://mhoying.github.io/wedding-graph/`).
+  1. **Relational 2-Table Tuple Importer Architecture**:
+     - Built `BulkCsvImportModal.jsx` supporting dual CSV table uploads (`guests.csv` for nodes and `relationships.csv` for explicit edge tuples).
+     - Flexible name/id slug matching engine allowing full guest names (e.g. `Matt Smith`, `Maureen`) in the `source` and `target` columns.
+  2. **Sample Templates**:
+     - Created `public/guests_template.csv` and `public/relationships_template.csv` with standard headers and sample rows.
+  3. **Data Persistence Strategy**:
+     - Instant in-browser persistence via `localStorage` on import.
+     - 1-click **Export Git sampleData.js** button to download updated codebase dataset for permanent GitHub Pages deployment.
+  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

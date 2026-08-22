@@ -14,6 +14,7 @@ import CocktailMatchmakerModal from './components/CocktailMatchmakerModal';
 import SuggestEditModal from './components/SuggestEditModal';
 import ForceCanvas from './components/ForceCanvas';
 import HostAdminPanel from './components/HostAdminPanel';
+import BulkCsvImportModal from './components/BulkCsvImportModal';
 
 export default function App() {
   const fgRef = useRef();
@@ -79,7 +80,19 @@ export default function App() {
   const [feedbackCategory, setFeedbackCategory] = useState('Missing Interest');
   const [feedbackNote, setFeedbackNote] = useState('');
   const [isFeedbackQueueOpen, setIsFeedbackQueueOpen] = useState(false);
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
   const [copyToast, setCopyToast] = useState('');
+
+  const handleApplyDataset = useCallback((newNodes, newLinks) => {
+    setNodes(newNodes);
+    setLinks(newLinks);
+    try {
+      localStorage.setItem('wedding_graph_nodes_v4', JSON.stringify(newNodes));
+      localStorage.setItem('wedding_graph_links_v4', JSON.stringify(newLinks));
+    } catch (e) {
+      console.warn('Could not save to localStorage:', e);
+    }
+  }, []);
 
   // Path Finder State
   const [isPathMode, setIsPathMode] = useState(false);
@@ -627,6 +640,15 @@ export default function App() {
         feedbackQueueCount={feedbackList.filter(f => f.status === 'PENDING').length}
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
         handleCopyQrLink={handleCopyQrLink}
+        setIsBulkImportOpen={setIsBulkImportOpen}
+      />
+
+      {/* Bulk 2-Table CSV Data Importer Modal */}
+      <BulkCsvImportModal 
+        isOpen={isBulkImportOpen}
+        onClose={() => setIsBulkImportOpen(false)}
+        onApplyDataset={handleApplyDataset}
+        handleExportGitJs={handleExportGitJs}
       />
 
       {/* Path Finder Floating Interactive Toolbar (Positioned cleanly below top header at top: 80px) */}
