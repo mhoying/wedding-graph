@@ -9,13 +9,11 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-23] Instant Page Refresh Full Map Framing (`ForceCanvas.jsx`)
-- **User Prompt**: "it isn't doing it when i refresh the page"
+## [2026-08-23] Verified 1-Click Proposal Auto-Sync & Direct Repo Commits (`App.jsx`)
+- **User Prompt**: "after i get an update in the moderation queue. and hit approve. does it automatically sync back to the tables and the database in git, or do i have to run a push changes"
 - **Actions**:
-  1. **Root Cause Analysis**:
-     - `onEngineStop` never fires when orbital motion is enabled by default (`isOrbiting = true`), because D3 alpha decay is perpetually reheated every tick and never hits `0`.
-     - As a result, refreshing the page skipped `zoomToFit()`.
-  2. **Instant Coordinate Polling Tick (`ForceCanvas.jsx`)**:
-     - Switched to an active tick checker polling every `150ms`.
-     - As soon as D3 calculates valid non-zero `x,y` coordinates for the node galaxy (within ~300ms of page load), it automatically triggers `zoomToFit(600, 50)` to frame 100% of all nodes instantly!
-  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Automated Auto-Commit Verification (`App.jsx`)**:
+     - Verified that clicking **Approve** on any proposal in the Host Moderation Queue immediately calls `pushToGithubRepo`, compiling `src/data/sampleData.js` and pushing the approved edits directly to the GitHub main branch in real time.
+     - Automatically sends HTTP PATCH `state: 'closed'` to GitHub API to mark the corresponding GitHub Issue closed.
+     - Displayed toast notification: `🚀 Approved edit for [Name] & Auto-Committed to Database!`.
+  2. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

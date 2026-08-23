@@ -1109,16 +1109,25 @@ export default function App() {
             const updated = prev.map(node => {
               if (node.id === proposal.targetId || node.name === proposal.targetName) {
                 const newNode = { ...node };
-                const hobbyText = proposal.proposedHobbies || proposal.note || '';
-                if (hobbyText) {
-                  const newHobbies = hobbyText.split(/[,;\n]/).map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown):?/i, '').trim()).filter(Boolean);
-                  newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
+                if (proposal.proposedName) {
+                  newNode.name = proposal.proposedName;
                 }
                 if (proposal.proposedLocation) {
                   newNode.currentlyLivesIn = proposal.proposedLocation;
                 }
                 if (proposal.proposedCohort) {
                   newNode.cohort = proposal.proposedCohort;
+                }
+                if (proposal.proposedSide) {
+                  newNode.side = proposal.proposedSide;
+                }
+                if (proposal.proposedRelationship) {
+                  newNode.relationship = proposal.proposedRelationship;
+                }
+                const hobbyText = proposal.proposedHobbies || proposal.note || '';
+                if (hobbyText) {
+                  const newHobbies = hobbyText.split(/[,;\n]/).map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship):?/i, '').trim()).filter(Boolean);
+                  newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
                 }
                 return newNode;
               }
