@@ -17,6 +17,7 @@ import ForceCanvas from './components/ForceCanvas';
 import HostAdminPanel from './components/HostAdminPanel';
 import BulkCsvImportModal from './components/BulkCsvImportModal';
 import AddConnectionModal from './components/AddConnectionModal';
+import HostReviewQueueModal from './components/HostReviewQueueModal';
 
 export default function App() {
   const fgRef = useRef();
@@ -978,6 +979,52 @@ export function getInitials(name) {
         matchmakerResults={matchmakerResults}
         flyToNode={flyToNode}
         setSelectedNode={setSelectedNode}
+      />
+
+      {/* Host Review Queue / Moderation Modal */}
+      <HostReviewQueueModal 
+        isOpen={isFeedbackQueueOpen}
+        onClose={() => setIsFeedbackQueueOpen(false)}
+        proposals={feedbackList}
+        onApprove={(proposal) => {
+          setNodes(prev => {
+            const updated = prev.map(node => {
+              if (node.id === proposal.targetId || node.name === proposal.targetName) {
+                const newNode = { ...node };
+                if (proposal.proposedHobbies) {
+                  const newHobbies = proposal.proposedHobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean);
+                  newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
+                }
+                if (proposal.proposedLocation) {
+                  newNode.currentlyLivesIn = proposal.proposedLocation;
+                }
+                if (proposal.proposedCohort) {
+                  newNode.cohort = proposal.proposedCohort;
+                }
+                return newNode;
+              }
+              return node;
+            });
+
+            try {
+              localStorage.setItem('wedding_graph_nodes_master', JSON.stringify(updated));
+            } catch (e) {}
+
+            const jsContent = generateSampleDataJsContent(updated, links);
+            pushToGithubRepo(jsContent, `Approve proposal for ${proposal.targetName}`, '', 'src/data/sampleData.js');
+
+            return updated;
+          });
+
+          setFeedbackList(prev => prev.filter(p => (p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName));
+          setCopyToast(`🚀 Approved edit for ${proposal.targetName} & Auto-Committed to Database!`);
+          setTimeout(() => setCopyToast(''), 4500);
+        }}
+        onReject={(proposal) => {
+          setFeedbackList(prev => prev.filter(p => (p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName));
+          setCopyToast(`Rejected edit proposal for ${proposal.targetName}`);
+          setTimeout(() => setCopyToast(''), 3000);
+        }}
       />
 
       {/* Suggest Edit Modal */}
