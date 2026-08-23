@@ -78,6 +78,11 @@ export default function GuestProfileDrawer({
                   <span>Not Attending Wedding (Connecting Bridge Person)</span>
                 </div>
               )}
+              {(selectedNode.isAttending === false || selectedNode.rsvpStatus === 'Declined' || selectedNode.attendanceStatus === 'Not Attending') && (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'rgba(239, 68, 68, 0.18)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.4)', padding: '4px 10px', borderRadius: 9999, fontSize: 11, fontWeight: 800, marginBottom: 8 }}>
+                  <span>🚫 Not Attending (Declined)</span>
+                </div>
+              )}
               {selectedNode.type === 'CONTEXT_HUB' && (
                 <div className="drawer-info-row" style={{ color: '#38bdf8', fontWeight: 600 }}>
                   <Landmark style={{ width: 16, height: 16, color: '#38bdf8' }} />

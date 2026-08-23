@@ -373,14 +373,14 @@ export default function ForceCanvas({
     const groupColor = isPathNode ? '#38bdf8' : getNodeColor(node);
     const isAnchor = node.type === 'ANCHOR';
     const isHub = node.type === 'CONTEXT_HUB';
-    const isNonAttending = node.type === 'NON_ATTENDING';
+    const isNonAttending = node.type === 'NON_ATTENDING' || node.isAttending === false || node.rsvpStatus === 'Declined' || node.attendanceStatus === 'Not Attending';
 
     let labelText = node.name || 'Guest';
     if (isHub) labelText = `📍 ${node.name}`;
-    if (isNonAttending) labelText = `${node.name} (Not Attending)`;
+    if (isNonAttending) labelText = `🚫 ${node.name} (Not Attending)`;
 
     ctx.save();
-    ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.75 : 1.0);
+    ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.65 : 1.0);
 
     const renderAvatar = showHeadshots && !isHub;
     const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
@@ -404,7 +404,7 @@ export default function ForceCanvas({
     if (isHovered || isPathNode) {
       ctx.fillStyle = groupColor;
     } else if (isNonAttending) {
-      ctx.fillStyle = isLightMode ? hexToRgba(groupColor, 0.15) : hexToRgba(groupColor, 0.22);
+      ctx.fillStyle = isLightMode ? 'rgba(239, 68, 68, 0.12)' : 'rgba(239, 68, 68, 0.25)';
     } else if (isHub) {
       ctx.fillStyle = isLightMode ? '#e2e8f0' : 'rgba(51, 65, 85, 0.85)';
     } else if (isLightMode) {
@@ -414,17 +414,17 @@ export default function ForceCanvas({
     }
     ctx.fill();
 
-    ctx.lineWidth = (isHovered || isPathNode ? 2.5 : (isNonAttending ? 2.2 : 1.5)) / globalScale;
+    ctx.lineWidth = (isHovered || isPathNode ? 2.8 : (isNonAttending ? 2.5 : 1.5)) / globalScale;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
     } else if (isNonAttending) {
-      ctx.strokeStyle = groupColor;
+      ctx.strokeStyle = '#f87171'; // Soft Crimson Red Dashed Border
     } else {
       ctx.strokeStyle = hexToRgba(groupColor, 0.7);
     }
     
     if (isNonAttending) {
-      ctx.setLineDash([6 / globalScale, 4 / globalScale]);
+      ctx.setLineDash([8 / globalScale, 5 / globalScale]);
     } else {
       ctx.setLineDash([]);
     }
