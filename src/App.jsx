@@ -1005,6 +1005,9 @@ export default function App() {
             setSelectedNode={setSelectedNode}
             isAdmin={isAdmin}
             handleCopyQrLink={handleCopyQrLink}
+            selectedClusterFocus={selectedClusterFocus}
+            setSelectedClusterFocus={setSelectedClusterFocus}
+            availableClusters={availableClusters}
           />
         </>
       )}

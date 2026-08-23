@@ -26,7 +26,10 @@ export default function MobileControlsSheet({
   setIsFeedbackModalOpen,
   setSelectedNode,
   isAdmin,
-  handleCopyQrLink
+  handleCopyQrLink,
+  selectedClusterFocus = '',
+  setSelectedClusterFocus = () => {},
+  availableClusters = []
 }) {
   if (!isOpen) return null;
 
@@ -158,17 +161,44 @@ export default function MobileControlsSheet({
           </span>
           <select 
             value={clusterMode}
-            onChange={(e) => setClusterMode(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setClusterMode(val);
+              if (val === 'locations' || val === 'current_location' || val === 'original_location') {
+                setColorMode(val);
+              } else if (val === 'cohort') {
+                setColorMode('cohort');
+              }
+            }}
             style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}
           >
             <option value="cohort">Cohorts</option>
-            <option value="locations">Locations</option>
+            <option value="locations">Locations (Combined)</option>
             <option value="current_location">Current Location</option>
             <option value="original_location">Original Location</option>
             <option value="interests">Interests</option>
             <option value="none">Off (Hide)</option>
           </select>
         </div>
+
+        {/* Focus Specific Cluster Dropdown */}
+        {clusterMode !== 'none' && availableClusters.length > 0 && (
+          <div className="mobile-control-row" style={{ marginTop: 8 }}>
+            <span className="mobile-control-label" style={{ fontSize: 11, fontWeight: 700, color: '#34d399', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+              <Compass style={{ width: 13, height: 13 }} /> Focus Specific Cluster:
+            </span>
+            <select 
+              value={selectedClusterFocus}
+              onChange={(e) => setSelectedClusterFocus(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', outline: 'none', fontSize: 12, fontWeight: 700 }}
+            >
+              <option value="">All Clusters (Show All)</option>
+              {availableClusters.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* Color Mode Selector */}
         <div className="mobile-control-row" style={{ marginTop: 8 }}>
