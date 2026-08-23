@@ -200,11 +200,24 @@ export default function App() {
     }
   };
 
-  // Node Color Resolver
+  // Node Color Resolver (Generates vibrant dynamic colors for ALL custom cohorts!)
   const getNodeColor = useCallback((node) => {
     if (colorMode === 'side') return SIDE_COLORS[node.side] || SIDE_COLORS["Joint"];
     if (colorMode === 'state') return STATE_COLORS[node.state] || STATE_COLORS.Default;
-    return COHORT_COLORS[node.cohort] || COHORT_COLORS.Default;
+
+    if (COHORT_COLORS[node.cohort]) return COHORT_COLORS[node.cohort];
+
+    // Dynamic hash palette for custom family/friend cohorts
+    if (node.cohort) {
+      let hash = 0;
+      for (let i = 0; i < node.cohort.length; i++) {
+        hash = node.cohort.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const paletteIndex = Math.abs(hash) % DYNAMIC_CLUSTER_COLORS.length;
+      return DYNAMIC_CLUSTER_COLORS[paletteIndex];
+    }
+
+    return COHORT_COLORS.Default;
   }, [colorMode]);
 
   // Filtered Nodes & Clean Links
