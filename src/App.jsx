@@ -7,7 +7,7 @@ import Papa from 'papaparse';
 
 import { SAMPLE_NODES, SAMPLE_LINKS, SIDE_COLORS, STATE_COLORS, COHORT_COLORS, DYNAMIC_CLUSTER_COLORS } from './data/sampleData';
 import { isSecretUrlAdmin, verifyPasscode, sanitizeInput } from './utils/security';
-import { pushToGithubRepo } from './utils/githubSync';
+import { pushToGithubRepo, submitGuestProposalToGithub, fetchGuestProposalsFromGithub, generateSampleDataJsContent } from './utils/githubSync';
 import TopHeaderNav from './components/TopHeaderNav';
 import MobileControlsSheet from './components/MobileControlsSheet';
 import GuestProfileDrawer from './components/GuestProfileDrawer';
@@ -62,8 +62,20 @@ export default function App() {
     } catch (e) {
       console.warn('Failed to parse feedback list:', e);
     }
-    return [];
   });
+
+  // Auto-fetch pending guest proposals from GitHub Issues API into Host Moderation Queue
+  useEffect(() => {
+    fetchGuestProposalsFromGithub().then(githubProposals => {
+      if (Array.isArray(githubProposals) && githubProposals.length > 0) {
+        setFeedbackList(prev => {
+          const existingIds = new Set(prev.map(p => p.id));
+          const newRemote = githubProposals.filter(p => !existingIds.has(p.id));
+          return [...newRemote, ...prev];
+        });
+      }
+    });
+  }, []);
 
   // UI Modes & Filters
   const [searchQuery, setSearchQuery] = useState('');
