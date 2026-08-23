@@ -10,7 +10,7 @@ export default function HostReviewQueueModal({
 }) {
   if (!isOpen) return null;
 
-  const pendingProposals = proposals.filter(p => p.status === 'PENDING' || !p.status);
+  const pendingProposals = (proposals || []).filter(p => p && (p.status === 'PENDING' || !p.status));
 
   return (
     <>

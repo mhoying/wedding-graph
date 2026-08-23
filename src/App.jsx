@@ -70,9 +70,10 @@ export default function App() {
     fetchGuestProposalsFromGithub().then(githubProposals => {
       if (Array.isArray(githubProposals) && githubProposals.length > 0) {
         setFeedbackList(prev => {
-          const existingIds = new Set(prev.map(p => p.id));
-          const newRemote = githubProposals.filter(p => !existingIds.has(p.id));
-          return [...newRemote, ...prev];
+          const safePrev = Array.isArray(prev) ? prev : [];
+          const existingIds = new Set(safePrev.map(p => p && p.id));
+          const newRemote = githubProposals.filter(p => p && !existingIds.has(p.id));
+          return [...newRemote, ...safePrev];
         });
       }
     });
