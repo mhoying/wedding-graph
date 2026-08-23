@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import Papa from 'papaparse';
 
-import { SAMPLE_NODES, SAMPLE_LINKS, SIDE_COLORS, STATE_COLORS, COHORT_COLORS } from './data/sampleData';
+import { SAMPLE_NODES, SAMPLE_LINKS, SIDE_COLORS, STATE_COLORS, COHORT_COLORS, DYNAMIC_CLUSTER_COLORS } from './data/sampleData';
 import { isSecretUrlAdmin, verifyPasscode, sanitizeInput } from './utils/security';
 import TopHeaderNav from './components/TopHeaderNav';
 import MobileControlsSheet from './components/MobileControlsSheet';
