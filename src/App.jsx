@@ -921,6 +921,8 @@ export function getInitials(name) {
         handleNodeDrag={handleNodeDrag}
         handleNodeDragEnd={handleNodeDragEnd}
         handleZoom={handleZoom}
+        searchQuery={searchQuery}
+        setIsOrbiting={setIsOrbiting}
         imageCacheRef={imageCacheRef}
       />
 

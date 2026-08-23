@@ -35,6 +35,8 @@ export default function ForceCanvas({
   handleNodeDrag = () => {},
   handleNodeDragEnd = () => {},
   handleZoom = () => {},
+  searchQuery = '',
+  setIsOrbiting = () => {},
   imageCacheRef = { current: {} }
 }) {
   // Pre-load guest photo images into ref cache
@@ -126,6 +128,27 @@ export default function ForceCanvas({
       fgRef.current.d3ReheatSimulation();
     }
   }, [isOrbiting, orbitSpeed]);
+
+  // Auto Zoom-to-Fit for Search Results: Frames 100% of all matching search result nodes!
+  useEffect(() => {
+    if (!searchQuery || !searchQuery.trim() || !fgRef.current || typeof fgRef.current.zoomToFit !== 'function') return;
+
+    const q = searchQuery.trim().toLowerCase();
+    const matchingNodeIds = new Set(
+      nodes.filter(node => {
+        const matchesName = node.name.toLowerCase().includes(q);
+        const matchesCohort = node.cohort ? node.cohort.toLowerCase().includes(q) : false;
+        const matchesSide = node.side ? node.side.toLowerCase().includes(q) : false;
+        const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase().includes(q)) : false;
+        return matchesName || matchesCohort || matchesSide || matchesInterest;
+      }).map(n => n.id)
+    );
+
+    if (matchingNodeIds.size > 0) {
+      if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
+      fgRef.current.zoomToFit(800, 60, (node) => matchingNodeIds.has(node.id));
+    }
+  }, [searchQuery, nodes, fgRef, setIsOrbiting]);
 
   // Render ORGANIC CONVEX HULL BLOBS & COUPLE ANCHOR FRAME in Native World Coordinates
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {

@@ -1,3 +1,49 @@
+export const COHORT_COLORS = {
+  "The Couple": "#38bdf8",
+  "Cornell": "#b31b1b",
+  "Google": "#4285f4",
+  "Stanford": "#8c1515",
+  "Lehigh": "#653819",
+  "Dog Park": "#10b981",
+  "OWFL Blog": "#ec4899",
+  "Bay FC": "#f59e0b",
+  "Friends": "#64748b",
+  "Default": "#64748b"
+};
+
+export const SIDE_COLORS = {
+  "Maureen": "#ec4899",
+  "Matt": "#3b82f6",
+  "Joint": "#10b981"
+};
+
+export const STATE_COLORS = {
+  "USA": "#38bdf8",
+  "Default": "#64748b"
+};
+
+export const DYNAMIC_CLUSTER_COLORS = [
+  "#f472b6",
+  "#38bdf8",
+  "#34d399",
+  "#a78bfa",
+  "#fbbf24",
+  "#f87171",
+  "#818cf8",
+  "#4ade80",
+  "#fb923c",
+  "#e879f9"
+];
+
+export function getInitials(name) {
+  if (!name) return '??';
+  const parts = name.trim().split(' ');
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+}
+
 export const SAMPLE_NODES = [
   {
     "id": "allison_williams",

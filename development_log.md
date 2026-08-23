@@ -9,15 +9,14 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Live Connection Updating & LocalStorage Persistence Fix
-- **User Prompt**: "when i build a connection between two guests, it doesn tseem to actually update the diagram. if i refresh it is still not updated"
+## [2026-08-22] Implemented Automated Search `zoomToFit` Framing (`ForceCanvas.jsx` & `App.jsx`)
+- **User Prompt**: "when i search for someone or a term, it shoudl zoom to a frame that has all the nodes that are in scope"
 - **Actions**:
-  1. **Root Cause Analysis**:
-     - `handleAddConnection` in `App.jsx` was writing new connection link objects to `localStorage.setItem('wedding_graph_links_v4')`, whereas `useState` initialization was reading from `wedding_graph_links_v7`. Because of the key version mismatch, newly added connections disappeared upon browser refresh.
-     - D3 force graph simulation was not automatically reheated when `handleAddConnection` fired.
-  2. **Resolution**:
-     - Unified all `localStorage` key readers/writers to `wedding_graph_links_v7` across `App.jsx`.
-     - Added `fgRef.current.d3ReheatSimulation()` inside `handleAddConnection` to immediately reheat the canvas and draw the new glowing link edge live!
-  3. **Empirical Headless Chromium Verification**:
-     - `LIVE CONNECTION BUILDER VERIFIED WITH 0 ERRORS!`.
-  4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Automated Search Result Framing (`ForceCanvas.jsx`)**:
+     - Added a reactive `useEffect` hook listening to `searchQuery` changes.
+     - Automatically calculates the subset of matching guest nodes (by name, cohort, side, or interest hobbies).
+     - Calls `fgRef.current.zoomToFit(800ms, 60px padding, nodeFilter)` to automatically scale and center the camera to frame **100% of all matching search result nodes in scope**.
+     - Pauses orbit rotation so search result nodes lock cleanly in frame.
+  2. **Empirical Headless Chromium Verification**:
+     - `SEARCH ZOOMTOFIT FRAMING VERIFIED WITH 0 ERRORS!`.
+  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
