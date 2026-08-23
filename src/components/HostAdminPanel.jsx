@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, Download, Copy, Lock, FileSpreadsheet, Code, CheckCircle } from 'lucide-react';
+import { ShieldAlert, Download, Copy, Lock, FileSpreadsheet, Code, CheckCircle, Link2 } from 'lucide-react';
 
 export default function HostAdminPanel({
   isAdmin,
@@ -9,7 +9,8 @@ export default function HostAdminPanel({
   feedbackQueueCount,
   setIsFeedbackQueueOpen,
   handleCopyQrLink,
-  setIsBulkImportOpen
+  setIsBulkImportOpen,
+  setIsAddConnectionOpen
 }) {
   if (!isAdmin) return null;
 
@@ -47,7 +48,17 @@ export default function HostAdminPanel({
 
       {/* Admin Action Buttons */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {/* 0. Import 2-Table CSV */}
+        {/* 0. Connect Guests */}
+        <button 
+          onClick={() => setIsAddConnectionOpen(true)}
+          className="btn-mode"
+          style={{ padding: '10px 12px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', fontWeight: 800, cursor: 'pointer' }}
+        >
+          <Link2 style={{ width: 16, height: 16, color: '#38bdf8' }} />
+          <span>+ Connect Two Guests</span>
+        </button>
+
+        {/* 1. Import 2-Table CSV */}
         <button 
           onClick={() => setIsBulkImportOpen(true)}
           className="btn-mode"

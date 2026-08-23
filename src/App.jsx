@@ -15,6 +15,7 @@ import SuggestEditModal from './components/SuggestEditModal';
 import ForceCanvas from './components/ForceCanvas';
 import HostAdminPanel from './components/HostAdminPanel';
 import BulkCsvImportModal from './components/BulkCsvImportModal';
+import AddConnectionModal from './components/AddConnectionModal';
 
 export default function App() {
   const fgRef = useRef();
@@ -81,6 +82,7 @@ export default function App() {
   const [feedbackNote, setFeedbackNote] = useState('');
   const [isFeedbackQueueOpen, setIsFeedbackQueueOpen] = useState(false);
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
+  const [isAddConnectionOpen, setIsAddConnectionOpen] = useState(false);
   const [copyToast, setCopyToast] = useState('');
 
   const handleApplyDataset = useCallback((newNodes, newLinks) => {
@@ -92,6 +94,18 @@ export default function App() {
     } catch (e) {
       console.warn('Could not save to localStorage:', e);
     }
+  }, []);
+
+  const handleAddConnection = useCallback((newLink) => {
+    setLinks(prev => {
+      const updated = [...prev, newLink];
+      try {
+        localStorage.setItem('wedding_graph_links_v4', JSON.stringify(updated));
+      } catch (e) {
+        console.warn('Could not save links to localStorage:', e);
+      }
+      return updated;
+    });
   }, []);
 
   // Path Finder State
@@ -641,6 +655,15 @@ export default function App() {
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
         handleCopyQrLink={handleCopyQrLink}
         setIsBulkImportOpen={setIsBulkImportOpen}
+        setIsAddConnectionOpen={setIsAddConnectionOpen}
+      />
+
+      {/* Interactive Host Admin Connection Builder Modal */}
+      <AddConnectionModal 
+        isOpen={isAddConnectionOpen}
+        onClose={() => setIsAddConnectionOpen(false)}
+        nodes={nodes}
+        onAddConnection={handleAddConnection}
       />
 
       {/* Bulk 2-Table CSV Data Importer Modal */}
