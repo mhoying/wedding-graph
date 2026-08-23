@@ -28,17 +28,20 @@ export default function App() {
   // Core Data State (Loads real 75-guest wedding dataset by default)
   useEffect(() => {
     // Purge legacy storage keys that contain old pre-migrated cohort names
-    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_links_v7', 'wedding_graph_links_v3'].forEach(k => {
+    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_nodes_v10', 'wedding_graph_links_v7', 'wedding_graph_links_v3', 'wedding_graph_links_v10'].forEach(k => {
       try { localStorage.removeItem(k); } catch(e) {}
     });
   }, []);
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v10');
+      const saved = localStorage.getItem('wedding_graph_nodes_v11');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 50 && parsed.some(n => n.id === 'maureen')) {
+        const hasLegacyCohorts = Array.isArray(parsed) && parsed.some(n => 
+          n.cohort && (n.cohort.includes('&') || n.cohort.includes('Family') || n.cohort === 'Friends' || n.cohort === 'Shaikh Sisters')
+        );
+        if (!hasLegacyCohorts && Array.isArray(parsed) && parsed.length > 50 && parsed.some(n => n.id === 'maureen')) {
           return parsed;
         }
       }
@@ -50,7 +53,7 @@ export default function App() {
 
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v10');
+      const saved = localStorage.getItem('wedding_graph_links_v11');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50) {
@@ -1063,6 +1066,7 @@ export default function App() {
         isMobileViewport={isMobileViewport}
         isLightMode={isLightMode}
         selectedNode={selectedNode}
+        isMobileControlsOpen={isMobileControlsOpen}
       />
 
       {/* HTML5 2D Canvas Force Graph */}

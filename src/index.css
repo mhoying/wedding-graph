@@ -470,7 +470,7 @@ body {
   width: 100vw;
   height: 100vh;
   background: transparent;
-  z-index: 900;
+  z-index: 9500;
   touch-action: manipulation;
 }
 
@@ -488,7 +488,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 24px;
   padding: 16px;
-  z-index: 1000;
+  z-index: 9600;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
   animation: slideUp 0.25s ease-out;
   touch-action: pan-y;
