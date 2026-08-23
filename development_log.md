@@ -9,12 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-23] Initial Full Map Auto-Framing (`ForceCanvas.jsx`)
-- **User Prompt**: "i think you lost the feature we developed ot make it show the full map when it first loads"
+## [2026-08-23] Instant Page Refresh Full Map Framing (`ForceCanvas.jsx`)
+- **User Prompt**: "it isn't doing it when i refresh the page"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - On initial page load, the force simulation started at default `1.0` scale without calling `zoomToFit()`, causing outer nodes on wide screen viewports to be cut off until manual user interaction.
-  2. **Automated `zoomToFit` Engine Callback & Load Timer (`ForceCanvas.jsx`)**:
-     - Added `handleEngineStop` callback connected to `onEngineStop` in `<ForceGraph2D>`, which triggers `zoomToFit(800, 60)` as soon as physics simulation settles.
-     - Added a fallback load timer (`1200ms`) ensuring 100% of all nodes are framed smoothly across all screen viewports on initial mount.
+     - `onEngineStop` never fires when orbital motion is enabled by default (`isOrbiting = true`), because D3 alpha decay is perpetually reheated every tick and never hits `0`.
+     - As a result, refreshing the page skipped `zoomToFit()`.
+  2. **Instant Coordinate Polling Tick (`ForceCanvas.jsx`)**:
+     - Switched to an active tick checker polling every `150ms`.
+     - As soon as D3 calculates valid non-zero `x,y` coordinates for the node galaxy (within ~300ms of page load), it automatically triggers `zoomToFit(600, 50)` to frame 100% of all nodes instantly!
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

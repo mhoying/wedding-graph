@@ -139,25 +139,22 @@ export default function ForceCanvas({
     }
   }, [isOrbiting, orbitSpeed]);
 
-  // INITIAL FULL MAP FRAMING: Automatically zoomToFit to frame 100% of all nodes on initial load!
-  const hasInitialZoomedRef = useRef(false);
-
-  const handleEngineStop = useCallback(() => {
-    if (!hasInitialZoomedRef.current && fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
-      hasInitialZoomedRef.current = true;
-      fgRef.current.zoomToFit(800, 60);
-    }
-  }, [fgRef]);
-
+  // INITIAL FULL MAP FRAMING: Automatically zoomToFit as soon as D3 coordinates settle on page load!
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!hasInitialZoomedRef.current && fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
-        hasInitialZoomedRef.current = true;
-        fgRef.current.zoomToFit(1000, 60);
+    let checkCount = 0;
+    const interval = setInterval(() => {
+      checkCount++;
+      if (fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
+        const hasPositions = nodes && nodes.length > 0 && nodes.some(n => n.x !== undefined && (n.x !== 0 || n.y !== 0));
+        if (hasPositions || checkCount > 10) {
+          fgRef.current.zoomToFit(600, 50);
+          clearInterval(interval);
+        }
       }
-    }, 1200);
-    return () => clearTimeout(timer);
-  }, [fgRef]);
+    }, 150);
+
+    return () => clearInterval(interval);
+  }, [fgRef, nodes]);
 
   // Auto Zoom-to-Fit for Search Results: Frames 100% of all matching search result nodes!
   useEffect(() => {
