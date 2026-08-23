@@ -9,13 +9,14 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-23] 100% Comprehensive GitHub Issues Audit & Data Synchronization
-- **User Prompt**: "okay. can you go thorugh all the issues, and chck if the chaanges in them are reflected in the database and associated files?"
+## [2026-08-23] Automated Audit & Database Sync CLI Command (`npm run audit-issues`)
+- **User Prompt**: "we shoudl be able to run this script whenever we notice things are out of sync"
 - **Actions**:
-  1. **Complete Audit of All 16 GitHub Issues**:
-     - Audited all 16 GitHub Issues (#1 through #16) against `src/data/sampleData.js` and `public/guests_template.csv`.
-     - **Discrepancies Resolved**:
-       - **Andy Schmitt** (Issue #12): Added missing `Pickleball` interest tag.
-       - **Maureen Wink** (Issues #6 & #13): Added missing `RPI Medal` interest tag.
-       - **James Freedman** (Issues #5, #10, #11): Added missing `RPI Medal` interest tag.
-  2. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Built `scripts/audit_and_sync_issues.js`**:
+     - Fetches all GitHub Issues for `mhoying/wedding-graph`.
+     - Groups proposals by **Target Guest ID** and selects **ONLY THE MOST RECENT ISSUE** per guest (accounting for edit additions & removals).
+     - Automatically updates `src/data/sampleData.js` and `public/guests_template.csv` if any fields (Name, Hobbies, Location, Cohort, Side, Relationship) are out of sync.
+  2. **Registered NPM Shortcut**:
+     - Added `"audit-issues": "node scripts/audit_and_sync_issues.js"` to `package.json`.
+  3. **Committed & Pushed**:
+     - Committed to Git and pushed directly to `origin/main`.
