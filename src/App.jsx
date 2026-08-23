@@ -525,6 +525,28 @@ export default function App() {
 
   const handleSaveProfileEdits = () => {
     if (!selectedNode) return;
+    if (!isAdmin) {
+      const proposal = {
+        id: `fb_${Date.now()}`,
+        targetId: selectedNode.id,
+        targetName: selectedNode.name,
+        category: 'Profile Edit Proposal',
+        proposedHobbies: editHobbies.join(', '),
+        proposedLocation: editCurrentlyLivesIn,
+        proposedCohort: editCohort,
+        proposedSide: editSide,
+        proposedRelationship: editRelationship,
+        note: `Proposed profile update for ${selectedNode.name}`,
+        status: 'PENDING',
+        timestamp: new Date().toISOString()
+      };
+      submitGuestProposalToGithub(proposal);
+      setCopyToast('🚀 Proposal Sent to Host Queue for Approval!');
+      setTimeout(() => setCopyToast(''), 3500);
+      setIsEditingDrawer(false);
+      return;
+    }
+
     const updated = nodes.map(n => {
       if (n.id === selectedNode.id) {
         return {
@@ -551,6 +573,11 @@ export default function App() {
       familyStatus: editFamilyStatus,
       hobbies: editHobbies
     });
+    try {
+      localStorage.setItem('wedding_graph_nodes_master', JSON.stringify(updated));
+    } catch (e) {}
+    const jsContent = generateSampleDataJsContent(updated, links);
+    pushToGithubRepo(jsContent, `Update profile dataset for ${selectedNode.name}`, '', 'src/data/sampleData.js');
     setIsEditingDrawer(false);
   };
 
@@ -710,7 +737,7 @@ export function getInitials(name) {
   };
 
   // Suggest Edit Submission Handler
-  const handleSubmitFeedback = () => {
+  const handleSubmitFeedback = async () => {
     if (!feedbackNote.trim()) return;
     const newFeedback = {
       id: `fb_${Date.now()}`,
@@ -724,6 +751,11 @@ export function getInitials(name) {
     setFeedbackList(prev => [newFeedback, ...prev]);
     setIsFeedbackModalOpen(false);
     setFeedbackNote('');
+    setCopyToast('🚀 Submitting Suggestion to Host Queue...');
+
+    // Real-time GitHub Issue creation so all hosts receive proposals across all devices!
+    await submitGuestProposalToGithub(newFeedback);
+
     setCopyToast('Suggestion Submitted to Hosts!');
     setTimeout(() => setCopyToast(''), 3000);
   };
