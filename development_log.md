@@ -9,13 +9,11 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Added Mobile Cache-Busting Headers & Patched `filteredNodes` Null Guards (`index.html` & `App.jsx`)
-- **User Prompt**: "same error"
+## [2026-08-22] Fixed Mobile "Map Controls" FAB Overlapping Profile Drawer (`index.css` & `App.jsx`)
+- **User Prompt**: "map controls is layerd over the interests again when you zoom into a person details"
 - **Actions**:
-  1. **Root Cause Analysis**:
-     - Mobile Safari / Mobile Chrome caches older JavaScript assets (`index-Da9Vs03j.js`).
-     - When her phone loaded the site from local Safari disk cache, it executed the old cached bundle instead of pulling the newly deployed bundle.
-  2. **Cache-Busting & Full Null Guarding**:
-     - Added `<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />` to `index.html`.
-     - Built new JavaScript bundle `index-BrADCldA.js` with defensive null-checks on `filteredNodes`.
+  1. **Z-Index Layering Fix (`index.css`)**:
+     - Raised `.metadata-drawer` (Guest Profile Drawer) to `z-index: 2000 !important;` so it always floats above floating action buttons on mobile screens.
+  2. **FAB Auto-Hide on Profile Focus (`App.jsx`)**:
+     - Updated `.mobile-drawer-toggle-fab` rendering logic (`!selectedNode && isMobileViewport`) to automatically hide the floating **"Map Controls"** button whenever a guest profile drawer is open.
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
