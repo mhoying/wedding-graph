@@ -862,13 +862,14 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "leslie_davidsson",
-    "name": "Leslie Davidsson",
+    "name": "Leslie Davisson",
     "type": "GUEST",
     "cohort": "Dog Park",
     "familyCohort": "Dog Park",
     "side": "Joint",
     "relationship": "The Murillo-Davisson Family",
-    "originallyFrom": "",
+    "originallyFrom": "Stockton, Ca",
+    "hometown": "Stockton, Ca",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [

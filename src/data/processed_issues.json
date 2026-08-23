@@ -23,31 +23,31 @@
   "4": {
     "issueNumber": 4,
     "title": "[Proposed Edit] Test Guest: Profile Update",
-    "processedAt": "2026-08-23T16:24:54.898Z",
+    "processedAt": "2026-08-23T17:00:19.773Z",
     "status": "SKIPPED_NON_PROPOSAL"
   },
   "5": {
     "issueNumber": 5,
     "targetId": "james_freedman",
-    "processedAt": "2026-08-23T16:24:54.898Z",
+    "processedAt": "2026-08-23T17:00:19.773Z",
     "status": "SUPERSEDED_BY_ISSUE_#11"
   },
   "6": {
     "issueNumber": 6,
     "targetId": "maureen",
-    "processedAt": "2026-08-23T16:24:54.898Z",
+    "processedAt": "2026-08-23T17:00:19.773Z",
     "status": "SUPERSEDED_BY_ISSUE_#13"
   },
   "7": {
     "issueNumber": 7,
     "targetId": "nur_e_freedman",
-    "processedAt": "2026-08-23T16:24:54.898Z",
+    "processedAt": "2026-08-23T17:00:19.773Z",
     "status": "SUPERSEDED_BY_ISSUE_#9"
   },
   "8": {
     "issueNumber": 8,
     "targetId": "nur_e_freedman",
-    "processedAt": "2026-08-23T16:24:54.898Z",
+    "processedAt": "2026-08-23T17:00:19.773Z",
     "status": "SUPERSEDED_BY_ISSUE_#9"
   },
   "9": {
@@ -60,7 +60,7 @@
   "10": {
     "issueNumber": 10,
     "targetId": "james_freedman",
-    "processedAt": "2026-08-23T16:24:54.898Z",
+    "processedAt": "2026-08-23T17:00:19.773Z",
     "status": "SUPERSEDED_BY_ISSUE_#11"
   },
   "11": {
@@ -94,14 +94,26 @@
   "15": {
     "issueNumber": 15,
     "targetId": "leslie_davidsson",
-    "processedAt": "2026-08-23T16:24:54.898Z",
-    "status": "SUPERSEDED_BY_ISSUE_#16"
+    "processedAt": "2026-08-23T17:00:19.773Z",
+    "status": "SUPERSEDED_BY_ISSUE_#18"
   },
   "16": {
     "issueNumber": 16,
     "targetId": "leslie_davidsson",
+    "processedAt": "2026-08-23T17:00:19.773Z",
+    "status": "SUPERSEDED_BY_ISSUE_#18"
+  },
+  "17": {
+    "issueNumber": 17,
+    "targetId": "leslie_davidsson",
+    "processedAt": "2026-08-23T17:00:19.773Z",
+    "status": "SUPERSEDED_BY_ISSUE_#18"
+  },
+  "18": {
+    "issueNumber": 18,
+    "targetId": "leslie_davidsson",
     "targetName": "Leslie Davidsson",
-    "processedAt": "2026-08-23T16:24:52.255Z",
+    "processedAt": "2026-08-23T17:00:19.773Z",
     "status": "PROCESSED_SUCCESS"
   }
 }

@@ -139,11 +139,31 @@ for (const [targetId, guestProposals] of proposalsByGuest.entries()) {
   let nodeChanged = false;
   const changes = [];
 
-  // Proposed Name
-  if (proposal.proposedName && proposal.proposedName !== node.name) {
-    changes.push(`Name: "${node.name}" -> "${proposal.proposedName}"`);
-    node.name = proposal.proposedName;
+  // Proposed Name (Check proposal.proposedName, proposal.targetName, or note string)
+  let nameFromNote = null;
+  if (proposal.note && proposal.note.includes('Name:')) {
+    const match = proposal.note.match(/Name:\s*([^|]+)/i);
+    if (match) nameFromNote = match[1].trim();
+  }
+  const targetProposedName = proposal.proposedName || nameFromNote || (proposal.targetName && proposal.targetName !== node.name ? proposal.targetName : null);
+  if (targetProposedName && targetProposedName !== node.name) {
+    changes.push(`Name: "${node.name}" -> "${targetProposedName}"`);
+    node.name = targetProposedName;
     nodeChanged = true;
+  }
+
+  // Proposed Originally From / Hometown (from note string "Originally From: Stockton, Ca")
+  if (proposal.note && proposal.note.includes('Originally From:')) {
+    const match = proposal.note.match(/Originally From:\s*([^|]+)/i);
+    if (match) {
+      const hometown = match[1].trim();
+      if (hometown && node.originallyFrom !== hometown) {
+        changes.push(`Originally From: "${node.originallyFrom || ''}" -> "${hometown}"`);
+        node.originallyFrom = hometown;
+        node.hometown = hometown;
+        nodeChanged = true;
+      }
+    }
   }
 
   // Proposed Location
