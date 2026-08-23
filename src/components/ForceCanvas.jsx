@@ -261,24 +261,15 @@ export default function ForceCanvas({
 
         const hull = getConvexHull2D(points);
 
-        let clusterColor;
-        const cleanLabel = label.replace(/^(📍 Lives in: |🏡 Originally: |Interest: )/, '').replace(' Cluster', '');
-        if (STATE_COLORS[cleanLabel]) {
-          clusterColor = STATE_COLORS[cleanLabel];
-        } else if (COHORT_COLORS[cleanLabel]) {
+        let clusterColor = DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
+        const cleanLabel = String(label).replace(/^(📍 Lives in: |🏡 Originally: |Interest: )/, '').replace(' Cluster', '').trim();
+        if (COHORT_COLORS[cleanLabel]) {
           clusterColor = COHORT_COLORS[cleanLabel];
-        } else {
-          let hash = 0;
-          for (let i = 0; i < cleanLabel.length; i++) {
-            hash = cleanLabel.charCodeAt(i) + ((hash << 5) - hash);
-          }
-          const paletteIndex = Math.abs(hash) % DYNAMIC_CLUSTER_COLORS.length;
-          clusterColor = DYNAMIC_CLUSTER_COLORS[paletteIndex];
         }
         colorIdx++;
 
         ctx.save();
-        ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.08) : hexToRgba(clusterColor, 0.06);
+        ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.22) : hexToRgba(clusterColor, 0.18);
         ctx.beginPath();
 
         const numPoints = hull.length;
@@ -297,9 +288,9 @@ export default function ForceCanvas({
         ctx.closePath();
         ctx.fill();
 
-        ctx.lineWidth = 1.5 / globalScale;
-        ctx.strokeStyle = hexToRgba(clusterColor, 0.45);
-        ctx.setLineDash([6 / globalScale, 6 / globalScale]);
+        ctx.lineWidth = 2.5 / globalScale;
+        ctx.strokeStyle = hexToRgba(clusterColor, 0.85);
+        ctx.setLineDash([8 / globalScale, 6 / globalScale]);
         ctx.stroke();
 
         let topPoint = hull[0];
