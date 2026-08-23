@@ -28,14 +28,14 @@ export default function App() {
   // Core Data State (Loads real 75-guest wedding dataset by default)
   useEffect(() => {
     // Purge legacy storage keys that contain old pre-migrated cohort names
-    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_nodes_v10', 'wedding_graph_nodes_v11', 'wedding_graph_nodes_v12', 'wedding_graph_nodes_v13', 'wedding_graph_nodes_v14', 'wedding_graph_nodes_v15', 'wedding_graph_nodes_v16', 'wedding_graph_nodes_v17', 'wedding_graph_nodes_v18', 'wedding_graph_nodes_v19', 'wedding_graph_nodes_v20', 'wedding_graph_nodes_v21', 'wedding_graph_nodes_v22', 'wedding_graph_nodes_v23', 'wedding_graph_nodes_v24', 'wedding_graph_nodes_v25', 'wedding_graph_nodes_v26', 'wedding_graph_links_v7', 'wedding_graph_links_v3', 'wedding_graph_links_v10', 'wedding_graph_links_v11', 'wedding_graph_links_v12', 'wedding_graph_links_v13', 'wedding_graph_links_v14', 'wedding_graph_links_v15', 'wedding_graph_links_v16', 'wedding_graph_links_v17', 'wedding_graph_links_v18', 'wedding_graph_links_v19', 'wedding_graph_links_v20', 'wedding_graph_links_v21', 'wedding_graph_links_v22', 'wedding_graph_links_v23', 'wedding_graph_links_v24', 'wedding_graph_links_v25', 'wedding_graph_links_v26'].forEach(k => {
+    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_nodes_v10', 'wedding_graph_nodes_v11', 'wedding_graph_nodes_v12', 'wedding_graph_nodes_v13', 'wedding_graph_nodes_v14', 'wedding_graph_nodes_v15', 'wedding_graph_nodes_v16', 'wedding_graph_nodes_v17', 'wedding_graph_nodes_v18', 'wedding_graph_nodes_v19', 'wedding_graph_nodes_v20', 'wedding_graph_nodes_v21', 'wedding_graph_nodes_v22', 'wedding_graph_nodes_v23', 'wedding_graph_nodes_v24', 'wedding_graph_nodes_v25', 'wedding_graph_nodes_v26', 'wedding_graph_nodes_v27', 'wedding_graph_links_v7', 'wedding_graph_links_v3', 'wedding_graph_links_v10', 'wedding_graph_links_v11', 'wedding_graph_links_v12', 'wedding_graph_links_v13', 'wedding_graph_links_v14', 'wedding_graph_links_v15', 'wedding_graph_links_v16', 'wedding_graph_links_v17', 'wedding_graph_links_v18', 'wedding_graph_links_v19', 'wedding_graph_links_v20', 'wedding_graph_links_v21', 'wedding_graph_links_v22', 'wedding_graph_links_v23', 'wedding_graph_links_v24', 'wedding_graph_links_v25', 'wedding_graph_links_v26', 'wedding_graph_links_v27'].forEach(k => {
       try { localStorage.removeItem(k); } catch(e) {}
     });
   }, []);
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v27');
+      const saved = localStorage.getItem('wedding_graph_nodes_v28');
       if (saved) {
         const parsed = JSON.parse(saved);
         const hasLegacyCohorts = Array.isArray(parsed) && parsed.some(n => 
@@ -53,7 +53,7 @@ export default function App() {
 
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v27');
+      const saved = localStorage.getItem('wedding_graph_links_v28');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50) {
@@ -757,7 +757,27 @@ export default function App() {
     }
   }, [pathStartId, pathEndId, computeShortestPath]);
 
-  // Cocktail Matchmaker Engine (Focuses strictly on shared interests & new cross-group introductions!)
+  // Dynamic Inverse Tag Frequency (IDF) Weights for Interests
+  const tagWeights = useMemo(() => {
+    const counts = {};
+    (nodes || []).filter(n => n.type === 'GUEST').forEach(n => {
+      (n.hobbies || []).forEach(h => {
+        if (h && h.trim()) {
+          const key = h.trim();
+          counts[key] = (counts[key] || 0) + 1;
+        }
+      });
+    });
+
+    const weights = {};
+    Object.entries(counts).forEach(([tag, count]) => {
+      // Inverse Tag Frequency formula: Rare tags (1-2 guests) get ~55-80 pts, common tags get ~10-20 pts
+      weights[tag] = Math.min(85, Math.max(10, Math.round(80 / Math.pow(count, 0.55))));
+    });
+    return weights;
+  }, [nodes]);
+
+  // Cocktail Matchmaker Engine (Focuses strictly on shared interests weighted by Inverse Tag Frequency!)
   const matchmakerResults = useMemo(() => {
     if (!myGuestId) return [];
     const me = nodes.find(n => n.id === myGuestId);
@@ -771,13 +791,12 @@ export default function App() {
         let sharedScore = 0;
         const reasons = [];
 
-        // 1. Shared Interests (+50 points for passion hobbies, lower +15 weight for generic 'Kids' tag)
+        // 1. Shared Interests weighted dynamically by Inverse Tag Frequency!
         (other.hobbies || []).forEach(h => {
           if (meHobbies.has(h)) {
-            const isKidsTag = h.toLowerCase() === 'kids';
-            const weight = isKidsTag ? 15 : 50;
+            const weight = tagWeights[h] || 40;
             sharedScore += weight;
-            reasons.push(`Shared Interest: ${h}`);
+            reasons.push(`Shared Interest: ${h} (+${weight} pts)`);
           }
         });
 
@@ -802,7 +821,7 @@ export default function App() {
       .filter(r => r.sharedScore > 0)
       .sort((a, b) => b.sharedScore - a.sharedScore)
       .slice(0, 8);
-  }, [myGuestId, nodes]);
+  }, [myGuestId, nodes, tagWeights]);
 
   // 1-Click Host CSV Export Handler
   const handleExportCsv = () => {
