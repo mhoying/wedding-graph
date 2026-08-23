@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "audit-issues": "node scripts/audit_and_sync_issues.js"
+    "audit-issues": "node scripts/audit_and_sync_issues.js",
+    "calculate-weights": "node scripts/calculate_tag_weights.js"
   },
   "dependencies": {
     "d3-force": "^3.0.0",
