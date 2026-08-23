@@ -9,11 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Added Prominent `Spreadsheet` Button to Top Navigation Bar (`TopHeaderNav.jsx` & `App.jsx`)
-- **User Prompt**: "i dont see that button"
+## [2026-08-22] Tightened Couple / Spouse Link Attraction Forces (`ForceCanvas.jsx`)
+- **User Prompt**: "i dont htink you did a great job of finding features. for example, i expect matt and maureen to be very close to each other because of their relationship. but they have a lot of distance between them. having peopel that are part of a couple was a requirements to have htem clsoe to gether with a short edge"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - The Host Live Spreadsheet Grid Editor button was previously only rendered inside the floating side panel (`<HostAdminPanel>`), which may be hidden or scrolled out of view on smaller viewports.
-  2. **Top Bar Button Placement (`TopHeaderNav.jsx`)**:
-     - Added a prominent **`📊 Spreadsheet`** button directly to the top navigation header next to **`Queue`** whenever `isAdmin` is active.
+     - `ForceCanvas.jsx` previously had `cohortMultiplier = 0.65` for couple links without specifying custom `d3Force('link').strength`.
+     - Strong global D3 charge repulsion (`-2400`) pushed couples apart because default link strength was weak.
+  2. **Tight Couple Link Attraction (`ForceCanvas.jsx`)**:
+     - Lowered couple distance multiplier to **`0.20`** (extremely short, tight distance).
+     - Added explicit `d3Force('link').strength(l => isCoupleLink ? 1.0 : 0.4)` to pull Matt, Maureen, and all married/partner couples tightly bound right next to each other on the graph canvas.
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

@@ -59,36 +59,46 @@ export default function ForceCanvas({
     if (fgRef.current) {
       const fg = fgRef.current;
       
-      fg.d3Force('link').distance(l => {
-        const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
-        const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
-        
-        const sRadius = sObj ? getNodeBounds(sObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
-        const tRadius = tObj ? getNodeBounds(tObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
-        
-        const sId = sObj ? sObj.id : l.source;
-        const tId = tObj ? tObj.id : l.target;
+      fg.d3Force('link')
+        .distance(l => {
+          const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
+          const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
+          
+          const sRadius = sObj ? getNodeBounds(sObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
+          const tRadius = tObj ? getNodeBounds(tObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
+          
+          const sId = String(sObj ? sObj.id : l.source).toLowerCase();
+          const tId = String(tObj ? tObj.id : l.target).toLowerCase();
 
-        const isCoupleLink = l.type === 'COUPLE' || l.label === 'Married' || l.label === 'Partner' || 
-                             (sId === 'maureen' && tId === 'matt') || (sId === 'matt' && tId === 'maureen');
-        
-        const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
-        const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
+          const isCoupleLink = l.type === 'COUPLE' || l.type === 'MARRIED' || l.label === 'Married' || l.label === 'Partner' || l.label === 'Spouse' ||
+                               (sId.includes('maureen') && tId.includes('matt')) || (sId.includes('matt') && tId.includes('maureen')) ||
+                               (sId.includes('couple') || tId.includes('couple'));
+          
+          const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
+          const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
 
-        let cohortMultiplier;
-        if (isCoupleLink) {
-          cohortMultiplier = 0.65;
-        } else if (isSameCohort) {
-          cohortMultiplier = 0.80;
-        } else if (isHubLink) {
-          cohortMultiplier = 2.20;
-        } else {
-          cohortMultiplier = 1.85;
-        }
+          let cohortMultiplier;
+          if (isCoupleLink) {
+            cohortMultiplier = 0.20;
+          } else if (isSameCohort) {
+            cohortMultiplier = 0.75;
+          } else if (isHubLink) {
+            cohortMultiplier = 2.0;
+          } else {
+            cohortMultiplier = 1.6;
+          }
 
-        const baseSum = sRadius + tRadius + 15 * nodeScaleMultiplier;
-        return baseSum * cohortMultiplier * edgeLengthMultiplier;
-      });
+          const baseSum = sRadius + tRadius + 10 * nodeScaleMultiplier;
+          return baseSum * cohortMultiplier * edgeLengthMultiplier;
+        })
+        .strength(l => {
+          const sId = String(typeof l.source === 'object' ? l.source.id : l.source).toLowerCase();
+          const tId = String(typeof l.target === 'object' ? l.target.id : l.target).toLowerCase();
+          const isCoupleLink = l.type === 'COUPLE' || l.type === 'MARRIED' || l.label === 'Married' || l.label === 'Partner' || l.label === 'Spouse' ||
+                               (sId.includes('maureen') && tId.includes('matt')) || (sId.includes('matt') && tId.includes('maureen')) ||
+                               (sId.includes('couple') || tId.includes('couple'));
+          return isCoupleLink ? 1.0 : 0.4;
+        });
 
       fg.d3Force('charge')
         .strength(-2400 * nodeScaleMultiplier * edgeLengthMultiplier)
