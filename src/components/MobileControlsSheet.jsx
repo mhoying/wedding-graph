@@ -168,6 +168,8 @@ export default function MobileControlsSheet({
                 setColorMode(val);
               } else if (val === 'cohort') {
                 setColorMode('cohort');
+              } else if (val === 'interests') {
+                setColorMode('interests');
               }
             }}
             style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}

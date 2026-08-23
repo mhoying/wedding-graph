@@ -263,8 +263,18 @@ export default function App() {
 
   // Node Color Resolver (Generates vibrant dynamic colors for ALL custom cohorts & locations!)
   const getNodeColor = useCallback((node) => {
+    if (!node) return '#38bdf8';
     if (colorMode === 'side') return SIDE_COLORS[node.side] || SIDE_COLORS["Joint"];
     
+    if (colorMode === 'interests' && node.hobbies && node.hobbies.length > 0) {
+      const primaryHobby = node.hobbies[0];
+      let hash = 0;
+      for (let i = 0; i < primaryHobby.length; i++) {
+        hash = primaryHobby.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return DYNAMIC_CLUSTER_COLORS[Math.abs(hash) % DYNAMIC_CLUSTER_COLORS.length];
+    }
+
     if (colorMode === 'state' || colorMode === 'location' || colorMode === 'locations' || colorMode === 'current_location' || colorMode === 'original_location') {
       let locKey = 'Default';
       if (colorMode === 'current_location') {
@@ -272,7 +282,7 @@ export default function App() {
       } else if (colorMode === 'original_location') {
         locKey = node.originallyFrom || node.hometown || 'Unknown';
       } else {
-        locKey = getLocationStateKey(node);
+        locKey = node.currentlyLivesIn || node.originallyFrom || getLocationStateKey(node);
       }
 
       if (STATE_COLORS[locKey]) return STATE_COLORS[locKey];

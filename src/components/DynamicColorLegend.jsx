@@ -40,6 +40,16 @@ export default function DynamicColorLegend({
           itemMap.set(loc, color);
         }
       });
+    } else if (colorMode === 'interests') {
+      filteredNodes.forEach(node => {
+        if (!node || node.type === 'CONTEXT_HUB' || !node.hobbies) return;
+        node.hobbies.forEach(hobby => {
+          if (hobby && !itemMap.has(hobby) && !hobby.toLowerCase().includes('family')) {
+            const color = getNodeColor ? getNodeColor({ hobbies: [hobby] }) : '#38bdf8';
+            itemMap.set(hobby, color);
+          }
+        });
+      });
     } else {
       // Default: Cohorts (Only render true social cohorts, strictly exclude all family groups)
       const validCohorts = new Set(['Cornell', 'Google', 'Stanford', 'Lehigh', 'Dog Park', 'OWFL Blog', 'Bay FC', 'The Couple']);
@@ -68,7 +78,8 @@ export default function DynamicColorLegend({
   const modeTitle = colorMode === 'side' ? 'Side Colors' :
                     colorMode === 'current_location' ? 'Current Locations' :
                     colorMode === 'original_location' ? 'Hometowns' :
-                    colorMode === 'locations' ? 'Locations' : 'Cohorts';
+                    colorMode === 'locations' ? 'Locations' :
+                    colorMode === 'interests' ? 'Interests' : 'Cohorts';
 
   return (
     <div 

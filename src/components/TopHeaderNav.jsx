@@ -101,6 +101,8 @@ export default function TopHeaderNav({
                 setColorMode(val);
               } else if (val === 'cohort') {
                 setColorMode('cohort');
+              } else if (val === 'interests') {
+                setColorMode('interests');
               }
             }}
             style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
