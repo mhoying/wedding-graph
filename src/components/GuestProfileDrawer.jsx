@@ -168,6 +168,8 @@ export default function GuestProfileDrawer({
                 <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Originally From:</label>
                 <input 
                   type="text" 
+                  list="existing-locations-list"
+                  placeholder="e.g. SF Bay Area"
                   value={editOriginallyFrom}
                   onChange={(e) => setEditOriginallyFrom(e.target.value)}
                   style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
@@ -177,6 +179,8 @@ export default function GuestProfileDrawer({
                 <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Currently Lives In:</label>
                 <input 
                   type="text" 
+                  list="existing-locations-list"
+                  placeholder="e.g. NYC"
                   value={editCurrentlyLivesIn}
                   onChange={(e) => setEditCurrentlyLivesIn(e.target.value)}
                   style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
@@ -189,6 +193,8 @@ export default function GuestProfileDrawer({
                 <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Cohort Group:</label>
                 <input 
                   type="text" 
+                  list="existing-cohorts-list"
+                  placeholder="e.g. Dog Park, Lehigh"
                   value={editCohort}
                   onChange={(e) => setEditCohort(e.target.value)}
                   style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
@@ -210,7 +216,7 @@ export default function GuestProfileDrawer({
 
             <div style={{ marginBottom: 10 }}>
               <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Interests (Click ✕ to remove):</label>
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 }}>
                 {editHobbies.map(h => (
                   <span key={h} style={{ fontSize: 11, padding: '3px 8px', borderRadius: 9999, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', display: 'flex', alignItems: 'center', gap: 4 }}>
                     {h}
@@ -218,10 +224,13 @@ export default function GuestProfileDrawer({
                   </span>
                 ))}
               </div>
-              <div style={{ display: 'flex', gap: 6 }}>
+
+              {/* Free Text Entry OR Auto-complete Input */}
+              <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
                 <input 
                   type="text" 
-                  placeholder="New interest (e.g. Sailing)..."
+                  list="existing-hobbies-list"
+                  placeholder="Type new interest or select below..."
                   value={newInterestInput}
                   onChange={(e) => setNewInterestInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') handleAddInterestTag(); }}
@@ -235,7 +244,57 @@ export default function GuestProfileDrawer({
                   Add
                 </button>
               </div>
+
+              {/* Quick Select from Existing Tags */}
+              <div style={{ background: 'rgba(30, 41, 59, 0.5)', padding: 8, borderRadius: 8, border: '1px dashed rgba(255, 255, 255, 0.1)' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#38bdf8', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  Select Existing Universe Tags:
+                </div>
+                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', maxHeight: 80, overflowY: 'auto' }}>
+                  {['Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming']
+                    .filter(tag => !editHobbies.includes(tag))
+                    .map(tag => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => {
+                          if (!editHobbies.includes(tag)) {
+                            handleAddInterestTag(tag);
+                          }
+                        }}
+                        style={{
+                          fontSize: 10,
+                          padding: '2px 7px',
+                          borderRadius: 9999,
+                          background: 'rgba(56, 189, 248, 0.12)',
+                          color: '#7dd3fc',
+                          border: '1px solid rgba(56, 189, 248, 0.3)',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        + {tag}
+                      </button>
+                    ))}
+                </div>
+              </div>
             </div>
+
+            {/* Datalists for Autocomplete */}
+            <datalist id="existing-hobbies-list">
+              {['Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming'].map(h => (
+                <option key={h} value={h} />
+              ))}
+            </datalist>
+            <datalist id="existing-cohorts-list">
+              {['Bay FC', 'Cornell', 'Dog Park', 'Google', 'Lehigh', 'OWFL Blog', 'The Couple', 'Other'].map(c => (
+                <option key={c} value={c} />
+              ))}
+            </datalist>
+            <datalist id="existing-locations-list">
+              {['SF Bay Area', 'NYC', 'Chicago', 'DC', 'Baltimore', 'Bermuda', 'Madison, WI', 'Houston', 'Boston, MA', 'Stockton, Ca', 'Upstate NY', 'Western PA', 'Eastern PA', 'Colorado'].map(l => (
+                <option key={l} value={l} />
+              ))}
+            </datalist>
 
             <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
               <button 

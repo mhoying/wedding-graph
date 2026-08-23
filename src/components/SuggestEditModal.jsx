@@ -65,14 +65,47 @@ export default function SuggestEditModal({
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <label style={{ fontSize: 11, fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: 4 }}>Note / Proposed Change:</label>
+          <label style={{ fontSize: 11, fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: 4 }}>Note / Proposed Change (Free Text OR Select Below):</label>
           <textarea 
-            rows={3}
-            placeholder='e.g. "Add Coffee tag", "Currently lives in Seattle, WA"'
+            rows={2}
+            placeholder='Type custom note OR click existing tags below...'
             value={feedbackNote}
             onChange={(e) => setFeedbackNote(sanitizeInput(e.target.value))}
             style={{ width: '100%', padding: '8px 12px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12, resize: 'none' }}
           />
+
+          {/* Quick Select from Existing Tags */}
+          <div style={{ marginTop: 8, background: 'rgba(15, 23, 42, 0.6)', padding: 8, borderRadius: 8, border: '1px dashed rgba(255, 255, 255, 0.15)' }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#38bdf8', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              Click Existing Tag to Append:
+            </div>
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', maxHeight: 70, overflowY: 'auto' }}>
+              {['Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming']
+                .map(tag => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      const prefix = feedbackNote ? `${feedbackNote}, ` : 'Add interest: ';
+                      if (!feedbackNote.includes(tag)) {
+                        setFeedbackNote(prefix + tag);
+                      }
+                    }}
+                    style={{
+                      fontSize: 10,
+                      padding: '2px 7px',
+                      borderRadius: 9999,
+                      background: 'rgba(56, 189, 248, 0.12)',
+                      color: '#7dd3fc',
+                      border: '1px solid rgba(56, 189, 248, 0.3)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    + {tag}
+                  </button>
+                ))}
+            </div>
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: 8 }}>
