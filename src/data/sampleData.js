@@ -1156,7 +1156,10 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Kids"
+      "Kids",
+      "Pottery",
+      "Design",
+      "Spa days"
     ],
     "__indexColor": "#180032",
     "index": 49,

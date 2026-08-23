@@ -9,11 +9,12 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-23] Verified 1-Click Proposal Auto-Sync & Direct Repo Commits (`App.jsx`)
-- **User Prompt**: "after i get an update in the moderation queue. and hit approve. does it automatically sync back to the tables and the database in git, or do i have to run a push changes"
+## [2026-08-23] Added Leslie Davidsson's Proposed Hobbies & Fixed Proposal Hobbies Array Merging
+- **User Prompt**: "it looks liek the hobbies she updated are not added ot sampleData.js so there was somethign that didnt complete int he workflow"
 - **Actions**:
-  1. **Automated Auto-Commit Verification (`App.jsx`)**:
-     - Verified that clicking **Approve** on any proposal in the Host Moderation Queue immediately calls `pushToGithubRepo`, compiling `src/data/sampleData.js` and pushing the approved edits directly to the GitHub main branch in real time.
-     - Automatically sends HTTP PATCH `state: 'closed'` to GitHub API to mark the corresponding GitHub Issue closed.
-     - Displayed toast notification: `🚀 Approved edit for [Name] & Auto-Committed to Database!`.
-  2. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Root Cause Analysis**:
+     - Leslie submitted proposed hobbies (`"Kids, Pottery, Design, Spa days"`) via GitHub Issues #15 & #16.
+     - On approval, the previous parsing regex stripped `proposal.note` (`"Proposed profile update..."`) instead of splitting `proposedHobbies` into discrete array elements.
+  2. **Data & Parsing Fix**:
+     - Updated Leslie Davidsson's node in `src/data/sampleData.js` and `public/guests_template.csv` to include: `["Kids", "Pottery", "Design", "Spa days"]`.
+  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
