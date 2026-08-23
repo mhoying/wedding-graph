@@ -1,115 +1,88 @@
 source,target,relationship
-"allison_williams","jim_merizio","Allison Williams & Jim Merizio"
-"andy_schmitt","victoria_shi","Andy & Victoria"
-"anne_sweeney","jon_hoy","The Hoy Family"
-"brian_kim","michelle_preston","The Kimpreston Family"
-"chrissy_fiore","will_short","Chrissy Fiore & Will Short"
-"greg_goetchius","lauren_sofia","Greg Goetchius & Lauren Sofia"
-"katie_conniff","ryan_podolak","Katie Conniff & Ryan Podolak"
-"leanna_habana","emy_habana","The Habana Family"
-"matt","maureen","Honk Family"
-"romana_rajput","steve_nares","Romana Rajput & Steve Nares"
-"poukhan_philavanh_anthony","ryan_anthony","The Anthony Family"
-"cole_armstrong","tracy_armstrong","The Armstrong Family"
-"jenna_auer","tim_auer","The Auer Family"
-"jonathan_bibayan","lindsay_mayott","The Bibayan-Mayott Family"
-"jeff_domanski","jill_domanski","The Domanski Family"
-"dave_festa","erica_festa","The Festa Family"
-"ari_freedman","eric_freedman","The Freedman Family"
-"ari_freedman","james_freedman","The Freedman Family"
-"ari_freedman","nur_e_freedman","The Freedman Family"
-"eric_freedman","james_freedman","The Freedman Family"
-"eric_freedman","nur_e_freedman","The Freedman Family"
-"james_freedman","nur_e_freedman","The Freedman Family"
-"angela_govig","jason_govig","The Govig Family"
-"janaki_lahorani","sumeet_lahorani","The Lahorani Family"
-"jason_mcmullan","jessi_mcmullan","The McMullan Family"
-"alex_murillo","leslie_davidsson","The Murillo-Davisson Family"
-"jess_phan","mark_macdonald","The Phan-Macdonald Family"
-"katie_richter","paul_richter","The Richter Family"
-"george_sun","sohyun_sun","The Sun Family"
-"ivan_vojvodi_","mira_vojvodi_","The Vojvodić Family"
-"mary_mitchell","tim_coble","Tim Coble & Mary Fucking Mitchell"
-"kathryn_potts","joe_wernet","Kathryn Flack & Joe Wernet"
-"allison_williams","maureen","Lehigh Friend"
-"allison_williams","matt","Lehigh Friend"
-"andy_schmitt","maureen","Google Friend"
-"andy_schmitt","matt","Google Friend"
-"anne_sweeney","maureen","Stanford Friend"
-"anne_sweeney","matt","Stanford Friend"
-"ashley_prichard","maureen","Bay FC Friend"
-"ashley_prichard","matt","Bay FC Friend"
-"roopak_kandasamy","maureen","Bay FC Friend"
-"roopak_kandasamy","matt","Bay FC Friend"
-"becky_sporh","maureen","Dog Park Friend"
-"becky_sporh","matt","Dog Park Friend"
-"brian_kim","maureen","Cornell Friend"
-"brian_kim","matt","Cornell Friend"
-"chrissy_fiore","maureen","OWFL Blog Friend"
-"chrissy_fiore","matt","OWFL Blog Friend"
-"greg_goetchius","maureen","Dog Park Friend"
-"greg_goetchius","matt","Dog Park Friend"
-"katie_conniff","maureen","Dog Park Friend"
-"katie_conniff","matt","Dog Park Friend"
-"krista_kobeski","maureen","Bay FC Friend"
-"krista_kobeski","matt","Bay FC Friend"
-"leanna_habana","maureen","Stanford Friend"
-"leanna_habana","matt","Stanford Friend"
-"liz_scott","maureen","OWFL Blog Friend"
-"liz_scott","matt","OWFL Blog Friend"
-"marissa_lavelle","maureen","Stanford Friend"
-"marissa_lavelle","matt","Stanford Friend"
-"missy_ruminski","maureen","OWFL Blog Friend"
-"missy_ruminski","matt","OWFL Blog Friend"
-"nichole_remmert","maureen","OWFL Blog Friend"
-"nichole_remmert","matt","OWFL Blog Friend"
-"nishat_shaikh","maureen","Cornell Friend"
-"nishat_shaikh","matt","Cornell Friend"
-"ryan_anthony","maureen","Cornell Friend"
-"ryan_anthony","matt","Cornell Friend"
-"cole_armstrong","maureen","Dog Park Friend"
-"cole_armstrong","matt","Dog Park Friend"
-"tracy_armstrong","maureen","Dog Park Friend"
-"tracy_armstrong","matt","Dog Park Friend"
-"tim_auer","maureen","Dog Park Friend"
-"tim_auer","matt","Dog Park Friend"
-"erica_festa","maureen","Google Friend"
-"erica_festa","matt","Google Friend"
-"nur_e_freedman","maureen","Lehigh Friend"
-"nur_e_freedman","matt","Lehigh Friend"
-"jason_govig","maureen","Google Friend"
-"jason_govig","matt","Google Friend"
-"janaki_lahorani","maureen","Google Friend"
-"janaki_lahorani","matt","Google Friend"
-"jason_mcmullan","maureen","Lehigh Friend"
-"jason_mcmullan","matt","Lehigh Friend"
-"jessi_mcmullan","maureen","Lehigh Friend"
-"jessi_mcmullan","matt","Lehigh Friend"
-"alex_murillo","maureen","Dog Park Friend"
-"alex_murillo","matt","Dog Park Friend"
-"leslie_davidsson","maureen","Dog Park Friend"
-"leslie_davidsson","matt","Dog Park Friend"
-"paul_richter","maureen","OWFL Blog Friend"
-"paul_richter","matt","OWFL Blog Friend"
-"lauren_schmied","maureen","Cornell Friend"
-"lauren_schmied","matt","Cornell Friend"
-"tina_silva","maureen","Dog Park Friend"
-"tina_silva","matt","Dog Park Friend"
-"george_sun","maureen","Cornell Friend"
-"george_sun","matt","Cornell Friend"
-"chuck_tempest","maureen","Cornell Friend"
-"chuck_tempest","matt","Cornell Friend"
-"clyde_tsai","maureen","Cornell Friend"
-"clyde_tsai","matt","Cornell Friend"
-"ivan_vojvodi_","maureen","Google Friend"
-"ivan_vojvodi_","matt","Google Friend"
-"tim_coble","maureen","Dog Park Friend"
-"tim_coble","matt","Dog Park Friend"
-"yannick_carer","maureen","Google Friend"
-"yannick_carer","matt","Google Friend"
-"becky_spohr","maureen","Dog Park Friend"
-"becky_spohr","matt","Dog Park Friend"
-"chuchu_zhang","maureen","Google Friend"
-"chuchu_zhang","matt","Google Friend"
-"kathryn_potts","maureen","Stanford Friend"
-"kathryn_potts","matt","Stanford Friend"
+allison_williams,jim_merizio,Connected
+andy_schmitt,victoria_shi,Connected
+anne_sweeney,jon_hoy,Connected
+brian_kim,michelle_preston,Connected
+chrissy_fiore,will_short,Connected
+greg_goetchius,lauren_sofia,Connected
+katie_conniff,ryan_podolak,Connected
+leanna_habana,emy_habana,Connected
+matt,maureen,Connected
+romana_rajput,steve_nares,Connected
+poukhan_philavanh_anthony,ryan_anthony,Connected
+cole_armstrong,tracy_armstrong,Connected
+jenna_auer,tim_auer,Connected
+jonathan_bibayan,lindsay_mayott,Connected
+jeff_domanski,jill_domanski,Connected
+dave_festa,erica_festa,Connected
+james_freedman,eric_freedman,Connected
+james_freedman,ari_freedman,Connected
+nur_e_freedman,james_freedman,Connected
+angela_govig,jason_govig,Connected
+janaki_lahorani,sumeet_lahorani,Connected
+jason_mcmullan,jessi_mcmullan,Connected
+alex_murillo,leslie_davidsson,Connected
+jess_phan,mark_macdonald,Connected
+katie_richter,paul_richter,Connected
+george_sun,sohyun_sun,Connected
+ivan_vojvodi_,mira_vojvodi_,Connected
+mary_mitchell,tim_coble,Connected
+kathryn_potts,joe_wernet,Connected
+roopak_kandasamy,ashley_prichard,Connected
+allison_williams,maureen,Connected
+andy_schmitt,matt,Connected
+anne_sweeney,matt,Connected
+ashley_prichard,james_freedman,Connected
+ashley_prichard,bay_fc,Connected
+roopak_kandasamy,bay_fc,Connected
+becky_spohr,dog_park,Connected
+brian_kim,matt,Connected
+chrissy_fiore,owfl_blog,Connected
+greg_goetchius,dog_park,Connected
+katie_conniff,dog_park,Connected
+krista_kobeski,jessi_mcmullan,Connected
+leanna_habana,matt,Connected
+liz_scott,owfl_blog,Connected
+marissa_lavelle,matt,Connected
+missy_ruminski,owfl_blog,Connected
+missy_ruminski,matt,Connected
+nichole_remmert,owfl_blog,Connected
+nishat_shaikh,matt,Connected
+ryan_anthony,matt,Connected
+cole_armstrong,dog_park,Connected
+tracy_armstrong,dog_park,Connected
+tim_auer,dog_park,Connected
+erica_festa,matt,Connected
+nur_e_freedman,jessi_mcmullan,Connected
+jason_govig,matt,Connected
+janaki_lahorani,matt,Connected
+jason_mcmullan,maureen,Connected
+jessi_mcmullan,maureen,Connected
+alex_murillo,dog_park,Connected
+leslie_davidsson,dog_park,Connected
+paul_richter,owfl_blog,Connected
+lauren_schmied,nishat_shaikh,Connected
+tina_silva,dog_park,Connected
+george_sun,ryan_anthony,Connected
+chuck_tempest,matt,Connected
+clyde_tsai,ryan_anthony,Connected
+ivan_vojvodi_,matt,Connected
+tim_coble,dog_park,Connected
+yannick_carer,matt,Connected
+chuchu_zhang,matt,Connected
+kathryn_potts,matt,Connected
+leanna_habana,kathryn_potts,Connected
+honk,matt,Connected
+honk,maureen,Connected
+honk,dog_park,Connected
+honk,owfl_blog,Connected
+honk,bay_fc,Connected
+nadia_shaikh,nishat_shaikh,Family
+becca_winslow,jenna_auer,Friends
+maureen,jeff_domanski,Coworkers
+jess_phan,leslie_davidsson,Friends
+clyde_tsai,jesse_lindenberger_schutz,Coworkers
+romana_rajput,nur_e_freedman,Coworkers
+ivan_vojvodic,matt,Coworkers
+jonathan_bibayan,jenna_auer,Friends
+mira_vojvodic,ivan_vojvodic,Family
