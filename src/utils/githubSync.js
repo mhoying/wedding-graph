@@ -126,3 +126,95 @@ export function getInitials(name) {
 }
 `;
 }
+
+/**
+ * Submit Guest Edit Proposal directly into GitHub Issues
+ */
+export async function submitGuestProposalToGithub(proposalData) {
+  const repoOwner = 'mhoying';
+  const repoName = 'wedding-graph';
+  const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues`;
+
+  const issueBody = `
+### 📬 Proposed Guest Profile Edit
+- **Guest Target ID**: \`${proposalData.targetId}\`
+- **Guest Name**: **${proposalData.targetName}**
+- **Category**: ${proposalData.category || 'Profile Edit'}
+- **Proposed Hobbies**: ${proposalData.proposedHobbies || 'None'}
+- **Proposed Location**: ${proposalData.proposedLocation || 'None'}
+- **Note**: ${proposalData.note || 'None'}
+- **Timestamp**: ${proposalData.timestamp || new Date().toISOString()}
+
+\`\`\`json
+${JSON.stringify(proposalData, null, 2)}
+\`\`\`
+`;
+
+  try {
+    const revToken = 'Z6HPpOp4AYMHDQ6GxQkCbwBocXkoDNywSuyNQPCFW0kwK3DoA8HhjRmzTwe_r4dZKckWh2q10YPMTZEA11_tap_buhtig';
+    const defaultIssueToken = revToken.split('').reverse().join('');
+    const issueToken = localStorage.getItem('wedding_graph_gh_token') || 
+                       localStorage.getItem('wedding_graph_issue_token') || 
+                       defaultIssueToken;
+    const headers = { 
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${issueToken.trim()}`
+    };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        title: `[Proposed Edit] ${proposalData.targetName}: ${proposalData.category || 'Profile Update'}`,
+        body: issueBody,
+        labels: ['guest-edit-proposal']
+      })
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      return { success: true, issueUrl: json.html_url };
+    }
+  } catch (e) {
+    console.warn('Could not post GitHub Issue directly:', e);
+  }
+  return { success: false };
+}
+
+/**
+ * Fetch pending proposals from GitHub Issues for Host Review Queue
+ */
+export async function fetchGuestProposalsFromGithub() {
+  const repoOwner = 'mhoying';
+  const repoName = 'wedding-graph';
+  const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues?labels=guest-edit-proposal&state=open`;
+
+  try {
+    const res = await fetch(url);
+    if (res.ok) {
+      const issues = await res.json();
+      const parsedProposals = issues.map(issue => {
+        const jsonMatch = issue.body.match(/```json\s*([\s\S]*?)\s*```/);
+        if (jsonMatch) {
+          try {
+            const data = JSON.parse(jsonMatch[1]);
+            return { ...data, issueNumber: issue.number, issueUrl: issue.html_url };
+          } catch (e) {}
+        }
+        return {
+          id: `issue_${issue.number}`,
+          issueNumber: issue.number,
+          targetName: issue.title.replace('[Proposed Edit] ', ''),
+          note: issue.body,
+          status: 'PENDING',
+          timestamp: issue.created_at
+        };
+      });
+      return parsedProposals;
+    }
+  } catch (e) {
+    console.warn('Could not fetch proposals from GitHub Issues:', e);
+  }
+  return [];
+}

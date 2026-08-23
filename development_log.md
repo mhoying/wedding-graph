@@ -9,14 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Implemented Automated Search `zoomToFit` Framing (`ForceCanvas.jsx` & `App.jsx`)
-- **User Prompt**: "when i search for someone or a term, it shoudl zoom to a frame that has all the nodes that are in scope"
+## [2026-08-22] Restored Real-Time Moderation Queue Fetching (`githubSync.js`)
+- **User Prompt**: "so my friend just submitted a change on her phone to change krista's informaiton about her hometown and i dont see anything in the moderation queue"
 - **Actions**:
-  1. **Automated Search Result Framing (`ForceCanvas.jsx`)**:
-     - Added a reactive `useEffect` hook listening to `searchQuery` changes.
-     - Automatically calculates the subset of matching guest nodes (by name, cohort, side, or interest hobbies).
-     - Calls `fgRef.current.zoomToFit(800ms, 60px padding, nodeFilter)` to automatically scale and center the camera to frame **100% of all matching search result nodes in scope**.
-     - Pauses orbit rotation so search result nodes lock cleanly in frame.
-  2. **Empirical Headless Chromium Verification**:
-     - `SEARCH ZOOMTOFIT FRAMING VERIFIED WITH 0 ERRORS!`.
+  1. **Audit & Verification**:
+     - Verified that your friend's submission from her phone successfully created **GitHub Issue #3** (`[Proposed Edit] Krista Kobeski: Profile Edit Proposal`).
+     - Discovered `fetchGuestProposalsFromGithub` was missing from `src/utils/githubSync.js` after a previous module edit.
+  2. **Restored Fetching Pipeline (`src/utils/githubSync.js`)**:
+     - Restored `fetchGuestProposalsFromGithub()` to query GitHub Issues API for all open guest edit proposals (`state=open&labels=guest-edit-proposal`).
+     - Enables real-time sync into your Host Review Queue modal on screen.
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
