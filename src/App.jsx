@@ -28,14 +28,14 @@ export default function App() {
   // Core Data State (Loads real 75-guest wedding dataset by default)
   useEffect(() => {
     // Purge legacy storage keys that contain old pre-migrated cohort names
-    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_nodes_v10', 'wedding_graph_nodes_v11', 'wedding_graph_nodes_v12', 'wedding_graph_nodes_v13', 'wedding_graph_nodes_v14', 'wedding_graph_nodes_v15', 'wedding_graph_nodes_v16', 'wedding_graph_nodes_v17', 'wedding_graph_nodes_v18', 'wedding_graph_links_v7', 'wedding_graph_links_v3', 'wedding_graph_links_v10', 'wedding_graph_links_v11', 'wedding_graph_links_v12', 'wedding_graph_links_v13', 'wedding_graph_links_v14', 'wedding_graph_links_v15', 'wedding_graph_links_v16', 'wedding_graph_links_v17', 'wedding_graph_links_v18'].forEach(k => {
+    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_nodes_v10', 'wedding_graph_nodes_v11', 'wedding_graph_nodes_v12', 'wedding_graph_nodes_v13', 'wedding_graph_nodes_v14', 'wedding_graph_nodes_v15', 'wedding_graph_nodes_v16', 'wedding_graph_nodes_v17', 'wedding_graph_nodes_v18', 'wedding_graph_nodes_v19', 'wedding_graph_links_v7', 'wedding_graph_links_v3', 'wedding_graph_links_v10', 'wedding_graph_links_v11', 'wedding_graph_links_v12', 'wedding_graph_links_v13', 'wedding_graph_links_v14', 'wedding_graph_links_v15', 'wedding_graph_links_v16', 'wedding_graph_links_v17', 'wedding_graph_links_v18', 'wedding_graph_links_v19'].forEach(k => {
       try { localStorage.removeItem(k); } catch(e) {}
     });
   }, []);
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v19');
+      const saved = localStorage.getItem('wedding_graph_nodes_v20');
       if (saved) {
         const parsed = JSON.parse(saved);
         const hasLegacyCohorts = Array.isArray(parsed) && parsed.some(n => 
@@ -53,7 +53,7 @@ export default function App() {
 
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v19');
+      const saved = localStorage.getItem('wedding_graph_links_v20');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50) {
@@ -1169,9 +1169,27 @@ export default function App() {
             const updated = prev.map(node => {
               if (node.id === proposal.targetId || node.name === proposal.targetName) {
                 const newNode = { ...node };
+                // 1. Proposed Name
                 if (proposal.proposedName) {
                   newNode.name = proposal.proposedName;
+                } else if (proposal.note && proposal.note.includes('Name:')) {
+                  const match = proposal.note.match(/Name:\s*([^|]+)/i);
+                  if (match) newNode.name = match[1].trim();
                 }
+
+                // 2. Proposed Originally From / Hometown
+                if (proposal.proposedOriginallyFrom) {
+                  newNode.originallyFrom = proposal.proposedOriginallyFrom;
+                  newNode.hometown = proposal.proposedOriginallyFrom;
+                } else if (proposal.note && proposal.note.includes('Originally From:')) {
+                  const match = proposal.note.match(/Originally From:\s*([^|]+)/i);
+                  if (match) {
+                    newNode.originallyFrom = match[1].trim();
+                    newNode.hometown = match[1].trim();
+                  }
+                }
+
+                // 3. Proposed Currently Lives In Location
                 if (proposal.proposedLocation) {
                   newNode.currentlyLivesIn = proposal.proposedLocation;
                 }
@@ -1184,9 +1202,10 @@ export default function App() {
                 if (proposal.proposedRelationship) {
                   newNode.relationship = proposal.proposedRelationship;
                 }
-                const hobbyText = proposal.proposedHobbies || proposal.note || '';
-                if (hobbyText) {
-                  const newHobbies = hobbyText.split(/[,;\n]/).map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship):?/i, '').trim()).filter(Boolean);
+                
+                // 4. Proposed Hobbies
+                if (proposal.proposedHobbies) {
+                  const newHobbies = proposal.proposedHobbies.split(/[,;\n]/).map(h => h.trim()).filter(Boolean);
                   newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
                 }
                 return newNode;
