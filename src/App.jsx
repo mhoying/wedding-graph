@@ -26,9 +26,16 @@ export default function App() {
   const imageCacheRef = useRef({});
 
   // Core Data State (Loads real 75-guest wedding dataset by default)
+  useEffect(() => {
+    // Purge legacy storage keys that contain old pre-migrated cohort names
+    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_links_v7', 'wedding_graph_links_v3'].forEach(k => {
+      try { localStorage.removeItem(k); } catch(e) {}
+    });
+  }, []);
+
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v9');
+      const saved = localStorage.getItem('wedding_graph_nodes_v10');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50 && parsed.some(n => n.id === 'maureen')) {
@@ -43,7 +50,7 @@ export default function App() {
 
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v9');
+      const saved = localStorage.getItem('wedding_graph_links_v10');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50) {
@@ -124,7 +131,7 @@ export default function App() {
     setNodes(combinedNodes);
 
     try {
-      localStorage.setItem('wedding_graph_nodes_master', JSON.stringify(combinedNodes));
+      localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(combinedNodes));
     } catch (e) {}
 
     setCopyToast('⚡ Committing updated spreadsheet dataset to GitHub Repo...');
@@ -138,8 +145,8 @@ export default function App() {
     setNodes(newNodes);
     setLinks(newLinks);
     try {
-      localStorage.setItem('wedding_graph_nodes_v7', JSON.stringify(newNodes));
-      localStorage.setItem('wedding_graph_links_v7', JSON.stringify(newLinks));
+      localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(newNodes));
+      localStorage.setItem('wedding_graph_links_v10', JSON.stringify(newLinks));
     } catch (e) {
       console.warn('Could not save to localStorage:', e);
     }
@@ -149,7 +156,7 @@ export default function App() {
     setLinks(prev => {
       const updated = [...prev, newLink];
       try {
-        localStorage.setItem('wedding_graph_links_v7', JSON.stringify(updated));
+        localStorage.setItem('wedding_graph_links_v10', JSON.stringify(updated));
       } catch (e) {
         console.warn('Could not save links to localStorage:', e);
       }
@@ -691,7 +698,7 @@ export default function App() {
       hobbies: editHobbies
     });
     try {
-      localStorage.setItem('wedding_graph_nodes_master', JSON.stringify(updated));
+      localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(updated));
     } catch (e) {}
     const jsContent = generateSampleDataJsContent(updated, links);
     pushToGithubRepo(jsContent, `Update profile dataset for ${selectedNode.name}`, '', 'src/data/sampleData.js');
@@ -1174,7 +1181,7 @@ export default function App() {
             });
 
             try {
-              localStorage.setItem('wedding_graph_nodes_master', JSON.stringify(updated));
+              localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(updated));
             } catch (e) {}
 
             const jsContent = generateSampleDataJsContent(updated, links);
