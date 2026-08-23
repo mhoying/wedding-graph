@@ -1,4 +1,4 @@
-// Real Wedding Guest List Data - Auto-generated
+// Real Wedding Guest List Data - Auto-updated via Host Admin Suite
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
   "Cornell": "#b31b1b",
@@ -11,17 +11,27 @@ export const COHORT_COLORS = {
   "Friends": "#64748b",
   "Default": "#64748b"
 };
-
 export const SIDE_COLORS = {
   "Maureen": "#ec4899",
   "Matt": "#3b82f6",
   "Joint": "#10b981"
 };
-
 export const STATE_COLORS = {
   "USA": "#38bdf8",
   "Default": "#64748b"
 };
+export const DYNAMIC_CLUSTER_COLORS = [
+  "#f472b6",
+  "#38bdf8",
+  "#34d399",
+  "#a78bfa",
+  "#fbbf24",
+  "#f87171",
+  "#818cf8",
+  "#4ade80",
+  "#fb923c",
+  "#e879f9"
+];
 
 export const SAMPLE_NODES = [
   {
@@ -38,7 +48,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Lehigh"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#ec0001"
   },
   {
     "id": "jim_merizio",
@@ -54,7 +65,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Beer"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#d80002"
   },
   {
     "id": "andy_schmitt",
@@ -71,7 +83,8 @@ export const SAMPLE_NODES = [
       "Beer",
       "Cocktails"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#c40003"
   },
   {
     "id": "anne_sweeney",
@@ -87,7 +100,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#b00004"
   },
   {
     "id": "jon_hoy",
@@ -105,7 +119,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#9c0005"
   },
   {
     "id": "ashley_prichard",
@@ -122,7 +137,8 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Soccer"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#880006"
   },
   {
     "id": "roopak_kandasamy",
@@ -139,7 +155,8 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Soccer"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#740007"
   },
   {
     "id": "becky_sporh",
@@ -156,7 +173,8 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Tennis"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#600008"
   },
   {
     "id": "brian_kim",
@@ -173,7 +191,8 @@ export const SAMPLE_NODES = [
       "Bass",
       "Ska"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#4c0009"
   },
   {
     "id": "michelle_preston",
@@ -189,7 +208,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dance"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#38000a"
   },
   {
     "id": "chrissy_fiore",
@@ -207,7 +227,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#24000b"
   },
   {
     "id": "greg_goetchius",
@@ -224,7 +245,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#10000c"
   },
   {
     "id": "lauren_sofia",
@@ -240,7 +262,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Tennis"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#fc000d"
   },
   {
     "id": "jesse_lindenberger_schutz",
@@ -257,7 +280,8 @@ export const SAMPLE_NODES = [
       "Art",
       "Gaming"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#e8000e"
   },
   {
     "id": "katie_conniff",
@@ -274,7 +298,8 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Brains"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#d4000f"
   },
   {
     "id": "ryan_podolak",
@@ -290,7 +315,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Wine"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#c00010"
   },
   {
     "id": "krista_kobeski",
@@ -306,7 +332,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#ac0011"
   },
   {
     "id": "leanna_habana",
@@ -322,7 +349,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#980012"
   },
   {
     "id": "liz_scott",
@@ -338,7 +366,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#840013"
   },
   {
     "id": "marissa_lavelle",
@@ -354,7 +383,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#700014"
   },
   {
     "id": "matt",
@@ -374,7 +404,8 @@ export const SAMPLE_NODES = [
       "Beer",
       "Bay FC"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#5c0015"
   },
   {
     "id": "maureen",
@@ -394,7 +425,8 @@ export const SAMPLE_NODES = [
       "Beer",
       "Bay FC"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#480016"
   },
   {
     "id": "missy_ruminski",
@@ -410,7 +442,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Regretfully Decline"
+    "rsvp": "Regretfully Decline",
+    "__indexColor": "#340017"
   },
   {
     "id": "nichole_remmert",
@@ -427,7 +460,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#200018"
   },
   {
     "id": "nishat_shaikh",
@@ -443,7 +477,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#0c0019"
   },
   {
     "id": "romana_rajput",
@@ -459,7 +494,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#f8001a"
   },
   {
     "id": "steve_nares",
@@ -475,7 +511,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#e4001b"
   },
   {
     "id": "poukhan_philavanh_anthony",
@@ -491,7 +528,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#d0001c"
   },
   {
     "id": "ryan_anthony",
@@ -507,7 +545,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Whiskey"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#bc001d"
   },
   {
     "id": "cole_armstrong",
@@ -525,7 +564,8 @@ export const SAMPLE_NODES = [
       "Music",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#a8001e"
   },
   {
     "id": "tracy_armstrong",
@@ -541,7 +581,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#94001f"
   },
   {
     "id": "jenna_auer",
@@ -557,7 +598,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#800020"
   },
   {
     "id": "tim_auer",
@@ -575,7 +617,8 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Outdoors"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#6c0021"
   },
   {
     "id": "jonathan_bibayan",
@@ -591,7 +634,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#580022"
   },
   {
     "id": "lindsay_mayott",
@@ -607,7 +651,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#440023"
   },
   {
     "id": "jeff_domanski",
@@ -623,7 +668,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#300024"
   },
   {
     "id": "jill_domanski",
@@ -639,7 +685,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#1c0025"
   },
   {
     "id": "dave_festa",
@@ -655,7 +702,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#080026"
   },
   {
     "id": "erica_festa",
@@ -671,7 +719,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#f40027"
   },
   {
     "id": "ari_freedman",
@@ -687,7 +736,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#e00028"
   },
   {
     "id": "eric_freedman",
@@ -703,7 +753,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#cc0029"
   },
   {
     "id": "james_freedman",
@@ -719,7 +770,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#b8002a"
   },
   {
     "id": "nur_e_freedman",
@@ -735,7 +787,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Whiskey"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#a4002b"
   },
   {
     "id": "angela_govig",
@@ -751,7 +804,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#90002c"
   },
   {
     "id": "jason_govig",
@@ -768,7 +822,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Music"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#7c002d"
   },
   {
     "id": "janaki_lahorani",
@@ -784,7 +839,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#68002e"
   },
   {
     "id": "jason_mcmullan",
@@ -800,7 +856,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#54002f"
   },
   {
     "id": "jessi_mcmullan",
@@ -816,7 +873,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#400030"
   },
   {
     "id": "alex_murillo",
@@ -834,7 +892,8 @@ export const SAMPLE_NODES = [
       "Beer",
       "Gardening"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#2c0031"
   },
   {
     "id": "leslie_davidsson",
@@ -850,7 +909,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#180032"
   },
   {
     "id": "jess_phan",
@@ -866,7 +926,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#040033"
   },
   {
     "id": "mark_macdonald",
@@ -882,7 +943,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#f00034"
   },
   {
     "id": "katie_richter",
@@ -898,7 +960,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#dc0035"
   },
   {
     "id": "paul_richter",
@@ -914,7 +977,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#c80036"
   },
   {
     "id": "lauren_schmied",
@@ -930,7 +994,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#b40037"
   },
   {
     "id": "tina_silva",
@@ -946,7 +1011,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#a00038"
   },
   {
     "id": "george_sun",
@@ -962,7 +1028,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#8c0039"
   },
   {
     "id": "sohyun_sun",
@@ -978,7 +1045,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#78003a"
   },
   {
     "id": "chuck_tempest",
@@ -994,7 +1062,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#64003b"
   },
   {
     "id": "clyde_tsai",
@@ -1010,7 +1079,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#50003c"
   },
   {
     "id": "ivan_vojvodi_",
@@ -1026,7 +1096,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Whiskey"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#3c003d"
   },
   {
     "id": "becca_winslow",
@@ -1042,7 +1113,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#28003e"
   },
   {
     "id": "mary_mitchell",
@@ -1059,7 +1131,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#14003f"
   },
   {
     "id": "tim_coble",
@@ -1077,7 +1150,8 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Gaming"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#000040"
   },
   {
     "id": "yannick_carer",
@@ -1093,7 +1167,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#ec0041"
   },
   {
     "id": "becky_spohr",
@@ -1109,7 +1184,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#d80042"
   },
   {
     "id": "chuchu_zhang",
@@ -1125,7 +1201,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#c40043"
   },
   {
     "id": "emy_habana",
@@ -1141,7 +1218,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#b00044"
   },
   {
     "id": "kathryn_potts",
@@ -1157,7 +1235,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Words"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#9c0045"
   },
   {
     "id": "joe_wernet",
@@ -1173,7 +1252,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#880046"
   },
   {
     "id": "mira_vojvodi_",
@@ -1189,7 +1269,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#740047"
   },
   {
     "id": "nadia_shaikh",
@@ -1205,7 +1286,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#600048"
   },
   {
     "id": "sumeet_lahorani",
@@ -1221,7 +1303,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#4c0049"
   },
   {
     "id": "victoria_shi",
@@ -1237,7 +1320,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#38004a"
   },
   {
     "id": "will_short",
@@ -1253,7 +1337,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Socializing"
     ],
-    "rsvp": "Joyfully Accept"
+    "rsvp": "Joyfully Accept",
+    "__indexColor": "#24004b"
   }
 ];
 
@@ -1827,12 +1912,37 @@ export const SAMPLE_LINKS = [
     "source": "kathryn_potts",
     "target": "matt",
     "relationship": "Stanford Friend"
+  },
+  {
+    "source": "nadia_shaikh",
+    "target": "nishat_shaikh",
+    "label": "Family"
+  },
+  {
+    "source": "becca_winslow",
+    "target": "jenna_auer",
+    "label": "Friends"
+  },
+  {
+    "source": "maureen",
+    "target": "jeff_domanski",
+    "label": "Coworkers"
+  },
+  {
+    "source": "jess_phan",
+    "target": "leslie_davidsson",
+    "label": "Friends"
+  },
+  {
+    "source": "clyde_tsai",
+    "target": "jesse_lindenberger_schutz",
+    "label": "Coworkers"
+  },
+  {
+    "source": "romana_rajput",
+    "target": "nur_e_freedman",
+    "label": "Coworkers"
   }
-];
-
-export const DYNAMIC_CLUSTER_COLORS = [
-  '#f472b6', '#38bdf8', '#34d399', '#a78bfa', '#fbbf24', 
-  '#f87171', '#818cf8', '#4ade80', '#fb923c', '#e879f9'
 ];
 
 export function getInitials(name) {
