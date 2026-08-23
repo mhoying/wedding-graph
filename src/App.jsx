@@ -19,6 +19,7 @@ import BulkCsvImportModal from './components/BulkCsvImportModal';
 import AddConnectionModal from './components/AddConnectionModal';
 import HostReviewQueueModal from './components/HostReviewQueueModal';
 import HostSpreadsheetEditorModal from './components/HostSpreadsheetEditorModal';
+import DynamicColorLegend from './components/DynamicColorLegend';
 
 export default function App() {
   const fgRef = useRef();
@@ -1046,6 +1047,16 @@ export default function App() {
           />
         </>
       )}
+
+      {/* Dynamic Color Legend */}
+      <DynamicColorLegend 
+        colorMode={colorMode}
+        filteredNodes={filteredNodes}
+        getNodeColor={getNodeColor}
+        isMobileViewport={isMobileViewport}
+        isLightMode={isLightMode}
+        selectedNode={selectedNode}
+      />
 
       {/* HTML5 2D Canvas Force Graph */}
       <ForceCanvas 
