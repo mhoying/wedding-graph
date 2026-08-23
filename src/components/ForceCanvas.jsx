@@ -294,16 +294,16 @@ export default function ForceCanvas({
 
         const hull = getConvexHull2D(points);
 
-        let clusterColor = isCoupleCluster ? '#f59e0b' : DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
+        let clusterColor = isCoupleCluster ? '#38bdf8' : DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
         if (COHORT_COLORS[cleanLabel]) {
           clusterColor = COHORT_COLORS[cleanLabel];
         }
-        if (isCoupleCluster) clusterColor = '#f59e0b';
+        if (isCoupleCluster) clusterColor = '#38bdf8';
         colorIdx++;
 
         ctx.save();
         if (isCoupleCluster) {
-          ctx.fillStyle = isLightMode ? 'rgba(245, 158, 11, 0.42)' : 'rgba(245, 158, 11, 0.55)';
+          ctx.fillStyle = isLightMode ? 'rgba(56, 189, 248, 0.42)' : 'rgba(56, 189, 248, 0.58)';
         } else {
           ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.22) : hexToRgba(clusterColor, 0.18);
         }
@@ -326,21 +326,21 @@ export default function ForceCanvas({
         ctx.fill();
 
         if (isCoupleCluster) {
-          // Triple layer glowing solid golden border for SUPER STRONG emphasis!
-          // 1. Outer Radiant Glow Halo
+          // Triple layer glowing solid Cyan border matching Legend theme!
+          // 1. Outer Cyan Aura Glow
           ctx.lineWidth = 18.0 / globalScale;
-          ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+          ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
           ctx.setLineDash([]);
           ctx.stroke();
 
-          // 2. Main Deep Gold Border Line
+          // 2. Main Deep Sky Cyan Border Line
           ctx.lineWidth = 7.0 / globalScale;
-          ctx.strokeStyle = '#f59e0b';
+          ctx.strokeStyle = '#0284c7';
           ctx.stroke();
 
-          // 3. Inner Crisp White/Cream Accent Stroke
+          // 3. Inner Electric Cyan Accent Stroke
           ctx.lineWidth = 3.0 / globalScale;
-          ctx.strokeStyle = '#fef08a';
+          ctx.strokeStyle = '#7dd3fc';
           ctx.stroke();
         } else {
           ctx.lineWidth = 2.5 / globalScale;
@@ -388,12 +388,12 @@ export default function ForceCanvas({
         ctx.setLineDash([]);
 
         if (isCoupleCluster) {
-          // Draw solid gold pill background badge for The Couple header!
+          // Draw solid Cyan Sky background badge matching Legend tone!
           const badgePaddingX = 16 * nodeScaleMultiplier;
           const badgePaddingY = 8 * nodeScaleMultiplier;
 
-          ctx.fillStyle = '#f59e0b';
-          ctx.strokeStyle = '#78350f';
+          ctx.fillStyle = '#38bdf8';
+          ctx.strokeStyle = '#0369a1';
           ctx.lineWidth = 2.5 * nodeScaleMultiplier;
           ctx.beginPath();
           if (ctx.roundRect) {
@@ -404,7 +404,7 @@ export default function ForceCanvas({
           ctx.fill();
           ctx.stroke();
 
-          ctx.fillStyle = '#0f172a'; // Deep slate text on golden badge
+          ctx.fillStyle = '#0f172a'; // Deep slate text on cyan badge
           ctx.font = `900 ${fontSize}px Inter, sans-serif`;
           ctx.textAlign = 'left';
           ctx.fillText(displayLabelText, labelX, labelY - 2 * nodeScaleMultiplier);
