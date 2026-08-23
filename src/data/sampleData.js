@@ -909,7 +909,8 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Kids"
+      "Kids",
+      "Cycling"
     ]
   },
   {
