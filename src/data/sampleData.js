@@ -976,9 +976,10 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "Houston",
     "familyStatus": "Family",
     "hobbies": [
-      "Kids"
+      "Kids",
+      "Embroidery"
     ],
-    "__indexColor": "#b40037"
+    "__indexColor": "#3000a4"
   },
   {
     "id": "tina_silva",
@@ -1076,9 +1077,11 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Whiskey",
-      "Kids"
+      "Kids",
+      "Woodworking",
+      "Cars"
     ],
-    "__indexColor": "#3c003d"
+    "__indexColor": "#7800fa"
   },
   {
     "id": "becca_winslow",
@@ -1128,9 +1131,10 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Whiskey",
       "Dogs",
-      "Gaming"
+      "Gaming",
+      "Ska"
     ],
-    "__indexColor": "#000040"
+    "__indexColor": "#c00150"
   },
   {
     "id": "yannick_carer",
@@ -1771,17 +1775,17 @@ export const SAMPLE_LINKS = [
   {
     "source": "ivan_vojvodic",
     "target": "matt",
-    "label": "Coworkers"
+    "relationship": "Coworkers"
   },
   {
     "source": "jonathan_bibayan",
     "target": "jenna_auer",
-    "label": "Friends"
+    "relationship": "Friends"
   },
   {
     "source": "mira_vojvodic",
     "target": "ivan_vojvodic",
-    "label": "Family"
+    "relationship": "Family"
   }
 ];
 
