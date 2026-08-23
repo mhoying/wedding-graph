@@ -9,14 +9,9 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-23] Automated Audit & Database Sync CLI Command (`npm run audit-issues`)
-- **User Prompt**: "we shoudl be able to run this script whenever we notice things are out of sync"
+## [2026-08-23] Fixed `handleEngineStop` ReferenceError (`ForceCanvas.jsx`)
+- **User Prompt**: "getting htis erorr now when i log in ReferenceError: handleEngineStop is not defined"
 - **Actions**:
-  1. **Built `scripts/audit_and_sync_issues.js`**:
-     - Fetches all GitHub Issues for `mhoying/wedding-graph`.
-     - Groups proposals by **Target Guest ID** and selects **ONLY THE MOST RECENT ISSUE** per guest (accounting for edit additions & removals).
-     - Automatically updates `src/data/sampleData.js` and `public/guests_template.csv` if any fields (Name, Hobbies, Location, Cohort, Side, Relationship) are out of sync.
-  2. **Registered NPM Shortcut**:
-     - Added `"audit-issues": "node scripts/audit_and_sync_issues.js"` to `package.json`.
-  3. **Committed & Pushed**:
-     - Committed to Git and pushed directly to `origin/main`.
+  1. **Root Cause Analysis**:
+     - Removed leftover `onEngineStop={handleEngineStop}` prop binding from `<ForceGraph2D>` in `ForceCanvas.jsx` that was previously replaced by coordinate tick polling.
+  2. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

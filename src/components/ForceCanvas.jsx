@@ -572,7 +572,6 @@ export default function ForceCanvas({
         linkDirectionalParticleWidth={4}
         linkDirectionalParticleSpeed={0.008}
         linkDirectionalParticleColor={() => '#38bdf8'}
-        onEngineStop={handleEngineStop}
       />
     </div>
   );
