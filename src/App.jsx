@@ -291,20 +291,48 @@ export default function App() {
   const [selectedClusterFocus, setSelectedClusterFocus] = useState('');
 
   const availableClusters = useMemo(() => {
-    const set = new Set();
+    const cohortsSet = new Set();
+    const locationsSet = new Set();
+    const interestsSet = new Set();
+
     (nodes || []).forEach(node => {
       if (!node || node.type === 'CONTEXT_HUB') return;
-      if (clusterMode === 'cohort' && node.cohort) {
-        set.add(node.cohort);
-      } else if (clusterMode === 'locations' || clusterMode === 'current_location' || clusterMode === 'original_location') {
-        const loc = node.currentlyLivesIn || node.originallyFrom || node.state || node.hometown;
-        if (loc) set.add(loc);
-      } else if (clusterMode === 'interests' && node.hobbies) {
-        node.hobbies.forEach(h => set.add(h));
+      
+      // Cohorts (Exclude family units)
+      if (node.cohort && !node.cohort.toLowerCase().includes('family')) {
+        cohortsSet.add(node.cohort);
+      }
+      
+      // Union of Locations (Current Town + Hometown, Exclude family units)
+      const locs = [node.currentlyLivesIn, node.originallyFrom, node.state, node.hometown];
+      locs.forEach(loc => {
+        if (loc && !loc.toLowerCase().includes('family')) {
+          locationsSet.add(loc);
+        }
+      });
+
+      // All Interests
+      if (node.hobbies && Array.isArray(node.hobbies)) {
+        node.hobbies.forEach(h => {
+          if (h && !h.toLowerCase().includes('family')) {
+            interestsSet.add(h);
+          }
+        });
       }
     });
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
-  }, [nodes, clusterMode]);
+
+    return {
+      interests: Array.from(interestsSet).sort((a, b) => a.localeCompare(b)),
+      locations: Array.from(locationsSet).sort((a, b) => a.localeCompare(b)),
+      cohorts: Array.from(cohortsSet).sort((a, b) => a.localeCompare(b)),
+      // Flat list array for quick length checks
+      all: [
+        ...Array.from(interestsSet),
+        ...Array.from(locationsSet),
+        ...Array.from(cohortsSet)
+      ]
+    };
+  }, [nodes]);
 
   // Filtered Nodes & Clean Links
   const filteredNodes = useMemo(() => {

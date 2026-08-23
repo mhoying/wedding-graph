@@ -115,19 +115,37 @@ export default function TopHeaderNav({
         </div>
 
         {/* Desktop Focus Cluster Dropdown */}
-        {clusterMode !== 'none' && availableClusters.length > 0 && (
+        {availableClusters && (availableClusters.all?.length > 0 || Array.isArray(availableClusters)) && (
           <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 36, padding: '0 10px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12, flexShrink: 0 }}>
             <Compass style={{ width: 14, height: 14, color: '#34d399', marginRight: 4 }} />
             <span style={{ color: '#cbd5e1', fontSize: 12, fontWeight: 700, marginRight: 6 }}>Focus:</span>
             <select 
               value={selectedClusterFocus}
               onChange={(e) => setSelectedClusterFocus(e.target.value)}
-              style={{ background: '#0f172a', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 140 }}
+              style={{ background: '#0f172a', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
             >
-              <option value="">All Clusters</option>
-              {availableClusters.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
+              <option value="">All Clusters (Show All)</option>
+              {availableClusters.interests?.length > 0 && (
+                <optgroup label="🎨 Interests">
+                  {availableClusters.interests.map(item => (
+                    <option key={`int_${item}`} value={item}>{item}</option>
+                  ))}
+                </optgroup>
+              )}
+              {availableClusters.locations?.length > 0 && (
+                <optgroup label="📍 Locations (Current or Home)">
+                  {availableClusters.locations.map(item => (
+                    <option key={`loc_${item}`} value={item}>{item}</option>
+                  ))}
+                </optgroup>
+              )}
+              {availableClusters.cohorts?.length > 0 && (
+                <optgroup label="🎓 Cohorts">
+                  {availableClusters.cohorts.map(item => (
+                    <option key={`coh_${item}`} value={item}>{item}</option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </div>
         )}

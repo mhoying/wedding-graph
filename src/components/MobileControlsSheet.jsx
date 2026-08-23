@@ -182,7 +182,7 @@ export default function MobileControlsSheet({
         </div>
 
         {/* Focus Specific Cluster Dropdown */}
-        {clusterMode !== 'none' && availableClusters.length > 0 && (
+        {availableClusters && (availableClusters.all?.length > 0 || Array.isArray(availableClusters)) && (
           <div className="mobile-control-row" style={{ marginTop: 8 }}>
             <span className="mobile-control-label" style={{ fontSize: 11, fontWeight: 700, color: '#34d399', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
               <Compass style={{ width: 13, height: 13 }} /> Focus Specific Cluster:
@@ -193,9 +193,27 @@ export default function MobileControlsSheet({
               style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', outline: 'none', fontSize: 12, fontWeight: 700 }}
             >
               <option value="">All Clusters (Show All)</option>
-              {availableClusters.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
+              {availableClusters.interests?.length > 0 && (
+                <optgroup label="🎨 Interests">
+                  {availableClusters.interests.map(item => (
+                    <option key={`int_${item}`} value={item}>{item}</option>
+                  ))}
+                </optgroup>
+              )}
+              {availableClusters.locations?.length > 0 && (
+                <optgroup label="📍 Locations (Current or Home)">
+                  {availableClusters.locations.map(item => (
+                    <option key={`loc_${item}`} value={item}>{item}</option>
+                  ))}
+                </optgroup>
+              )}
+              {availableClusters.cohorts?.length > 0 && (
+                <optgroup label="🎓 Cohorts">
+                  {availableClusters.cohorts.map(item => (
+                    <option key={`coh_${item}`} value={item}>{item}</option>
+                  ))}
+                </optgroup>
+              )}
             </select>
           </div>
         )}
