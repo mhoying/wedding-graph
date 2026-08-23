@@ -7,6 +7,7 @@ import Papa from 'papaparse';
 
 import { SAMPLE_NODES, SAMPLE_LINKS, SIDE_COLORS, STATE_COLORS, COHORT_COLORS, DYNAMIC_CLUSTER_COLORS } from './data/sampleData';
 import { isSecretUrlAdmin, verifyPasscode, sanitizeInput } from './utils/security';
+import { pushToGithubRepo } from './utils/githubSync';
 import TopHeaderNav from './components/TopHeaderNav';
 import MobileControlsSheet from './components/MobileControlsSheet';
 import GuestProfileDrawer from './components/GuestProfileDrawer';
@@ -621,7 +622,7 @@ export default function App() {
   // Export Git JS Handler (`sampleData.js`)
   const handleExportGitJs = () => {
     const cleanNodes = nodes.map(({ x, y, vx, vy, fx, fy, index, ...rest }) => rest);
-    const jsContent = `export const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};\n\nexport const SAMPLE_LINKS = ${JSON.stringify(SAMPLE_LINKS, null, 2)};\n`;
+    const jsContent = `export const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};\n\nexport const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};\n`;
     const blob = new Blob([jsContent], { type: 'text/javascript' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -630,6 +631,34 @@ export default function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  // Direct GitHub API Repo Push Handler
+  const handlePushToGithub = async () => {
+    const cleanNodes = nodes.map(({ x, y, vx, vy, fx, fy, index, ...rest }) => rest);
+    const jsContent = `// Real Wedding Guest List Data - Auto-updated via Host Admin Suite
+export const COHORT_COLORS = ${JSON.stringify(COHORT_COLORS, null, 2)};
+export const SIDE_COLORS = ${JSON.stringify(SIDE_COLORS, null, 2)};
+export const STATE_COLORS = ${JSON.stringify(STATE_COLORS, null, 2)};
+export const DYNAMIC_CLUSTER_COLORS = ${JSON.stringify(DYNAMIC_CLUSTER_COLORS, null, 2)};
+
+export const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};
+
+export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
+
+export function getInitials(name) {
+  if (!name) return '??';
+  const parts = name.trim().split(' ');
+  if (parts.length >= 2) {
+    return \`\${parts[0][0]}\${parts[parts.length - 1][0]}\`.toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+}
+`;
+    setCopyToast('Pushing directly to GitHub Repo...');
+    const result = await pushToGithubRepo(jsContent, 'Update dataset via Host Admin Suite');
+    setCopyToast(result.message);
+    setTimeout(() => setCopyToast(''), 4000);
   };
 
   const handleCopyQrLink = () => {
@@ -697,6 +726,7 @@ export default function App() {
         setIsAdmin={setIsAdmin}
         handleExportCsv={handleExportCsv}
         handleExportGitJs={handleExportGitJs}
+        handlePushToGithub={handlePushToGithub}
         feedbackQueueCount={feedbackList.filter(f => f.status === 'PENDING').length}
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
         handleCopyQrLink={handleCopyQrLink}

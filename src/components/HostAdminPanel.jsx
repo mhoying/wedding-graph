@@ -1,11 +1,12 @@
 import React from 'react';
-import { ShieldAlert, Download, Copy, Lock, FileSpreadsheet, Code, CheckCircle, Link2 } from 'lucide-react';
+import { ShieldAlert, Download, Copy, Lock, FileSpreadsheet, Code, CheckCircle, Link2, UploadCloud } from 'lucide-react';
 
 export default function HostAdminPanel({
   isAdmin,
   setIsAdmin,
   handleExportCsv,
   handleExportGitJs,
+  handlePushToGithub,
   feedbackQueueCount,
   setIsFeedbackQueueOpen,
   handleCopyQrLink,
@@ -48,6 +49,15 @@ export default function HostAdminPanel({
 
       {/* Admin Action Buttons */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {/* Direct GitHub Repo Push Sync Button */}
+        <button 
+          onClick={handlePushToGithub}
+          className="btn-mode"
+          style={{ padding: '10px 12px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: '#ffffff', border: '1px solid #10b981', fontWeight: 800, cursor: 'pointer', boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)' }}
+        >
+          <UploadCloud style={{ width: 16, height: 16 }} />
+          <span>Push Changes Directly to Repo</span>
+        </button>
         {/* 0. Connect Guests */}
         <button 
           onClick={() => setIsAddConnectionOpen(true)}
