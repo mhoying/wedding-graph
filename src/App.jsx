@@ -262,13 +262,14 @@ export default function App() {
 
   // Filtered Nodes & Clean Links
   const filteredNodes = useMemo(() => {
-    return nodes.filter(node => {
-      if (selectedInterests.length > 0) {
+    return (nodes || []).filter(node => {
+      if (!node) return false;
+      if (selectedInterests && selectedInterests.length > 0) {
         if (!node.hobbies || !selectedInterests.some(i => node.hobbies.includes(i))) return false;
       }
-      if (searchQuery.trim()) {
+      if (searchQuery && searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const matchesName = node.name.toLowerCase().includes(q);
+        const matchesName = node.name ? node.name.toLowerCase().includes(q) : false;
         const matchesCohort = node.cohort ? node.cohort.toLowerCase().includes(q) : false;
         const matchesSide = node.side ? node.side.toLowerCase().includes(q) : false;
         const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase().includes(q)) : false;

@@ -9,12 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Patched All Remaining `.filter` Invocations across All Components (`App.jsx`, `SuggestEditModal.jsx`, `HostReviewQueueModal.jsx`)
-- **User Prompt**: "shes getting an erro on her phone TypeError: cnanot read properties of undefined (reading 'filter')"
+## [2026-08-22] Added Mobile Cache-Busting Headers & Patched `filteredNodes` Null Guards (`index.html` & `App.jsx`)
+- **User Prompt**: "same error"
 - **Actions**:
-  1. **Root Cause Discovery**:
-     - Identified unguarded `feedbackList.filter(...)` calls in `App.jsx` lines 793 and 804 when passed as props to `<MobileControlsSheet>` and `<HostAdminPanel>`.
-     - When `feedbackList` was null/undefined in a guest session, evaluating `feedbackList.filter(...)` threw `TypeError: Cannot read properties of undefined (reading 'filter')`.
-  2. **100% Comprehensive Defensive Guarding**:
-     - Updated all array filter calls across `App.jsx`, `SuggestEditModal.jsx`, `CocktailMatchmakerModal.jsx`, `AddConnectionModal.jsx`, and `HostReviewQueueModal.jsx` to use `(arr || []).filter(...)`.
+  1. **Root Cause Analysis**:
+     - Mobile Safari / Mobile Chrome caches older JavaScript assets (`index-Da9Vs03j.js`).
+     - When her phone loaded the site from local Safari disk cache, it executed the old cached bundle instead of pulling the newly deployed bundle.
+  2. **Cache-Busting & Full Null Guarding**:
+     - Added `<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />` to `index.html`.
+     - Built new JavaScript bundle `index-BrADCldA.js` with defensive null-checks on `filteredNodes`.
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
