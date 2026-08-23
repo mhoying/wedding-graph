@@ -1,12 +1,14 @@
-// Auto-generated & updated from guest profile edits
+// Real Wedding Guest List Data - Auto-generated
 export const COHORT_COLORS = {
-  "Maureen Family": "#e11d48",
-  "Matt Family": "#e11d48",
   "The Couple": "#38bdf8",
-  "Atlanta": "#f59e0b",
   "Cornell": "#b31b1b",
-  "High School": "#8b5cf6",
-  "Work": "#10b981",
+  "Google": "#4285f4",
+  "Stanford": "#8c1515",
+  "Lehigh": "#653819",
+  "Dog Park": "#10b981",
+  "OWFL Blog": "#ec4899",
+  "Bay FC": "#f59e0b",
+  "Friends": "#64748b",
   "Default": "#64748b"
 };
 
@@ -17,207 +19,1814 @@ export const SIDE_COLORS = {
 };
 
 export const STATE_COLORS = {
-  "GA": "#f59e0b",
-  "NY": "#b31b1b",
-  "CA": "#06b6d4",
-  "UK": "#8b5cf6",
-  "Canada": "#ef4444",
+  "USA": "#38bdf8",
   "Default": "#64748b"
 };
 
 export const SAMPLE_NODES = [
   {
-    "id": "maureen",
-    "name": "Maureen",
-    "type": "ANCHOR",
-    "cohort": "The Couple",
-    "side": "Maureen",
-    "originallyFrom": "Boston, MA",
-    "currentlyLivesIn": "San Francisco, CA",
-    "hobbies": [
-      "Coffee",
-      "Trail Running",
-      "Pottery",
-      "Dog Lover"
-    ],
-    "familyStatus": "Bride",
-    "relationship": "The Bride",
-    "image": ""
-  },
-  {
-    "id": "matt",
-    "name": "Matt",
-    "type": "ANCHOR",
-    "cohort": "The Couple",
-    "side": "Matt",
-    "originallyFrom": "Chicago, IL",
-    "currentlyLivesIn": "San Francisco, CA",
-    "hobbies": [
-      "Cycling",
-      "Mechanical Keyboards",
-      "Sourdough"
-    ],
-    "familyStatus": "Groom",
-    "relationship": "The Groom",
-    "image": ""
-  },
-  {
-    "id": "avalon_dog_park",
-    "name": "Avalon Dog Park",
-    "type": "CONTEXT_HUB",
-    "cohort": "Dog Park",
+    "id": "allison_williams",
+    "name": "Allison Williams",
+    "type": "GUEST",
+    "cohort": "Lehigh",
+    "familyCohort": "Allison Williams & Jim Merizio",
     "side": "Joint",
-    "originallyFrom": "San Francisco, CA",
-    "currentlyLivesIn": "San Francisco, CA",
+    "relationship": "Allison Williams & Jim Merizio",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
     "hobbies": [
-      "Dog Lover",
-      "Outdoors"
+      "Lehigh"
     ],
-    "familyStatus": "Community Hub",
-    "relationship": "Favorite Weekend Spot",
-    "image": ""
+    "rsvp": "Joyfully Accept"
   },
   {
-    "id": "uncle_bob",
-    "name": "Uncle Bob",
-    "type": "NON_ATTENDING",
-    "cohort": "Family",
-    "side": "Matt",
-    "originallyFrom": "Austin, TX",
-    "currentlyLivesIn": "Austin, TX",
+    "id": "jim_merizio",
+    "name": "Jim Merizio",
+    "type": "GUEST",
+    "cohort": "Allison Williams & Jim Merizio",
+    "familyCohort": "Allison Williams & Jim Merizio",
+    "side": "Joint",
+    "relationship": "Allison Williams & Jim Merizio",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
     "hobbies": [
-      "Barbecue",
-      "Guitars"
+      "Beer"
     ],
-    "familyStatus": "Not Attending",
-    "relationship": "Mutual Uncle (Connecting Bridge)",
-    "image": ""
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "andy_schmitt",
+    "name": "Andy Schmitt",
+    "type": "GUEST",
+    "cohort": "Google",
+    "familyCohort": "Andy & Victoria",
+    "side": "Joint",
+    "relationship": "Andy & Victoria",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Beer",
+      "Cocktails"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "anne_sweeney",
+    "name": "Anne Sweeney",
+    "type": "GUEST",
+    "cohort": "Stanford",
+    "familyCohort": "The Hoy Family",
+    "side": "Joint",
+    "relationship": "The Hoy Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Dogs"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jon_hoy",
+    "name": "Jon Hoy",
+    "type": "GUEST",
+    "cohort": "The Hoy Family",
+    "familyCohort": "The Hoy Family",
+    "side": "Joint",
+    "relationship": "The Hoy Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Cocktails",
+      "Whiskey",
+      "Dogs"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "ashley_prichard",
+    "name": "Ashley Prichard",
+    "type": "GUEST",
+    "cohort": "Bay FC",
+    "familyCohort": "Ashley Prichard & Roopak Kandasamy",
+    "side": "Joint",
+    "relationship": "Ashley Prichard & Roopak Kandasamy",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Bay FC",
+      "Soccer"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "roopak_kandasamy",
+    "name": "Roopak Kandasamy",
+    "type": "GUEST",
+    "cohort": "Bay FC",
+    "familyCohort": "Ashley Prichard & Roopak Prichard",
+    "side": "Joint",
+    "relationship": "Ashley Prichard & Roopak Prichard",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Bay FC",
+      "Soccer"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "becky_sporh",
+    "name": "Becky Sporh",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "Becky Sporh & Guest",
+    "side": "Joint",
+    "relationship": "Becky Sporh & Guest",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Dogs",
+      "Tennis"
+    ],
+    "rsvp": "Joyfully Accept"
   },
   {
     "id": "brian_kim",
-    "name": "Brian 'Kimmie' Kim",
+    "name": "Brian Kim",
     "type": "GUEST",
     "cohort": "Cornell",
-    "side": "Maureen",
-    "originallyFrom": "Seoul, South Korea",
-    "currentlyLivesIn": "Seattle, WA",
+    "familyCohort": "The Kimpreston Family",
+    "side": "Joint",
+    "relationship": "The Kimpreston Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
     "hobbies": [
-      "Skiing",
-      "Indie Rock",
-      "Analog Photography",
-      "Coffee"
+      "Bass",
+      "Ska"
     ],
-    "familyStatus": "Bringing +1 (Jessica)",
-    "relationship": "Survived college dorms with Maureen",
-    "image": ""
+    "rsvp": "Joyfully Accept"
   },
   {
-    "id": "freedman_rahmans",
-    "name": "The Freedman-Rahmans",
+    "id": "michelle_preston",
+    "name": "Michelle Preston",
     "type": "GUEST",
-    "cohort": "Stanford",
-    "side": "Matt",
-    "originallyFrom": "London, UK",
-    "currentlyLivesIn": "Palo Alto, CA",
+    "cohort": "The Kimpreston Family",
+    "familyCohort": "The Kimpreston Family",
+    "side": "Joint",
+    "relationship": "The Kimpreston Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
     "hobbies": [
-      "Bouldering",
-      "Matcha",
-      "Dog Lover",
-      "Cycling"
+      "Dance"
     ],
-    "familyStatus": "Daughter is 17 now!",
-    "relationship": "Grad school cohort with Matt",
-    "image": ""
+    "rsvp": "Joyfully Accept"
   },
   {
-    "id": "eleanor_chen",
-    "name": "Eleanor Chen",
+    "id": "chrissy_fiore",
+    "name": "Chrissy Fiore",
     "type": "GUEST",
-    "cohort": "Google",
-    "side": "Maureen",
-    "originallyFrom": "Toronto, Canada",
-    "currentlyLivesIn": "New York, NY",
+    "cohort": "OWFL Blog",
+    "familyCohort": "Chrissy Fiore & Will Short",
+    "side": "Joint",
+    "relationship": "Chrissy Fiore & Will Short",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
     "hobbies": [
-      "Urban Planning",
-      "Coffee",
-      "Modern Art",
-      "Wine"
+      "Cocktails",
+      "Whiskey",
+      "Dogs"
     ],
-    "familyStatus": "Solo",
-    "relationship": "Co-worker with Maureen at Google",
-    "image": ""
+    "rsvp": "Joyfully Accept"
   },
   {
-    "id": "david_vance",
-    "name": "David Vance",
+    "id": "greg_goetchius",
+    "name": "Greg Goetchius",
     "type": "GUEST",
     "cohort": "Dog Park",
+    "familyCohort": "Greg Goetchius & Lauren Sofia",
     "side": "Joint",
-    "originallyFrom": "Dublin, Ireland",
-    "currentlyLivesIn": "San Francisco, CA",
+    "relationship": "Greg Goetchius & Lauren Sofia",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
     "hobbies": [
-      "Dog Lover",
-      "Camping",
-      "Craft Beer",
-      "Hiking",
-      "Cycling"
+      "Whiskey",
+      "Dogs"
     ],
-    "familyStatus": "Solo",
-    "relationship": "Met Maureen & Matt at Avalon Dog Park",
-    "image": ""
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "lauren_sofia",
+    "name": "Lauren Sofia",
+    "type": "GUEST",
+    "cohort": "Greg Goetchius & Lauren Sofia",
+    "familyCohort": "Greg Goetchius & Lauren Sofia",
+    "side": "Joint",
+    "relationship": "Greg Goetchius & Lauren Sofia",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Tennis"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jesse_lindenberger_schutz",
+    "name": "Jesse Lindenberger-Schutz",
+    "type": "GUEST",
+    "cohort": "Friends",
+    "familyCohort": "",
+    "side": "Joint",
+    "relationship": "Friends",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Single",
+    "hobbies": [
+      "Art",
+      "Gaming"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "katie_conniff",
+    "name": "Katie Conniff",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "Katie Conniff & Ryan Podolak",
+    "side": "Joint",
+    "relationship": "Katie Conniff & Ryan Podolak",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Dogs",
+      "Brains"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "ryan_podolak",
+    "name": "Ryan Podolak",
+    "type": "GUEST",
+    "cohort": "Katie Conniff & Ryan Podolak",
+    "familyCohort": "Katie Conniff & Ryan Podolak",
+    "side": "Joint",
+    "relationship": "Katie Conniff & Ryan Podolak",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Wine"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "krista_kobeski",
+    "name": "Krista Kobeski",
+    "type": "GUEST",
+    "cohort": "Bay FC",
+    "familyCohort": "Krista Kobeski & Guest",
+    "side": "Joint",
+    "relationship": "Krista Kobeski & Guest",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "leanna_habana",
+    "name": "Leanna Habana",
+    "type": "GUEST",
+    "cohort": "Stanford",
+    "familyCohort": "The Habana Family",
+    "side": "Joint",
+    "relationship": "The Habana Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "liz_scott",
+    "name": "Liz Scott",
+    "type": "GUEST",
+    "cohort": "OWFL Blog",
+    "familyCohort": "",
+    "side": "Joint",
+    "relationship": "OWFL Blog",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Single",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "marissa_lavelle",
+    "name": "Marissa Lavelle",
+    "type": "GUEST",
+    "cohort": "Stanford",
+    "familyCohort": "Marissa Lavelle & Guest",
+    "side": "Joint",
+    "relationship": "Marissa Lavelle & Guest",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "matt",
+    "name": "Matt Hoying",
+    "type": "ANCHOR",
+    "cohort": "Honk Family",
+    "familyCohort": "Honk Family",
+    "side": "Matt",
+    "relationship": "Honk Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Cocktails",
+      "Whiskey",
+      "Dogs",
+      "Beer",
+      "Bay FC"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "maureen",
+    "name": "Maureen Wink",
+    "type": "ANCHOR",
+    "cohort": "Honk Family",
+    "familyCohort": "Honk Family",
+    "side": "Maureen",
+    "relationship": "Honk Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Cocktails",
+      "Whiskey",
+      "Dogs",
+      "Beer",
+      "Bay FC"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "missy_ruminski",
+    "name": "Missy Ruminski",
+    "type": "GUEST",
+    "cohort": "OWFL Blog",
+    "familyCohort": "",
+    "side": "Joint",
+    "relationship": "OWFL Blog",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Single",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Regretfully Decline"
+  },
+  {
+    "id": "nichole_remmert",
+    "name": "Nichole Remmert",
+    "type": "GUEST",
+    "cohort": "OWFL Blog",
+    "familyCohort": "",
+    "side": "Joint",
+    "relationship": "OWFL Blog",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Single",
+    "hobbies": [
+      "Whiskey",
+      "Dogs"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "nishat_shaikh",
+    "name": "Nishat Shaikh",
+    "type": "GUEST",
+    "cohort": "Cornell",
+    "familyCohort": "The Shaikh Sisters",
+    "side": "Joint",
+    "relationship": "The Shaikh Sisters",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "romana_rajput",
+    "name": "Romana Rajput",
+    "type": "GUEST",
+    "cohort": "Romana Rajput & Steve Nares",
+    "familyCohort": "Romana Rajput & Steve Nares",
+    "side": "Joint",
+    "relationship": "Romana Rajput & Steve Nares",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "steve_nares",
+    "name": "Steve Nares",
+    "type": "GUEST",
+    "cohort": "Romana Rajput & Steve Nares",
+    "familyCohort": "Romana Rajput & Steve Nares",
+    "side": "Joint",
+    "relationship": "Romana Rajput & Steve Nares",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "poukhan_philavanh_anthony",
+    "name": "Poukhan Philavanh Anthony",
+    "type": "GUEST",
+    "cohort": "The Anthony Family",
+    "familyCohort": "The Anthony Family",
+    "side": "Joint",
+    "relationship": "The Anthony Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "ryan_anthony",
+    "name": "Ryan Anthony",
+    "type": "GUEST",
+    "cohort": "Cornell",
+    "familyCohort": "The Anthony Family",
+    "side": "Joint",
+    "relationship": "The Anthony Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Whiskey"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "cole_armstrong",
+    "name": "Cole Armstrong",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "The Armstrong Family",
+    "side": "Joint",
+    "relationship": "The Armstrong Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Beer",
+      "Music",
+      "Dogs"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "tracy_armstrong",
+    "name": "Tracy Armstrong",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "The Armstrong Family",
+    "side": "Joint",
+    "relationship": "The Armstrong Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jenna_auer",
+    "name": "Jenna Auer",
+    "type": "GUEST",
+    "cohort": "The Auer Family",
+    "familyCohort": "The Auer Family",
+    "side": "Joint",
+    "relationship": "The Auer Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "tim_auer",
+    "name": "Tim Auer",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "The Auer Family",
+    "side": "Joint",
+    "relationship": "The Auer Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Photography",
+      "Dogs",
+      "Outdoors"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jonathan_bibayan",
+    "name": "Jonathan Bibayan",
+    "type": "GUEST",
+    "cohort": "The Bibayan-Mayott Family",
+    "familyCohort": "The Bibayan-Mayott Family",
+    "side": "Joint",
+    "relationship": "The Bibayan-Mayott Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "lindsay_mayott",
+    "name": "Lindsay Mayott",
+    "type": "GUEST",
+    "cohort": "The Bibayan-Mayott Family",
+    "familyCohort": "The Bibayan-Mayott Family",
+    "side": "Joint",
+    "relationship": "The Bibayan-Mayott Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jeff_domanski",
+    "name": "Jeff Domanski",
+    "type": "GUEST",
+    "cohort": "The Domanski Family",
+    "familyCohort": "The Domanski Family",
+    "side": "Joint",
+    "relationship": "The Domanski Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jill_domanski",
+    "name": "Jill Domanski",
+    "type": "GUEST",
+    "cohort": "The Domanski Family",
+    "familyCohort": "The Domanski Family",
+    "side": "Joint",
+    "relationship": "The Domanski Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "dave_festa",
+    "name": "Dave Festa",
+    "type": "GUEST",
+    "cohort": "The Festa Family",
+    "familyCohort": "The Festa Family",
+    "side": "Joint",
+    "relationship": "The Festa Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "erica_festa",
+    "name": "Erica Festa",
+    "type": "GUEST",
+    "cohort": "Google",
+    "familyCohort": "The Festa Family",
+    "side": "Joint",
+    "relationship": "The Festa Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "ari_freedman",
+    "name": "Ari Freedman",
+    "type": "GUEST",
+    "cohort": "The Freedman Family",
+    "familyCohort": "The Freedman Family",
+    "side": "Joint",
+    "relationship": "The Freedman Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "eric_freedman",
+    "name": "Eric Freedman",
+    "type": "GUEST",
+    "cohort": "The Freedman Family",
+    "familyCohort": "The Freedman Family",
+    "side": "Joint",
+    "relationship": "The Freedman Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "james_freedman",
+    "name": "James Freedman",
+    "type": "GUEST",
+    "cohort": "The Freedman Family",
+    "familyCohort": "The Freedman Family",
+    "side": "Joint",
+    "relationship": "The Freedman Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "nur_e_freedman",
+    "name": "Nur-e Freedman",
+    "type": "GUEST",
+    "cohort": "Lehigh",
+    "familyCohort": "The Freedman Family",
+    "side": "Joint",
+    "relationship": "The Freedman Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Whiskey"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "angela_govig",
+    "name": "Angela Govig",
+    "type": "GUEST",
+    "cohort": "The Govig Family",
+    "familyCohort": "The Govig Family",
+    "side": "Joint",
+    "relationship": "The Govig Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jason_govig",
+    "name": "Jason Govig",
+    "type": "GUEST",
+    "cohort": "Google",
+    "familyCohort": "The Govig Family",
+    "side": "Joint",
+    "relationship": "The Govig Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Whiskey",
+      "Music"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "janaki_lahorani",
+    "name": "Janaki Lahorani",
+    "type": "GUEST",
+    "cohort": "Google",
+    "familyCohort": "The Lahorani Family",
+    "side": "Joint",
+    "relationship": "The Lahorani Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jason_mcmullan",
+    "name": "Jason McMullan",
+    "type": "GUEST",
+    "cohort": "Lehigh",
+    "familyCohort": "The McMullan Family",
+    "side": "Joint",
+    "relationship": "The McMullan Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jessi_mcmullan",
+    "name": "Jessi McMullan",
+    "type": "GUEST",
+    "cohort": "Lehigh",
+    "familyCohort": "The McMullan Family",
+    "side": "Joint",
+    "relationship": "The McMullan Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "alex_murillo",
+    "name": "Alex Murillo",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "The Murillo-Davisson Family",
+    "side": "Joint",
+    "relationship": "The Murillo-Davisson Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Whiskey",
+      "Beer",
+      "Gardening"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "leslie_davidsson",
+    "name": "Leslie Davidsson",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "The Murillo-Davisson Family",
+    "side": "Joint",
+    "relationship": "The Murillo-Davisson Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "jess_phan",
+    "name": "Jess Phan",
+    "type": "GUEST",
+    "cohort": "The Phan-Macdonald Family",
+    "familyCohort": "The Phan-Macdonald Family",
+    "side": "Joint",
+    "relationship": "The Phan-Macdonald Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "mark_macdonald",
+    "name": "Mark Macdonald",
+    "type": "GUEST",
+    "cohort": "The Phan-Macdonald Family",
+    "familyCohort": "The Phan-Macdonald Family",
+    "side": "Joint",
+    "relationship": "The Phan-Macdonald Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "katie_richter",
+    "name": "Katie Richter",
+    "type": "GUEST",
+    "cohort": "The Richter Family",
+    "familyCohort": "The Richter Family",
+    "side": "Joint",
+    "relationship": "The Richter Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "paul_richter",
+    "name": "Paul Richter",
+    "type": "GUEST",
+    "cohort": "OWFL Blog",
+    "familyCohort": "The Richter Family",
+    "side": "Joint",
+    "relationship": "The Richter Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "lauren_schmied",
+    "name": "Lauren Schmied",
+    "type": "GUEST",
+    "cohort": "Cornell",
+    "familyCohort": "The Schmied-Misra Family",
+    "side": "Joint",
+    "relationship": "The Schmied-Misra Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "tina_silva",
+    "name": "Tina Silva",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "The Silva Family",
+    "side": "Joint",
+    "relationship": "The Silva Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Dogs"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "george_sun",
+    "name": "George Sun",
+    "type": "GUEST",
+    "cohort": "Cornell",
+    "familyCohort": "The Sun Family",
+    "side": "Joint",
+    "relationship": "The Sun Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "sohyun_sun",
+    "name": "Sohyun Sun",
+    "type": "GUEST",
+    "cohort": "The Sun Family",
+    "familyCohort": "The Sun Family",
+    "side": "Joint",
+    "relationship": "The Sun Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "chuck_tempest",
+    "name": "Chuck Tempest",
+    "type": "GUEST",
+    "cohort": "Cornell",
+    "familyCohort": "The Tempest Family",
+    "side": "Joint",
+    "relationship": "The Tempest Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "clyde_tsai",
+    "name": "Clyde Tsai",
+    "type": "GUEST",
+    "cohort": "Cornell",
+    "familyCohort": "The Tsai-Luong Family",
+    "side": "Joint",
+    "relationship": "The Tsai-Luong Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "ivan_vojvodi_",
+    "name": "Ivan Vojvodić",
+    "type": "GUEST",
+    "cohort": "Google",
+    "familyCohort": "The Vojvodić Family",
+    "side": "Joint",
+    "relationship": "The Vojvodić Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Whiskey"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "becca_winslow",
+    "name": "Becca Winslow",
+    "type": "GUEST",
+    "cohort": "The Winslow Family",
+    "familyCohort": "The Winslow Family",
+    "side": "Joint",
+    "relationship": "The Winslow Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "mary_mitchell",
+    "name": "Mary Mitchell",
+    "type": "GUEST",
+    "cohort": "Tim Coble & Mary Fucking Mitchell",
+    "familyCohort": "Tim Coble & Mary Fucking Mitchell",
+    "side": "Joint",
+    "relationship": "Tim Coble & Mary Fucking Mitchell",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Whiskey",
+      "Dogs"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "tim_coble",
+    "name": "Tim Coble",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "Tim Coble & Mary Fucking Mitchell",
+    "side": "Joint",
+    "relationship": "Tim Coble & Mary Fucking Mitchell",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Whiskey",
+      "Dogs",
+      "Gaming"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "yannick_carer",
+    "name": "Yannick Carer",
+    "type": "GUEST",
+    "cohort": "Google",
+    "familyCohort": "Yannick Carer & Guest",
+    "side": "Joint",
+    "relationship": "Yannick Carer & Guest",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Dogs"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "becky_spohr",
+    "name": "Becky Spohr",
+    "type": "GUEST",
+    "cohort": "Dog Park",
+    "familyCohort": "",
+    "side": "Joint",
+    "relationship": "Dog Park",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Single",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "chuchu_zhang",
+    "name": "Chuchu Zhang",
+    "type": "GUEST",
+    "cohort": "Google",
+    "familyCohort": "",
+    "side": "Joint",
+    "relationship": "Google",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Single",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "emy_habana",
+    "name": "Emy Habana",
+    "type": "GUEST",
+    "cohort": "The Habana Family",
+    "familyCohort": "The Habana Family",
+    "side": "Joint",
+    "relationship": "The Habana Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "kathryn_potts",
+    "name": "Kathryn Potts",
+    "type": "GUEST",
+    "cohort": "Stanford",
+    "familyCohort": "Kathryn Flack & Joe Wernet",
+    "side": "Joint",
+    "relationship": "Kathryn Flack & Joe Wernet",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Words"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "joe_wernet",
+    "name": "Joe Wernet",
+    "type": "GUEST",
+    "cohort": "Kathryn Flack & Joe Wernet",
+    "familyCohort": "Kathryn Flack & Joe Wernet",
+    "side": "Joint",
+    "relationship": "Kathryn Flack & Joe Wernet",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "mira_vojvodi_",
+    "name": "Mira Vojvodić",
+    "type": "GUEST",
+    "cohort": "The Vojvodić Family",
+    "familyCohort": "The Vojvodić Family",
+    "side": "Joint",
+    "relationship": "The Vojvodić Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "nadia_shaikh",
+    "name": "Nadia Shaikh",
+    "type": "GUEST",
+    "cohort": "Shaikh Sisters",
+    "familyCohort": "Shaikh Sisters",
+    "side": "Joint",
+    "relationship": "Shaikh Sisters",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "sumeet_lahorani",
+    "name": "Sumeet Lahorani",
+    "type": "GUEST",
+    "cohort": "The Lahorani Family",
+    "familyCohort": "The Lahorani Family",
+    "side": "Joint",
+    "relationship": "The Lahorani Family",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Family",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "victoria_shi",
+    "name": "Victoria Shi",
+    "type": "GUEST",
+    "cohort": "Andy & Victoria",
+    "familyCohort": "Andy & Victoria",
+    "side": "Joint",
+    "relationship": "Andy & Victoria",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
+  },
+  {
+    "id": "will_short",
+    "name": "Will Short",
+    "type": "GUEST",
+    "cohort": "Chrissy Fiore & Will Short",
+    "familyCohort": "Chrissy Fiore & Will Short",
+    "side": "Joint",
+    "relationship": "Chrissy Fiore & Will Short",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Socializing"
+    ],
+    "rsvp": "Joyfully Accept"
   }
 ];
 
 export const SAMPLE_LINKS = [
   {
-    "source": "maureen",
-    "target": "matt",
-    "label": "Married"
+    "source": "Allison Williams",
+    "target": "Jim Merizio",
+    "relationship": "Allison Williams & Jim Merizio"
   },
   {
-    "source": "brian_kim",
-    "target": "maureen",
-    "label": "College Friends"
+    "source": "Andy Schmitt",
+    "target": "Victoria Shi",
+    "relationship": "Andy & Victoria"
   },
   {
-    "source": "freedman_rahmans",
-    "target": "matt",
-    "label": "Grad School"
+    "source": "Anne Sweeney",
+    "target": "Jon Hoy",
+    "relationship": "The Hoy Family"
   },
   {
-    "source": "freedman_rahmans",
-    "target": "maureen",
-    "label": "Family Friends"
+    "source": "Brian Kim",
+    "target": "Michelle Preston",
+    "relationship": "The Kimpreston Family"
   },
   {
-    "source": "eleanor_chen",
-    "target": "maureen",
-    "label": "Teammates"
+    "source": "Chrissy Fiore",
+    "target": "Will Short",
+    "relationship": "Chrissy Fiore & Will Short"
   },
   {
-    "source": "david_vance",
-    "target": "avalon_dog_park",
-    "label": "Regulars"
+    "source": "Greg Goetchius",
+    "target": "Lauren Sofia",
+    "relationship": "Greg Goetchius & Lauren Sofia"
   },
   {
-    "source": "maureen",
-    "target": "avalon_dog_park",
-    "label": "Weekend Spot"
+    "source": "Katie Conniff",
+    "target": "Ryan Podolak",
+    "relationship": "Katie Conniff & Ryan Podolak"
   },
   {
-    "source": "matt",
-    "target": "avalon_dog_park",
-    "label": "Weekend Spot"
+    "source": "Leanna Habana",
+    "target": "Emy Habana",
+    "relationship": "The Habana Family"
   },
   {
-    "source": "matt",
-    "target": "uncle_bob",
-    "label": "Family"
+    "source": "Matt Hoying",
+    "target": "Maureen Wink",
+    "relationship": "Honk Family"
   },
   {
-    "source": "freedman_rahmans",
-    "target": "uncle_bob",
-    "label": "Family Friend"
+    "source": "Romana Rajput",
+    "target": "Steve Nares",
+    "relationship": "Romana Rajput & Steve Nares"
+  },
+  {
+    "source": "Poukhan Philavanh Anthony",
+    "target": "Ryan Anthony",
+    "relationship": "The Anthony Family"
+  },
+  {
+    "source": "Cole Armstrong",
+    "target": "Tracy Armstrong",
+    "relationship": "The Armstrong Family"
+  },
+  {
+    "source": "Jenna Auer",
+    "target": "Tim Auer",
+    "relationship": "The Auer Family"
+  },
+  {
+    "source": "Jonathan Bibayan",
+    "target": "Lindsay Mayott",
+    "relationship": "The Bibayan-Mayott Family"
+  },
+  {
+    "source": "Jeff Domanski",
+    "target": "Jill Domanski",
+    "relationship": "The Domanski Family"
+  },
+  {
+    "source": "Dave Festa",
+    "target": "Erica Festa",
+    "relationship": "The Festa Family"
+  },
+  {
+    "source": "Ari Freedman",
+    "target": "Eric Freedman",
+    "relationship": "The Freedman Family"
+  },
+  {
+    "source": "Ari Freedman",
+    "target": "James Freedman",
+    "relationship": "The Freedman Family"
+  },
+  {
+    "source": "Ari Freedman",
+    "target": "Nur-e Freedman",
+    "relationship": "The Freedman Family"
+  },
+  {
+    "source": "Eric Freedman",
+    "target": "James Freedman",
+    "relationship": "The Freedman Family"
+  },
+  {
+    "source": "Eric Freedman",
+    "target": "Nur-e Freedman",
+    "relationship": "The Freedman Family"
+  },
+  {
+    "source": "James Freedman",
+    "target": "Nur-e Freedman",
+    "relationship": "The Freedman Family"
+  },
+  {
+    "source": "Angela Govig",
+    "target": "Jason Govig",
+    "relationship": "The Govig Family"
+  },
+  {
+    "source": "Janaki Lahorani",
+    "target": "Sumeet Lahorani",
+    "relationship": "The Lahorani Family"
+  },
+  {
+    "source": "Jason McMullan",
+    "target": "Jessi McMullan",
+    "relationship": "The McMullan Family"
+  },
+  {
+    "source": "Alex Murillo",
+    "target": "Leslie Davidsson",
+    "relationship": "The Murillo-Davisson Family"
+  },
+  {
+    "source": "Jess Phan",
+    "target": "Mark Macdonald",
+    "relationship": "The Phan-Macdonald Family"
+  },
+  {
+    "source": "Katie Richter",
+    "target": "Paul Richter",
+    "relationship": "The Richter Family"
+  },
+  {
+    "source": "George Sun",
+    "target": "Sohyun Sun",
+    "relationship": "The Sun Family"
+  },
+  {
+    "source": "Ivan Vojvodić",
+    "target": "Mira Vojvodić",
+    "relationship": "The Vojvodić Family"
+  },
+  {
+    "source": "Mary Mitchell",
+    "target": "Tim Coble",
+    "relationship": "Tim Coble & Mary Fucking Mitchell"
+  },
+  {
+    "source": "Kathryn Potts",
+    "target": "Joe Wernet",
+    "relationship": "Kathryn Flack & Joe Wernet"
+  },
+  {
+    "source": "Allison Williams",
+    "target": "Maureen Wink",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Allison Williams",
+    "target": "Matt Hoying",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Andy Schmitt",
+    "target": "Maureen Wink",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Andy Schmitt",
+    "target": "Matt Hoying",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Anne Sweeney",
+    "target": "Maureen Wink",
+    "relationship": "Stanford Friend"
+  },
+  {
+    "source": "Anne Sweeney",
+    "target": "Matt Hoying",
+    "relationship": "Stanford Friend"
+  },
+  {
+    "source": "Ashley Prichard",
+    "target": "Maureen Wink",
+    "relationship": "Bay FC Friend"
+  },
+  {
+    "source": "Ashley Prichard",
+    "target": "Matt Hoying",
+    "relationship": "Bay FC Friend"
+  },
+  {
+    "source": "Roopak Kandasamy",
+    "target": "Maureen Wink",
+    "relationship": "Bay FC Friend"
+  },
+  {
+    "source": "Roopak Kandasamy",
+    "target": "Matt Hoying",
+    "relationship": "Bay FC Friend"
+  },
+  {
+    "source": "Becky Sporh",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Becky Sporh",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Brian Kim",
+    "target": "Maureen Wink",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Brian Kim",
+    "target": "Matt Hoying",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Chrissy Fiore",
+    "target": "Maureen Wink",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Chrissy Fiore",
+    "target": "Matt Hoying",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Greg Goetchius",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Greg Goetchius",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Katie Conniff",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Katie Conniff",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Krista Kobeski",
+    "target": "Maureen Wink",
+    "relationship": "Bay FC Friend"
+  },
+  {
+    "source": "Krista Kobeski",
+    "target": "Matt Hoying",
+    "relationship": "Bay FC Friend"
+  },
+  {
+    "source": "Leanna Habana",
+    "target": "Maureen Wink",
+    "relationship": "Stanford Friend"
+  },
+  {
+    "source": "Leanna Habana",
+    "target": "Matt Hoying",
+    "relationship": "Stanford Friend"
+  },
+  {
+    "source": "Liz Scott",
+    "target": "Maureen Wink",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Liz Scott",
+    "target": "Matt Hoying",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Marissa Lavelle",
+    "target": "Maureen Wink",
+    "relationship": "Stanford Friend"
+  },
+  {
+    "source": "Marissa Lavelle",
+    "target": "Matt Hoying",
+    "relationship": "Stanford Friend"
+  },
+  {
+    "source": "Missy Ruminski",
+    "target": "Maureen Wink",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Missy Ruminski",
+    "target": "Matt Hoying",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Nichole Remmert",
+    "target": "Maureen Wink",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Nichole Remmert",
+    "target": "Matt Hoying",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Nishat Shaikh",
+    "target": "Maureen Wink",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Nishat Shaikh",
+    "target": "Matt Hoying",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Ryan Anthony",
+    "target": "Maureen Wink",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Ryan Anthony",
+    "target": "Matt Hoying",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Cole Armstrong",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Cole Armstrong",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Tracy Armstrong",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Tracy Armstrong",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Tim Auer",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Tim Auer",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Erica Festa",
+    "target": "Maureen Wink",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Erica Festa",
+    "target": "Matt Hoying",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Nur-e Freedman",
+    "target": "Maureen Wink",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Nur-e Freedman",
+    "target": "Matt Hoying",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Jason Govig",
+    "target": "Maureen Wink",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Jason Govig",
+    "target": "Matt Hoying",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Janaki Lahorani",
+    "target": "Maureen Wink",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Janaki Lahorani",
+    "target": "Matt Hoying",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Jason McMullan",
+    "target": "Maureen Wink",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Jason McMullan",
+    "target": "Matt Hoying",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Jessi McMullan",
+    "target": "Maureen Wink",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Jessi McMullan",
+    "target": "Matt Hoying",
+    "relationship": "Lehigh Friend"
+  },
+  {
+    "source": "Alex Murillo",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Alex Murillo",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Leslie Davidsson",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Leslie Davidsson",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Paul Richter",
+    "target": "Maureen Wink",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Paul Richter",
+    "target": "Matt Hoying",
+    "relationship": "OWFL Blog Friend"
+  },
+  {
+    "source": "Lauren Schmied",
+    "target": "Maureen Wink",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Lauren Schmied",
+    "target": "Matt Hoying",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Tina Silva",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Tina Silva",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "George Sun",
+    "target": "Maureen Wink",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "George Sun",
+    "target": "Matt Hoying",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Chuck Tempest",
+    "target": "Maureen Wink",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Chuck Tempest",
+    "target": "Matt Hoying",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Clyde Tsai",
+    "target": "Maureen Wink",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Clyde Tsai",
+    "target": "Matt Hoying",
+    "relationship": "Cornell Friend"
+  },
+  {
+    "source": "Ivan Vojvodić",
+    "target": "Maureen Wink",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Ivan Vojvodić",
+    "target": "Matt Hoying",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Tim Coble",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Tim Coble",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Yannick Carer",
+    "target": "Maureen Wink",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Yannick Carer",
+    "target": "Matt Hoying",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Becky Spohr",
+    "target": "Maureen Wink",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Becky Spohr",
+    "target": "Matt Hoying",
+    "relationship": "Dog Park Friend"
+  },
+  {
+    "source": "Chuchu Zhang",
+    "target": "Maureen Wink",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Chuchu Zhang",
+    "target": "Matt Hoying",
+    "relationship": "Google Friend"
+  },
+  {
+    "source": "Kathryn Potts",
+    "target": "Maureen Wink",
+    "relationship": "Stanford Friend"
+  },
+  {
+    "source": "Kathryn Potts",
+    "target": "Matt Hoying",
+    "relationship": "Stanford Friend"
   }
 ];
 

@@ -1,79 +1,115 @@
 source,target,relationship
-Allison Williams,Jim Merizio,
-Andy Schmitt,Victoria Shi,
-Anne Sweeney,Jon Hoy,
-Brian Kim,Michelle Preston,
-Chrissy Fiore,Will Short,
-Greg Goetchius,Lauren Sofia,
-Katie Conniff,Ryan Podolak,
-Leanna Habana,Emy Habana,
-Matt Hoying,Maureen Wink,
-Romana Rajput,Steve Nares,
-Poukhan Philavanh Anthony,Ryan Anthony,
-Cole Armstrong,Tracy Armstrong,
-Jenna Auer,Tim Auer,
-Jonathan Bibayan,Lindsay Mayott,
-Jeff Domanski,Jill Domanski,
-Dave Festa,Erica Festa,
-James Freedman,Eric Freedman,
-James Freedman,Ari Freedman,
-Nur-e Freedman,James Freedman,
-Angela Govig,Jason Govig,
-Janaki Lahorani,Sumeet Lahorani,
-Jason McMullan,Jessi McMullan,
-Alex Murillo,Leslie Davidsson,
-Jess Phan,Mark Macdonald,
-Katie Richter,Paul Richter,
-George Sun,Sohyun Sun,
-Ivan Vojvodić,Mira Vojvodić,
-Mary Mitchell,Tim Coble,
-Kathryn Potts,Joe Wernet,
-Roopak Kandasamy,Ashley Prichard,
-Allison Williams,Maureen Wink,
-Andy Schmitt,Matt Hoying,
-Anne Sweeney,Matt Hoying,
-Ashley Prichard,James Freedman,
-Ashley Prichard,Bay FC Tailgate,
-Roopak Kandasamy,Bay FC Tailgate,
-Becky Spohr,Avalon Dog Park,
-Brian Kim,Matt Hoying,
-Chrissy Fiore,OWFL Blog,
-Greg Goetchius,Avalon Dog Park,
-Katie Conniff,Avalon Dog Park,
-Krista Kobeski,Jessi McMullan,
-Leanna Habana,Matt Hoying,
-Liz Scott,OWFL Blog,
-Marissa Lavelle,Matt Hoying,
-Missy Ruminski,OWFL Blog,
-Missy Ruminski,Matt Hoying,
-Nichole Remmert,OWFL Blog,
-Nishat Shaikh,Matt Hoying,
-Ryan Anthony,Matt Hoying,
-Cole Armstrong,Avalon Dog Park,
-Tracy Armstrong,Avalon Dog Park,
-Tim Auer,Avalon Dog Park,
-Erica Festa,Matt Hoying,
-Nur-e Freedman,Jessi McMullan,
-Jason Govig,Matt Hoying,
-Janaki Lahorani,Matt Hoying,
-Jason McMullan,Maureen Wink,
-Jessi McMullan,Maureen Wink,
-Alex Murillo,Avalon Dog Park,
-Leslie Davidsson,Avalon Dog Park,
-Paul Richter,OWFL Blog,
-Lauren Schmied,Nishat Shaikh,
-Tina Silva,Avalon Dog Park,
-George Sun,Ryan Anthony,
-Chuck Tempest,Matt Hoying,
-Clyde Tsai,Ryan Anthony,
-Ivan Vojvodić,Matt Hoying,
-Tim Coble,Avalon Dog Park,
-Yannick Carer,Matt Hoying,
-Chuchu Zhang,Matt Hoying,
-Kathryn Potts,Matt Hoying,
-Leanna Habana,Kathryn Potts,
-Honk,Matt Hoying,
-Honk,Maureen Wink,
-Honk,Avalon Dog Park,
-Honk,OWFL Blog,
-Honk,Bay FC Tailgate,
+"Allison Williams","Jim Merizio","Allison Williams & Jim Merizio"
+"Andy Schmitt","Victoria Shi","Andy & Victoria"
+"Anne Sweeney","Jon Hoy","The Hoy Family"
+"Brian Kim","Michelle Preston","The Kimpreston Family"
+"Chrissy Fiore","Will Short","Chrissy Fiore & Will Short"
+"Greg Goetchius","Lauren Sofia","Greg Goetchius & Lauren Sofia"
+"Katie Conniff","Ryan Podolak","Katie Conniff & Ryan Podolak"
+"Leanna Habana","Emy Habana","The Habana Family"
+"Matt Hoying","Maureen Wink","Honk Family"
+"Romana Rajput","Steve Nares","Romana Rajput & Steve Nares"
+"Poukhan Philavanh Anthony","Ryan Anthony","The Anthony Family"
+"Cole Armstrong","Tracy Armstrong","The Armstrong Family"
+"Jenna Auer","Tim Auer","The Auer Family"
+"Jonathan Bibayan","Lindsay Mayott","The Bibayan-Mayott Family"
+"Jeff Domanski","Jill Domanski","The Domanski Family"
+"Dave Festa","Erica Festa","The Festa Family"
+"Ari Freedman","Eric Freedman","The Freedman Family"
+"Ari Freedman","James Freedman","The Freedman Family"
+"Ari Freedman","Nur-e Freedman","The Freedman Family"
+"Eric Freedman","James Freedman","The Freedman Family"
+"Eric Freedman","Nur-e Freedman","The Freedman Family"
+"James Freedman","Nur-e Freedman","The Freedman Family"
+"Angela Govig","Jason Govig","The Govig Family"
+"Janaki Lahorani","Sumeet Lahorani","The Lahorani Family"
+"Jason McMullan","Jessi McMullan","The McMullan Family"
+"Alex Murillo","Leslie Davidsson","The Murillo-Davisson Family"
+"Jess Phan","Mark Macdonald","The Phan-Macdonald Family"
+"Katie Richter","Paul Richter","The Richter Family"
+"George Sun","Sohyun Sun","The Sun Family"
+"Ivan Vojvodić","Mira Vojvodić","The Vojvodić Family"
+"Mary Mitchell","Tim Coble","Tim Coble & Mary Fucking Mitchell"
+"Kathryn Potts","Joe Wernet","Kathryn Flack & Joe Wernet"
+"Allison Williams","Maureen Wink","Lehigh Friend"
+"Allison Williams","Matt Hoying","Lehigh Friend"
+"Andy Schmitt","Maureen Wink","Google Friend"
+"Andy Schmitt","Matt Hoying","Google Friend"
+"Anne Sweeney","Maureen Wink","Stanford Friend"
+"Anne Sweeney","Matt Hoying","Stanford Friend"
+"Ashley Prichard","Maureen Wink","Bay FC Friend"
+"Ashley Prichard","Matt Hoying","Bay FC Friend"
+"Roopak Kandasamy","Maureen Wink","Bay FC Friend"
+"Roopak Kandasamy","Matt Hoying","Bay FC Friend"
+"Becky Sporh","Maureen Wink","Dog Park Friend"
+"Becky Sporh","Matt Hoying","Dog Park Friend"
+"Brian Kim","Maureen Wink","Cornell Friend"
+"Brian Kim","Matt Hoying","Cornell Friend"
+"Chrissy Fiore","Maureen Wink","OWFL Blog Friend"
+"Chrissy Fiore","Matt Hoying","OWFL Blog Friend"
+"Greg Goetchius","Maureen Wink","Dog Park Friend"
+"Greg Goetchius","Matt Hoying","Dog Park Friend"
+"Katie Conniff","Maureen Wink","Dog Park Friend"
+"Katie Conniff","Matt Hoying","Dog Park Friend"
+"Krista Kobeski","Maureen Wink","Bay FC Friend"
+"Krista Kobeski","Matt Hoying","Bay FC Friend"
+"Leanna Habana","Maureen Wink","Stanford Friend"
+"Leanna Habana","Matt Hoying","Stanford Friend"
+"Liz Scott","Maureen Wink","OWFL Blog Friend"
+"Liz Scott","Matt Hoying","OWFL Blog Friend"
+"Marissa Lavelle","Maureen Wink","Stanford Friend"
+"Marissa Lavelle","Matt Hoying","Stanford Friend"
+"Missy Ruminski","Maureen Wink","OWFL Blog Friend"
+"Missy Ruminski","Matt Hoying","OWFL Blog Friend"
+"Nichole Remmert","Maureen Wink","OWFL Blog Friend"
+"Nichole Remmert","Matt Hoying","OWFL Blog Friend"
+"Nishat Shaikh","Maureen Wink","Cornell Friend"
+"Nishat Shaikh","Matt Hoying","Cornell Friend"
+"Ryan Anthony","Maureen Wink","Cornell Friend"
+"Ryan Anthony","Matt Hoying","Cornell Friend"
+"Cole Armstrong","Maureen Wink","Dog Park Friend"
+"Cole Armstrong","Matt Hoying","Dog Park Friend"
+"Tracy Armstrong","Maureen Wink","Dog Park Friend"
+"Tracy Armstrong","Matt Hoying","Dog Park Friend"
+"Tim Auer","Maureen Wink","Dog Park Friend"
+"Tim Auer","Matt Hoying","Dog Park Friend"
+"Erica Festa","Maureen Wink","Google Friend"
+"Erica Festa","Matt Hoying","Google Friend"
+"Nur-e Freedman","Maureen Wink","Lehigh Friend"
+"Nur-e Freedman","Matt Hoying","Lehigh Friend"
+"Jason Govig","Maureen Wink","Google Friend"
+"Jason Govig","Matt Hoying","Google Friend"
+"Janaki Lahorani","Maureen Wink","Google Friend"
+"Janaki Lahorani","Matt Hoying","Google Friend"
+"Jason McMullan","Maureen Wink","Lehigh Friend"
+"Jason McMullan","Matt Hoying","Lehigh Friend"
+"Jessi McMullan","Maureen Wink","Lehigh Friend"
+"Jessi McMullan","Matt Hoying","Lehigh Friend"
+"Alex Murillo","Maureen Wink","Dog Park Friend"
+"Alex Murillo","Matt Hoying","Dog Park Friend"
+"Leslie Davidsson","Maureen Wink","Dog Park Friend"
+"Leslie Davidsson","Matt Hoying","Dog Park Friend"
+"Paul Richter","Maureen Wink","OWFL Blog Friend"
+"Paul Richter","Matt Hoying","OWFL Blog Friend"
+"Lauren Schmied","Maureen Wink","Cornell Friend"
+"Lauren Schmied","Matt Hoying","Cornell Friend"
+"Tina Silva","Maureen Wink","Dog Park Friend"
+"Tina Silva","Matt Hoying","Dog Park Friend"
+"George Sun","Maureen Wink","Cornell Friend"
+"George Sun","Matt Hoying","Cornell Friend"
+"Chuck Tempest","Maureen Wink","Cornell Friend"
+"Chuck Tempest","Matt Hoying","Cornell Friend"
+"Clyde Tsai","Maureen Wink","Cornell Friend"
+"Clyde Tsai","Matt Hoying","Cornell Friend"
+"Ivan Vojvodić","Maureen Wink","Google Friend"
+"Ivan Vojvodić","Matt Hoying","Google Friend"
+"Tim Coble","Maureen Wink","Dog Park Friend"
+"Tim Coble","Matt Hoying","Dog Park Friend"
+"Yannick Carer","Maureen Wink","Google Friend"
+"Yannick Carer","Matt Hoying","Google Friend"
+"Becky Spohr","Maureen Wink","Dog Park Friend"
+"Becky Spohr","Matt Hoying","Dog Park Friend"
+"Chuchu Zhang","Maureen Wink","Google Friend"
+"Chuchu Zhang","Matt Hoying","Google Friend"
+"Kathryn Potts","Maureen Wink","Stanford Friend"
+"Kathryn Potts","Matt Hoying","Stanford Friend"

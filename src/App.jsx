@@ -21,13 +21,13 @@ export default function App() {
   const fgRef = useRef();
   const imageCacheRef = useRef({});
 
-  // Core Data State
+  // Core Data State (Loads real 75-guest wedding dataset by default)
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v4');
+      const saved = localStorage.getItem('wedding_graph_nodes_v6');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0 && parsed.some(n => n.id === 'maureen')) {
+        if (Array.isArray(parsed) && parsed.length > 50 && parsed.some(n => n.id === 'maureen')) {
           return parsed;
         }
       }
@@ -36,12 +36,13 @@ export default function App() {
     }
     return SAMPLE_NODES;
   });
+
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v4');
+      const saved = localStorage.getItem('wedding_graph_links_v6');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed) && parsed.length > 50) {
           return parsed;
         }
       }
