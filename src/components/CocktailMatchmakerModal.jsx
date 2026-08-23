@@ -36,9 +36,12 @@ export default function CocktailMatchmakerModal({
             style={{ width: '100%', padding: '10px', borderRadius: 12, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', outline: 'none' }}
           >
             <option value="">-- Choose Guest --</option>
-            {nodes.filter(n => n.type === 'GUEST').map(n => (
-              <option key={n.id} value={n.id}>{n.name}</option>
-            ))}
+            {[...nodes]
+              .filter(n => n && n.type === 'GUEST' && n.name)
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(n => (
+                <option key={n.id} value={n.id}>{n.name}</option>
+              ))}
           </select>
         </div>
 
