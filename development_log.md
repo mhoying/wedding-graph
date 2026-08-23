@@ -9,14 +9,15 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Direct 1-Click GitHub API Repo Push & Sync
-- **User Prompt**: "i thoguth there was an option we discussed where we could immedialtey send hte changes via push commands"
+## [2026-08-22] ID-Matched Relationship Link Edges Fix
+- **User Prompt**: "there are no endges showing here"
 - **Actions**:
-  1. **Direct GitHub API Content Commit Engine (`githubSync.js`)**:
-     - Built `pushToGithubRepo` utility using GitHub Contents API (`PUT /repos/mhoying/wedding-graph/contents/src/data/sampleData.js`).
-     - Enables committing and pushing updated guest nodes and relationship tuples directly to your GitHub repository in 1 click without terminal commands or manual file moves.
-  2. **Host Admin Suite Integration**:
-     - Added green high-visibility **`🚀 Push Changes Directly to Repo`** button in the Host Admin Suite (`HostAdminPanel.jsx`).
+  1. **Root Cause Analysis**:
+     - `SAMPLE_LINKS` contained full guest names (`source: "Allison Williams"`) instead of matching node ID slugs (`source: "allison_williams"`). As a result, D3 Force Graph filtered out all 114 links.
+  2. **Resolution**:
+     - Updated `parse_guests.js` script to generate exact node ID slugs for `source` and `target` in `SAMPLE_LINKS`.
+     - Built `resolveNodeId` helper in `App.jsx` to dynamically resolve node IDs by slug, name, or ID string.
+     - Bumped storage key to `v7`.
   3. **Empirical Headless Chromium Verification**:
-     - `DIRECT REPO PUSH BUTTON: Push Changes Directly to Repo` (0% console/runtime errors).
+     - `GRAPH LINK EDGES RENDERED SUCCESSFULLY WITH 0 ERRORS!`.
   4. **Redeployed**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

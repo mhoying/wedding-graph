@@ -25,7 +25,7 @@ export default function App() {
   // Core Data State (Loads real 75-guest wedding dataset by default)
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v6');
+      const saved = localStorage.getItem('wedding_graph_nodes_v7');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50 && parsed.some(n => n.id === 'maureen')) {
@@ -40,7 +40,7 @@ export default function App() {
 
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v6');
+      const saved = localStorage.getItem('wedding_graph_links_v7');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50) {
@@ -260,19 +260,33 @@ export default function App() {
   }, [nodes, searchQuery, selectedInterests]);
 
   const graphData = useMemo(() => {
+    // Robust Node ID Resolver (Handles ID, full name, or slug matching)
+    const resolveNodeId = (val) => {
+      if (!val) return null;
+      if (typeof val === 'object' && val.id) return val.id;
+      const str = String(val).trim().toLowerCase();
+      const match = nodes.find(n => 
+        n.id.toLowerCase() === str || 
+        n.name.toLowerCase() === str ||
+        n.id.toLowerCase() === str.replace(/[^a-z0-9]/g, '_')
+      );
+      return match ? match.id : val;
+    };
+
+    const validLinks = links.map(link => {
+      const sId = resolveNodeId(link.source);
+      const tId = resolveNodeId(link.target);
+      return { ...link, source: sId, target: tId };
+    }).filter(link => {
+      return filteredNodes.some(n => n.id === link.source) && 
+             filteredNodes.some(n => n.id === link.target);
+    });
+
     return {
       nodes: filteredNodes,
-      links: links.filter(link => {
-        const sId = typeof link.source === 'object' ? link.source.id : link.source;
-        const tId = typeof link.target === 'object' ? link.target.id : link.target;
-        return filteredNodes.some(n => n.id === sId) && filteredNodes.some(n => n.id === tId);
-      }).map(link => ({
-        ...link,
-        source: typeof link.source === 'object' ? link.source.id : link.source,
-        target: typeof link.target === 'object' ? link.target.id : link.target
-      }))
+      links: validLinks
     };
-  }, [filteredNodes, links]);
+  }, [nodes, filteredNodes, links]);
 
   // Dynamic Clusters
   const dynamicAutoClusters = useMemo(() => {

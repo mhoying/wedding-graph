@@ -1259,573 +1259,573 @@ export const SAMPLE_NODES = [
 
 export const SAMPLE_LINKS = [
   {
-    "source": "Allison Williams",
-    "target": "Jim Merizio",
+    "source": "allison_williams",
+    "target": "jim_merizio",
     "relationship": "Allison Williams & Jim Merizio"
   },
   {
-    "source": "Andy Schmitt",
-    "target": "Victoria Shi",
+    "source": "andy_schmitt",
+    "target": "victoria_shi",
     "relationship": "Andy & Victoria"
   },
   {
-    "source": "Anne Sweeney",
-    "target": "Jon Hoy",
+    "source": "anne_sweeney",
+    "target": "jon_hoy",
     "relationship": "The Hoy Family"
   },
   {
-    "source": "Brian Kim",
-    "target": "Michelle Preston",
+    "source": "brian_kim",
+    "target": "michelle_preston",
     "relationship": "The Kimpreston Family"
   },
   {
-    "source": "Chrissy Fiore",
-    "target": "Will Short",
+    "source": "chrissy_fiore",
+    "target": "will_short",
     "relationship": "Chrissy Fiore & Will Short"
   },
   {
-    "source": "Greg Goetchius",
-    "target": "Lauren Sofia",
+    "source": "greg_goetchius",
+    "target": "lauren_sofia",
     "relationship": "Greg Goetchius & Lauren Sofia"
   },
   {
-    "source": "Katie Conniff",
-    "target": "Ryan Podolak",
+    "source": "katie_conniff",
+    "target": "ryan_podolak",
     "relationship": "Katie Conniff & Ryan Podolak"
   },
   {
-    "source": "Leanna Habana",
-    "target": "Emy Habana",
+    "source": "leanna_habana",
+    "target": "emy_habana",
     "relationship": "The Habana Family"
   },
   {
-    "source": "Matt Hoying",
-    "target": "Maureen Wink",
+    "source": "matt",
+    "target": "maureen",
     "relationship": "Honk Family"
   },
   {
-    "source": "Romana Rajput",
-    "target": "Steve Nares",
+    "source": "romana_rajput",
+    "target": "steve_nares",
     "relationship": "Romana Rajput & Steve Nares"
   },
   {
-    "source": "Poukhan Philavanh Anthony",
-    "target": "Ryan Anthony",
+    "source": "poukhan_philavanh_anthony",
+    "target": "ryan_anthony",
     "relationship": "The Anthony Family"
   },
   {
-    "source": "Cole Armstrong",
-    "target": "Tracy Armstrong",
+    "source": "cole_armstrong",
+    "target": "tracy_armstrong",
     "relationship": "The Armstrong Family"
   },
   {
-    "source": "Jenna Auer",
-    "target": "Tim Auer",
+    "source": "jenna_auer",
+    "target": "tim_auer",
     "relationship": "The Auer Family"
   },
   {
-    "source": "Jonathan Bibayan",
-    "target": "Lindsay Mayott",
+    "source": "jonathan_bibayan",
+    "target": "lindsay_mayott",
     "relationship": "The Bibayan-Mayott Family"
   },
   {
-    "source": "Jeff Domanski",
-    "target": "Jill Domanski",
+    "source": "jeff_domanski",
+    "target": "jill_domanski",
     "relationship": "The Domanski Family"
   },
   {
-    "source": "Dave Festa",
-    "target": "Erica Festa",
+    "source": "dave_festa",
+    "target": "erica_festa",
     "relationship": "The Festa Family"
   },
   {
-    "source": "Ari Freedman",
-    "target": "Eric Freedman",
+    "source": "ari_freedman",
+    "target": "eric_freedman",
     "relationship": "The Freedman Family"
   },
   {
-    "source": "Ari Freedman",
-    "target": "James Freedman",
+    "source": "ari_freedman",
+    "target": "james_freedman",
     "relationship": "The Freedman Family"
   },
   {
-    "source": "Ari Freedman",
-    "target": "Nur-e Freedman",
+    "source": "ari_freedman",
+    "target": "nur_e_freedman",
     "relationship": "The Freedman Family"
   },
   {
-    "source": "Eric Freedman",
-    "target": "James Freedman",
+    "source": "eric_freedman",
+    "target": "james_freedman",
     "relationship": "The Freedman Family"
   },
   {
-    "source": "Eric Freedman",
-    "target": "Nur-e Freedman",
+    "source": "eric_freedman",
+    "target": "nur_e_freedman",
     "relationship": "The Freedman Family"
   },
   {
-    "source": "James Freedman",
-    "target": "Nur-e Freedman",
+    "source": "james_freedman",
+    "target": "nur_e_freedman",
     "relationship": "The Freedman Family"
   },
   {
-    "source": "Angela Govig",
-    "target": "Jason Govig",
+    "source": "angela_govig",
+    "target": "jason_govig",
     "relationship": "The Govig Family"
   },
   {
-    "source": "Janaki Lahorani",
-    "target": "Sumeet Lahorani",
+    "source": "janaki_lahorani",
+    "target": "sumeet_lahorani",
     "relationship": "The Lahorani Family"
   },
   {
-    "source": "Jason McMullan",
-    "target": "Jessi McMullan",
+    "source": "jason_mcmullan",
+    "target": "jessi_mcmullan",
     "relationship": "The McMullan Family"
   },
   {
-    "source": "Alex Murillo",
-    "target": "Leslie Davidsson",
+    "source": "alex_murillo",
+    "target": "leslie_davidsson",
     "relationship": "The Murillo-Davisson Family"
   },
   {
-    "source": "Jess Phan",
-    "target": "Mark Macdonald",
+    "source": "jess_phan",
+    "target": "mark_macdonald",
     "relationship": "The Phan-Macdonald Family"
   },
   {
-    "source": "Katie Richter",
-    "target": "Paul Richter",
+    "source": "katie_richter",
+    "target": "paul_richter",
     "relationship": "The Richter Family"
   },
   {
-    "source": "George Sun",
-    "target": "Sohyun Sun",
+    "source": "george_sun",
+    "target": "sohyun_sun",
     "relationship": "The Sun Family"
   },
   {
-    "source": "Ivan Vojvodić",
-    "target": "Mira Vojvodić",
+    "source": "ivan_vojvodi_",
+    "target": "mira_vojvodi_",
     "relationship": "The Vojvodić Family"
   },
   {
-    "source": "Mary Mitchell",
-    "target": "Tim Coble",
+    "source": "mary_mitchell",
+    "target": "tim_coble",
     "relationship": "Tim Coble & Mary Fucking Mitchell"
   },
   {
-    "source": "Kathryn Potts",
-    "target": "Joe Wernet",
+    "source": "kathryn_potts",
+    "target": "joe_wernet",
     "relationship": "Kathryn Flack & Joe Wernet"
   },
   {
-    "source": "Allison Williams",
-    "target": "Maureen Wink",
+    "source": "allison_williams",
+    "target": "maureen",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Allison Williams",
-    "target": "Matt Hoying",
+    "source": "allison_williams",
+    "target": "matt",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Andy Schmitt",
-    "target": "Maureen Wink",
+    "source": "andy_schmitt",
+    "target": "maureen",
     "relationship": "Google Friend"
   },
   {
-    "source": "Andy Schmitt",
-    "target": "Matt Hoying",
+    "source": "andy_schmitt",
+    "target": "matt",
     "relationship": "Google Friend"
   },
   {
-    "source": "Anne Sweeney",
-    "target": "Maureen Wink",
+    "source": "anne_sweeney",
+    "target": "maureen",
     "relationship": "Stanford Friend"
   },
   {
-    "source": "Anne Sweeney",
-    "target": "Matt Hoying",
+    "source": "anne_sweeney",
+    "target": "matt",
     "relationship": "Stanford Friend"
   },
   {
-    "source": "Ashley Prichard",
-    "target": "Maureen Wink",
+    "source": "ashley_prichard",
+    "target": "maureen",
     "relationship": "Bay FC Friend"
   },
   {
-    "source": "Ashley Prichard",
-    "target": "Matt Hoying",
+    "source": "ashley_prichard",
+    "target": "matt",
     "relationship": "Bay FC Friend"
   },
   {
-    "source": "Roopak Kandasamy",
-    "target": "Maureen Wink",
+    "source": "roopak_kandasamy",
+    "target": "maureen",
     "relationship": "Bay FC Friend"
   },
   {
-    "source": "Roopak Kandasamy",
-    "target": "Matt Hoying",
+    "source": "roopak_kandasamy",
+    "target": "matt",
     "relationship": "Bay FC Friend"
   },
   {
-    "source": "Becky Sporh",
-    "target": "Maureen Wink",
+    "source": "becky_sporh",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Becky Sporh",
-    "target": "Matt Hoying",
+    "source": "becky_sporh",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Brian Kim",
-    "target": "Maureen Wink",
+    "source": "brian_kim",
+    "target": "maureen",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Brian Kim",
-    "target": "Matt Hoying",
+    "source": "brian_kim",
+    "target": "matt",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Chrissy Fiore",
-    "target": "Maureen Wink",
+    "source": "chrissy_fiore",
+    "target": "maureen",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Chrissy Fiore",
-    "target": "Matt Hoying",
+    "source": "chrissy_fiore",
+    "target": "matt",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Greg Goetchius",
-    "target": "Maureen Wink",
+    "source": "greg_goetchius",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Greg Goetchius",
-    "target": "Matt Hoying",
+    "source": "greg_goetchius",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Katie Conniff",
-    "target": "Maureen Wink",
+    "source": "katie_conniff",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Katie Conniff",
-    "target": "Matt Hoying",
+    "source": "katie_conniff",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Krista Kobeski",
-    "target": "Maureen Wink",
+    "source": "krista_kobeski",
+    "target": "maureen",
     "relationship": "Bay FC Friend"
   },
   {
-    "source": "Krista Kobeski",
-    "target": "Matt Hoying",
+    "source": "krista_kobeski",
+    "target": "matt",
     "relationship": "Bay FC Friend"
   },
   {
-    "source": "Leanna Habana",
-    "target": "Maureen Wink",
+    "source": "leanna_habana",
+    "target": "maureen",
     "relationship": "Stanford Friend"
   },
   {
-    "source": "Leanna Habana",
-    "target": "Matt Hoying",
+    "source": "leanna_habana",
+    "target": "matt",
     "relationship": "Stanford Friend"
   },
   {
-    "source": "Liz Scott",
-    "target": "Maureen Wink",
+    "source": "liz_scott",
+    "target": "maureen",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Liz Scott",
-    "target": "Matt Hoying",
+    "source": "liz_scott",
+    "target": "matt",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Marissa Lavelle",
-    "target": "Maureen Wink",
+    "source": "marissa_lavelle",
+    "target": "maureen",
     "relationship": "Stanford Friend"
   },
   {
-    "source": "Marissa Lavelle",
-    "target": "Matt Hoying",
+    "source": "marissa_lavelle",
+    "target": "matt",
     "relationship": "Stanford Friend"
   },
   {
-    "source": "Missy Ruminski",
-    "target": "Maureen Wink",
+    "source": "missy_ruminski",
+    "target": "maureen",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Missy Ruminski",
-    "target": "Matt Hoying",
+    "source": "missy_ruminski",
+    "target": "matt",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Nichole Remmert",
-    "target": "Maureen Wink",
+    "source": "nichole_remmert",
+    "target": "maureen",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Nichole Remmert",
-    "target": "Matt Hoying",
+    "source": "nichole_remmert",
+    "target": "matt",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Nishat Shaikh",
-    "target": "Maureen Wink",
+    "source": "nishat_shaikh",
+    "target": "maureen",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Nishat Shaikh",
-    "target": "Matt Hoying",
+    "source": "nishat_shaikh",
+    "target": "matt",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Ryan Anthony",
-    "target": "Maureen Wink",
+    "source": "ryan_anthony",
+    "target": "maureen",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Ryan Anthony",
-    "target": "Matt Hoying",
+    "source": "ryan_anthony",
+    "target": "matt",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Cole Armstrong",
-    "target": "Maureen Wink",
+    "source": "cole_armstrong",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Cole Armstrong",
-    "target": "Matt Hoying",
+    "source": "cole_armstrong",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Tracy Armstrong",
-    "target": "Maureen Wink",
+    "source": "tracy_armstrong",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Tracy Armstrong",
-    "target": "Matt Hoying",
+    "source": "tracy_armstrong",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Tim Auer",
-    "target": "Maureen Wink",
+    "source": "tim_auer",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Tim Auer",
-    "target": "Matt Hoying",
+    "source": "tim_auer",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Erica Festa",
-    "target": "Maureen Wink",
+    "source": "erica_festa",
+    "target": "maureen",
     "relationship": "Google Friend"
   },
   {
-    "source": "Erica Festa",
-    "target": "Matt Hoying",
+    "source": "erica_festa",
+    "target": "matt",
     "relationship": "Google Friend"
   },
   {
-    "source": "Nur-e Freedman",
-    "target": "Maureen Wink",
+    "source": "nur_e_freedman",
+    "target": "maureen",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Nur-e Freedman",
-    "target": "Matt Hoying",
+    "source": "nur_e_freedman",
+    "target": "matt",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Jason Govig",
-    "target": "Maureen Wink",
+    "source": "jason_govig",
+    "target": "maureen",
     "relationship": "Google Friend"
   },
   {
-    "source": "Jason Govig",
-    "target": "Matt Hoying",
+    "source": "jason_govig",
+    "target": "matt",
     "relationship": "Google Friend"
   },
   {
-    "source": "Janaki Lahorani",
-    "target": "Maureen Wink",
+    "source": "janaki_lahorani",
+    "target": "maureen",
     "relationship": "Google Friend"
   },
   {
-    "source": "Janaki Lahorani",
-    "target": "Matt Hoying",
+    "source": "janaki_lahorani",
+    "target": "matt",
     "relationship": "Google Friend"
   },
   {
-    "source": "Jason McMullan",
-    "target": "Maureen Wink",
+    "source": "jason_mcmullan",
+    "target": "maureen",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Jason McMullan",
-    "target": "Matt Hoying",
+    "source": "jason_mcmullan",
+    "target": "matt",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Jessi McMullan",
-    "target": "Maureen Wink",
+    "source": "jessi_mcmullan",
+    "target": "maureen",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Jessi McMullan",
-    "target": "Matt Hoying",
+    "source": "jessi_mcmullan",
+    "target": "matt",
     "relationship": "Lehigh Friend"
   },
   {
-    "source": "Alex Murillo",
-    "target": "Maureen Wink",
+    "source": "alex_murillo",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Alex Murillo",
-    "target": "Matt Hoying",
+    "source": "alex_murillo",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Leslie Davidsson",
-    "target": "Maureen Wink",
+    "source": "leslie_davidsson",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Leslie Davidsson",
-    "target": "Matt Hoying",
+    "source": "leslie_davidsson",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Paul Richter",
-    "target": "Maureen Wink",
+    "source": "paul_richter",
+    "target": "maureen",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Paul Richter",
-    "target": "Matt Hoying",
+    "source": "paul_richter",
+    "target": "matt",
     "relationship": "OWFL Blog Friend"
   },
   {
-    "source": "Lauren Schmied",
-    "target": "Maureen Wink",
+    "source": "lauren_schmied",
+    "target": "maureen",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Lauren Schmied",
-    "target": "Matt Hoying",
+    "source": "lauren_schmied",
+    "target": "matt",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Tina Silva",
-    "target": "Maureen Wink",
+    "source": "tina_silva",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Tina Silva",
-    "target": "Matt Hoying",
+    "source": "tina_silva",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "George Sun",
-    "target": "Maureen Wink",
+    "source": "george_sun",
+    "target": "maureen",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "George Sun",
-    "target": "Matt Hoying",
+    "source": "george_sun",
+    "target": "matt",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Chuck Tempest",
-    "target": "Maureen Wink",
+    "source": "chuck_tempest",
+    "target": "maureen",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Chuck Tempest",
-    "target": "Matt Hoying",
+    "source": "chuck_tempest",
+    "target": "matt",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Clyde Tsai",
-    "target": "Maureen Wink",
+    "source": "clyde_tsai",
+    "target": "maureen",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Clyde Tsai",
-    "target": "Matt Hoying",
+    "source": "clyde_tsai",
+    "target": "matt",
     "relationship": "Cornell Friend"
   },
   {
-    "source": "Ivan Vojvodić",
-    "target": "Maureen Wink",
+    "source": "ivan_vojvodi_",
+    "target": "maureen",
     "relationship": "Google Friend"
   },
   {
-    "source": "Ivan Vojvodić",
-    "target": "Matt Hoying",
+    "source": "ivan_vojvodi_",
+    "target": "matt",
     "relationship": "Google Friend"
   },
   {
-    "source": "Tim Coble",
-    "target": "Maureen Wink",
+    "source": "tim_coble",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Tim Coble",
-    "target": "Matt Hoying",
+    "source": "tim_coble",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Yannick Carer",
-    "target": "Maureen Wink",
+    "source": "yannick_carer",
+    "target": "maureen",
     "relationship": "Google Friend"
   },
   {
-    "source": "Yannick Carer",
-    "target": "Matt Hoying",
+    "source": "yannick_carer",
+    "target": "matt",
     "relationship": "Google Friend"
   },
   {
-    "source": "Becky Spohr",
-    "target": "Maureen Wink",
+    "source": "becky_spohr",
+    "target": "maureen",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Becky Spohr",
-    "target": "Matt Hoying",
+    "source": "becky_spohr",
+    "target": "matt",
     "relationship": "Dog Park Friend"
   },
   {
-    "source": "Chuchu Zhang",
-    "target": "Maureen Wink",
+    "source": "chuchu_zhang",
+    "target": "maureen",
     "relationship": "Google Friend"
   },
   {
-    "source": "Chuchu Zhang",
-    "target": "Matt Hoying",
+    "source": "chuchu_zhang",
+    "target": "matt",
     "relationship": "Google Friend"
   },
   {
-    "source": "Kathryn Potts",
-    "target": "Maureen Wink",
+    "source": "kathryn_potts",
+    "target": "maureen",
     "relationship": "Stanford Friend"
   },
   {
-    "source": "Kathryn Potts",
-    "target": "Matt Hoying",
+    "source": "kathryn_potts",
+    "target": "matt",
     "relationship": "Stanford Friend"
   }
 ];
