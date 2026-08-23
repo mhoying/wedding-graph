@@ -815,6 +815,7 @@ export default function App() {
         handleExportCsv={handleExportCsv}
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
         feedbackQueueCount={(feedbackList || []).filter(f => f && f.status === 'PENDING').length}
+        setIsSpreadsheetOpen={setIsSpreadsheetOpen}
       />
 
       {/* Dedicated Host Admin Floating Control Panel */}

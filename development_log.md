@@ -9,16 +9,11 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Built Host Live Spreadsheet Grid Editor & Removed `familyStatus` (`HostSpreadsheetEditorModal.jsx`, `App.jsx`, `GuestProfileDrawer.jsx`)
-- **User Prompt**: "can you also give me a ui in the amin wher ei can edit all the fields for any of the guests like i woudl a spreadsheet and have it updated back tot he database and all the right files" / "also. lets remove family status from teh UI completely"
+## [2026-08-22] Added Prominent `Spreadsheet` Button to Top Navigation Bar (`TopHeaderNav.jsx` & `App.jsx`)
+- **User Prompt**: "i dont see that button"
 - **Actions**:
-  1. **Built `HostSpreadsheetEditorModal.jsx`**:
-     - Interactive spreadsheet grid table displaying guest Name, Side, Cohort, Relationship, Hometown, Location, and Interests.
-     - Supports inline cell editing, real-time search filtering, row insertion (`+ Add Guest Row`), and row deletion (`🗑️`).
-     - **1-Click Auto-Commit**: Clicking **Save & Commit All Changes** compiles `sampleData.js` and pushes directly to GitHub repository database.
-  2. **Removed `familyStatus` from UI**:
-     - Removed `familyStatus` row and input from `GuestProfileDrawer.jsx`.
-     - Removed `familyStatus` column from `HostSpreadsheetEditorModal.jsx`.
-  3. **Wired Host Admin Panel**:
-     - Added `📊 Live Spreadsheet Editor` button to `<HostAdminPanel>`.
-  4. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Root Cause Analysis**:
+     - The Host Live Spreadsheet Grid Editor button was previously only rendered inside the floating side panel (`<HostAdminPanel>`), which may be hidden or scrolled out of view on smaller viewports.
+  2. **Top Bar Button Placement (`TopHeaderNav.jsx`)**:
+     - Added a prominent **`📊 Spreadsheet`** button directly to the top navigation header next to **`Queue`** whenever `isAdmin` is active.
+  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

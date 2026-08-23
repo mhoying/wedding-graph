@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause, Eye, EyeOff, SlidersHorizontal, Palette } from 'lucide-react';
+import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause, Eye, EyeOff, SlidersHorizontal, Palette, FileSpreadsheet } from 'lucide-react';
 
 export default function TopHeaderNav({
   searchQuery,
@@ -254,30 +254,52 @@ export default function TopHeaderNav({
           <span>Matchmaker</span>
         </button>
 
-        {/* Host Moderation Queue Button */}
+        {/* Host Live Spreadsheet & Moderation Queue Buttons */}
         {isAdmin && (
-          <button 
-            onClick={() => setIsFeedbackQueueOpen(true)}
-            className="glass-panel btn-icon"
-            title="Open Host Moderation Review Queue"
-            style={{ 
-              height: 36, 
-              padding: '0 12px', 
-              gap: 6, 
-              fontSize: 12, 
-              fontWeight: 700, 
-              background: feedbackQueueCount > 0 ? 'rgba(239, 68, 68, 0.25)' : 'rgba(30, 41, 59, 0.85)',
-              color: feedbackQueueCount > 0 ? '#f87171' : '#cbd5e1', 
-              border: feedbackQueueCount > 0 ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.2)',
-              flexShrink: 0 
-            }}
-          >
-            <ShieldAlert style={{ width: 14, height: 14, color: feedbackQueueCount > 0 ? '#ef4444' : '#38bdf8' }} />
-            <span>Queue</span>
-            <span style={{ fontSize: 10, background: feedbackQueueCount > 0 ? '#ef4444' : 'rgba(255,255,255,0.2)', color: '#fff', padding: '1px 6px', borderRadius: 9999 }}>
-              {feedbackQueueCount}
-            </span>
-          </button>
+          <>
+            <button 
+              onClick={() => setIsSpreadsheetOpen && setIsSpreadsheetOpen(true)}
+              className="glass-panel btn-icon"
+              title="Open Live Guest Spreadsheet Grid Editor"
+              style={{ 
+                height: 36, 
+                padding: '0 12px', 
+                gap: 6, 
+                fontSize: 12, 
+                fontWeight: 800, 
+                background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%)',
+                color: '#c084fc', 
+                border: '1px solid rgba(168, 85, 247, 0.4)',
+                flexShrink: 0 
+              }}
+            >
+              <FileSpreadsheet style={{ width: 14, height: 14, color: '#c084fc' }} />
+              <span>Spreadsheet</span>
+            </button>
+
+            <button 
+              onClick={() => setIsFeedbackQueueOpen(true)}
+              className="glass-panel btn-icon"
+              title="Open Host Moderation Review Queue"
+              style={{ 
+                height: 36, 
+                padding: '0 12px', 
+                gap: 6, 
+                fontSize: 12, 
+                fontWeight: 700, 
+                background: feedbackQueueCount > 0 ? 'rgba(239, 68, 68, 0.25)' : 'rgba(30, 41, 59, 0.85)',
+                color: feedbackQueueCount > 0 ? '#f87171' : '#cbd5e1', 
+                border: feedbackQueueCount > 0 ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.2)',
+                flexShrink: 0 
+              }}
+            >
+              <ShieldAlert style={{ width: 14, height: 14, color: feedbackQueueCount > 0 ? '#ef4444' : '#38bdf8' }} />
+              <span>Queue</span>
+              <span style={{ fontSize: 10, background: feedbackQueueCount > 0 ? '#ef4444' : 'rgba(255,255,255,0.2)', color: '#fff', padding: '1px 6px', borderRadius: 9999 }}>
+                {feedbackQueueCount}
+              </span>
+            </button>
+          </>
         )}
 
         {/* Light / Dark Mode Toggle Button */}
