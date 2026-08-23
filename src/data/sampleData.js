@@ -437,6 +437,9 @@ export const SAMPLE_NODES = [
     "originallyFrom": "Upstate NY",
     "currentlyLivesIn": "Chicago",
     "familyStatus": "Single",
+    "isAttending": false,
+    "rsvpStatus": "Declined",
+    "attendanceStatus": "Not Attending",
     "hobbies": []
   },
   {

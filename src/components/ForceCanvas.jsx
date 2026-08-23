@@ -414,21 +414,22 @@ export default function ForceCanvas({
     }
     ctx.fill();
 
-    ctx.lineWidth = (isHovered || isPathNode ? 2.2 : 1.5) / globalScale;
+    ctx.lineWidth = (isHovered || isPathNode ? 2.5 : (isNonAttending ? 2.2 : 1.5)) / globalScale;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
     } else if (isNonAttending) {
-      ctx.strokeStyle = hexToRgba(groupColor, 0.4);
+      ctx.strokeStyle = groupColor;
     } else {
       ctx.strokeStyle = hexToRgba(groupColor, 0.7);
     }
     
     if (isNonAttending) {
-      ctx.setLineDash([3 / globalScale, 3 / globalScale]);
+      ctx.setLineDash([6 / globalScale, 4 / globalScale]);
     } else {
       ctx.setLineDash([]);
     }
     ctx.stroke();
+    ctx.setLineDash([]); // Reset line dash for subsequent rendering
 
     if (renderAvatar) {
       const avatarX = node.x;
