@@ -60,7 +60,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Allison Williams & Jim Merizio",
     "side": "Maureen",
     "relationship": "Allison Williams & Jim Merizio",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NJ",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -77,7 +77,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Andy & Victoria",
     "side": "Matt",
     "relationship": "Andy & Victoria",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -94,7 +94,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Hoy Family",
     "side": "Matt",
     "relationship": "The Hoy Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -111,7 +111,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Hoy Family",
     "side": "Matt",
     "relationship": "The Hoy Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -165,7 +165,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Becky Spohr",
     "side": "Joint",
     "relationship": "Becky Spohr",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Chicago",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -182,7 +182,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Kimpreston Family",
     "side": "Matt",
     "relationship": "The Kimpreston Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -201,7 +201,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Kimpreston Family",
     "side": "Matt",
     "relationship": "The Kimpreston Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -218,7 +218,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Chrissy Fiore & Will Short",
     "side": "Joint",
     "relationship": "Chrissy Fiore & Will Short",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "DC",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -236,7 +236,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Greg Goetchius & Lauren Sofia",
     "side": "Joint",
     "relationship": "Greg Goetchius & Lauren Sofia",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -254,7 +254,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Greg Goetchius & Lauren Sofia",
     "side": "Joint",
     "relationship": "Greg Goetchius & Lauren Sofia",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -272,7 +272,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Friends",
     "side": "Matt",
     "relationship": "Friends",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Single",
     "hobbies": [
@@ -308,7 +308,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Katie Conniff & Ryan Podolak",
     "side": "Joint",
     "relationship": "Katie Conniff & Ryan Podolak",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Madison, WI",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -324,11 +324,14 @@ export const SAMPLE_NODES = [
     "familyCohort": "Krista Kobeski & Guest",
     "side": "Maureen",
     "relationship": "Krista Kobeski & Guest",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Lehigh, Bay FC, Soccer, Wrestling"
+      "Lehigh",
+      "Bay FC",
+      "Soccer",
+      "Wrestling"
     ],
     "__indexColor": "#ac0011"
   },
@@ -340,7 +343,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Habana Family",
     "side": "Matt",
     "relationship": "The Habana Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [],
@@ -354,7 +357,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "OWFL Blog",
     "side": "Joint",
     "relationship": "OWFL Blog",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Bermuda",
     "familyStatus": "Single",
     "hobbies": [
@@ -463,11 +466,12 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Shaikh Sisters",
     "side": "Matt",
     "relationship": "The Shaikh Sisters",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Boston, MA",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Knitting, Aquaria"
+      "Knitting",
+      "Aquaria"
     ],
     "__indexColor": "#0c0019"
   },
@@ -479,7 +483,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Romana Rajput & Steve Nares",
     "side": "Maureen",
     "relationship": "Romana Rajput & Steve Nares",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -496,7 +500,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Romana Rajput & Steve Nares",
     "side": "Maureen",
     "relationship": "Romana Rajput & Steve Nares",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -547,7 +551,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Armstrong Family",
     "side": "Joint",
     "relationship": "The Armstrong Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Northern CA",
     "familyStatus": "Family",
     "hobbies": [
@@ -566,7 +570,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Armstrong Family",
     "side": "Joint",
     "relationship": "The Armstrong Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Northern CA",
     "familyStatus": "Family",
     "hobbies": [
@@ -621,7 +625,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Bibayan-Mayott Family",
     "side": "Joint",
     "relationship": "The Bibayan-Mayott Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -637,7 +641,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Bibayan-Mayott Family",
     "side": "Joint",
     "relationship": "The Bibayan-Mayott Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -653,7 +657,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Domanski Family",
     "side": "Joint",
     "relationship": "The Domanski Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
@@ -669,7 +673,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Domanski Family",
     "side": "Joint",
     "relationship": "The Domanski Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
@@ -685,7 +689,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Festa Family",
     "side": "Matt",
     "relationship": "The Festa Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
@@ -701,7 +705,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Festa Family",
     "side": "Matt",
     "relationship": "The Festa Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
@@ -717,7 +721,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Freedman Family",
     "side": "Maureen",
     "relationship": "The Freedman Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [],
@@ -731,7 +735,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Freedman Family",
     "side": "Maureen",
     "relationship": "The Freedman Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [],
@@ -784,7 +788,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Govig Family",
     "side": "Matt",
     "relationship": "The Govig Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -800,7 +804,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Govig Family",
     "side": "Matt",
     "relationship": "The Govig Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -819,7 +823,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Lahorani Family",
     "side": "Matt",
     "relationship": "The Lahorani Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -869,7 +873,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Murillo-Davisson Family",
     "side": "Joint",
     "relationship": "The Murillo-Davisson Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -888,7 +892,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Murillo-Davisson Family",
     "side": "Joint",
     "relationship": "The Murillo-Davisson Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -904,7 +908,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Phan-Macdonald Family",
     "side": "Joint",
     "relationship": "The Phan-Macdonald Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -920,7 +924,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Phan-Macdonald Family",
     "side": "Joint",
     "relationship": "The Phan-Macdonald Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -936,7 +940,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Richter Family",
     "side": "Joint",
     "relationship": "The Richter Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "DC",
     "familyStatus": "Family",
     "hobbies": [
@@ -952,7 +956,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Richter Family",
     "side": "Joint",
     "relationship": "The Richter Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "DC",
     "familyStatus": "Family",
     "hobbies": [
@@ -984,7 +988,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Silva Family",
     "side": "Joint",
     "relationship": "The Silva Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1002,7 +1006,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Sun Family",
     "side": "Matt",
     "relationship": "The Sun Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Family",
     "hobbies": [
@@ -1018,7 +1022,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Sun Family",
     "side": "Matt",
     "relationship": "The Sun Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Family",
     "hobbies": [
@@ -1051,7 +1055,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Tsai-Luong Family",
     "side": "Matt",
     "relationship": "The Tsai-Luong Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1067,7 +1071,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Vojvodic Family",
     "side": "Matt",
     "relationship": "The Vojvodic Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1084,7 +1088,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Winslow Family",
     "side": "Joint",
     "relationship": "The Winslow Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1136,7 +1140,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Yannick Carer & Guest",
     "side": "Matt",
     "relationship": "Yannick Carer & Guest",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Zurich",
     "familyStatus": "Family",
     "hobbies": [
@@ -1154,7 +1158,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Google",
     "side": "Matt",
     "relationship": "Google",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Single",
     "hobbies": [],
@@ -1168,7 +1172,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Habana Family",
     "side": "Matt",
     "relationship": "The Habana Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [],
@@ -1182,7 +1186,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Kathryn Flack & Joe Wernet",
     "side": "Matt",
     "relationship": "Kathryn Flack & Joe Wernet",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Boston, MA",
     "familyStatus": "Couple / Group",
     "hobbies": [
@@ -1198,7 +1202,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Kathryn Flack & Joe Wernet",
     "side": "Matt",
     "relationship": "Kathryn Flack & Joe Wernet",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "Boston, MA",
     "familyStatus": "Couple / Group",
     "hobbies": [],
@@ -1212,7 +1216,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Vojvodic Family",
     "side": "Matt",
     "relationship": "The Vojvodic Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1228,8 +1232,8 @@ export const SAMPLE_NODES = [
     "familyCohort": "Shaikh Sisters",
     "side": "Matt",
     "relationship": "Shaikh Sisters",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "",
+    "currentlyLivesIn": "",
     "familyStatus": "Couple / Group",
     "hobbies": [],
     "__indexColor": "#740047"
@@ -1242,7 +1246,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Lahorani Family",
     "side": "Matt",
     "relationship": "The Lahorani Family",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1258,7 +1262,7 @@ export const SAMPLE_NODES = [
     "familyCohort": "Andy & Victoria",
     "side": "Matt",
     "relationship": "Andy & Victoria",
-    "originallyFrom": "USA",
+    "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [],
@@ -1272,8 +1276,8 @@ export const SAMPLE_NODES = [
     "familyCohort": "Chrissy Fiore & Will Short",
     "side": "Joint",
     "relationship": "Chrissy Fiore & Will Short",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "",
+    "currentlyLivesIn": "",
     "familyStatus": "Couple / Group",
     "hobbies": [],
     "__indexColor": "#38004a"
@@ -1335,8 +1339,8 @@ export const SAMPLE_NODES = [
     "familyCohort": "",
     "side": "Joint",
     "relationship": "Guest",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "",
+    "currentlyLivesIn": "",
     "familyStatus": "Single",
     "hobbies": [],
     "__indexColor": "#e8004e"
@@ -1735,14 +1739,34 @@ export const SAMPLE_LINKS = [
     "relationship": "Connected"
   },
   {
-    "source": "jess_phan",
-    "target": "leslie_davidsson",
-    "label": "Friends"
+    "source": "nadia_shaikh",
+    "target": "nishat_shaikh",
+    "relationship": "Family"
   },
   {
-    "source": "jeff_domanski",
-    "target": "maureen",
-    "label": "Coworkers"
+    "source": "becca_winslow",
+    "target": "jenna_auer",
+    "relationship": "Friends"
+  },
+  {
+    "source": "maureen",
+    "target": "jeff_domanski",
+    "relationship": "Coworkers"
+  },
+  {
+    "source": "jess_phan",
+    "target": "leslie_davidsson",
+    "relationship": "Friends"
+  },
+  {
+    "source": "clyde_tsai",
+    "target": "jesse_lindenberger_schutz",
+    "relationship": "Coworkers"
+  },
+  {
+    "source": "romana_rajput",
+    "target": "nur_e_freedman",
+    "relationship": "Coworkers"
   },
   {
     "source": "ivan_vojvodic",
@@ -1750,34 +1774,14 @@ export const SAMPLE_LINKS = [
     "label": "Coworkers"
   },
   {
-    "source": "nadia_shaikh",
-    "target": "nishat_shaikh",
-    "label": "Family"
-  },
-  {
     "source": "jonathan_bibayan",
     "target": "jenna_auer",
     "label": "Friends"
   },
   {
-    "source": "ivan_vojvodic",
-    "target": "mira_vojvodic",
+    "source": "mira_vojvodic",
+    "target": "ivan_vojvodic",
     "label": "Family"
-  },
-  {
-    "source": "jesse_lindenberger_schutz",
-    "target": "clyde_tsai",
-    "label": "Coworkers"
-  },
-  {
-    "source": "romana_rajput",
-    "target": "nur_e_freedman",
-    "label": "Coworkers"
-  },
-  {
-    "source": "becca_winslow",
-    "target": "jenna_auer",
-    "label": "Friends"
   }
 ];
 
