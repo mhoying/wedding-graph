@@ -9,16 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Automated GitHub Issue State Closing & Nur-e Freedman "Wine" Tag Persisted (`App.jsx` & `githubSync.js`)
-- **User Prompt**: "after i approve a moderation change it says the modeatiaon queu is empty, but then if i get a new suggested change all the old ones show up. also, i approve da change to add Wine to Nur-e and she says she doesnt see it in the grpah"
+## [2026-08-22] Elevated Person Details Drawer to `z-index: 9000 !important;` (`index.css`)
+- **User Prompt**: "also, map contorls is still showing over the top of the people detials when you click into a perosn detials"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - **Queue Re-Loading Issue**: Approving a proposal previously updated local state, but did not issue an HTTP PATCH request to mark the GitHub Issue as `closed`. Next time `fetchGuestProposalsFromGithub()` fetched `state=open` issues from GitHub API, it pulled all previously approved items back into the queue.
-     - **Missing Tag Parsing Issue**: `onApprove` previously looked for `proposal.proposedHobbies`, but free-form notes from `SuggestEditModal` were stored in `proposal.note`.
-  2. **Automated GitHub Issue Closing (`githubSync.js` & `App.jsx`)**:
-     - Added `closeGithubIssueProposal(issueNumber)` sending HTTP PATCH `state: 'closed'` to GitHub API on approve or reject.
-     - Updated `onApprove` to parse `proposal.note` or `proposal.proposedHobbies`.
-     - Closed old resolved GitHub issues #1, #2, #3.
-  3. **Persisted "Wine" Tag for Nur-e Freedman**:
-     - Added `Wine` to Nur-e Freedman in `public/guests_template.csv` and `src/data/sampleData.js`.
-  4. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+     - `.metadata-drawer` (Guest Profile Details Drawer) previously had `z-index: 20` on desktop and `z-index: 2000` on mobile.
+     - `.top-bar` controls, tune popovers, and FABs had higher z-index values, causing top bar elements and floating controls to overlap the person details drawer.
+  2. **Layering Elevation (`index.css`)**:
+     - Updated `.metadata-drawer` to `position: fixed` and `z-index: 9000 !important;` on both desktop and mobile viewports.
+     - Ensured that whenever a user opens a person's details card, the card floats above ALL map controls, top bars, and FABs!
+  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
