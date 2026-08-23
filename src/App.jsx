@@ -169,6 +169,7 @@ export default function App() {
 
   // Direct Profile Editor Drawer State
   const [isEditingDrawer, setIsEditingDrawer] = useState(false);
+  const [editName, setEditName] = useState('');
   const [editRelationship, setEditRelationship] = useState('');
   const [editOriginallyFrom, setEditOriginallyFrom] = useState('');
   const [editCurrentlyLivesIn, setEditCurrentlyLivesIn] = useState('');
@@ -562,6 +563,7 @@ export default function App() {
   // Sync Selected Node Edit Form Fields
   useEffect(() => {
     if (selectedNode) {
+      setEditName(selectedNode.name || '');
       setEditRelationship(selectedNode.relationship || '');
       setEditOriginallyFrom(selectedNode.originallyFrom || selectedNode.hometown || '');
       setEditCurrentlyLivesIn(selectedNode.currentlyLivesIn || selectedNode.state || '');
@@ -587,6 +589,9 @@ export default function App() {
     if (!selectedNode) return;
     if (!isAdmin) {
       const changeSummary = [];
+      if (editName && editName !== (selectedNode.name || '')) {
+        changeSummary.push(`Name: ${editName}`);
+      }
       if (editCurrentlyLivesIn && editCurrentlyLivesIn !== (selectedNode.currentlyLivesIn || '')) {
         changeSummary.push(`Lives In: ${editCurrentlyLivesIn}`);
       }
@@ -610,7 +615,7 @@ export default function App() {
       const proposal = {
         id: `fb_${Date.now()}`,
         targetId: selectedNode.id,
-        targetName: selectedNode.name,
+        targetName: editName || selectedNode.name,
         category: 'Profile Edit Proposal',
         proposedHobbies: editHobbies.join(', '),
         proposedLocation: editCurrentlyLivesIn,
@@ -632,6 +637,7 @@ export default function App() {
       if (n.id === selectedNode.id) {
         return {
           ...n,
+          name: editName || n.name,
           relationship: editRelationship,
           originallyFrom: editOriginallyFrom,
           currentlyLivesIn: editCurrentlyLivesIn,
@@ -646,6 +652,7 @@ export default function App() {
     setNodes(updated);
     setSelectedNode({
       ...selectedNode,
+      name: editName || selectedNode.name,
       relationship: editRelationship,
       originallyFrom: editOriginallyFrom,
       currentlyLivesIn: editCurrentlyLivesIn,
@@ -1054,6 +1061,8 @@ export default function App() {
         onClose={() => setSelectedNode(null)}
         isEditingDrawer={isEditingDrawer}
         setIsEditingDrawer={setIsEditingDrawer}
+        editName={editName}
+        setEditName={setEditName}
         editRelationship={editRelationship}
         setEditRelationship={setEditRelationship}
         editOriginallyFrom={editOriginallyFrom}

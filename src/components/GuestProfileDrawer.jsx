@@ -6,6 +6,8 @@ export default function GuestProfileDrawer({
   onClose,
   isEditingDrawer,
   setIsEditingDrawer,
+  editName,
+  setEditName,
   editRelationship,
   setEditRelationship,
   editOriginallyFrom,
@@ -134,6 +136,16 @@ export default function GuestProfileDrawer({
           <div className="drawer-section" style={{ marginTop: 12 }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#10b981', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
               <Edit3 style={{ width: 14, height: 14 }} /> Direct Profile Editor
+            </div>
+
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Full Name:</label>
+              <input 
+                type="text" 
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
+              />
             </div>
 
             <div style={{ marginBottom: 10 }}>
