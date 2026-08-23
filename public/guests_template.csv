@@ -1,7 +1,7 @@
 id,name,cohort,side,relationship,originallyFrom,currentlyLivesIn,familyStatus,hobbies
 allison_williams,Allison Williams,Lehigh,Maureen,Allison Williams & Jim Merizio,NJ,NJ,Couple / Group,Lehigh; Food; Gardening
 jim_merizio,Jim Merizio,Allison Williams & Jim Merizio,Maureen,Allison Williams & Jim Merizio,,NJ,Couple / Group,Beer; Knicks
-andy_schmitt,Andy Schmitt,Google,Matt,Andy & Victoria,,SF Bay Area,Couple / Group,Beer; Cocktails
+andy_schmitt,Andy Schmitt,Google,Matt,Andy & Victoria,,SF Bay Area,Couple / Group,Beer; Cocktails; Pickleball
 anne_sweeney,Anne Sweeney,Stanford,Matt,The Hoy Family,,SF Bay Area,Family,Dogs; Kids
 jon_hoy,Jon Hoy,The Hoy Family,Matt,The Hoy Family,,SF Bay Area,Family,Cocktails; Whiskey; Dogs; Kids
 ashley_prichard,Ashley Prichard,Bay FC,Maureen,Ashley Prichard & Roopak Kandasamy,SF Bay Area,SF Bay Area,Couple / Group,Bay FC; Soccer; Lehigh
@@ -20,7 +20,7 @@ leanna_habana,Leanna Habana,Stanford,Matt,The Habana Family,,SF Bay Area,Family,
 liz_scott,Liz Scott,OWFL Blog,Joint,OWFL Blog,,Bermuda,Single,Travel; Food
 marissa_lavelle,Marissa Lavelle,Stanford,Matt,Marissa Lavelle & Guest,SF Bay Area,SF Bay Area,Couple / Group,Music; Art; Travel
 matt,Matt Hoying,Honk Family,Matt,Honk Family,Upstate NY,SF Bay Area,Couple / Group,Cocktails; Whiskey; Dogs; Beer; Bay FC
-maureen,Maureen Wink,Honk Family,Maureen,Honk Family,NJ,SF Bay Area,Couple / Group,Cocktails; Whiskey; Dogs; Beer; Bay FC; Lehigh; Wine
+maureen,Maureen Wink,Honk Family,Maureen,Honk Family,NJ,SF Bay Area,Couple / Group,Cocktails; Whiskey; Dogs; Beer; Bay FC; Lehigh; Wine; RPI Medal
 missy_ruminski,Missy Ruminski,OWFL Blog,Matt,OWFL Blog,Upstate NY,Chicago,Single,
 nichole_remmert,Nichole Remmert,OWFL Blog,Joint,OWFL Blog,Western PA,Baltimore,Single,Whiskey; Dogs; Food
 nishat_shaikh,Nishat Shaikh,Cornell,Matt,The Shaikh Sisters,,"Boston, MA",Couple / Group,Knitting; Aquaria
@@ -40,7 +40,7 @@ dave_festa,Dave Festa,The Festa Family,Matt,The Festa Family,,NJ,Family,Kids
 erica_festa,Erica Festa,Google,Matt,The Festa Family,,NJ,Family,Kids
 ari_freedman,Ari Freedman,The Freedman Family,Maureen,The Freedman Family,,SF Bay Area,Couple / Group,
 eric_freedman,Eric Freedman,The Freedman Family,Maureen,The Freedman Family,,SF Bay Area,Couple / Group,
-james_freedman,James Freedman,The Freedman Family,Maureen,The Freedman Family,Puerto Rico,SF Bay Area,Family,Kids; Bay FC; Bad Bunny
+james_freedman,James Freedman,The Freedman Family,Maureen,The Freedman Family,Puerto Rico,SF Bay Area,Family,Kids; Bay FC; Bad Bunny; RPI Medal
 nur_e_freedman,Nur-e Freedman,Lehigh,Maureen,The Freedman Family,NJ,SF Bay Area,Family,Whiskey; Kids; Bay FC; Lehigh; Books; Bad Bunny; Wine
 angela_govig,Angela Govig,The Govig Family,Matt,The Govig Family,,SF Bay Area,Family,Kids
 jason_govig,Jason Govig,Google,Matt,The Govig Family,,SF Bay Area,Family,Whiskey; Music; Band; Kids

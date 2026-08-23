@@ -103,7 +103,8 @@ export const SAMPLE_NODES = [
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Beer",
-      "Cocktails"
+      "Cocktails",
+      "Pickleball"
     ],
     "__indexColor": "#c40003",
     "index": 2,
@@ -538,7 +539,8 @@ export const SAMPLE_NODES = [
       "Beer",
       "Bay FC",
       "Lehigh",
-      "Wine"
+      "Wine",
+      "RPI Medal"
     ],
     "__indexColor": "#480016",
     "index": 21,
@@ -974,7 +976,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Kids",
       "Bay FC",
-      "Bad Bunny"
+      "Bad Bunny",
+      "RPI Medal"
     ],
     "__indexColor": "#b8002a",
     "index": 41,
