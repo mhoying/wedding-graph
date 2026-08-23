@@ -9,13 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Added Moderation Queue Button to Desktop Header (`TopHeaderNav.jsx`)
-- **User Prompt**: "its still nto opening up the dialogue"
+## [2026-08-22] Restored Goose Logo & "Honk Wedding Universe" Header Title (`TopHeaderNav.jsx` & `index.html`)
+- **User Prompt**: "did somethign happne to the headers. they are supposed to sya Honk wedding with gooses or whatever we did befor eand again it says the old version iwht mauren and mattt"
 - **Actions**:
-  1. **Root Cause Analysis**:
-     - `TopHeaderNav.jsx` listed `setIsFeedbackQueueOpen` in its prop parameters, but did not render a button for the queue in the top navigation bar!
-     - Users clicking the top bar controls were missing a direct button to trigger `setIsFeedbackQueueOpen(true)`.
-  2. **Top Header Queue Button (`TopHeaderNav.jsx`)**:
-     - Added a prominent **`Queue (1)`** button right inside the top header navigation bar when `isAdmin` is active.
-     - Clicking **`Queue (1)`** on either the top navigation bar or the floating Host Panel opens the Host Moderation Queue modal instantly!
+  1. **Header Branding Update (`TopHeaderNav.jsx`)**:
+     - Updated header title to **🪿 Honk Wedding Universe**.
+     - Updated subtitle to **Maureen & Matt • Sept 26, 2026**.
+     - Replaced generic heart icon with the signature Goose emoji logo (`🪿`).
+  2. **SEO & Browser Tab Title (`index.html`)**:
+     - Updated HTML `<title>` tag to `🪿 Honk Wedding Universe | Maureen & Matt (Sept 26, 2026)`.
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

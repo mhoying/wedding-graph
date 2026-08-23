@@ -36,11 +36,11 @@ export default function TopHeaderNav({
   return (
     <header className="glass-panel top-bar no-print">
       <div className="logo-area">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Heart style={{ width: 18, height: 18, color: '#ec4899', fill: '#ec4899' }} />
-          <h1 className="logo-title">Maureen & Matt</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: 22, lineHeight: 1 }} role="img" aria-label="Goose">🪿</span>
+          <h1 className="logo-title" style={{ background: 'linear-[#38bdf8, #ec4899]', webkitBackgroundClip: 'text' }}>Honk Wedding Universe</h1>
         </div>
-        <span className="logo-subtitle">Sept 12, 2026 • Wedding Guest Universe</span>
+        <span className="logo-subtitle">Maureen & Matt • Sept 26, 2026</span>
       </div>
 
       <div className="search-controls-area" style={{ display: 'flex', alignItems: 'center', gap: 10, position: 'relative' }}>
