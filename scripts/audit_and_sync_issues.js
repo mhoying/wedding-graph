@@ -9,10 +9,21 @@ const rootDir = path.resolve(__dirname, '..');
 
 const sampleDataPath = path.join(rootDir, 'src/data/sampleData.js');
 const csvPath = path.join(rootDir, 'public/guests_template.csv');
+const processedLogPath = path.join(rootDir, 'src/data/processed_issues.json');
 
 console.log('🤖 Running Automated GitHub Issues Audit & Database Sync...\n');
 
-// 1. Read sampleData.js
+// 1. Read processed issues log (or create if empty)
+let processedLog = {};
+if (fs.existsSync(processedLogPath)) {
+  try {
+    processedLog = JSON.parse(fs.readFileSync(processedLogPath, 'utf8'));
+  } catch (e) {
+    console.warn('⚠️ Could not parse processed_issues.json, initializing fresh log.');
+  }
+}
+
+// 2. Read sampleData.js
 const sampleDataContent = fs.readFileSync(sampleDataPath, 'utf8');
 const nodesMatch = sampleDataContent.match(/export const SAMPLE_NODES = (\[[\s\S]*?\]);/);
 const linksMatch = sampleDataContent.match(/export const SAMPLE_LINKS = (\[[\s\S]*?\]);/);
@@ -26,7 +37,7 @@ const sampleNodes = JSON.parse(nodesMatch[1]);
 const sampleLinks = linksMatch ? JSON.parse(linksMatch[1]) : [];
 const nodeMap = new Map(sampleNodes.map(n => [n.id, n]));
 
-// 2. Fetch all GitHub Issues
+// 3. Fetch all GitHub Issues
 let issues = [];
 try {
   const rawIssues = execSync('gh issue list --state all --limit 100 --json number,title,state,body,createdAt', { encoding: 'utf8' });
@@ -38,43 +49,90 @@ try {
 
 console.log(`Fetched ${issues.length} total GitHub issues.`);
 
-// 3. Group proposals by Target Guest ID and keep ONLY THE LATEST ISSUE per guest
-const latestProposalsByGuest = new Map();
-
-// Sort issues by issue number ascending so later issues override earlier ones
-issues.sort((a, b) => a.number - b.number);
+// Group ALL proposal issues by Target Guest ID
+const proposalsByGuest = new Map();
 
 for (const issue of issues) {
   const jsonMatch = issue.body.match(/```json\s*([\s\S]*?)\s*```/) || issue.body.match(/(\{[\s\S]*?"targetId"[\s\S]*?\})/);
-  if (!jsonMatch) continue;
+  if (!jsonMatch) {
+    processedLog[issue.number] = {
+      issueNumber: issue.number,
+      title: issue.title,
+      processedAt: new Date().toISOString(),
+      status: 'SKIPPED_NON_PROPOSAL'
+    };
+    continue;
+  }
 
   try {
     const proposal = JSON.parse(jsonMatch[1]);
     const targetId = proposal.targetId || proposal.id;
-    if (!targetId || targetId.startsWith('fb_test')) continue; // Skip test issues
+    if (!targetId || targetId.startsWith('fb_test')) {
+      processedLog[issue.number] = {
+        issueNumber: issue.number,
+        title: issue.title,
+        processedAt: new Date().toISOString(),
+        status: 'SKIPPED_TEST_ISSUE'
+      };
+      continue;
+    }
 
-    // Store/Overwrite with the LATEST issue proposal for this guest
-    latestProposalsByGuest.set(targetId, {
+    if (!proposalsByGuest.has(targetId)) {
+      proposalsByGuest.set(targetId, []);
+    }
+    proposalsByGuest.get(targetId).push({ issue, proposal });
+  } catch (err) {
+    processedLog[issue.number] = {
       issueNumber: issue.number,
       title: issue.title,
-      createdAt: issue.createdAt,
-      proposal
-    });
-  } catch (err) {
-    // Ignore non-json issue bodies
+      processedAt: new Date().toISOString(),
+      status: 'SKIPPED_PARSE_ERROR'
+    };
   }
 }
 
-console.log(`Identified latest proposal issues for ${latestProposalsByGuest.size} unique guests.\n`);
+console.log(`Found proposals across ${proposalsByGuest.size} unique guests.\n`);
 
-// 4. Audit and apply changes to sampleNodes
 let modificationsCount = 0;
+let newProcessedCount = 0;
 
-for (const [targetId, { issueNumber, proposal }] of latestProposalsByGuest.entries()) {
+// For each guest, resolve ONLY their highest/latest issue number!
+for (const [targetId, guestProposals] of proposalsByGuest.entries()) {
+  // Sort guest proposals by issue number ascending
+  guestProposals.sort((a, b) => a.issue.number - b.issue.number);
+
+  // Mark all earlier proposals as SUPERSEDED
+  for (let i = 0; i < guestProposals.length - 1; i++) {
+    const earlierIssueNum = guestProposals[i].issue.number;
+    const latestIssueNum = guestProposals[guestProposals.length - 1].issue.number;
+    processedLog[earlierIssueNum] = {
+      issueNumber: earlierIssueNum,
+      targetId,
+      processedAt: new Date().toISOString(),
+      status: `SUPERSEDED_BY_ISSUE_#${latestIssueNum}`
+    };
+  }
+
+  // The LATEST proposal for this guest
+  const latestEntry = guestProposals[guestProposals.length - 1];
+  const { issue, proposal } = latestEntry;
+
+  // Check if this latest issue was already processed
+  if (processedLog[issue.number] && processedLog[issue.number].status === 'PROCESSED_SUCCESS') {
+    continue; // Already processed latest proposal
+  }
+
+  newProcessedCount++;
   const node = nodeMap.get(targetId) || sampleNodes.find(n => n.name.toLowerCase() === (proposal.targetName || '').toLowerCase());
   
   if (!node) {
-    console.warn(`⚠️ Guest "${proposal.targetName}" (${targetId}) from Issue #${issueNumber} not found in sampleData.js`);
+    console.warn(`⚠️ Guest "${proposal.targetName}" (${targetId}) from Issue #${issue.number} not found in sampleData.js`);
+    processedLog[issue.number] = {
+      issueNumber: issue.number,
+      targetId,
+      processedAt: new Date().toISOString(),
+      status: 'GUEST_NOT_FOUND'
+    };
     continue;
   }
 
@@ -116,7 +174,7 @@ for (const [targetId, { issueNumber, proposal }] of latestProposalsByGuest.entri
     nodeChanged = true;
   }
 
-  // Proposed Hobbies (Handles additions AND removals from the latest issue)
+  // Proposed Hobbies
   if (proposal.proposedHobbies !== undefined) {
     const rawHobbyStr = proposal.proposedHobbies || '';
     const proposedHobbyList = rawHobbyStr
@@ -134,26 +192,36 @@ for (const [targetId, { issueNumber, proposal }] of latestProposalsByGuest.entri
     }
   }
 
+  processedLog[issue.number] = {
+    issueNumber: issue.number,
+    targetId: node.id,
+    targetName: node.name,
+    processedAt: new Date().toISOString(),
+    status: 'PROCESSED_SUCCESS'
+  };
+
   if (nodeChanged) {
     modificationsCount++;
-    console.log(`✅ [Issue #${issueNumber}] Updated ${node.name} (${node.id}):`);
+    console.log(`✅ [Latest Issue #${issue.number}] Updated ${node.name} (${node.id}):`);
     changes.forEach(c => console.log(`   • ${c}`));
   } else {
-    console.log(`✨ [Issue #${issueNumber}] ${node.name} (${node.id}) is 100% up to date.`);
+    console.log(`✨ [Latest Issue #${issue.number}] ${node.name} (${node.id}) is 100% up to date.`);
   }
 }
 
-if (modificationsCount > 0) {
-  console.log(`\nWriting ${modificationsCount} updated guest profiles back to disk...`);
+// Write updated processed log to disk
+fs.writeFileSync(processedLogPath, JSON.stringify(processedLog, null, 2), 'utf8');
+console.log(`\n📋 Updated processed issues ledger at ${processedLogPath}`);
 
-  // Clean simulation properties before writing
+if (modificationsCount > 0) {
+  console.log(`Writing ${modificationsCount} updated guest profiles back to disk...`);
+
   const cleanNodes = sampleNodes.map(({ x, y, vx, vy, fx, fy, index, __indexColor, ...rest }) => rest);
-  const updatedJsContent = `export const COHORT_COLORS = {\n  "The Couple": "#38bdf8",\n  "Cornell": "#b31b1b",\n  "Google": "#4285f4",\n  "Stanford": "#8c1515",\n  "Lehigh": "#653819",\n  "Dog Park": "#10b981",\n  "OWFL Blog": "#ec4899",\n  "Bay FC": "#f59e0b",\n  "Friends": "#64748b",\n  "Default": "#64748b"\n};\n\nexport const SIDE_COLORS = {\n  "Maureen": "#ec4899",\n  "Matt": "#3b82f6",\n  "Joint": "#10b981"\n};\n\nexport const STATE_COLORS = {\n  "USA": "#38bdf8",\n  "Default": "#64748b"\n};\n\nexport const DYNAMIC_CLUSTER_COLORS = [\n  "#38bdf8", "#ec4899", "#10b981", "#f59e0b", "#8b5cf6",\n  "#06b6d4", "#a855f7", "#eab308", "#ef4444", "#14b8a6"\n];\n\nexport const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};\n\nexport const SAMPLE_LINKS = ${JSON.stringify(sampleLinks, null, 2)};\n`;
+  const updatedJsContent = `export const COHORT_COLORS = {\n  "The Couple": "#38bdf8",\n  "Cornell": "#b31b1b",\n  "Google": "#4285f4",\n  "Stanford": "#8c1515",\n  "Lehigh": "#653819",\n  "Dog Park": "#10b981",\n  "OWFL Blog": "#ec4899",\n  "Bay FC": "#f59e0b",\n  "Friends": "#64748b",\n  "Default": "#64748b"\n};\n\nexport const SIDE_COLORS = {\n  "Maureen": "#ec4899",\n  "Matt": "#3b82f6",\n  "Joint": "#10b981"\n};\n\nexport const STATE_COLORS = {\n  "USA": "#38bdf8",\n  "Default": "#64748b"\n};\n\nexport const DYNAMIC_CLUSTER_COLORS = [\n  "#38bdf8", "#ec4899", "#10b981", "#f59e0b", "#8b5cf6",\n  "#06b6d4", "#a855f7", "#eab308", "#ef4444", "#14b8a6"\n];\n\nexport const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};\n\nexport const SAMPLE_LINKS = ${JSON.stringify(sampleLinks, null, 2)};\n\nexport function getInitials(name) {\n  if (!name) return '??';\n  const parts = name.trim().split(' ');\n  if (parts.length >= 2) {\n    return \`\${parts[0][0]}\${parts[parts.length - 1][0]}\`.toUpperCase();\n  }\n  return name.slice(0, 2).toUpperCase();\n}\n`;
 
   fs.writeFileSync(sampleDataPath, updatedJsContent, 'utf8');
   console.log(`💾 Saved updated dataset to ${sampleDataPath}`);
 
-  // Re-generate CSV
   const csvLines = ['id,name,cohort,side,relationship,originallyFrom,currentlyLivesIn,familyStatus,hobbies'];
   cleanNodes.forEach(n => {
     const line = [
@@ -174,5 +242,5 @@ if (modificationsCount > 0) {
   console.log(`📄 Saved updated CSV to ${csvPath}`);
   console.log('\n🎉 Audit & Sync completed successfully!');
 } else {
-  console.log('\n🎉 Audit completed! All sampleData.js profiles match their latest GitHub Issue proposals 100%.');
+  console.log(`\n🎉 Audit completed! Processed ${newProcessedCount} new proposals. No dataset modifications were needed.`);
 }
