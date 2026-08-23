@@ -37,10 +37,10 @@ export default function TopHeaderNav({
     <header className="glass-panel top-bar no-print">
       <div className="logo-area">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 22, lineHeight: 1 }} role="img" aria-label="Goose">🪿</span>
-          <h1 className="logo-title" style={{ background: 'linear-[#38bdf8, #ec4899]', webkitBackgroundClip: 'text' }}>Honk Wedding Universe</h1>
+          <span style={{ fontSize: 24, lineHeight: 1 }} role="img" aria-label="Goose">🪿</span>
+          <h1 className="logo-title" style={{ background: 'linear-gradient(135deg, #38bdf8 0%, #ec4899 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', color: '#38bdf8', margin: 0, fontSize: 18, fontWeight: 900 }}>Honk Wedding Universe</h1>
         </div>
-        <span className="logo-subtitle">Maureen & Matt • Sept 26, 2026</span>
+        <span className="logo-subtitle">Sept 26, 2026 • Honk Wedding Map</span>
       </div>
 
       <div className="search-controls-area" style={{ display: 'flex', alignItems: 'center', gap: 10, position: 'relative' }}>
