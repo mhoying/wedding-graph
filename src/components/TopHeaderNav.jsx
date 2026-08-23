@@ -254,6 +254,32 @@ export default function TopHeaderNav({
           <span>Matchmaker</span>
         </button>
 
+        {/* Host Moderation Queue Button */}
+        {isAdmin && (
+          <button 
+            onClick={() => setIsFeedbackQueueOpen(true)}
+            className="glass-panel btn-icon"
+            title="Open Host Moderation Review Queue"
+            style={{ 
+              height: 36, 
+              padding: '0 12px', 
+              gap: 6, 
+              fontSize: 12, 
+              fontWeight: 700, 
+              background: feedbackQueueCount > 0 ? 'rgba(239, 68, 68, 0.25)' : 'rgba(30, 41, 59, 0.85)',
+              color: feedbackQueueCount > 0 ? '#f87171' : '#cbd5e1', 
+              border: feedbackQueueCount > 0 ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.2)',
+              flexShrink: 0 
+            }}
+          >
+            <ShieldAlert style={{ width: 14, height: 14, color: feedbackQueueCount > 0 ? '#ef4444' : '#38bdf8' }} />
+            <span>Queue</span>
+            <span style={{ fontSize: 10, background: feedbackQueueCount > 0 ? '#ef4444' : 'rgba(255,255,255,0.2)', color: '#fff', padding: '1px 6px', borderRadius: 9999 }}>
+              {feedbackQueueCount}
+            </span>
+          </button>
+        )}
+
         {/* Light / Dark Mode Toggle Button */}
         <button 
           onClick={() => setIsLightMode(!isLightMode)} 
