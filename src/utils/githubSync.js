@@ -142,7 +142,8 @@ export const STATE_COLORS = {
   "Houston": "#ca8a04",
   "Florida": "#65a30d",
   "Zurich": "#7c3aed",
-  "USA": "#38bdf8",
+  "Bay FC": "#f59e0b",
+  "Other": "#64748b",
   "Default": "#64748b"
 };
 

@@ -7,6 +7,7 @@ export const COHORT_COLORS = {
   "Dog Park": "#10b981",
   "OWFL Blog": "#ec4899",
   "Bay FC": "#f59e0b",
+  "Other": "#64748b",
   "Default": "#64748b"
 };
 
@@ -881,8 +882,8 @@ export const SAMPLE_NODES = [
     "id": "jess_phan",
     "name": "Jess Phan",
     "type": "GUEST",
-    "cohort": "OWFL Blog",
-    "familyCohort": "OWFL Blog",
+    "cohort": "Other",
+    "familyCohort": "Other",
     "side": "Joint",
     "relationship": "The Phan-Macdonald Family",
     "originallyFrom": "",
@@ -896,8 +897,8 @@ export const SAMPLE_NODES = [
     "id": "mark_macdonald",
     "name": "Mark Macdonald",
     "type": "GUEST",
-    "cohort": "OWFL Blog",
-    "familyCohort": "OWFL Blog",
+    "cohort": "Other",
+    "familyCohort": "Other",
     "side": "Joint",
     "relationship": "The Phan-Macdonald Family",
     "originallyFrom": "",
