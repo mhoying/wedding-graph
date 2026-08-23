@@ -104,8 +104,8 @@ export default function App() {
     setNodes(newNodes);
     setLinks(newLinks);
     try {
-      localStorage.setItem('wedding_graph_nodes_v4', JSON.stringify(newNodes));
-      localStorage.setItem('wedding_graph_links_v4', JSON.stringify(newLinks));
+      localStorage.setItem('wedding_graph_nodes_v7', JSON.stringify(newNodes));
+      localStorage.setItem('wedding_graph_links_v7', JSON.stringify(newLinks));
     } catch (e) {
       console.warn('Could not save to localStorage:', e);
     }
@@ -115,12 +115,17 @@ export default function App() {
     setLinks(prev => {
       const updated = [...prev, newLink];
       try {
-        localStorage.setItem('wedding_graph_links_v4', JSON.stringify(updated));
+        localStorage.setItem('wedding_graph_links_v7', JSON.stringify(updated));
       } catch (e) {
         console.warn('Could not save links to localStorage:', e);
       }
       return updated;
     });
+
+    // Immediately reheat D3 force simulation to draw the new connection line on canvas!
+    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+      fgRef.current.d3ReheatSimulation();
+    }
   }, []);
 
   // Path Finder State
