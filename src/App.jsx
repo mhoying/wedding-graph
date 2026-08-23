@@ -105,7 +105,7 @@ export default function App() {
   const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(1.0);
   const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(1.0);
   const [isOrbiting, setIsOrbiting] = useState(true);
-  const [orbitSpeed, setOrbitSpeed] = useState(1.0);
+  const [orbitSpeed, setOrbitSpeed] = useState(0.3);
 
   // Hidden Security & Host Admin Mode State
   const [isAdmin, setIsAdmin] = useState(() => isSecretUrlAdmin());
