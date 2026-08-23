@@ -28,14 +28,14 @@ export default function App() {
   // Core Data State (Loads real 75-guest wedding dataset by default)
   useEffect(() => {
     // Purge legacy storage keys that contain old pre-migrated cohort names
-    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_nodes_v10', 'wedding_graph_nodes_v11', 'wedding_graph_nodes_v12', 'wedding_graph_nodes_v13', 'wedding_graph_nodes_v14', 'wedding_graph_nodes_v15', 'wedding_graph_nodes_v16', 'wedding_graph_nodes_v17', 'wedding_graph_nodes_v18', 'wedding_graph_nodes_v19', 'wedding_graph_nodes_v20', 'wedding_graph_links_v7', 'wedding_graph_links_v3', 'wedding_graph_links_v10', 'wedding_graph_links_v11', 'wedding_graph_links_v12', 'wedding_graph_links_v13', 'wedding_graph_links_v14', 'wedding_graph_links_v15', 'wedding_graph_links_v16', 'wedding_graph_links_v17', 'wedding_graph_links_v18', 'wedding_graph_links_v19', 'wedding_graph_links_v20'].forEach(k => {
+    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v7', 'wedding_graph_nodes_v3', 'wedding_graph_nodes_v4', 'wedding_graph_nodes_v8', 'wedding_graph_nodes_v9', 'wedding_graph_nodes_v10', 'wedding_graph_nodes_v11', 'wedding_graph_nodes_v12', 'wedding_graph_nodes_v13', 'wedding_graph_nodes_v14', 'wedding_graph_nodes_v15', 'wedding_graph_nodes_v16', 'wedding_graph_nodes_v17', 'wedding_graph_nodes_v18', 'wedding_graph_nodes_v19', 'wedding_graph_nodes_v20', 'wedding_graph_nodes_v21', 'wedding_graph_links_v7', 'wedding_graph_links_v3', 'wedding_graph_links_v10', 'wedding_graph_links_v11', 'wedding_graph_links_v12', 'wedding_graph_links_v13', 'wedding_graph_links_v14', 'wedding_graph_links_v15', 'wedding_graph_links_v16', 'wedding_graph_links_v17', 'wedding_graph_links_v18', 'wedding_graph_links_v19', 'wedding_graph_links_v20', 'wedding_graph_links_v21'].forEach(k => {
       try { localStorage.removeItem(k); } catch(e) {}
     });
   }, []);
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v21');
+      const saved = localStorage.getItem('wedding_graph_nodes_v22');
       if (saved) {
         const parsed = JSON.parse(saved);
         const hasLegacyCohorts = Array.isArray(parsed) && parsed.some(n => 
@@ -53,7 +53,7 @@ export default function App() {
 
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v21');
+      const saved = localStorage.getItem('wedding_graph_links_v22');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50) {
@@ -1192,9 +1192,11 @@ export default function App() {
                 // 3. Proposed Currently Lives In Location
                 if (proposal.proposedLocation) {
                   newNode.currentlyLivesIn = proposal.proposedLocation;
+                  newNode.state = proposal.proposedLocation;
                 }
                 if (proposal.proposedCohort) {
                   newNode.cohort = proposal.proposedCohort;
+                  newNode.familyCohort = proposal.proposedCohort;
                 }
                 if (proposal.proposedSide) {
                   newNode.side = proposal.proposedSide;
@@ -1202,10 +1204,21 @@ export default function App() {
                 if (proposal.proposedRelationship) {
                   newNode.relationship = proposal.proposedRelationship;
                 }
+                if (proposal.proposedFamilyStatus) {
+                  newNode.familyStatus = proposal.proposedFamilyStatus;
+                }
+
+                // 4. Proposed Attendance Status
+                if (proposal.proposedIsAttending === false || proposal.isAttending === false || (proposal.note && (proposal.note.toLowerCase().includes('not attending') || proposal.note.toLowerCase().includes('declined')))) {
+                  newNode.isAttending = false;
+                  newNode.rsvpStatus = 'Declined';
+                  newNode.attendanceStatus = 'Not Attending';
+                }
                 
-                // 4. Proposed Hobbies
-                if (proposal.proposedHobbies) {
-                  const newHobbies = proposal.proposedHobbies.split(/[,;\n]/).map(h => h.trim()).filter(Boolean);
+                // 5. Proposed Hobbies
+                if (proposal.proposedHobbies || proposal.note) {
+                  const hobbyText = proposal.proposedHobbies || proposal.note || '';
+                  const newHobbies = hobbyText.split(/[,;\n]/).map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship):?/i, '').trim()).filter(Boolean);
                   newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
                 }
                 return newNode;

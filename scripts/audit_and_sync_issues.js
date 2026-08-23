@@ -139,7 +139,7 @@ for (const [targetId, guestProposals] of proposalsByGuest.entries()) {
   let nodeChanged = false;
   const changes = [];
 
-  // Proposed Name (Check proposal.proposedName, proposal.targetName, or note string)
+  // 1. Proposed Name
   let nameFromNote = null;
   if (proposal.note && proposal.note.includes('Name:')) {
     const match = proposal.note.match(/Name:\s*([^|]+)/i);
@@ -152,63 +152,116 @@ for (const [targetId, guestProposals] of proposalsByGuest.entries()) {
     nodeChanged = true;
   }
 
-  // Proposed Originally From / Hometown (from note string "Originally From: Stockton, Ca")
-  if (proposal.note && proposal.note.includes('Originally From:')) {
-    const match = proposal.note.match(/Originally From:\s*([^|]+)/i);
-    if (match) {
-      const hometown = match[1].trim();
-      if (hometown && node.originallyFrom !== hometown) {
-        changes.push(`Originally From: "${node.originallyFrom || ''}" -> "${hometown}"`);
-        node.originallyFrom = hometown;
-        node.hometown = hometown;
-        nodeChanged = true;
-      }
+  // 2. Proposed Originally From / Hometown
+  let hometownFromNote = null;
+  if (proposal.note && (proposal.note.includes('Originally From:') || proposal.note.includes('Hometown:'))) {
+    const match = proposal.note.match(/(?:Originally From|Hometown):\s*([^|]+)/i);
+    if (match) hometownFromNote = match[1].trim();
+  }
+  const proposedHometown = proposal.proposedOriginallyFrom || proposal.originallyFrom || hometownFromNote;
+  if (proposedHometown && proposedHometown !== node.originallyFrom) {
+    changes.push(`Originally From: "${node.originallyFrom || ''}" -> "${proposedHometown}"`);
+    node.originallyFrom = proposedHometown;
+    node.hometown = proposedHometown;
+    nodeChanged = true;
+  }
+
+  // 3. Proposed Current Location
+  let locFromNote = null;
+  if (proposal.note && (proposal.note.includes('Currently Lives In:') || proposal.note.includes('Location:'))) {
+    const match = proposal.note.match(/(?:Currently Lives In|Location):\s*([^|]+)/i);
+    if (match) locFromNote = match[1].trim();
+  }
+  const proposedLocation = proposal.proposedLocation || proposal.currentlyLivesIn || locFromNote;
+  if (proposedLocation !== undefined && proposedLocation !== node.currentlyLivesIn) {
+    changes.push(`Location: "${node.currentlyLivesIn || ''}" -> "${proposedLocation}"`);
+    node.currentlyLivesIn = proposedLocation;
+    node.state = proposedLocation;
+    nodeChanged = true;
+  }
+
+  // 4. Proposed Cohort
+  let cohortFromNote = null;
+  if (proposal.note && (proposal.note.includes('Cohort:') || proposal.note.includes('Group:'))) {
+    const match = proposal.note.match(/(?:Cohort|Group):\s*([^|]+)/i);
+    if (match) cohortFromNote = match[1].trim();
+  }
+  const proposedCohort = proposal.proposedCohort || proposal.cohort || cohortFromNote;
+  if (proposedCohort !== undefined && proposedCohort !== node.cohort) {
+    changes.push(`Cohort: "${node.cohort || ''}" -> "${proposedCohort}"`);
+    node.cohort = proposedCohort;
+    node.familyCohort = proposedCohort;
+    nodeChanged = true;
+  }
+
+  // 5. Proposed Side
+  let sideFromNote = null;
+  if (proposal.note && proposal.note.includes('Side:')) {
+    const match = proposal.note.match(/Side:\s*([^|]+)/i);
+    if (match) sideFromNote = match[1].trim();
+  }
+  const proposedSide = proposal.proposedSide || proposal.side || sideFromNote;
+  if (proposedSide !== undefined && proposedSide !== node.side) {
+    changes.push(`Side: "${node.side || ''}" -> "${proposedSide}"`);
+    node.side = proposedSide;
+    nodeChanged = true;
+  }
+
+  // 6. Proposed Relationship
+  let relFromNote = null;
+  if (proposal.note && proposal.note.includes('Relationship:')) {
+    const match = proposal.note.match(/Relationship:\s*([^|]+)/i);
+    if (match) relFromNote = match[1].trim();
+  }
+  const proposedRelationship = proposal.proposedRelationship || proposal.relationship || relFromNote;
+  if (proposedRelationship !== undefined && proposedRelationship !== node.relationship) {
+    changes.push(`Relationship: "${node.relationship || ''}" -> "${proposedRelationship}"`);
+    node.relationship = proposedRelationship;
+    nodeChanged = true;
+  }
+
+  // 7. Proposed Family Status
+  let familyStatusFromNote = null;
+  if (proposal.note && proposal.note.includes('Family Status:')) {
+    const match = proposal.note.match(/Family Status:\s*([^|]+)/i);
+    if (match) familyStatusFromNote = match[1].trim();
+  }
+  const proposedFamilyStatus = proposal.proposedFamilyStatus || proposal.familyStatus || familyStatusFromNote;
+  if (proposedFamilyStatus !== undefined && proposedFamilyStatus !== node.familyStatus) {
+    changes.push(`Family Status: "${node.familyStatus || ''}" -> "${proposedFamilyStatus}"`);
+    node.familyStatus = proposedFamilyStatus;
+    nodeChanged = true;
+  }
+
+  // 8. Proposed Attendance Status
+  let isNotAttendingFromNote = proposal.note && (proposal.note.toLowerCase().includes('not attending') || proposal.note.toLowerCase().includes('declined'));
+  if (proposal.proposedIsAttending === false || proposal.isAttending === false || isNotAttendingFromNote) {
+    if (node.isAttending !== false) {
+      changes.push(`Attendance: ${node.isAttending !== false ? 'Attending' : 'Not Attending'} -> Not Attending`);
+      node.isAttending = false;
+      node.rsvpStatus = 'Declined';
+      node.attendanceStatus = 'Not Attending';
+      nodeChanged = true;
     }
   }
 
-  // Proposed Location
-  if (proposal.proposedLocation !== undefined && proposal.proposedLocation !== node.currentlyLivesIn) {
-    changes.push(`Location: "${node.currentlyLivesIn || ''}" -> "${proposal.proposedLocation}"`);
-    node.currentlyLivesIn = proposal.proposedLocation;
-    nodeChanged = true;
-  }
+  // 9. Proposed Hobbies / Interests
+  if (proposal.proposedHobbies !== undefined || (proposal.note && proposal.note.includes('Hobbies:'))) {
+    const rawHobbyStr = proposal.proposedHobbies || (proposal.note ? (proposal.note.match(/Hobbies:\s*([^|]+)/i) || [])[1] : '') || '';
+    if (rawHobbyStr) {
+      const proposedHobbyList = rawHobbyStr
+        .split(/[,;\n]/)
+        .map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship):?/i, '').trim())
+        .filter(Boolean);
 
-  // Proposed Cohort
-  if (proposal.proposedCohort !== undefined && proposal.proposedCohort !== node.cohort) {
-    changes.push(`Cohort: "${node.cohort || ''}" -> "${proposal.proposedCohort}"`);
-    node.cohort = proposal.proposedCohort;
-    nodeChanged = true;
-  }
+      const currentHobbyStr = (node.hobbies || []).join(', ');
+      const newHobbyStr = proposedHobbyList.join(', ');
 
-  // Proposed Side
-  if (proposal.proposedSide !== undefined && proposal.proposedSide !== node.side) {
-    changes.push(`Side: "${node.side || ''}" -> "${proposal.proposedSide}"`);
-    node.side = proposal.proposedSide;
-    nodeChanged = true;
-  }
-
-  // Proposed Relationship
-  if (proposal.proposedRelationship !== undefined && proposal.proposedRelationship !== node.relationship) {
-    changes.push(`Relationship: "${node.relationship || ''}" -> "${proposal.proposedRelationship}"`);
-    node.relationship = proposal.proposedRelationship;
-    nodeChanged = true;
-  }
-
-  // Proposed Hobbies
-  if (proposal.proposedHobbies !== undefined) {
-    const rawHobbyStr = proposal.proposedHobbies || '';
-    const proposedHobbyList = rawHobbyStr
-      .split(/[,;\n]/)
-      .map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship):?/i, '').trim())
-      .filter(Boolean);
-
-    const currentHobbyStr = (node.hobbies || []).join(', ');
-    const newHobbyStr = proposedHobbyList.join(', ');
-
-    if (currentHobbyStr !== newHobbyStr) {
-      changes.push(`Hobbies: [${currentHobbyStr}] -> [${newHobbyStr}]`);
-      node.hobbies = Array.from(new Set(proposedHobbyList));
-      nodeChanged = true;
+      if (currentHobbyStr !== newHobbyStr) {
+        changes.push(`Hobbies: [${currentHobbyStr}] -> [${newHobbyStr}]`);
+        node.hobbies = Array.from(new Set(proposedHobbyList));
+        nodeChanged = true;
+      }
     }
   }
 
