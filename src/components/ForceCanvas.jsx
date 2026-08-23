@@ -262,12 +262,18 @@ export default function ForceCanvas({
         const hull = getConvexHull2D(points);
 
         let clusterColor;
-        if (label.startsWith('🏡 Originally:')) {
-          clusterColor = '#f59e0b';
-        } else if (label.startsWith('📍 Lives in:')) {
-          clusterColor = '#06b6d4';
+        const cleanLabel = label.replace(/^(📍 Lives in: |🏡 Originally: |Interest: )/, '').replace(' Cluster', '');
+        if (STATE_COLORS[cleanLabel]) {
+          clusterColor = STATE_COLORS[cleanLabel];
+        } else if (COHORT_COLORS[cleanLabel]) {
+          clusterColor = COHORT_COLORS[cleanLabel];
         } else {
-          clusterColor = COHORT_COLORS[label.replace(' Cluster', '')] || DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
+          let hash = 0;
+          for (let i = 0; i < cleanLabel.length; i++) {
+            hash = cleanLabel.charCodeAt(i) + ((hash << 5) - hash);
+          }
+          const paletteIndex = Math.abs(hash) % DYNAMIC_CLUSTER_COLORS.length;
+          clusterColor = DYNAMIC_CLUSTER_COLORS[paletteIndex];
         }
         colorIdx++;
 
