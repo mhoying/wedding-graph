@@ -1,76 +1,79 @@
 id,name,cohort,side,relationship,originallyFrom,currentlyLivesIn,familyStatus,hobbies
-"allison_williams","Allison Williams","Lehigh","Joint","Allison Williams & Jim Merizio","USA","USA","Couple / Group","Lehigh"
-"jim_merizio","Jim Merizio","Allison Williams & Jim Merizio","Joint","Allison Williams & Jim Merizio","USA","USA","Couple / Group","Beer"
-"andy_schmitt","Andy Schmitt","Google","Joint","Andy & Victoria","USA","USA","Couple / Group","Beer; Cocktails"
-"anne_sweeney","Anne Sweeney","Stanford","Joint","The Hoy Family","USA","USA","Family","Dogs"
-"jon_hoy","Jon Hoy","The Hoy Family","Joint","The Hoy Family","USA","USA","Family","Cocktails; Whiskey; Dogs"
-"ashley_prichard","Ashley Prichard","Bay FC","Joint","Ashley Prichard & Roopak Kandasamy","USA","USA","Couple / Group","Bay FC; Soccer"
-"roopak_kandasamy","Roopak Kandasamy","Bay FC","Joint","Ashley Prichard & Roopak Prichard","USA","USA","Couple / Group","Bay FC; Soccer"
-"becky_sporh","Becky Sporh","Dog Park","Joint","Becky Sporh & Guest","USA","USA","Couple / Group","Dogs; Tennis"
-"brian_kim","Brian Kim","Cornell","Joint","The Kimpreston Family","USA","USA","Couple / Group","Bass; Ska"
-"michelle_preston","Michelle Preston","The Kimpreston Family","Joint","The Kimpreston Family","USA","USA","Couple / Group","Dance"
-"chrissy_fiore","Chrissy Fiore","OWFL Blog","Joint","Chrissy Fiore & Will Short","USA","USA","Couple / Group","Cocktails; Whiskey; Dogs"
-"greg_goetchius","Greg Goetchius","Dog Park","Joint","Greg Goetchius & Lauren Sofia","USA","USA","Couple / Group","Whiskey; Dogs"
-"lauren_sofia","Lauren Sofia","Greg Goetchius & Lauren Sofia","Joint","Greg Goetchius & Lauren Sofia","USA","USA","Couple / Group","Tennis"
-"jesse_lindenberger_schutz","Jesse Lindenberger-Schutz","Friends","Joint","Friends","USA","USA","Single","Art; Gaming"
-"katie_conniff","Katie Conniff","Dog Park","Joint","Katie Conniff & Ryan Podolak","USA","USA","Couple / Group","Dogs; Brains"
-"ryan_podolak","Ryan Podolak","Katie Conniff & Ryan Podolak","Joint","Katie Conniff & Ryan Podolak","USA","USA","Couple / Group","Wine"
-"krista_kobeski","Krista Kobeski","Bay FC","Joint","Krista Kobeski & Guest","USA","USA","Couple / Group","Socializing"
-"leanna_habana","Leanna Habana","Stanford","Joint","The Habana Family","USA","USA","Family","Socializing"
-"liz_scott","Liz Scott","OWFL Blog","Joint","OWFL Blog","USA","USA","Single","Socializing"
-"marissa_lavelle","Marissa Lavelle","Stanford","Joint","Marissa Lavelle & Guest","USA","USA","Couple / Group","Socializing"
-"matt","Matt Hoying","Honk Family","Matt","Honk Family","USA","USA","Couple / Group","Cocktails; Whiskey; Dogs; Beer; Bay FC"
-"maureen","Maureen Wink","Honk Family","Maureen","Honk Family","USA","USA","Couple / Group","Cocktails; Whiskey; Dogs; Beer; Bay FC"
-"missy_ruminski","Missy Ruminski","OWFL Blog","Joint","OWFL Blog","USA","USA","Single","Socializing"
-"nichole_remmert","Nichole Remmert","OWFL Blog","Joint","OWFL Blog","USA","USA","Single","Whiskey; Dogs"
-"nishat_shaikh","Nishat Shaikh","Cornell","Joint","The Shaikh Sisters","USA","USA","Couple / Group","Socializing"
-"romana_rajput","Romana Rajput","Romana Rajput & Steve Nares","Joint","Romana Rajput & Steve Nares","USA","USA","Couple / Group","Socializing"
-"steve_nares","Steve Nares","Romana Rajput & Steve Nares","Joint","Romana Rajput & Steve Nares","USA","USA","Couple / Group","Socializing"
-"poukhan_philavanh_anthony","Poukhan Philavanh Anthony","The Anthony Family","Joint","The Anthony Family","USA","USA","Family","Socializing"
-"ryan_anthony","Ryan Anthony","Cornell","Joint","The Anthony Family","USA","USA","Family","Whiskey"
-"cole_armstrong","Cole Armstrong","Dog Park","Joint","The Armstrong Family","USA","USA","Family","Beer; Music; Dogs"
-"tracy_armstrong","Tracy Armstrong","Dog Park","Joint","The Armstrong Family","USA","USA","Family","Socializing"
-"jenna_auer","Jenna Auer","The Auer Family","Joint","The Auer Family","USA","USA","Family","Socializing"
-"tim_auer","Tim Auer","Dog Park","Joint","The Auer Family","USA","USA","Family","Photography; Dogs; Outdoors"
-"jonathan_bibayan","Jonathan Bibayan","The Bibayan-Mayott Family","Joint","The Bibayan-Mayott Family","USA","USA","Family","Socializing"
-"lindsay_mayott","Lindsay Mayott","The Bibayan-Mayott Family","Joint","The Bibayan-Mayott Family","USA","USA","Family","Socializing"
-"jeff_domanski","Jeff Domanski","The Domanski Family","Joint","The Domanski Family","USA","USA","Family","Socializing"
-"jill_domanski","Jill Domanski","The Domanski Family","Joint","The Domanski Family","USA","USA","Family","Socializing"
-"dave_festa","Dave Festa","The Festa Family","Joint","The Festa Family","USA","USA","Family","Socializing"
-"erica_festa","Erica Festa","Google","Joint","The Festa Family","USA","USA","Family","Socializing"
-"ari_freedman","Ari Freedman","The Freedman Family","Joint","The Freedman Family","USA","USA","Couple / Group","Socializing"
-"eric_freedman","Eric Freedman","The Freedman Family","Joint","The Freedman Family","USA","USA","Couple / Group","Socializing"
-"james_freedman","James Freedman","The Freedman Family","Joint","The Freedman Family","USA","USA","Family","Socializing"
-"nur_e_freedman","Nur-e Freedman","Lehigh","Joint","The Freedman Family","USA","USA","Family","Whiskey"
-"angela_govig","Angela Govig","The Govig Family","Joint","The Govig Family","USA","USA","Family","Socializing"
-"jason_govig","Jason Govig","Google","Joint","The Govig Family","USA","USA","Family","Whiskey; Music"
-"janaki_lahorani","Janaki Lahorani","Google","Joint","The Lahorani Family","USA","USA","Family","Socializing"
-"jason_mcmullan","Jason McMullan","Lehigh","Joint","The McMullan Family","USA","USA","Family","Socializing"
-"jessi_mcmullan","Jessi McMullan","Lehigh","Joint","The McMullan Family","USA","USA","Family","Socializing"
-"alex_murillo","Alex Murillo","Dog Park","Joint","The Murillo-Davisson Family","USA","USA","Family","Whiskey; Beer; Gardening"
-"leslie_davidsson","Leslie Davidsson","Dog Park","Joint","The Murillo-Davisson Family","USA","USA","Family","Socializing"
-"jess_phan","Jess Phan","The Phan-Macdonald Family","Joint","The Phan-Macdonald Family","USA","USA","Family","Socializing"
-"mark_macdonald","Mark Macdonald","The Phan-Macdonald Family","Joint","The Phan-Macdonald Family","USA","USA","Family","Socializing"
-"katie_richter","Katie Richter","The Richter Family","Joint","The Richter Family","USA","USA","Family","Socializing"
-"paul_richter","Paul Richter","OWFL Blog","Joint","The Richter Family","USA","USA","Family","Socializing"
-"lauren_schmied","Lauren Schmied","Cornell","Joint","The Schmied-Misra Family","USA","USA","Family","Socializing"
-"tina_silva","Tina Silva","Dog Park","Joint","The Silva Family","USA","USA","Family","Dogs"
-"george_sun","George Sun","Cornell","Joint","The Sun Family","USA","USA","Family","Socializing"
-"sohyun_sun","Sohyun Sun","The Sun Family","Joint","The Sun Family","USA","USA","Family","Socializing"
-"chuck_tempest","Chuck Tempest","Cornell","Joint","The Tempest Family","USA","USA","Family","Socializing"
-"clyde_tsai","Clyde Tsai","Cornell","Joint","The Tsai-Luong Family","USA","USA","Family","Socializing"
-"ivan_vojvodi_","Ivan Vojvodić","Google","Joint","The Vojvodić Family","USA","USA","Family","Whiskey"
-"becca_winslow","Becca Winslow","The Winslow Family","Joint","The Winslow Family","USA","USA","Family","Socializing"
-"mary_mitchell","Mary Mitchell","Tim Coble & Mary Fucking Mitchell","Joint","Tim Coble & Mary Fucking Mitchell","USA","USA","Couple / Group","Whiskey; Dogs"
-"tim_coble","Tim Coble","Dog Park","Joint","Tim Coble & Mary Fucking Mitchell","USA","USA","Couple / Group","Whiskey; Dogs; Gaming"
-"yannick_carer","Yannick Carer","Google","Joint","Yannick Carer & Guest","USA","USA","Family","Dogs"
-"becky_spohr","Becky Spohr","Dog Park","Joint","Dog Park","USA","USA","Single","Socializing"
-"chuchu_zhang","Chuchu Zhang","Google","Joint","Google","USA","USA","Single","Socializing"
-"emy_habana","Emy Habana","The Habana Family","Joint","The Habana Family","USA","USA","Couple / Group","Socializing"
-"kathryn_potts","Kathryn Potts","Stanford","Joint","Kathryn Flack & Joe Wernet","USA","USA","Couple / Group","Words"
-"joe_wernet","Joe Wernet","Kathryn Flack & Joe Wernet","Joint","Kathryn Flack & Joe Wernet","USA","USA","Couple / Group","Socializing"
-"mira_vojvodi_","Mira Vojvodić","The Vojvodić Family","Joint","The Vojvodić Family","USA","USA","Family","Socializing"
-"nadia_shaikh","Nadia Shaikh","Shaikh Sisters","Joint","Shaikh Sisters","USA","USA","Couple / Group","Socializing"
-"sumeet_lahorani","Sumeet Lahorani","The Lahorani Family","Joint","The Lahorani Family","USA","USA","Family","Socializing"
-"victoria_shi","Victoria Shi","Andy & Victoria","Joint","Andy & Victoria","USA","USA","Couple / Group","Socializing"
-"will_short","Will Short","Chrissy Fiore & Will Short","Joint","Chrissy Fiore & Will Short","USA","USA","Couple / Group","Socializing"
+allison_williams,Allison Williams,Lehigh,Maureen,Allison Williams & Jim Merizio,NJ,NJ,Couple / Group,Lehigh; Food; Gardening
+jim_merizio,Jim Merizio,Allison Williams & Jim Merizio,Maureen,Allison Williams & Jim Merizio,,NJ,Couple / Group,Beer; Knicks
+andy_schmitt,Andy Schmitt,Google,Matt,Andy & Victoria,,SF Bay Area,Couple / Group,Beer; Cocktails
+anne_sweeney,Anne Sweeney,Stanford,Matt,The Hoy Family,,SF Bay Area,Family,Dogs; Kids
+jon_hoy,Jon Hoy,The Hoy Family,Matt,The Hoy Family,,SF Bay Area,Family,Cocktails; Whiskey; Dogs; Kids
+ashley_prichard,Ashley Prichard,Bay FC,Maureen,Ashley Prichard & Roopak Kandasamy,SF Bay Area,SF Bay Area,Couple / Group,Bay FC; Soccer; Lehigh
+roopak_kandasamy,Roopak Kandasamy,Bay FC,Maureen,Ashley Prichard & Roopak Prichard,SF Bay Area,SF Bay Area,Couple / Group,Bay FC; Soccer
+becky_spohr,Becky Spohr,Dog Park,Joint,Becky Spohr,,Chicago,Couple / Group,Dogs; Tennis
+brian_kim,Brian Kim,Cornell,Matt,The Kimpreston Family,,NYC,Couple / Group,Bass; Ska; Music; Tae Kwon Do
+michelle_preston,Michelle Preston,The Kimpreston Family,Matt,The Kimpreston Family,,NYC,Couple / Group,Dance; Wine
+chrissy_fiore,Chrissy Fiore,OWFL Blog,Joint,Chrissy Fiore & Will Short,,DC,Couple / Group,Cocktails; Whiskey; Dogs
+greg_goetchius,Greg Goetchius,Dog Park,Joint,Greg Goetchius & Lauren Sofia,,SF Bay Area,Couple / Group,Music; Band; Dogs
+lauren_sofia,Lauren Sofia,Greg Goetchius & Lauren Sofia,Joint,Greg Goetchius & Lauren Sofia,,SF Bay Area,Couple / Group,Tennis; Cycling; Baking
+jesse_lindenberger_schutz,Jesse Lindenberger-Schutz,Friends,Matt,Friends,,NYC,Single,Art; Gaming
+katie_conniff,Katie Conniff,Dog Park,Joint,Katie Conniff & Ryan Podolak,Chicago,"Madison, WI",Couple / Group,Dogs; Brains; Darkness; Cats
+ryan_podolak,Ryan Podolak,Katie Conniff & Ryan Podolak,Joint,Katie Conniff & Ryan Podolak,,"Madison, WI",Couple / Group,Wine
+krista_kobeski,Krista Kobeski,Bay FC,Maureen,Krista Kobeski & Guest,,SF Bay Area,Couple / Group,Lehigh; Bay FC; Soccer; Wrestling
+leanna_habana,Leanna Habana,Stanford,Matt,The Habana Family,,SF Bay Area,Family,
+liz_scott,Liz Scott,OWFL Blog,Joint,OWFL Blog,,Bermuda,Single,Travel; Food
+marissa_lavelle,Marissa Lavelle,Stanford,Matt,Marissa Lavelle & Guest,SF Bay Area,SF Bay Area,Couple / Group,Music; Art; Travel
+matt,Matt Hoying,Honk Family,Matt,Honk Family,Upstate NY,SF Bay Area,Couple / Group,Cocktails; Whiskey; Dogs; Beer; Bay FC
+maureen,Maureen Wink,Honk Family,Maureen,Honk Family,NJ,SF Bay Area,Couple / Group,Cocktails; Whiskey; Dogs; Beer; Bay FC; Lehigh; Wine
+missy_ruminski,Missy Ruminski,OWFL Blog,Matt,OWFL Blog,Upstate NY,Chicago,Single,
+nichole_remmert,Nichole Remmert,OWFL Blog,Joint,OWFL Blog,Western PA,Baltimore,Single,Whiskey; Dogs; Food
+nishat_shaikh,Nishat Shaikh,Cornell,Matt,The Shaikh Sisters,,"Boston, MA",Couple / Group,Knitting; Aquaria
+romana_rajput,Romana Rajput,Romana Rajput & Steve Nares,Maureen,Romana Rajput & Steve Nares,,SF Bay Area,Couple / Group,Cocktails; Travel
+steve_nares,Steve Nares,Romana Rajput & Steve Nares,Maureen,Romana Rajput & Steve Nares,,SF Bay Area,Couple / Group,San Diego Chargers; Beer
+poukhan_philavanh_anthony,Poukhan Philavanh Anthony,The Anthony Family,Matt,The Anthony Family,Minnesota,Minnesota,Family,Kids; Dogs
+ryan_anthony,Ryan Anthony,Cornell,Matt,The Anthony Family,Minnesota,Minnesota,Family,Whiskey; Kids
+cole_armstrong,Cole Armstrong,Dog Park,Joint,The Armstrong Family,,Northern CA,Family,Beer; Music; Dogs; Kids
+tracy_armstrong,Tracy Armstrong,Dog Park,Joint,The Armstrong Family,,Northern CA,Family,Goats; Kids; Dogs
+jenna_auer,Jenna Auer,The Auer Family,Joint,The Auer Family,Maryland,SF Bay Area,Family,Outdoors; Kids; Dogs
+tim_auer,Tim Auer,Dog Park,Joint,The Auer Family,Maryland,SF Bay Area,Family,Photography; Dogs; Outdoors; Kids
+jonathan_bibayan,Jonathan Bibayan,The Bibayan-Mayott Family,Joint,The Bibayan-Mayott Family,,SF Bay Area,Family,Kids
+lindsay_mayott,Lindsay Mayott,The Bibayan-Mayott Family,Joint,The Bibayan-Mayott Family,,SF Bay Area,Family,Kids
+jeff_domanski,Jeff Domanski,The Domanski Family,Joint,The Domanski Family,,NJ,Family,Kids
+jill_domanski,Jill Domanski,The Domanski Family,Joint,The Domanski Family,,NJ,Family,Kids
+dave_festa,Dave Festa,The Festa Family,Matt,The Festa Family,,NJ,Family,Kids
+erica_festa,Erica Festa,Google,Matt,The Festa Family,,NJ,Family,Kids
+ari_freedman,Ari Freedman,The Freedman Family,Maureen,The Freedman Family,,SF Bay Area,Couple / Group,
+eric_freedman,Eric Freedman,The Freedman Family,Maureen,The Freedman Family,,SF Bay Area,Couple / Group,
+james_freedman,James Freedman,The Freedman Family,Maureen,The Freedman Family,Puerto Rico,SF Bay Area,Family,Kids; Bay FC; Bad Bunny
+nur_e_freedman,Nur-e Freedman,Lehigh,Maureen,The Freedman Family,NJ,SF Bay Area,Family,Whiskey; Kids; Bay FC; Lehigh; Books; Bad Bunny
+angela_govig,Angela Govig,The Govig Family,Matt,The Govig Family,,SF Bay Area,Family,Kids
+jason_govig,Jason Govig,Google,Matt,The Govig Family,,SF Bay Area,Family,Whiskey; Music; Band; Kids
+janaki_lahorani,Janaki Lahorani,Google,Matt,The Lahorani Family,,SF Bay Area,Family,Kids
+jason_mcmullan,Jason McMullan,Lehigh,Maureen,The McMullan Family,NY,Eastern PA,Family,Kids: Lehigh
+jessi_mcmullan,Jessi McMullan,Lehigh,Maureen,The McMullan Family,Colorado,Eastern PA,Family,Kids; Lehigh; Books
+alex_murillo,Alex Murillo,Dog Park,Joint,The Murillo-Davisson Family,,SF Bay Area,Family,Whiskey; Beer; Gardening; Kids
+leslie_davidsson,Leslie Davidsson,Dog Park,Joint,The Murillo-Davisson Family,,SF Bay Area,Family,Kids
+jess_phan,Jess Phan,The Phan-Macdonald Family,Joint,The Phan-Macdonald Family,,SF Bay Area,Family,Kids
+mark_macdonald,Mark Macdonald,The Phan-Macdonald Family,Joint,The Phan-Macdonald Family,,SF Bay Area,Family,Kids
+katie_richter,Katie Richter,The Richter Family,Joint,The Richter Family,,DC,Family,Kids
+paul_richter,Paul Richter,OWFL Blog,Joint,The Richter Family,,DC,Family,Kids
+lauren_schmied,Lauren Schmied,Cornell,Matt,The Schmied-Misra Family,Eastern PA,Houston,Family,Kids
+tina_silva,Tina Silva,Dog Park,Joint,The Silva Family,,SF Bay Area,Family,Dogs; Kids; Rockets
+george_sun,George Sun,Cornell,Matt,The Sun Family,,NYC,Family,Kids
+sohyun_sun,Sohyun Sun,The Sun Family,Matt,The Sun Family,,NYC,Family,Kids
+chuck_tempest,Chuck Tempest,Cornell,Matt,The Tempest Family,Western PA,Upstate NY,Family,Kids; Rugby
+clyde_tsai,Clyde Tsai,Cornell,Matt,The Tsai-Luong Family,,SF Bay Area,Family,Kids
+ivan_vojvodic,Ivan Vojvodic,Google,Matt,The Vojvodic Family,,SF Bay Area,Family,Whiskey; Kids
+becca_winslow,Becca Winslow,The Winslow Family,Joint,The Winslow Family,,SF Bay Area,Family,Kids
+mary_mitchell,Mary Mitchell,Tim Coble & Mary Fucking Mitchell,Joint,Tim Coble & Mary Fucking Mitchell,Chicago,NJ,Couple / Group,Whiskey; Dogs; Bad Bunny
+tim_coble,Tim Coble,Dog Park,Joint,Tim Coble & Mary Fucking Mitchell,Florida,NJ,Couple / Group,Whiskey; Dogs; Gaming
+yannick_carer,Yannick Carer,Google,Matt,Yannick Carer & Guest,,Zurich,Family,Dogs; Kids; Cycling
+chuchu_zhang,Chuchu Zhang,Google,Matt,Google,,SF Bay Area,Single,
+emy_habana,Emy Habana,The Habana Family,Matt,The Habana Family,,SF Bay Area,Couple / Group,
+kathryn_potts,Kathryn Potts,Stanford,Matt,Kathryn Flack & Joe Wernet,,"Boston, MA",Couple / Group,Words
+joe_wernet,Joe Wernet,Kathryn Flack & Joe Wernet,Matt,Kathryn Flack & Joe Wernet,,"Boston, MA",Couple / Group,
+mira_vojvodic,Mira Vojvodic,The Vojvodic Family,Matt,The Vojvodic Family,,SF Bay Area,Family,Kids
+nadia_shaikh,Nadia Shaikh,Shaikh Sisters,Matt,Shaikh Sisters,,,Couple / Group,
+sumeet_lahorani,Sumeet Lahorani,The Lahorani Family,Matt,The Lahorani Family,,SF Bay Area,Family,Kids
+victoria_shi,Victoria Shi,Andy & Victoria,Matt,Andy & Victoria,,SF Bay Area,Couple / Group,
+will_short,Will Short,Chrissy Fiore & Will Short,Joint,Chrissy Fiore & Will Short,,,Couple / Group,
+dog_park,Avalon Dog Park,Dog Park,Joint,Dog Park,SF Bay Area,SF Bay Area,Hub,Dogs
+owfl_blog,OWFL Blog,OWFL Blog,Joint,OWFL Blog,DC,DC,Hub,Food
+bay_fc,Bay FC Tailgate,Bay FC,Joint,Bay FC,SF Bay Area,SF Bay Area,Hub,Bay FC; Soccer
+honk,Honk,Honk Family,Joint,Guest,,,Single,
