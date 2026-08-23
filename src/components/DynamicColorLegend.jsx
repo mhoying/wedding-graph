@@ -40,11 +40,12 @@ export default function DynamicColorLegend({
         }
       });
     } else {
-      // Default: Cohorts
+      // Default: Cohorts (Only render true social cohorts)
+      const validCohorts = new Set(['Cornell', 'Google', 'Stanford', 'Lehigh', 'Dog Park', 'OWFL Blog', 'Bay FC', 'Honk Family', 'The Couple']);
       filteredNodes.forEach(node => {
         if (!node || node.type === 'CONTEXT_HUB') return;
-        const cohort = node.cohort || 'Friends';
-        if (cohort && !itemMap.has(cohort) && !cohort.toLowerCase().includes('family')) {
+        const cohort = node.cohort;
+        if (cohort && validCohorts.has(cohort) && !itemMap.has(cohort)) {
           const color = getNodeColor ? getNodeColor(node) : '#38bdf8';
           itemMap.set(cohort, color);
         }

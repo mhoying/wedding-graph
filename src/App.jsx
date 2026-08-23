@@ -28,7 +28,7 @@ export default function App() {
   // Core Data State (Loads real 75-guest wedding dataset by default)
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v7');
+      const saved = localStorage.getItem('wedding_graph_nodes_v9');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50 && parsed.some(n => n.id === 'maureen')) {
@@ -43,7 +43,7 @@ export default function App() {
 
   const [links, setLinks] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_links_v7');
+      const saved = localStorage.getItem('wedding_graph_links_v9');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 50) {
