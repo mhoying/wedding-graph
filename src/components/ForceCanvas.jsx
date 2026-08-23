@@ -267,7 +267,7 @@ export default function ForceCanvas({
     Object.entries(clusterGroups || {}).forEach(([label, nodesArr]) => {
       if (nodesArr && nodesArr.length > 0) {
         const cleanLabel = String(label).replace(/^(📍 Lives in: |🏡 Originally: |Interest: )/, '').replace(' Cluster', '').trim();
-        const isCoupleCluster = cleanLabel === 'The Couple' || label.includes('The Couple');
+        const isCoupleCluster = cleanLabel.includes('Couple') || label.includes('Couple') || cleanLabel === 'The Couple';
 
         const points = [];
         const pad = (isCoupleCluster ? 38 : 24) * nodeScaleMultiplier;
