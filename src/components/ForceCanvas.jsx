@@ -237,21 +237,25 @@ export default function ForceCanvas({
       ctx.restore();
     }
 
-    if (clusterMode === 'none') return;
-
     let clusterGroups = {};
 
+    // ALWAYS extract The Couple group so it is ALWAYS drawn super strongly!
+    const coupleNodes = filteredNodes.filter(n => n.cohort === 'The Couple' && n.x !== undefined);
+    if (coupleNodes.length > 0) {
+      clusterGroups['The Couple Cluster'] = coupleNodes;
+    }
+
     if (clusterMode === 'interests') {
-      clusterGroups = dynamicAutoClusters || {};
+      Object.assign(clusterGroups, dynamicAutoClusters || {});
     } else if (clusterMode === 'locations') {
-      clusterGroups = dynamicLocationClusters || {};
+      Object.assign(clusterGroups, dynamicLocationClusters || {});
     } else if (clusterMode === 'current_location') {
-      clusterGroups = dynamicCurrentLocationClusters || {};
+      Object.assign(clusterGroups, dynamicCurrentLocationClusters || {});
     } else if (clusterMode === 'original_location') {
-      clusterGroups = dynamicOriginalLocationClusters || {};
-    } else {
+      Object.assign(clusterGroups, dynamicOriginalLocationClusters || {});
+    } else if (clusterMode !== 'none') {
       filteredNodes.forEach(node => {
-        if (node.cohort && node.x !== undefined) {
+        if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
           const key = `${node.cohort} Cluster`;
           if (!clusterGroups[key]) clusterGroups[key] = [];
           clusterGroups[key].push(node);
@@ -299,7 +303,7 @@ export default function ForceCanvas({
 
         ctx.save();
         if (isCoupleCluster) {
-          ctx.fillStyle = isLightMode ? 'rgba(245, 158, 11, 0.32)' : 'rgba(245, 158, 11, 0.38)';
+          ctx.fillStyle = isLightMode ? 'rgba(245, 158, 11, 0.42)' : 'rgba(245, 158, 11, 0.55)';
         } else {
           ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.22) : hexToRgba(clusterColor, 0.18);
         }
@@ -322,14 +326,21 @@ export default function ForceCanvas({
         ctx.fill();
 
         if (isCoupleCluster) {
-          // Double glowing solid golden border for maximum emphasis!
-          ctx.lineWidth = 9.0 / globalScale;
-          ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)';
+          // Triple layer glowing solid golden border for SUPER STRONG emphasis!
+          // 1. Outer Radiant Glow Halo
+          ctx.lineWidth = 18.0 / globalScale;
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
           ctx.setLineDash([]);
           ctx.stroke();
 
-          ctx.lineWidth = 4.5 / globalScale;
-          ctx.strokeStyle = '#fbbf24';
+          // 2. Main Deep Gold Border Line
+          ctx.lineWidth = 7.0 / globalScale;
+          ctx.strokeStyle = '#f59e0b';
+          ctx.stroke();
+
+          // 3. Inner Crisp White/Cream Accent Stroke
+          ctx.lineWidth = 3.0 / globalScale;
+          ctx.strokeStyle = '#fef08a';
           ctx.stroke();
         } else {
           ctx.lineWidth = 2.5 / globalScale;
@@ -342,12 +353,12 @@ export default function ForceCanvas({
         hull.forEach(p => { if (p.y < topPoint.y) topPoint = p; });
 
         let labelX = topPoint.x;
-        let labelY = topPoint.y - 16 * nodeScaleMultiplier;
-        const fontSize = (isCoupleCluster ? 24 : 22) * nodeScaleMultiplier;
+        let labelY = topPoint.y - 18 * nodeScaleMultiplier;
+        const fontSize = (isCoupleCluster ? 28 : 22) * nodeScaleMultiplier;
         const displayLabelText = isCoupleCluster ? '👑 THE COUPLE (MATT & MAUREEN)' : label.toUpperCase();
 
         ctx.font = `900 ${fontSize}px Inter, sans-serif`;
-        const textWidth = ctx.measureText(displayLabelText).width || (140 * nodeScaleMultiplier);
+        const textWidth = ctx.measureText(displayLabelText).width || (160 * nodeScaleMultiplier);
         const textHeight = fontSize + 8;
 
         let hasCollision = true;
@@ -378,17 +389,20 @@ export default function ForceCanvas({
 
         if (isCoupleCluster) {
           // Draw solid gold pill background badge for The Couple header!
-          const badgePaddingX = 12 * nodeScaleMultiplier;
-          const badgePaddingY = 6 * nodeScaleMultiplier;
+          const badgePaddingX = 16 * nodeScaleMultiplier;
+          const badgePaddingY = 8 * nodeScaleMultiplier;
 
           ctx.fillStyle = '#f59e0b';
+          ctx.strokeStyle = '#78350f';
+          ctx.lineWidth = 2.5 * nodeScaleMultiplier;
           ctx.beginPath();
           if (ctx.roundRect) {
-            ctx.roundRect(labelX - badgePaddingX, labelY - fontSize - badgePaddingY / 2, textWidth + badgePaddingX * 2, fontSize + badgePaddingY * 1.5, 8 * nodeScaleMultiplier);
+            ctx.roundRect(labelX - badgePaddingX, labelY - fontSize - badgePaddingY / 2, textWidth + badgePaddingX * 2, fontSize + badgePaddingY * 1.6, 10 * nodeScaleMultiplier);
           } else {
-            ctx.rect(labelX - badgePaddingX, labelY - fontSize - badgePaddingY / 2, textWidth + badgePaddingX * 2, fontSize + badgePaddingY * 1.5);
+            ctx.rect(labelX - badgePaddingX, labelY - fontSize - badgePaddingY / 2, textWidth + badgePaddingX * 2, fontSize + badgePaddingY * 1.6);
           }
           ctx.fill();
+          ctx.stroke();
 
           ctx.fillStyle = '#0f172a'; // Deep slate text on golden badge
           ctx.font = `900 ${fontSize}px Inter, sans-serif`;
