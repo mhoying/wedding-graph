@@ -9,13 +9,13 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Tightened Couple / Spouse Link Attraction Forces (`ForceCanvas.jsx`)
-- **User Prompt**: "i dont htink you did a great job of finding features. for example, i expect matt and maureen to be very close to each other because of their relationship. but they have a lot of distance between them. having peopel that are part of a couple was a requirements to have htem clsoe to gether with a short edge"
+## [2026-08-22] Fixed Location Cluster Color Palette Mismatch (`App.jsx` & `TopHeaderNav.jsx`)
+- **User Prompt**: "it look sliekt he cluste rcolors have reverted to all be the same for the location clusters. this was a requirement sthat we talked about and you said you fixed a whiel ago"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - `ForceCanvas.jsx` previously had `cohortMultiplier = 0.65` for couple links without specifying custom `d3Force('link').strength`.
-     - Strong global D3 charge repulsion (`-2400`) pushed couples apart because default link strength was weak.
-  2. **Tight Couple Link Attraction (`ForceCanvas.jsx`)**:
-     - Lowered couple distance multiplier to **`0.20`** (extremely short, tight distance).
-     - Added explicit `d3Force('link').strength(l => isCoupleLink ? 1.0 : 0.4)` to pull Matt, Maureen, and all married/partner couples tightly bound right next to each other on the graph canvas.
+     - `getNodeColor` in `App.jsx` previously checked `colorMode === 'state' || colorMode === 'location'`, but the Clusters dropdown passed `'locations'`, `'current_location'`, and `'original_location'`.
+     - Because `'locations'`, `'current_location'`, and `'original_location'` were not recognized in `getNodeColor`, the function fell through to default cohort colors, rendering location clusters in monochromatic colors.
+  2. **Location Color Mode Expansion & Auto-Sync**:
+     - Updated `getNodeColor` in `App.jsx` to recognize `'locations'`, `'current_location'`, and `'original_location'`, dynamically hashing locations to distinct vibrant colors from `DYNAMIC_CLUSTER_COLORS`.
+     - Updated `TopHeaderNav.jsx` so selecting a Location Cluster mode automatically syncs `colorMode` to highlight each location with distinct cluster colors!
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

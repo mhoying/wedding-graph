@@ -91,11 +91,19 @@ export default function TopHeaderNav({
           <span style={{ color: '#cbd5e1', fontSize: 12, fontWeight: 700, marginRight: 6 }}>Clusters:</span>
           <select 
             value={clusterMode}
-            onChange={(e) => setClusterMode(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setClusterMode(val);
+              if (val === 'locations' || val === 'current_location' || val === 'original_location') {
+                setColorMode(val);
+              } else if (val === 'cohort') {
+                setColorMode('cohort');
+              }
+            }}
             style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
           >
             <option value="cohort">Cohorts</option>
-            <option value="locations">Locations</option>
+            <option value="locations">Locations (Combined)</option>
             <option value="current_location">Current Location</option>
             <option value="original_location">Original Location</option>
             <option value="interests">Interests</option>
@@ -114,7 +122,9 @@ export default function TopHeaderNav({
           >
             <option value="cohort">Cohorts</option>
             <option value="side">Side (Matt/Maureen)</option>
-            <option value="state">Location / State</option>
+            <option value="locations">Combined Locations</option>
+            <option value="current_location">Current Location</option>
+            <option value="original_location">Hometown / Original</option>
           </select>
         </div>
 

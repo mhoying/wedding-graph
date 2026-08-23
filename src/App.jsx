@@ -253,8 +253,16 @@ export default function App() {
   const getNodeColor = useCallback((node) => {
     if (colorMode === 'side') return SIDE_COLORS[node.side] || SIDE_COLORS["Joint"];
     
-    if (colorMode === 'state' || colorMode === 'location') {
-      const locKey = getLocationStateKey(node);
+    if (colorMode === 'state' || colorMode === 'location' || colorMode === 'locations' || colorMode === 'current_location' || colorMode === 'original_location') {
+      let locKey = 'Default';
+      if (colorMode === 'current_location') {
+        locKey = node.currentlyLivesIn || node.state || 'Unknown';
+      } else if (colorMode === 'original_location') {
+        locKey = node.originallyFrom || node.hometown || 'Unknown';
+      } else {
+        locKey = getLocationStateKey(node);
+      }
+
       if (STATE_COLORS[locKey]) return STATE_COLORS[locKey];
       let hash = 0;
       for (let i = 0; i < locKey.length; i++) {
