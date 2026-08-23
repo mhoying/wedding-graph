@@ -251,7 +251,7 @@ export default function ForceCanvas({
       clusterGroups = dynamicOriginalLocationClusters || {};
     } else {
       filteredNodes.forEach(node => {
-        if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
+        if (node.cohort && node.x !== undefined) {
           const key = `${node.cohort} Cluster`;
           if (!clusterGroups[key]) clusterGroups[key] = [];
           clusterGroups[key].push(node);
@@ -261,9 +261,12 @@ export default function ForceCanvas({
 
     let colorIdx = 0;
     Object.entries(clusterGroups || {}).forEach(([label, nodesArr]) => {
-      if (nodesArr && nodesArr.length > 1) {
+      if (nodesArr && nodesArr.length > 0) {
+        const cleanLabel = String(label).replace(/^(📍 Lives in: |🏡 Originally: |Interest: )/, '').replace(' Cluster', '').trim();
+        const isCoupleCluster = cleanLabel === 'The Couple' || label.includes('The Couple');
+
         const points = [];
-        const pad = 24 * nodeScaleMultiplier;
+        const pad = (isCoupleCluster ? 38 : 24) * nodeScaleMultiplier;
 
         nodesArr.forEach(n => {
           const b = getNodeBounds(n, showHeadshots, nodeScaleMultiplier);
@@ -276,17 +279,30 @@ export default function ForceCanvas({
           points.push({ x: n.x - halfW, y: n.y + halfH });
         });
 
+        // Single node couple fallback expansion for tight hull
+        if (points.length === 4) {
+          const p = points[0];
+          points.push({ x: p.x + 80, y: p.y });
+          points.push({ x: p.x - 80, y: p.y });
+          points.push({ x: p.x, y: p.y + 80 });
+          points.push({ x: p.x, y: p.y - 80 });
+        }
+
         const hull = getConvexHull2D(points);
 
-        let clusterColor = DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
-        const cleanLabel = String(label).replace(/^(📍 Lives in: |🏡 Originally: |Interest: )/, '').replace(' Cluster', '').trim();
+        let clusterColor = isCoupleCluster ? '#f59e0b' : DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
         if (COHORT_COLORS[cleanLabel]) {
           clusterColor = COHORT_COLORS[cleanLabel];
         }
+        if (isCoupleCluster) clusterColor = '#f59e0b';
         colorIdx++;
 
         ctx.save();
-        ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.22) : hexToRgba(clusterColor, 0.18);
+        if (isCoupleCluster) {
+          ctx.fillStyle = isLightMode ? 'rgba(245, 158, 11, 0.32)' : 'rgba(245, 158, 11, 0.38)';
+        } else {
+          ctx.fillStyle = isLightMode ? hexToRgba(clusterColor, 0.22) : hexToRgba(clusterColor, 0.18);
+        }
         ctx.beginPath();
 
         const numPoints = hull.length;
@@ -305,19 +321,33 @@ export default function ForceCanvas({
         ctx.closePath();
         ctx.fill();
 
-        ctx.lineWidth = 2.5 / globalScale;
-        ctx.strokeStyle = hexToRgba(clusterColor, 0.85);
-        ctx.setLineDash([8 / globalScale, 6 / globalScale]);
-        ctx.stroke();
+        if (isCoupleCluster) {
+          // Double glowing solid golden border for maximum emphasis!
+          ctx.lineWidth = 9.0 / globalScale;
+          ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)';
+          ctx.setLineDash([]);
+          ctx.stroke();
+
+          ctx.lineWidth = 4.5 / globalScale;
+          ctx.strokeStyle = '#fbbf24';
+          ctx.stroke();
+        } else {
+          ctx.lineWidth = 2.5 / globalScale;
+          ctx.strokeStyle = hexToRgba(clusterColor, 0.85);
+          ctx.setLineDash([8 / globalScale, 6 / globalScale]);
+          ctx.stroke();
+        }
 
         let topPoint = hull[0];
         hull.forEach(p => { if (p.y < topPoint.y) topPoint = p; });
 
         let labelX = topPoint.x;
-        let labelY = topPoint.y - 14 * nodeScaleMultiplier;
-        const fontSize = 22 * nodeScaleMultiplier;
-        ctx.font = `800 ${fontSize}px Inter, sans-serif`;
-        const textWidth = ctx.measureText(label.toUpperCase()).width || (120 * nodeScaleMultiplier);
+        let labelY = topPoint.y - 16 * nodeScaleMultiplier;
+        const fontSize = (isCoupleCluster ? 24 : 22) * nodeScaleMultiplier;
+        const displayLabelText = isCoupleCluster ? '👑 THE COUPLE (MATT & MAUREEN)' : label.toUpperCase();
+
+        ctx.font = `900 ${fontSize}px Inter, sans-serif`;
+        const textWidth = ctx.measureText(displayLabelText).width || (140 * nodeScaleMultiplier);
         const textHeight = fontSize + 8;
 
         let hasCollision = true;
@@ -345,10 +375,31 @@ export default function ForceCanvas({
         });
 
         ctx.setLineDash([]);
-        ctx.font = `800 ${fontSize}px Inter, sans-serif`;
-        ctx.fillStyle = clusterColor;
-        ctx.textAlign = 'left';
-        ctx.fillText(label.toUpperCase(), labelX, labelY);
+
+        if (isCoupleCluster) {
+          // Draw solid gold pill background badge for The Couple header!
+          const badgePaddingX = 12 * nodeScaleMultiplier;
+          const badgePaddingY = 6 * nodeScaleMultiplier;
+
+          ctx.fillStyle = '#f59e0b';
+          ctx.beginPath();
+          if (ctx.roundRect) {
+            ctx.roundRect(labelX - badgePaddingX, labelY - fontSize - badgePaddingY / 2, textWidth + badgePaddingX * 2, fontSize + badgePaddingY * 1.5, 8 * nodeScaleMultiplier);
+          } else {
+            ctx.rect(labelX - badgePaddingX, labelY - fontSize - badgePaddingY / 2, textWidth + badgePaddingX * 2, fontSize + badgePaddingY * 1.5);
+          }
+          ctx.fill();
+
+          ctx.fillStyle = '#0f172a'; // Deep slate text on golden badge
+          ctx.font = `900 ${fontSize}px Inter, sans-serif`;
+          ctx.textAlign = 'left';
+          ctx.fillText(displayLabelText, labelX, labelY - 2 * nodeScaleMultiplier);
+        } else {
+          ctx.font = `800 ${fontSize}px Inter, sans-serif`;
+          ctx.fillStyle = clusterColor;
+          ctx.textAlign = 'left';
+          ctx.fillText(displayLabelText, labelX, labelY);
+        }
         ctx.restore();
       }
     });
