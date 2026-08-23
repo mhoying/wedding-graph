@@ -139,6 +139,26 @@ export default function ForceCanvas({
     }
   }, [isOrbiting, orbitSpeed]);
 
+  // INITIAL FULL MAP FRAMING: Automatically zoomToFit to frame 100% of all nodes on initial load!
+  const hasInitialZoomedRef = useRef(false);
+
+  const handleEngineStop = useCallback(() => {
+    if (!hasInitialZoomedRef.current && fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
+      hasInitialZoomedRef.current = true;
+      fgRef.current.zoomToFit(800, 60);
+    }
+  }, [fgRef]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hasInitialZoomedRef.current && fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
+        hasInitialZoomedRef.current = true;
+        fgRef.current.zoomToFit(1000, 60);
+      }
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [fgRef]);
+
   // Auto Zoom-to-Fit for Search Results: Frames 100% of all matching search result nodes!
   useEffect(() => {
     if (!searchQuery || !searchQuery.trim() || !fgRef.current || typeof fgRef.current.zoomToFit !== 'function') return;
@@ -555,6 +575,7 @@ export default function ForceCanvas({
         linkDirectionalParticleWidth={4}
         linkDirectionalParticleSpeed={0.008}
         linkDirectionalParticleColor={() => '#38bdf8'}
+        onEngineStop={handleEngineStop}
       />
     </div>
   );
