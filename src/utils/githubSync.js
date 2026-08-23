@@ -121,21 +121,39 @@ export const SIDE_COLORS = {
 };
 
 export const STATE_COLORS = {
+  "SF Bay Area": "#38bdf8",
+  "NJ": "#ec4899",
+  "Chicago": "#10b981",
+  "NYC": "#f59e0b",
+  "DC": "#8b5cf6",
+  "Madison, WI": "#06b6d4",
+  "Bermuda": "#f97316",
+  "Upstate NY": "#ef4444",
+  "Baltimore": "#14b8a6",
+  "Western PA": "#eab308",
+  "Boston, MA": "#6366f1",
+  "Minnesota": "#84cc16",
+  "Northern CA": "#d946ef",
+  "Maryland": "#0284c7",
+  "Puerto Rico": "#b45309",
+  "Eastern PA": "#4f46e5",
+  "NY": "#db2777",
+  "Colorado": "#0891b2",
+  "Houston": "#ca8a04",
+  "Florida": "#65a30d",
+  "Zurich": "#7c3aed",
   "USA": "#38bdf8",
   "Default": "#64748b"
 };
 
 export const DYNAMIC_CLUSTER_COLORS = [
-  "#f472b6",
-  "#38bdf8",
-  "#34d399",
-  "#a78bfa",
-  "#fbbf24",
-  "#f87171",
-  "#818cf8",
-  "#4ade80",
-  "#fb923c",
-  "#e879f9"
+  "#38bdf8", "#ec4899", "#10b981", "#f59e0b", "#8b5cf6",
+  "#06b6d4", "#ef4444", "#a855f7", "#eab308", "#14b8a6",
+  "#f97316", "#6366f1", "#84cc16", "#d946ef", "#0284c7",
+  "#059669", "#b45309", "#4f46e5", "#db2777", "#0891b2",
+  "#ca8a04", "#65a30d", "#7c3aed", "#c026d3", "#2563eb",
+  "#16a34a", "#dc2626", "#9333ea", "#ea580c", "#0d9488",
+  "#475569", "#e11d48"
 ];
 
 export const SAMPLE_NODES = ${JSON.stringify(nodes, null, 2)};
