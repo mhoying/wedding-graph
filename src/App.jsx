@@ -18,6 +18,7 @@ import HostAdminPanel from './components/HostAdminPanel';
 import BulkCsvImportModal from './components/BulkCsvImportModal';
 import AddConnectionModal from './components/AddConnectionModal';
 import HostReviewQueueModal from './components/HostReviewQueueModal';
+import HostSpreadsheetEditorModal from './components/HostSpreadsheetEditorModal';
 
 export default function App() {
   const fgRef = useRef();
@@ -112,7 +113,25 @@ export default function App() {
   const [isFeedbackQueueOpen, setIsFeedbackQueueOpen] = useState(false);
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
   const [isAddConnectionOpen, setIsAddConnectionOpen] = useState(false);
+  const [isSpreadsheetOpen, setIsSpreadsheetOpen] = useState(false);
   const [copyToast, setCopyToast] = useState('');
+
+  const handleSaveSpreadsheetData = async (updatedGuestNodes) => {
+    // Preserve non-guest anchor nodes
+    const nonGuestNodes = nodes.filter(n => n && n.type !== 'GUEST');
+    const combinedNodes = [...nonGuestNodes, ...updatedGuestNodes];
+    setNodes(combinedNodes);
+
+    try {
+      localStorage.setItem('wedding_graph_nodes_master', JSON.stringify(combinedNodes));
+    } catch (e) {}
+
+    setCopyToast('⚡ Committing updated spreadsheet dataset to GitHub Repo...');
+    const jsContent = generateSampleDataJsContent(combinedNodes, links);
+    const result = await pushToGithubRepo(jsContent, 'Update guest spreadsheet dataset via Host Admin Suite', '', 'src/data/sampleData.js');
+    setCopyToast(result.message);
+    setTimeout(() => setCopyToast(''), 4500);
+  };
 
   const handleApplyDataset = useCallback((newNodes, newLinks) => {
     setNodes(newNodes);
@@ -810,6 +829,7 @@ export default function App() {
         handleCopyQrLink={handleCopyQrLink}
         setIsBulkImportOpen={setIsBulkImportOpen}
         setIsAddConnectionOpen={setIsAddConnectionOpen}
+        setIsSpreadsheetOpen={setIsSpreadsheetOpen}
       />
 
       {/* Interactive Host Admin Connection Builder Modal */}
@@ -1131,6 +1151,14 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* Host Live Spreadsheet Grid Editor Modal */}
+      <HostSpreadsheetEditorModal 
+        isOpen={isSpreadsheetOpen}
+        onClose={() => setIsSpreadsheetOpen(false)}
+        nodes={nodes}
+        onSaveDataset={handleSaveSpreadsheetData}
+      />
 
       {/* Toast Notification */}
       {copyToast && (

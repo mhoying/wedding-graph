@@ -94,12 +94,6 @@ export default function GuestProfileDrawer({
                   <span>Currently lives in: {selectedNode.currentlyLivesIn || selectedNode.state}</span>
                 </div>
               )}
-              {selectedNode.familyStatus && (
-                <div className="drawer-info-row">
-                  <Users style={{ width: 16, height: 16, color: '#10b981' }} />
-                  <span>{selectedNode.familyStatus}</span>
-                </div>
-              )}
               {selectedNode.hobbies && selectedNode.hobbies.length > 0 && (
                 <div style={{ marginTop: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
@@ -195,16 +189,6 @@ export default function GuestProfileDrawer({
                   <option value="Joint">Joint</option>
                 </select>
               </div>
-            </div>
-
-            <div style={{ marginBottom: 10 }}>
-              <label style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Family Status / Notes:</label>
-              <input 
-                type="text" 
-                value={editFamilyStatus}
-                onChange={(e) => setEditFamilyStatus(e.target.value)}
-                style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
-              />
             </div>
 
             <div style={{ marginBottom: 10 }}>

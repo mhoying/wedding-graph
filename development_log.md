@@ -9,12 +9,16 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Implemented Detailed Proposal `changeSummary` for Host Moderation Queue (`App.jsx`)
-- **User Prompt**: "i proposed a change to the notes field for missy ruminski but what i got in the moderation queue didnt mention that change"
+## [2026-08-22] Built Host Live Spreadsheet Grid Editor & Removed `familyStatus` (`HostSpreadsheetEditorModal.jsx`, `App.jsx`, `GuestProfileDrawer.jsx`)
+- **User Prompt**: "can you also give me a ui in the amin wher ei can edit all the fields for any of the guests like i woudl a spreadsheet and have it updated back tot he database and all the right files" / "also. lets remove family status from teh UI completely"
 - **Actions**:
-  1. **Root Cause Analysis**:
-     - `handleSaveProfileEdits` previously generated a generic hardcoded template note string (`"Proposed profile update for [name]"`), instead of detailing the exact fields modified by the guest.
-  2. **Detailed Change Tracking (`App.jsx`)**:
-     - Updated `handleSaveProfileEdits` to automatically calculate a diff summary (`changeSummary`) comparing the edited values against `selectedNode` (e.g. `Lives In: Chicago`, `Hobbies: Whiskey, Wine`, `Originally From: NJ`).
-     - Formats the resulting proposal note as `Proposed Changes: Lives In: Chicago | Hobbies: Wine...` so host admins see every field change clearly in the Host Moderation Queue modal!
-  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+  1. **Built `HostSpreadsheetEditorModal.jsx`**:
+     - Interactive spreadsheet grid table displaying guest Name, Side, Cohort, Relationship, Hometown, Location, and Interests.
+     - Supports inline cell editing, real-time search filtering, row insertion (`+ Add Guest Row`), and row deletion (`🗑️`).
+     - **1-Click Auto-Commit**: Clicking **Save & Commit All Changes** compiles `sampleData.js` and pushes directly to GitHub repository database.
+  2. **Removed `familyStatus` from UI**:
+     - Removed `familyStatus` row and input from `GuestProfileDrawer.jsx`.
+     - Removed `familyStatus` column from `HostSpreadsheetEditorModal.jsx`.
+  3. **Wired Host Admin Panel**:
+     - Added `📊 Live Spreadsheet Editor` button to `<HostAdminPanel>`.
+  4. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

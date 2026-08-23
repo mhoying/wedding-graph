@@ -11,7 +11,8 @@ export default function HostAdminPanel({
   setIsFeedbackQueueOpen,
   handleCopyQrLink,
   setIsBulkImportOpen,
-  setIsAddConnectionOpen
+  setIsAddConnectionOpen,
+  setIsSpreadsheetOpen
 }) {
   if (!isAdmin) return null;
 
@@ -49,6 +50,16 @@ export default function HostAdminPanel({
 
       {/* Admin Action Buttons */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {/* Live Spreadsheet Editor Button */}
+        <button 
+          onClick={() => setIsSpreadsheetOpen && setIsSpreadsheetOpen(true)}
+          className="btn-mode"
+          style={{ padding: '10px 12px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%)', color: '#c084fc', border: '1px solid rgba(168, 85, 247, 0.4)', fontWeight: 800, cursor: 'pointer' }}
+        >
+          <FileSpreadsheet style={{ width: 16, height: 16, color: '#c084fc' }} />
+          <span>📊 Live Spreadsheet Editor</span>
+        </button>
+
         {/* Direct GitHub Repo Push Sync Button */}
         <button 
           onClick={handlePushToGithub}
