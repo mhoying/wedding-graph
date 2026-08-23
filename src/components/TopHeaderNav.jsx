@@ -27,9 +27,12 @@ export default function TopHeaderNav({
   setIsMatchmakerOpen,
   isAdmin,
   handleExportCsv,
-  handleExportGitJs,
   feedbackQueueCount,
-  setIsFeedbackQueueOpen
+  setIsFeedbackQueueOpen,
+  setIsSpreadsheetOpen,
+  selectedClusterFocus = '',
+  setSelectedClusterFocus = () => {},
+  availableClusters = []
 }) {
   const [isTunePopoverOpen, setIsTunePopoverOpen] = useState(false);
 
@@ -110,6 +113,24 @@ export default function TopHeaderNav({
             <option value="none">Off (Hide)</option>
           </select>
         </div>
+
+        {/* Desktop Focus Cluster Dropdown */}
+        {clusterMode !== 'none' && availableClusters.length > 0 && (
+          <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 36, padding: '0 10px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12, flexShrink: 0 }}>
+            <Compass style={{ width: 14, height: 14, color: '#34d399', marginRight: 4 }} />
+            <span style={{ color: '#cbd5e1', fontSize: 12, fontWeight: 700, marginRight: 6 }}>Focus:</span>
+            <select 
+              value={selectedClusterFocus}
+              onChange={(e) => setSelectedClusterFocus(e.target.value)}
+              style={{ background: '#0f172a', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 140 }}
+            >
+              <option value="">All Clusters</option>
+              {availableClusters.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* Desktop Color Mode Selector */}
         <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 36, padding: '0 10px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 12, flexShrink: 0 }}>

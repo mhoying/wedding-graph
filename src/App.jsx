@@ -287,10 +287,40 @@ export default function App() {
     return COHORT_COLORS.Default;
   }, [colorMode, getLocationStateKey]);
 
+  const [selectedClusterFocus, setSelectedClusterFocus] = useState('');
+
+  const availableClusters = useMemo(() => {
+    const set = new Set();
+    (nodes || []).forEach(node => {
+      if (!node || node.type === 'CONTEXT_HUB') return;
+      if (clusterMode === 'cohort' && node.cohort) {
+        set.add(node.cohort);
+      } else if (clusterMode === 'locations' || clusterMode === 'current_location' || clusterMode === 'original_location') {
+        const loc = node.currentlyLivesIn || node.originallyFrom || node.state || node.hometown;
+        if (loc) set.add(loc);
+      } else if (clusterMode === 'interests' && node.hobbies) {
+        node.hobbies.forEach(h => set.add(h));
+      }
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [nodes, clusterMode]);
+
   // Filtered Nodes & Clean Links
   const filteredNodes = useMemo(() => {
     return (nodes || []).filter(node => {
       if (!node) return false;
+      if (selectedClusterFocus) {
+        const c = selectedClusterFocus.toLowerCase();
+        const matchesCohort = node.cohort ? node.cohort.toLowerCase() === c : false;
+        const matchesLocation = (node.currentlyLivesIn && node.currentlyLivesIn.toLowerCase() === c) || 
+                                (node.originallyFrom && node.originallyFrom.toLowerCase() === c) ||
+                                (node.state && node.state.toLowerCase() === c) ||
+                                (node.hometown && node.hometown.toLowerCase() === c);
+        const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase() === c) : false;
+        if (!matchesCohort && !matchesLocation && !matchesInterest && node.type !== 'ANCHOR') {
+          return false;
+        }
+      }
       if (selectedInterests && selectedInterests.length > 0) {
         if (!node.hobbies || !selectedInterests.some(i => node.hobbies.includes(i))) return false;
       }
@@ -304,7 +334,7 @@ export default function App() {
       }
       return true;
     });
-  }, [nodes, searchQuery, selectedInterests]);
+  }, [nodes, searchQuery, selectedInterests, selectedClusterFocus]);
 
   const graphData = useMemo(() => {
     // Robust Node ID Resolver (Handles ID, full name, or slug matching)
@@ -821,9 +851,10 @@ export default function App() {
         setIsMatchmakerOpen={setIsMatchmakerOpen}
         isAdmin={isAdmin}
         handleExportCsv={handleExportCsv}
-        setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
-        feedbackQueueCount={(feedbackList || []).filter(f => f && f.status === 'PENDING').length}
         setIsSpreadsheetOpen={setIsSpreadsheetOpen}
+        selectedClusterFocus={selectedClusterFocus}
+        setSelectedClusterFocus={setSelectedClusterFocus}
+        availableClusters={availableClusters}
       />
 
       {/* Dedicated Host Admin Floating Control Panel */}
