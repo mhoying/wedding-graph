@@ -406,13 +406,22 @@ export default function App() {
 
   // Camera & Node Drag Handlers
   const flyToNode = useCallback((node) => {
-    if (fgRef.current && node && node.x !== undefined && node.y !== undefined) {
-      fgRef.current.centerAt(node.x, node.y, 800);
-      fgRef.current.zoom(2.2, 800);
+    setIsOrbiting(false);
+    if (node && node.x !== undefined && node.y !== undefined) {
+      node.fx = node.x;
+      node.fy = node.y;
     }
-  }, []);
+    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+      fgRef.current.d3ReheatSimulation();
+    }
+    if (fgRef.current && node && node.x !== undefined && node.y !== undefined) {
+      fgRef.current.centerAt(node.x, node.y, 600);
+      fgRef.current.zoom(2.5, 600);
+    }
+  }, [setIsOrbiting]);
 
   const handleNodeClick = useCallback((node) => {
+    setIsOrbiting(false);
     if (isPathMode) {
       if (!pathStartId) {
         setPathStartId(node.id);
@@ -424,7 +433,7 @@ export default function App() {
     setSelectedNode(node);
     setIsEditingDrawer(false);
     flyToNode(node);
-  }, [isPathMode, pathStartId, flyToNode]);
+  }, [isPathMode, pathStartId, flyToNode, setIsOrbiting]);
 
   const handleNodeDrag = useCallback((node, translate) => {
     const dx = translate.x;

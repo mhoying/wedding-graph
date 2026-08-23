@@ -9,11 +9,11 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Updated Header Branding to "🪿 Honk Wedding Universe" (`TopHeaderNav.jsx`)
-- **User Prompt**: "nope. it still says maureen and matt"
+## [2026-08-22] Immediate Orbit Pause & Node Lock Camera Centering (`App.jsx`)
+- **User Prompt**: "the titel si fixed, but now it isnt stopping the rotation immediately and cenring on the clickd node"
 - **Actions**:
-  1. **Logo & Subtitle Update (`TopHeaderNav.jsx`)**:
-     - Updated header title to **🪿 Honk Wedding Universe**.
-     - Updated subtitle to **Sept 26, 2026 • Honk Wedding Map** (eliminating legacy "Maureen & Matt" text).
-     - Applied gradient background inline styles with cross-browser `WebkitBackgroundClip: 'text'` and `WebkitTextFillColor: 'transparent'`.
+  1. **Immediate Orbit Stop & Position Lock (`App.jsx`)**:
+     - Updated `handleNodeClick` and `flyToNode` to call `setIsOrbiting(false)` immediately upon clicking any guest node card.
+     - Anchored physical coordinates of clicked node (`node.fx = node.x; node.fy = node.y`) so physics forces stop pulling the node while camera glides.
+     - Animated camera smoothly with `centerAt(node.x, node.y, 600ms)` and `zoom(2.5, 600ms)`.
   2. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
