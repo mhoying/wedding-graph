@@ -424,6 +424,7 @@ export default function App() {
 
   const handleNodeClick = useCallback((node) => {
     setIsOrbiting(false);
+    setIsMobileControlsOpen(false);
     if (isPathMode) {
       if (!pathStartId) {
         setPathStartId(node.id);
@@ -889,17 +890,15 @@ export default function App() {
       )}
 
       {/* Floating Mobile Micro-Dock Control Trigger & Sheet (ONLY rendered on mobile viewports when no profile drawer is open) */}
-      {isMobileViewport && (
+      {isMobileViewport && !selectedNode && (
         <>
-          {!selectedNode && (
-            <button 
-              className="mobile-drawer-toggle-fab no-print"
-              onClick={() => setIsMobileControlsOpen(true)}
-            >
-              <SlidersHorizontal style={{ width: 16, height: 16 }} />
-              <span>Map Controls</span>
-            </button>
-          )}
+          <button 
+            className="mobile-drawer-toggle-fab no-print"
+            onClick={() => setIsMobileControlsOpen(true)}
+          >
+            <SlidersHorizontal style={{ width: 16, height: 16 }} />
+            <span>Map Controls</span>
+          </button>
 
           <MobileControlsSheet 
             isOpen={isMobileControlsOpen}

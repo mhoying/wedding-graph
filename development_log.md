@@ -9,15 +9,12 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Implemented Automatic SHA Conflict Resolution & Prominent Floating Toast Notifications (`githubSync.js` & `index.css`)
-- **User Prompt**: "still throwing an erorr but because it popsu up behidn the title banner i cnat read it. some erro rabout the sample data not mathcing"
+## [2026-08-22] Auto-Closed Mobile Controls Sheet on Guest Selection (`App.jsx`)
+- **User Prompt**: "map controls is back over the intersts again"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - **409 SHA Mismatch Conflict**: When multiple automated commits or manual edits occurred in quick succession, the file SHA on GitHub's `main` branch changed, causing GitHub Contents API to return `409 Conflict: "src/data/sampleData.js does not match [sha]"`.
-     - **Toast Hiding Behind Header**: `.toast-notification` in `App.jsx` was missing CSS rules in `src/index.css`, causing toast alerts to render statically under `.top-bar`.
-  2. **Automatic Real-Time SHA Retry (`src/utils/githubSync.js`)**:
-     - Added automatic retry handling on `409 / 422` status codes in `pushToGithubRepo`.
-     - When a SHA conflict occurs, `pushToGithubRepo` automatically queries GitHub API for the fresh, real-time file SHA (`?t=timestamp`) and retries the commit seamlessly!
-  3. **Floating Toast Component (`src/index.css`)**:
-     - Added `.toast-notification` fixed positioning at `bottom: 28px`, centered horizontally with `z-index: 999999 !important;`.
-  4. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+     - When a user opened the mobile "Map Controls" drawer and then tapped a guest card on canvas, `isMobileControlsOpen` stayed `true` behind or under the selected guest's profile drawer.
+  2. **Automated Sheet Closing (`App.jsx`)**:
+     - Updated `handleNodeClick` to automatically execute `setIsMobileControlsOpen(false)` upon selecting any guest card.
+     - Wrapped `MobileControlsSheet` in `{isMobileViewport && !selectedNode && (...)}` so mobile map controls cannot be rendered or visible whenever a person's profile details are open!
+  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
