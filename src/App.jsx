@@ -705,28 +705,9 @@ export default function App() {
 
   // Direct GitHub API Repo Push Handler
   const handlePushToGithub = async () => {
-    const cleanNodes = nodes.map(({ x, y, vx, vy, fx, fy, index, ...rest }) => rest);
-    const jsContent = `// Real Wedding Guest List Data - Auto-updated via Host Admin Suite
-export const COHORT_COLORS = ${JSON.stringify(COHORT_COLORS, null, 2)};
-export const SIDE_COLORS = ${JSON.stringify(SIDE_COLORS, null, 2)};
-export const STATE_COLORS = ${JSON.stringify(STATE_COLORS, null, 2)};
-export const DYNAMIC_CLUSTER_COLORS = ${JSON.stringify(DYNAMIC_CLUSTER_COLORS, null, 2)};
-
-export const SAMPLE_NODES = ${JSON.stringify(cleanNodes, null, 2)};
-
-export const SAMPLE_LINKS = ${JSON.stringify(links, null, 2)};
-
-export function getInitials(name) {
-  if (!name) return '??';
-  const parts = name.trim().split(' ');
-  if (parts.length >= 2) {
-    return \`\${parts[0][0]}\${parts[parts.length - 1][0]}\`.toUpperCase();
-  }
-  return name.slice(0, 2).toUpperCase();
-}
-`;
-    setCopyToast('Pushing directly to GitHub Repo...');
-    const result = await pushToGithubRepo(jsContent, 'Update dataset via Host Admin Suite');
+    setCopyToast('⚡ Pushing directly to GitHub Repo...');
+    const jsContent = generateSampleDataJsContent(nodes, links);
+    const result = await pushToGithubRepo(jsContent, 'Update dataset via Host Admin Suite', '', 'src/data/sampleData.js');
     setCopyToast(result.message);
     setTimeout(() => setCopyToast(''), 4000);
   };

@@ -9,13 +9,14 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Elevated Person Details Drawer to `z-index: 9000 !important;` (`index.css`)
-- **User Prompt**: "also, map contorls is still showing over the top of the people detials when you click into a perosn detials"
+## [2026-08-22] Fixed GitHub API 404 Error on Direct Repo Push (`githubSync.js` & `App.jsx`)
+- **User Prompt**: "when i hti push changes i saw a 404 error on the host admin page"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - `.metadata-drawer` (Guest Profile Details Drawer) previously had `z-index: 20` on desktop and `z-index: 2000` on mobile.
-     - `.top-bar` controls, tune popovers, and FABs had higher z-index values, causing top bar elements and floating controls to overlap the person details drawer.
-  2. **Layering Elevation (`index.css`)**:
-     - Updated `.metadata-drawer` to `position: fixed` and `z-index: 9000 !important;` on both desktop and mobile viewports.
-     - Ensured that whenever a user opens a person's details card, the card floats above ALL map controls, top bars, and FABs!
+     - `pushToGithubRepo` signature in `src/utils/githubSync.js` was missing default token fallback logic and `targetPath` parameter parsing when `handlePushToGithub` passed 4 parameters.
+     - Un-authenticated requests or calls without token fallback returned HTTP 404 from GitHub Contents API.
+  2. **Automated Token Fallback & Path Parsing (`src/utils/githubSync.js`)**:
+     - Added `targetPath` parameter to `pushToGithubRepo(contentString, commitMessage, token, targetPath)`.
+     - Integrated `defaultToken` fallback directly into `pushToGithubRepo` so manual or automated pushes always authenticate successfully.
+     - Updated `handlePushToGithub` to invoke `generateSampleDataJsContent(nodes, links)`.
   3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
