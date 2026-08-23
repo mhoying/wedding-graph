@@ -43,7 +43,7 @@ export default function SuggestEditModal({
             }}
             style={{ width: '100%', padding: '8px 12px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}
           >
-            {nodes.filter(n => n.type === 'GUEST').map(n => (
+            {(nodes || []).filter(n => n && n.type === 'GUEST').map(n => (
               <option key={n.id} value={n.id}>{n.name}</option>
             ))}
           </select>

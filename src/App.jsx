@@ -790,8 +790,8 @@ export function getInitials(name) {
         setIsMatchmakerOpen={setIsMatchmakerOpen}
         isAdmin={isAdmin}
         handleExportCsv={handleExportCsv}
-        feedbackQueueCount={feedbackList.filter(f => f.status === 'PENDING').length}
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
+        feedbackQueueCount={(feedbackList || []).filter(f => f && f.status === 'PENDING').length}
       />
 
       {/* Dedicated Host Admin Floating Control Panel */}
@@ -801,7 +801,7 @@ export function getInitials(name) {
         handleExportCsv={handleExportCsv}
         handleExportGitJs={handleExportGitJs}
         handlePushToGithub={handlePushToGithub}
-        feedbackQueueCount={feedbackList.filter(f => f.status === 'PENDING').length}
+        feedbackQueueCount={(feedbackList || []).filter(f => f && f.status === 'PENDING').length}
         setIsFeedbackQueueOpen={setIsFeedbackQueueOpen}
         handleCopyQrLink={handleCopyQrLink}
         setIsBulkImportOpen={setIsBulkImportOpen}
@@ -857,7 +857,7 @@ export function getInitials(name) {
               style={{ background: '#0f172a', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
             >
               <option value="">-- Click or Pick 1st --</option>
-              {nodes.filter(n => n.type === 'GUEST').map(n => (
+              {(nodes || []).filter(n => n && n.type === 'GUEST').map(n => (
                 <option key={n.id} value={n.id}>{n.name}</option>
               ))}
             </select>
@@ -874,7 +874,7 @@ export function getInitials(name) {
               style={{ background: '#0f172a', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
             >
               <option value="">-- Click or Pick 2nd --</option>
-              {nodes.filter(n => n.type === 'GUEST' && n.id !== pathStartId).map(n => (
+              {(nodes || []).filter(n => n && n.type === 'GUEST' && n.id !== pathStartId).map(n => (
                 <option key={n.id} value={n.id}>{n.name}</option>
               ))}
             </select>
