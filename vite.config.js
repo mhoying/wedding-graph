@@ -77,8 +77,16 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
   };
 }
 
-// https://vite.dev/config/
 export default defineConfig({
   base: '/wedding-graph/',
   plugins: [react(), saveDatasetPlugin()],
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+        chunkFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+        assetFileNames: `assets/[name]-[hash]-${Date.now()}[extname]`
+      }
+    }
+  }
 })
