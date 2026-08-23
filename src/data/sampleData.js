@@ -1000,7 +1000,8 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Lehigh",
       "Books",
-      "Bad Bunny"
+      "Bad Bunny",
+      "Wine"
     ],
     "__indexColor": "#a4002b",
     "index": 42,

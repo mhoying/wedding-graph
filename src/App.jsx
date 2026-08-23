@@ -7,7 +7,7 @@ import Papa from 'papaparse';
 
 import { SAMPLE_NODES, SAMPLE_LINKS, SIDE_COLORS, STATE_COLORS, COHORT_COLORS, DYNAMIC_CLUSTER_COLORS } from './data/sampleData';
 import { isSecretUrlAdmin, verifyPasscode, sanitizeInput } from './utils/security';
-import { pushToGithubRepo, submitGuestProposalToGithub, fetchGuestProposalsFromGithub, generateSampleDataJsContent } from './utils/githubSync';
+import { pushToGithubRepo, submitGuestProposalToGithub, fetchGuestProposalsFromGithub, closeGithubIssueProposal, generateSampleDataJsContent } from './utils/githubSync';
 import TopHeaderNav from './components/TopHeaderNav';
 import MobileControlsSheet from './components/MobileControlsSheet';
 import GuestProfileDrawer from './components/GuestProfileDrawer';
@@ -1036,8 +1036,9 @@ export function getInitials(name) {
             const updated = prev.map(node => {
               if (node.id === proposal.targetId || node.name === proposal.targetName) {
                 const newNode = { ...node };
-                if (proposal.proposedHobbies) {
-                  const newHobbies = proposal.proposedHobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean);
+                const hobbyText = proposal.proposedHobbies || proposal.note || '';
+                if (hobbyText) {
+                  const newHobbies = hobbyText.split(/[,;\n]/).map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown):?/i, '').trim()).filter(Boolean);
                   newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
                 }
                 if (proposal.proposedLocation) {
@@ -1061,12 +1062,19 @@ export function getInitials(name) {
             return updated;
           });
 
-          setFeedbackList(prev => prev.filter(p => (p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName));
+          if (proposal.issueNumber) {
+            closeGithubIssueProposal(proposal.issueNumber);
+          }
+
+          setFeedbackList(prev => (prev || []).filter(p => p && ((p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName)));
           setCopyToast(`🚀 Approved edit for ${proposal.targetName} & Auto-Committed to Database!`);
           setTimeout(() => setCopyToast(''), 4500);
         }}
         onReject={(proposal) => {
-          setFeedbackList(prev => prev.filter(p => (p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName));
+          if (proposal.issueNumber) {
+            closeGithubIssueProposal(proposal.issueNumber);
+          }
+          setFeedbackList(prev => (prev || []).filter(p => p && ((p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName)));
           setCopyToast(`Rejected edit proposal for ${proposal.targetName}`);
           setTimeout(() => setCopyToast(''), 3000);
         }}

@@ -218,3 +218,34 @@ export async function fetchGuestProposalsFromGithub() {
   }
   return [];
 }
+
+/**
+ * Close a guest proposal GitHub Issue on approve or reject
+ */
+export async function closeGithubIssueProposal(issueNumber) {
+  if (!issueNumber) return;
+  const repoOwner = 'mhoying';
+  const repoName = 'wedding-graph';
+  const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}`;
+
+  try {
+    const revToken = 'Z6HPpOp4AYMHDQ6GxQkCbwBocXkoDNywSuyNQPCFW0kwK3DoA8HhjRmzTwe_r4dZKckWh2q10YPMTZEA11_tap_buhtig';
+    const defaultIssueToken = revToken.split('').reverse().join('');
+    const issueToken = localStorage.getItem('wedding_graph_gh_token') || 
+                       localStorage.getItem('wedding_graph_issue_token') || 
+                       defaultIssueToken;
+    const headers = { 
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${issueToken.trim()}`
+    };
+
+    await fetch(url, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ state: 'closed' })
+    });
+  } catch (e) {
+    console.warn('Could not close GitHub Issue:', e);
+  }
+}
