@@ -529,6 +529,27 @@ export default function App() {
   const handleSaveProfileEdits = () => {
     if (!selectedNode) return;
     if (!isAdmin) {
+      const changeSummary = [];
+      if (editCurrentlyLivesIn && editCurrentlyLivesIn !== (selectedNode.currentlyLivesIn || '')) {
+        changeSummary.push(`Lives In: ${editCurrentlyLivesIn}`);
+      }
+      if (editOriginallyFrom && editOriginallyFrom !== (selectedNode.originallyFrom || '')) {
+        changeSummary.push(`Originally From: ${editOriginallyFrom}`);
+      }
+      if (editHobbies.join(', ') !== (selectedNode.hobbies || []).join(', ')) {
+        changeSummary.push(`Hobbies: ${editHobbies.join(', ')}`);
+      }
+      if (editCohort && editCohort !== (selectedNode.cohort || '')) {
+        changeSummary.push(`Group: ${editCohort}`);
+      }
+      if (editRelationship && editRelationship !== (selectedNode.relationship || '')) {
+        changeSummary.push(`Relationship: ${editRelationship}`);
+      }
+
+      const proposalNote = changeSummary.length > 0 
+        ? `Proposed Changes: ${changeSummary.join(' | ')}`
+        : `Proposed profile update for ${selectedNode.name}`;
+
       const proposal = {
         id: `fb_${Date.now()}`,
         targetId: selectedNode.id,
@@ -539,7 +560,7 @@ export default function App() {
         proposedCohort: editCohort,
         proposedSide: editSide,
         proposedRelationship: editRelationship,
-        note: `Proposed profile update for ${selectedNode.name}`,
+        note: proposalNote,
         status: 'PENDING',
         timestamp: new Date().toISOString()
       };
