@@ -200,10 +200,29 @@ export default function App() {
     }
   };
 
-  // Node Color Resolver (Generates vibrant dynamic colors for ALL custom cohorts!)
+  // Location / State Extractor Helper
+  const getLocationStateKey = useCallback((node) => {
+    const loc = node.currentlyLivesIn || node.originallyFrom || '';
+    if (!loc) return 'Default';
+    const match = loc.match(/\b([A-Z]{2})\b/);
+    if (match) return match[1];
+    return loc.split(/[, ]+/).pop() || loc;
+  }, []);
+
+  // Node Color Resolver (Generates vibrant dynamic colors for ALL custom cohorts & locations!)
   const getNodeColor = useCallback((node) => {
     if (colorMode === 'side') return SIDE_COLORS[node.side] || SIDE_COLORS["Joint"];
-    if (colorMode === 'state') return STATE_COLORS[node.state] || STATE_COLORS.Default;
+    
+    if (colorMode === 'state' || colorMode === 'location') {
+      const locKey = getLocationStateKey(node);
+      if (STATE_COLORS[locKey]) return STATE_COLORS[locKey];
+      let hash = 0;
+      for (let i = 0; i < locKey.length; i++) {
+        hash = locKey.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const paletteIndex = Math.abs(hash) % DYNAMIC_CLUSTER_COLORS.length;
+      return DYNAMIC_CLUSTER_COLORS[paletteIndex];
+    }
 
     if (COHORT_COLORS[node.cohort]) return COHORT_COLORS[node.cohort];
 
@@ -218,7 +237,7 @@ export default function App() {
     }
 
     return COHORT_COLORS.Default;
-  }, [colorMode]);
+  }, [colorMode, getLocationStateKey]);
 
   // Filtered Nodes & Clean Links
   const filteredNodes = useMemo(() => {

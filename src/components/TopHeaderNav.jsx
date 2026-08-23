@@ -114,7 +114,7 @@ export default function TopHeaderNav({
           >
             <option value="cohort">Cohorts</option>
             <option value="side">Side (Matt/Maureen)</option>
-            <option value="state">States</option>
+            <option value="state">Location / State</option>
           </select>
         </div>
 
