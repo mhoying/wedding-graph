@@ -40,15 +40,16 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Lehigh",
     "familyCohort": "Allison Williams & Jim Merizio",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "Allison Williams & Jim Merizio",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "NJ",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Lehigh"
+      "Lehigh",
+      "Food",
+      "Gardening"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#ec0001"
   },
   {
@@ -57,15 +58,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Allison Williams & Jim Merizio",
     "familyCohort": "Allison Williams & Jim Merizio",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "Allison Williams & Jim Merizio",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Beer"
+      "Beer",
+      "Knicks"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#d80002"
   },
   {
@@ -74,16 +75,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Google",
     "familyCohort": "Andy & Victoria",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "Andy & Victoria",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Beer",
       "Cocktails"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#c40003"
   },
   {
@@ -92,15 +92,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Stanford",
     "familyCohort": "The Hoy Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Hoy Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Dogs"
+      "Dogs",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#b00004"
   },
   {
@@ -109,17 +109,17 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Hoy Family",
     "familyCohort": "The Hoy Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Hoy Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
       "Cocktails",
       "Whiskey",
-      "Dogs"
+      "Dogs",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#9c0005"
   },
   {
@@ -128,16 +128,16 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Bay FC",
     "familyCohort": "Ashley Prichard & Roopak Kandasamy",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "Ashley Prichard & Roopak Kandasamy",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "SF Bay Area",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Bay FC",
-      "Soccer"
+      "Soccer",
+      "Lehigh"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#880006"
   },
   {
@@ -146,34 +146,32 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Bay FC",
     "familyCohort": "Ashley Prichard & Roopak Prichard",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "Ashley Prichard & Roopak Prichard",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "SF Bay Area",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Bay FC",
       "Soccer"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#740007"
   },
   {
-    "id": "becky_sporh",
-    "name": "Becky Sporh",
+    "id": "becky_spohr",
+    "name": "Becky Spohr",
     "type": "GUEST",
     "cohort": "Dog Park",
-    "familyCohort": "Becky Sporh & Guest",
+    "familyCohort": "Becky Spohr",
     "side": "Joint",
-    "relationship": "Becky Sporh & Guest",
+    "relationship": "Becky Spohr",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Chicago",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Dogs",
       "Tennis"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#600008"
   },
   {
@@ -182,16 +180,17 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "familyCohort": "The Kimpreston Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Kimpreston Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NYC",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Bass",
-      "Ska"
+      "Ska",
+      "Music",
+      "Tae Kwon Do"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#4c0009"
   },
   {
@@ -200,15 +199,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Kimpreston Family",
     "familyCohort": "The Kimpreston Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Kimpreston Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NYC",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Dance"
+      "Dance",
+      "Wine"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#38000a"
   },
   {
@@ -220,14 +219,13 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "Chrissy Fiore & Will Short",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "DC",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Cocktails",
       "Whiskey",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#24000b"
   },
   {
@@ -239,13 +237,13 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "Greg Goetchius & Lauren Sofia",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Whiskey",
+      "Music",
+      "Band",
       "Dogs"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#10000c"
   },
   {
@@ -257,12 +255,13 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "Greg Goetchius & Lauren Sofia",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Tennis"
+      "Tennis",
+      "Cycling",
+      "Baking"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#fc000d"
   },
   {
@@ -270,17 +269,16 @@ export const SAMPLE_NODES = [
     "name": "Jesse Lindenberger-Schutz",
     "type": "GUEST",
     "cohort": "Friends",
-    "familyCohort": "",
-    "side": "Joint",
+    "familyCohort": "Friends",
+    "side": "Matt",
     "relationship": "Friends",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NYC",
     "familyStatus": "Single",
     "hobbies": [
       "Art",
       "Gaming"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#e8000e"
   },
   {
@@ -291,14 +289,15 @@ export const SAMPLE_NODES = [
     "familyCohort": "Katie Conniff & Ryan Podolak",
     "side": "Joint",
     "relationship": "Katie Conniff & Ryan Podolak",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Chicago",
+    "currentlyLivesIn": "Madison, WI",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Dogs",
-      "Brains"
+      "Brains",
+      "Darkness",
+      "Cats"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#d4000f"
   },
   {
@@ -310,12 +309,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "Katie Conniff & Ryan Podolak",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Madison, WI",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Wine"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#c00010"
   },
   {
@@ -324,15 +322,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Bay FC",
     "familyCohort": "Krista Kobeski & Guest",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "Krista Kobeski & Guest",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Socializing"
+      "Lehigh, Bay FC, Soccer, Wrestling"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#ac0011"
   },
   {
@@ -341,15 +338,12 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Stanford",
     "familyCohort": "The Habana Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Habana Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
+    "hobbies": [],
     "__indexColor": "#980012"
   },
   {
@@ -357,16 +351,16 @@ export const SAMPLE_NODES = [
     "name": "Liz Scott",
     "type": "GUEST",
     "cohort": "OWFL Blog",
-    "familyCohort": "",
+    "familyCohort": "OWFL Blog",
     "side": "Joint",
     "relationship": "OWFL Blog",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Bermuda",
     "familyStatus": "Single",
     "hobbies": [
-      "Socializing"
+      "Travel",
+      "Food"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#840013"
   },
   {
@@ -375,15 +369,16 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Stanford",
     "familyCohort": "Marissa Lavelle & Guest",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "Marissa Lavelle & Guest",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "SF Bay Area",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Socializing"
+      "Music",
+      "Art",
+      "Travel"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#700014"
   },
   {
@@ -394,8 +389,8 @@ export const SAMPLE_NODES = [
     "familyCohort": "Honk Family",
     "side": "Matt",
     "relationship": "Honk Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Upstate NY",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Cocktails",
@@ -404,7 +399,6 @@ export const SAMPLE_NODES = [
       "Beer",
       "Bay FC"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#5c0015"
   },
   {
@@ -415,17 +409,18 @@ export const SAMPLE_NODES = [
     "familyCohort": "Honk Family",
     "side": "Maureen",
     "relationship": "Honk Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "NJ",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Cocktails",
       "Whiskey",
       "Dogs",
       "Beer",
-      "Bay FC"
+      "Bay FC",
+      "Lehigh",
+      "Wine"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#480016"
   },
   {
@@ -433,16 +428,13 @@ export const SAMPLE_NODES = [
     "name": "Missy Ruminski",
     "type": "GUEST",
     "cohort": "OWFL Blog",
-    "familyCohort": "",
-    "side": "Joint",
+    "familyCohort": "OWFL Blog",
+    "side": "Matt",
     "relationship": "OWFL Blog",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Upstate NY",
+    "currentlyLivesIn": "Chicago",
     "familyStatus": "Single",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Regretfully Decline",
+    "hobbies": [],
     "__indexColor": "#340017"
   },
   {
@@ -450,17 +442,17 @@ export const SAMPLE_NODES = [
     "name": "Nichole Remmert",
     "type": "GUEST",
     "cohort": "OWFL Blog",
-    "familyCohort": "",
+    "familyCohort": "OWFL Blog",
     "side": "Joint",
     "relationship": "OWFL Blog",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Western PA",
+    "currentlyLivesIn": "Baltimore",
     "familyStatus": "Single",
     "hobbies": [
       "Whiskey",
-      "Dogs"
+      "Dogs",
+      "Food"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#200018"
   },
   {
@@ -469,15 +461,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "familyCohort": "The Shaikh Sisters",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Shaikh Sisters",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Boston, MA",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Socializing"
+      "Knitting, Aquaria"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#0c0019"
   },
   {
@@ -486,15 +477,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Romana Rajput & Steve Nares",
     "familyCohort": "Romana Rajput & Steve Nares",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "Romana Rajput & Steve Nares",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Socializing"
+      "Cocktails",
+      "Travel"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#f8001a"
   },
   {
@@ -503,15 +494,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Romana Rajput & Steve Nares",
     "familyCohort": "Romana Rajput & Steve Nares",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "Romana Rajput & Steve Nares",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Socializing"
+      "San Diego Chargers",
+      "Beer"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#e4001b"
   },
   {
@@ -520,15 +511,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Anthony Family",
     "familyCohort": "The Anthony Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Anthony Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Minnesota",
+    "currentlyLivesIn": "Minnesota",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids",
+      "Dogs"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#d0001c"
   },
   {
@@ -537,15 +528,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "familyCohort": "The Anthony Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Anthony Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Minnesota",
+    "currentlyLivesIn": "Minnesota",
     "familyStatus": "Family",
     "hobbies": [
-      "Whiskey"
+      "Whiskey",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#bc001d"
   },
   {
@@ -557,14 +548,14 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Armstrong Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Northern CA",
     "familyStatus": "Family",
     "hobbies": [
       "Beer",
       "Music",
-      "Dogs"
+      "Dogs",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#a8001e"
   },
   {
@@ -576,12 +567,13 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Armstrong Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Northern CA",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Goats",
+      "Kids",
+      "Dogs"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#94001f"
   },
   {
@@ -592,13 +584,14 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Auer Family",
     "side": "Joint",
     "relationship": "The Auer Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Maryland",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Outdoors",
+      "Kids",
+      "Dogs"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#800020"
   },
   {
@@ -609,15 +602,15 @@ export const SAMPLE_NODES = [
     "familyCohort": "The Auer Family",
     "side": "Joint",
     "relationship": "The Auer Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Maryland",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
       "Photography",
       "Dogs",
-      "Outdoors"
+      "Outdoors",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#6c0021"
   },
   {
@@ -629,12 +622,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Bibayan-Mayott Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#580022"
   },
   {
@@ -646,12 +638,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Bibayan-Mayott Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#440023"
   },
   {
@@ -663,12 +654,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Domanski Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#300024"
   },
   {
@@ -680,12 +670,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Domanski Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#1c0025"
   },
   {
@@ -694,15 +683,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Festa Family",
     "familyCohort": "The Festa Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Festa Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#080026"
   },
   {
@@ -711,15 +699,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Google",
     "familyCohort": "The Festa Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Festa Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#f40027"
   },
   {
@@ -728,15 +715,12 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Freedman Family",
     "familyCohort": "The Freedman Family",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "The Freedman Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
+    "hobbies": [],
     "__indexColor": "#e00028"
   },
   {
@@ -745,15 +729,12 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Freedman Family",
     "familyCohort": "The Freedman Family",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "The Freedman Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
+    "hobbies": [],
     "__indexColor": "#cc0029"
   },
   {
@@ -762,15 +743,16 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Freedman Family",
     "familyCohort": "The Freedman Family",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "The Freedman Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Puerto Rico",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids",
+      "Bay FC",
+      "Bad Bunny"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#b8002a"
   },
   {
@@ -779,15 +761,19 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Lehigh",
     "familyCohort": "The Freedman Family",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "The Freedman Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "NJ",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Whiskey"
+      "Whiskey",
+      "Kids",
+      "Bay FC",
+      "Lehigh",
+      "Books",
+      "Bad Bunny"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#a4002b"
   },
   {
@@ -796,15 +782,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Govig Family",
     "familyCohort": "The Govig Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Govig Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#90002c"
   },
   {
@@ -813,16 +798,17 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Google",
     "familyCohort": "The Govig Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Govig Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
       "Whiskey",
-      "Music"
+      "Music",
+      "Band",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#7c002d"
   },
   {
@@ -831,15 +817,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Google",
     "familyCohort": "The Lahorani Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Lahorani Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#68002e"
   },
   {
@@ -848,15 +833,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Lehigh",
     "familyCohort": "The McMullan Family",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "The McMullan Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "NY",
+    "currentlyLivesIn": "Eastern PA",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids: Lehigh"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#54002f"
   },
   {
@@ -865,15 +849,16 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Lehigh",
     "familyCohort": "The McMullan Family",
-    "side": "Joint",
+    "side": "Maureen",
     "relationship": "The McMullan Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Colorado",
+    "currentlyLivesIn": "Eastern PA",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids",
+      "Lehigh",
+      "Books"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#400030"
   },
   {
@@ -885,14 +870,14 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Murillo-Davisson Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
       "Whiskey",
       "Beer",
-      "Gardening"
+      "Gardening",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#2c0031"
   },
   {
@@ -904,12 +889,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Murillo-Davisson Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#180032"
   },
   {
@@ -921,12 +905,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Phan-Macdonald Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#040033"
   },
   {
@@ -938,12 +921,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Phan-Macdonald Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#f00034"
   },
   {
@@ -955,12 +937,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Richter Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "DC",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#dc0035"
   },
   {
@@ -972,12 +953,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Richter Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "DC",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#c80036"
   },
   {
@@ -986,15 +966,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "familyCohort": "The Schmied-Misra Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Schmied-Misra Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Eastern PA",
+    "currentlyLivesIn": "Houston",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#b40037"
   },
   {
@@ -1006,12 +985,13 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Silva Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Dogs"
+      "Dogs",
+      "Kids",
+      "Rockets"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#a00038"
   },
   {
@@ -1020,15 +1000,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "familyCohort": "The Sun Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Sun Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NYC",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#8c0039"
   },
   {
@@ -1037,15 +1016,14 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Sun Family",
     "familyCohort": "The Sun Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Sun Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "NYC",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#78003a"
   },
   {
@@ -1054,15 +1032,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "familyCohort": "The Tempest Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Tempest Family",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Western PA",
+    "currentlyLivesIn": "Upstate NY",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids",
+      "Rugby"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#64003b"
   },
   {
@@ -1071,32 +1049,31 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Cornell",
     "familyCohort": "The Tsai-Luong Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Tsai-Luong Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#50003c"
   },
   {
-    "id": "ivan_vojvodi_",
-    "name": "Ivan Vojvodić",
+    "id": "ivan_vojvodic",
+    "name": "Ivan Vojvodic",
     "type": "GUEST",
     "cohort": "Google",
-    "familyCohort": "The Vojvodić Family",
-    "side": "Joint",
-    "relationship": "The Vojvodić Family",
+    "familyCohort": "The Vojvodic Family",
+    "side": "Matt",
+    "relationship": "The Vojvodic Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Whiskey"
+      "Whiskey",
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#3c003d"
   },
   {
@@ -1108,12 +1085,11 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "relationship": "The Winslow Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#28003e"
   },
   {
@@ -1124,14 +1100,14 @@ export const SAMPLE_NODES = [
     "familyCohort": "Tim Coble & Mary Fucking Mitchell",
     "side": "Joint",
     "relationship": "Tim Coble & Mary Fucking Mitchell",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Chicago",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Whiskey",
-      "Dogs"
+      "Dogs",
+      "Bad Bunny"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#14003f"
   },
   {
@@ -1142,15 +1118,14 @@ export const SAMPLE_NODES = [
     "familyCohort": "Tim Coble & Mary Fucking Mitchell",
     "side": "Joint",
     "relationship": "Tim Coble & Mary Fucking Mitchell",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "originallyFrom": "Florida",
+    "currentlyLivesIn": "NJ",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Whiskey",
       "Dogs",
       "Gaming"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#000040"
   },
   {
@@ -1159,50 +1134,31 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Google",
     "familyCohort": "Yannick Carer & Guest",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "Yannick Carer & Guest",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Zurich",
     "familyStatus": "Family",
     "hobbies": [
-      "Dogs"
+      "Dogs",
+      "Kids",
+      "Cycling"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#ec0041"
-  },
-  {
-    "id": "becky_spohr",
-    "name": "Becky Spohr",
-    "type": "GUEST",
-    "cohort": "Dog Park",
-    "familyCohort": "",
-    "side": "Joint",
-    "relationship": "Dog Park",
-    "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
-    "familyStatus": "Single",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#d80042"
   },
   {
     "id": "chuchu_zhang",
     "name": "Chuchu Zhang",
     "type": "GUEST",
     "cohort": "Google",
-    "familyCohort": "",
-    "side": "Joint",
+    "familyCohort": "Google",
+    "side": "Matt",
     "relationship": "Google",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Single",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#c40043"
+    "hobbies": [],
+    "__indexColor": "#d80042"
   },
   {
     "id": "emy_habana",
@@ -1210,16 +1166,13 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Habana Family",
     "familyCohort": "The Habana Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Habana Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#b00044"
+    "hobbies": [],
+    "__indexColor": "#c40043"
   },
   {
     "id": "kathryn_potts",
@@ -1227,16 +1180,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Stanford",
     "familyCohort": "Kathryn Flack & Joe Wernet",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "Kathryn Flack & Joe Wernet",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Boston, MA",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Words"
     ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#9c0045"
+    "__indexColor": "#b00044"
   },
   {
     "id": "joe_wernet",
@@ -1244,33 +1196,29 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Kathryn Flack & Joe Wernet",
     "familyCohort": "Kathryn Flack & Joe Wernet",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "Kathryn Flack & Joe Wernet",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "Boston, MA",
     "familyStatus": "Couple / Group",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#880046"
+    "hobbies": [],
+    "__indexColor": "#9c0045"
   },
   {
-    "id": "mira_vojvodi_",
-    "name": "Mira Vojvodić",
+    "id": "mira_vojvodic",
+    "name": "Mira Vojvodic",
     "type": "GUEST",
-    "cohort": "The Vojvodić Family",
-    "familyCohort": "The Vojvodić Family",
-    "side": "Joint",
-    "relationship": "The Vojvodić Family",
+    "cohort": "The Vojvodic Family",
+    "familyCohort": "The Vojvodic Family",
+    "side": "Matt",
+    "relationship": "The Vojvodic Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#740047"
+    "__indexColor": "#880046"
   },
   {
     "id": "nadia_shaikh",
@@ -1278,16 +1226,13 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Shaikh Sisters",
     "familyCohort": "Shaikh Sisters",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "Shaikh Sisters",
     "originallyFrom": "USA",
     "currentlyLivesIn": "USA",
     "familyStatus": "Couple / Group",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#600048"
+    "hobbies": [],
+    "__indexColor": "#740047"
   },
   {
     "id": "sumeet_lahorani",
@@ -1295,16 +1240,15 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "The Lahorani Family",
     "familyCohort": "The Lahorani Family",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "The Lahorani Family",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Socializing"
+      "Kids"
     ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#4c0049"
+    "__indexColor": "#600048"
   },
   {
     "id": "victoria_shi",
@@ -1312,16 +1256,13 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "cohort": "Andy & Victoria",
     "familyCohort": "Andy & Victoria",
-    "side": "Joint",
+    "side": "Matt",
     "relationship": "Andy & Victoria",
     "originallyFrom": "USA",
-    "currentlyLivesIn": "USA",
+    "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
-    "hobbies": [
-      "Socializing"
-    ],
-    "rsvp": "Joyfully Accept",
-    "__indexColor": "#38004a"
+    "hobbies": [],
+    "__indexColor": "#4c0049"
   },
   {
     "id": "will_short",
@@ -1334,11 +1275,71 @@ export const SAMPLE_NODES = [
     "originallyFrom": "USA",
     "currentlyLivesIn": "USA",
     "familyStatus": "Couple / Group",
+    "hobbies": [],
+    "__indexColor": "#38004a"
+  },
+  {
+    "id": "dog_park",
+    "name": "Avalon Dog Park",
+    "type": "CONTEXT_HUB",
+    "cohort": "Dog Park",
+    "familyCohort": "Dog Park",
+    "side": "Joint",
+    "relationship": "Dog Park",
+    "originallyFrom": "SF Bay Area",
+    "currentlyLivesIn": "SF Bay Area",
+    "familyStatus": "Hub",
     "hobbies": [
-      "Socializing"
+      "Dogs"
     ],
-    "rsvp": "Joyfully Accept",
     "__indexColor": "#24004b"
+  },
+  {
+    "id": "owfl_blog",
+    "name": "OWFL Blog",
+    "type": "CONTEXT_HUB",
+    "cohort": "OWFL Blog",
+    "familyCohort": "OWFL Blog",
+    "side": "Joint",
+    "relationship": "OWFL Blog",
+    "originallyFrom": "DC",
+    "currentlyLivesIn": "DC",
+    "familyStatus": "Hub",
+    "hobbies": [
+      "Food"
+    ],
+    "__indexColor": "#10004c"
+  },
+  {
+    "id": "bay_fc",
+    "name": "Bay FC Tailgate",
+    "type": "CONTEXT_HUB",
+    "cohort": "Bay FC",
+    "familyCohort": "Bay FC",
+    "side": "Joint",
+    "relationship": "Bay FC",
+    "originallyFrom": "SF Bay Area",
+    "currentlyLivesIn": "SF Bay Area",
+    "familyStatus": "Hub",
+    "hobbies": [
+      "Bay FC",
+      "Soccer"
+    ],
+    "__indexColor": "#fc004d"
+  },
+  {
+    "id": "honk",
+    "name": "Honk",
+    "type": "CONTEXT_HUB",
+    "cohort": "Honk Family",
+    "familyCohort": "",
+    "side": "Joint",
+    "relationship": "Guest",
+    "originallyFrom": "USA",
+    "currentlyLivesIn": "USA",
+    "familyStatus": "Single",
+    "hobbies": [],
+    "__indexColor": "#e8004e"
   }
 ];
 
@@ -1346,572 +1347,407 @@ export const SAMPLE_LINKS = [
   {
     "source": "allison_williams",
     "target": "jim_merizio",
-    "relationship": "Allison Williams & Jim Merizio"
+    "relationship": "Connected"
   },
   {
     "source": "andy_schmitt",
     "target": "victoria_shi",
-    "relationship": "Andy & Victoria"
+    "relationship": "Connected"
   },
   {
     "source": "anne_sweeney",
     "target": "jon_hoy",
-    "relationship": "The Hoy Family"
+    "relationship": "Connected"
   },
   {
     "source": "brian_kim",
     "target": "michelle_preston",
-    "relationship": "The Kimpreston Family"
+    "relationship": "Connected"
   },
   {
     "source": "chrissy_fiore",
     "target": "will_short",
-    "relationship": "Chrissy Fiore & Will Short"
+    "relationship": "Connected"
   },
   {
     "source": "greg_goetchius",
     "target": "lauren_sofia",
-    "relationship": "Greg Goetchius & Lauren Sofia"
+    "relationship": "Connected"
   },
   {
     "source": "katie_conniff",
     "target": "ryan_podolak",
-    "relationship": "Katie Conniff & Ryan Podolak"
+    "relationship": "Connected"
   },
   {
     "source": "leanna_habana",
     "target": "emy_habana",
-    "relationship": "The Habana Family"
+    "relationship": "Connected"
   },
   {
     "source": "matt",
     "target": "maureen",
-    "relationship": "Honk Family"
+    "relationship": "Connected"
   },
   {
     "source": "romana_rajput",
     "target": "steve_nares",
-    "relationship": "Romana Rajput & Steve Nares"
+    "relationship": "Connected"
   },
   {
     "source": "poukhan_philavanh_anthony",
     "target": "ryan_anthony",
-    "relationship": "The Anthony Family"
+    "relationship": "Connected"
   },
   {
     "source": "cole_armstrong",
     "target": "tracy_armstrong",
-    "relationship": "The Armstrong Family"
+    "relationship": "Connected"
   },
   {
     "source": "jenna_auer",
     "target": "tim_auer",
-    "relationship": "The Auer Family"
+    "relationship": "Connected"
   },
   {
     "source": "jonathan_bibayan",
     "target": "lindsay_mayott",
-    "relationship": "The Bibayan-Mayott Family"
+    "relationship": "Connected"
   },
   {
     "source": "jeff_domanski",
     "target": "jill_domanski",
-    "relationship": "The Domanski Family"
+    "relationship": "Connected"
   },
   {
     "source": "dave_festa",
     "target": "erica_festa",
-    "relationship": "The Festa Family"
-  },
-  {
-    "source": "ari_freedman",
-    "target": "eric_freedman",
-    "relationship": "The Freedman Family"
-  },
-  {
-    "source": "ari_freedman",
-    "target": "james_freedman",
-    "relationship": "The Freedman Family"
-  },
-  {
-    "source": "ari_freedman",
-    "target": "nur_e_freedman",
-    "relationship": "The Freedman Family"
-  },
-  {
-    "source": "eric_freedman",
-    "target": "james_freedman",
-    "relationship": "The Freedman Family"
-  },
-  {
-    "source": "eric_freedman",
-    "target": "nur_e_freedman",
-    "relationship": "The Freedman Family"
+    "relationship": "Connected"
   },
   {
     "source": "james_freedman",
-    "target": "nur_e_freedman",
-    "relationship": "The Freedman Family"
+    "target": "eric_freedman",
+    "relationship": "Connected"
+  },
+  {
+    "source": "james_freedman",
+    "target": "ari_freedman",
+    "relationship": "Connected"
+  },
+  {
+    "source": "nur_e_freedman",
+    "target": "james_freedman",
+    "relationship": "Connected"
   },
   {
     "source": "angela_govig",
     "target": "jason_govig",
-    "relationship": "The Govig Family"
+    "relationship": "Connected"
   },
   {
     "source": "janaki_lahorani",
     "target": "sumeet_lahorani",
-    "relationship": "The Lahorani Family"
+    "relationship": "Connected"
   },
   {
     "source": "jason_mcmullan",
     "target": "jessi_mcmullan",
-    "relationship": "The McMullan Family"
+    "relationship": "Connected"
   },
   {
     "source": "alex_murillo",
     "target": "leslie_davidsson",
-    "relationship": "The Murillo-Davisson Family"
+    "relationship": "Connected"
   },
   {
     "source": "jess_phan",
     "target": "mark_macdonald",
-    "relationship": "The Phan-Macdonald Family"
+    "relationship": "Connected"
   },
   {
     "source": "katie_richter",
     "target": "paul_richter",
-    "relationship": "The Richter Family"
+    "relationship": "Connected"
   },
   {
     "source": "george_sun",
     "target": "sohyun_sun",
-    "relationship": "The Sun Family"
+    "relationship": "Connected"
   },
   {
     "source": "ivan_vojvodi_",
     "target": "mira_vojvodi_",
-    "relationship": "The Vojvodić Family"
+    "relationship": "Connected"
   },
   {
     "source": "mary_mitchell",
     "target": "tim_coble",
-    "relationship": "Tim Coble & Mary Fucking Mitchell"
+    "relationship": "Connected"
   },
   {
     "source": "kathryn_potts",
     "target": "joe_wernet",
-    "relationship": "Kathryn Flack & Joe Wernet"
+    "relationship": "Connected"
+  },
+  {
+    "source": "roopak_kandasamy",
+    "target": "ashley_prichard",
+    "relationship": "Connected"
   },
   {
     "source": "allison_williams",
     "target": "maureen",
-    "relationship": "Lehigh Friend"
-  },
-  {
-    "source": "allison_williams",
-    "target": "matt",
-    "relationship": "Lehigh Friend"
-  },
-  {
-    "source": "andy_schmitt",
-    "target": "maureen",
-    "relationship": "Google Friend"
+    "relationship": "Connected"
   },
   {
     "source": "andy_schmitt",
     "target": "matt",
-    "relationship": "Google Friend"
-  },
-  {
-    "source": "anne_sweeney",
-    "target": "maureen",
-    "relationship": "Stanford Friend"
+    "relationship": "Connected"
   },
   {
     "source": "anne_sweeney",
     "target": "matt",
-    "relationship": "Stanford Friend"
+    "relationship": "Connected"
   },
   {
     "source": "ashley_prichard",
-    "target": "maureen",
-    "relationship": "Bay FC Friend"
+    "target": "james_freedman",
+    "relationship": "Connected"
   },
   {
     "source": "ashley_prichard",
-    "target": "matt",
-    "relationship": "Bay FC Friend"
+    "target": "bay_fc",
+    "relationship": "Connected"
   },
   {
     "source": "roopak_kandasamy",
-    "target": "maureen",
-    "relationship": "Bay FC Friend"
+    "target": "bay_fc",
+    "relationship": "Connected"
   },
   {
-    "source": "roopak_kandasamy",
-    "target": "matt",
-    "relationship": "Bay FC Friend"
-  },
-  {
-    "source": "becky_sporh",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "becky_sporh",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "brian_kim",
-    "target": "maureen",
-    "relationship": "Cornell Friend"
+    "source": "becky_spohr",
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "brian_kim",
     "target": "matt",
-    "relationship": "Cornell Friend"
+    "relationship": "Connected"
   },
   {
     "source": "chrissy_fiore",
-    "target": "maureen",
-    "relationship": "OWFL Blog Friend"
-  },
-  {
-    "source": "chrissy_fiore",
-    "target": "matt",
-    "relationship": "OWFL Blog Friend"
+    "target": "owfl_blog",
+    "relationship": "Connected"
   },
   {
     "source": "greg_goetchius",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "greg_goetchius",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "katie_conniff",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "katie_conniff",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "krista_kobeski",
-    "target": "maureen",
-    "relationship": "Bay FC Friend"
-  },
-  {
-    "source": "krista_kobeski",
-    "target": "matt",
-    "relationship": "Bay FC Friend"
-  },
-  {
-    "source": "leanna_habana",
-    "target": "maureen",
-    "relationship": "Stanford Friend"
+    "target": "jessi_mcmullan",
+    "relationship": "Connected"
   },
   {
     "source": "leanna_habana",
     "target": "matt",
-    "relationship": "Stanford Friend"
+    "relationship": "Connected"
   },
   {
     "source": "liz_scott",
-    "target": "maureen",
-    "relationship": "OWFL Blog Friend"
-  },
-  {
-    "source": "liz_scott",
-    "target": "matt",
-    "relationship": "OWFL Blog Friend"
-  },
-  {
-    "source": "marissa_lavelle",
-    "target": "maureen",
-    "relationship": "Stanford Friend"
+    "target": "owfl_blog",
+    "relationship": "Connected"
   },
   {
     "source": "marissa_lavelle",
     "target": "matt",
-    "relationship": "Stanford Friend"
+    "relationship": "Connected"
   },
   {
     "source": "missy_ruminski",
-    "target": "maureen",
-    "relationship": "OWFL Blog Friend"
+    "target": "owfl_blog",
+    "relationship": "Connected"
   },
   {
     "source": "missy_ruminski",
     "target": "matt",
-    "relationship": "OWFL Blog Friend"
+    "relationship": "Connected"
   },
   {
     "source": "nichole_remmert",
-    "target": "maureen",
-    "relationship": "OWFL Blog Friend"
-  },
-  {
-    "source": "nichole_remmert",
-    "target": "matt",
-    "relationship": "OWFL Blog Friend"
-  },
-  {
-    "source": "nishat_shaikh",
-    "target": "maureen",
-    "relationship": "Cornell Friend"
+    "target": "owfl_blog",
+    "relationship": "Connected"
   },
   {
     "source": "nishat_shaikh",
     "target": "matt",
-    "relationship": "Cornell Friend"
-  },
-  {
-    "source": "ryan_anthony",
-    "target": "maureen",
-    "relationship": "Cornell Friend"
+    "relationship": "Connected"
   },
   {
     "source": "ryan_anthony",
     "target": "matt",
-    "relationship": "Cornell Friend"
+    "relationship": "Connected"
   },
   {
     "source": "cole_armstrong",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "cole_armstrong",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "tracy_armstrong",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "tracy_armstrong",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "tim_auer",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "tim_auer",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "erica_festa",
-    "target": "maureen",
-    "relationship": "Google Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "erica_festa",
     "target": "matt",
-    "relationship": "Google Friend"
+    "relationship": "Connected"
   },
   {
     "source": "nur_e_freedman",
-    "target": "maureen",
-    "relationship": "Lehigh Friend"
-  },
-  {
-    "source": "nur_e_freedman",
-    "target": "matt",
-    "relationship": "Lehigh Friend"
-  },
-  {
-    "source": "jason_govig",
-    "target": "maureen",
-    "relationship": "Google Friend"
+    "target": "jessi_mcmullan",
+    "relationship": "Connected"
   },
   {
     "source": "jason_govig",
     "target": "matt",
-    "relationship": "Google Friend"
-  },
-  {
-    "source": "janaki_lahorani",
-    "target": "maureen",
-    "relationship": "Google Friend"
+    "relationship": "Connected"
   },
   {
     "source": "janaki_lahorani",
     "target": "matt",
-    "relationship": "Google Friend"
+    "relationship": "Connected"
   },
   {
     "source": "jason_mcmullan",
     "target": "maureen",
-    "relationship": "Lehigh Friend"
-  },
-  {
-    "source": "jason_mcmullan",
-    "target": "matt",
-    "relationship": "Lehigh Friend"
+    "relationship": "Connected"
   },
   {
     "source": "jessi_mcmullan",
     "target": "maureen",
-    "relationship": "Lehigh Friend"
-  },
-  {
-    "source": "jessi_mcmullan",
-    "target": "matt",
-    "relationship": "Lehigh Friend"
+    "relationship": "Connected"
   },
   {
     "source": "alex_murillo",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "alex_murillo",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "leslie_davidsson",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "leslie_davidsson",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "paul_richter",
-    "target": "maureen",
-    "relationship": "OWFL Blog Friend"
-  },
-  {
-    "source": "paul_richter",
-    "target": "matt",
-    "relationship": "OWFL Blog Friend"
+    "target": "owfl_blog",
+    "relationship": "Connected"
   },
   {
     "source": "lauren_schmied",
-    "target": "maureen",
-    "relationship": "Cornell Friend"
-  },
-  {
-    "source": "lauren_schmied",
-    "target": "matt",
-    "relationship": "Cornell Friend"
+    "target": "nishat_shaikh",
+    "relationship": "Connected"
   },
   {
     "source": "tina_silva",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "tina_silva",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "george_sun",
-    "target": "maureen",
-    "relationship": "Cornell Friend"
-  },
-  {
-    "source": "george_sun",
-    "target": "matt",
-    "relationship": "Cornell Friend"
-  },
-  {
-    "source": "chuck_tempest",
-    "target": "maureen",
-    "relationship": "Cornell Friend"
+    "target": "ryan_anthony",
+    "relationship": "Connected"
   },
   {
     "source": "chuck_tempest",
     "target": "matt",
-    "relationship": "Cornell Friend"
+    "relationship": "Connected"
   },
   {
     "source": "clyde_tsai",
-    "target": "maureen",
-    "relationship": "Cornell Friend"
-  },
-  {
-    "source": "clyde_tsai",
-    "target": "matt",
-    "relationship": "Cornell Friend"
-  },
-  {
-    "source": "ivan_vojvodi_",
-    "target": "maureen",
-    "relationship": "Google Friend"
+    "target": "ryan_anthony",
+    "relationship": "Connected"
   },
   {
     "source": "ivan_vojvodi_",
     "target": "matt",
-    "relationship": "Google Friend"
+    "relationship": "Connected"
   },
   {
     "source": "tim_coble",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "tim_coble",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "yannick_carer",
-    "target": "maureen",
-    "relationship": "Google Friend"
+    "target": "dog_park",
+    "relationship": "Connected"
   },
   {
     "source": "yannick_carer",
     "target": "matt",
-    "relationship": "Google Friend"
-  },
-  {
-    "source": "becky_spohr",
-    "target": "maureen",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "becky_spohr",
-    "target": "matt",
-    "relationship": "Dog Park Friend"
-  },
-  {
-    "source": "chuchu_zhang",
-    "target": "maureen",
-    "relationship": "Google Friend"
+    "relationship": "Connected"
   },
   {
     "source": "chuchu_zhang",
     "target": "matt",
-    "relationship": "Google Friend"
-  },
-  {
-    "source": "kathryn_potts",
-    "target": "maureen",
-    "relationship": "Stanford Friend"
+    "relationship": "Connected"
   },
   {
     "source": "kathryn_potts",
     "target": "matt",
-    "relationship": "Stanford Friend"
+    "relationship": "Connected"
+  },
+  {
+    "source": "leanna_habana",
+    "target": "kathryn_potts",
+    "relationship": "Connected"
+  },
+  {
+    "source": "honk",
+    "target": "matt",
+    "relationship": "Connected"
+  },
+  {
+    "source": "honk",
+    "target": "maureen",
+    "relationship": "Connected"
+  },
+  {
+    "source": "honk",
+    "target": "dog_park",
+    "relationship": "Connected"
+  },
+  {
+    "source": "honk",
+    "target": "owfl_blog",
+    "relationship": "Connected"
+  },
+  {
+    "source": "honk",
+    "target": "bay_fc",
+    "relationship": "Connected"
+  },
+  {
+    "source": "jess_phan",
+    "target": "leslie_davidsson",
+    "label": "Friends"
+  },
+  {
+    "source": "jeff_domanski",
+    "target": "maureen",
+    "label": "Coworkers"
+  },
+  {
+    "source": "ivan_vojvodic",
+    "target": "matt",
+    "label": "Coworkers"
   },
   {
     "source": "nadia_shaikh",
@@ -1919,29 +1755,29 @@ export const SAMPLE_LINKS = [
     "label": "Family"
   },
   {
-    "source": "becca_winslow",
+    "source": "jonathan_bibayan",
     "target": "jenna_auer",
     "label": "Friends"
   },
   {
-    "source": "maureen",
-    "target": "jeff_domanski",
-    "label": "Coworkers"
+    "source": "ivan_vojvodic",
+    "target": "mira_vojvodic",
+    "label": "Family"
   },
   {
-    "source": "jess_phan",
-    "target": "leslie_davidsson",
-    "label": "Friends"
-  },
-  {
-    "source": "clyde_tsai",
-    "target": "jesse_lindenberger_schutz",
+    "source": "jesse_lindenberger_schutz",
+    "target": "clyde_tsai",
     "label": "Coworkers"
   },
   {
     "source": "romana_rajput",
     "target": "nur_e_freedman",
     "label": "Coworkers"
+  },
+  {
+    "source": "becca_winslow",
+    "target": "jenna_auer",
+    "label": "Friends"
   }
 ];
 
