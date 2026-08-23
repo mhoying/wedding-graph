@@ -482,12 +482,12 @@ export default function ForceCanvas({
           }
 
           if (link.type === 'COUPLE' || link.label === 'Married' || link.label === 'Partner') {
-            return isLightMode ? 'rgba(244, 114, 182, 0.6)' : 'rgba(244, 114, 182, 0.45)';
+            return isLightMode ? 'rgba(244, 114, 182, 0.7)' : 'rgba(244, 114, 182, 0.6)';
           }
           if (link.type === 'FAMILY' || link.type === 'SIBLING') {
-            return isLightMode ? 'rgba(56, 189, 248, 0.5)' : 'rgba(56, 189, 248, 0.35)';
+            return isLightMode ? 'rgba(56, 189, 248, 0.65)' : 'rgba(56, 189, 248, 0.5)';
           }
-          return isLightMode ? 'rgba(148, 163, 184, 0.3)' : 'rgba(148, 163, 184, 0.18)';
+          return isLightMode ? 'rgba(100, 116, 139, 0.45)' : 'rgba(56, 189, 248, 0.35)';
         }}
         linkWidth={(link) => {
           if (shortestPath.length > 1) {
@@ -504,11 +504,11 @@ export default function ForceCanvas({
             const s = typeof link.source === 'object' ? link.source.id : link.source;
             const t = typeof link.target === 'object' ? link.target.id : link.target;
             const targetId = hoverNode?.id || selectedNode?.id;
-            if (s === targetId || t === targetId) return 3;
+            if (s === targetId || t === targetId) return 3.5;
             return 1;
           }
           if (link.type === 'COUPLE') return 2.5;
-          return 1.2;
+          return 1.8;
         }}
         linkDirectionalParticles={(link) => {
           if (shortestPath.length > 1) {

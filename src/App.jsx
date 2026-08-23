@@ -36,7 +36,20 @@ export default function App() {
     }
     return SAMPLE_NODES;
   });
-  const [links, setLinks] = useState(SAMPLE_LINKS);
+  const [links, setLinks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('wedding_graph_links_v4');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to parse saved links from localStorage:', e);
+    }
+    return SAMPLE_LINKS;
+  });
   const [feedbackList, setFeedbackList] = useState(() => {
     try {
       const saved = localStorage.getItem('wedding_graph_feedback_v4');
