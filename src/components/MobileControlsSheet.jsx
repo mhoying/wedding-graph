@@ -228,7 +228,7 @@ export default function MobileControlsSheet({
           <div style={{ display: 'flex', gap: 4, background: 'rgba(30, 41, 59, 0.6)', padding: 3, borderRadius: 10 }}>
             <button onClick={() => setColorMode('cohort')} className={`btn-mode ${colorMode === 'cohort' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>Cohort</button>
             <button onClick={() => setColorMode('side')} className={`btn-mode ${colorMode === 'side' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>Side</button>
-            <button onClick={() => setColorMode('state')} className={`btn-mode ${colorMode === 'state' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>State</button>
+            <button onClick={() => setColorMode('locations')} className={`btn-mode ${colorMode === 'locations' || colorMode === 'state' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>Location</button>
           </div>
         </div>
 
