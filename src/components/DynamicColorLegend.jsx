@@ -41,19 +41,15 @@ export default function DynamicColorLegend({
         }
       });
     } else {
-      // Default: Cohorts (Only render true social cohorts, explicitly reject any family/couple strings)
-      const validCohorts = new Set(['Cornell', 'Google', 'Stanford', 'Lehigh', 'Dog Park', 'OWFL Blog', 'Bay FC', 'Honk Family', 'The Couple']);
+      // Default: Cohorts (Only render true social cohorts, strictly exclude all family groups)
+      const validCohorts = new Set(['Cornell', 'Google', 'Stanford', 'Lehigh', 'Dog Park', 'OWFL Blog', 'Bay FC', 'The Couple']);
       filteredNodes.forEach(node => {
         if (!node || node.type === 'CONTEXT_HUB') return;
         const cohort = node.cohort;
         if (
           cohort && 
           validCohorts.has(cohort) && 
-          !itemMap.has(cohort) &&
-          !cohort.includes('&') &&
-          !cohort.toLowerCase().includes('family') &&
-          cohort !== 'Friends' &&
-          cohort !== 'Shaikh Sisters'
+          !itemMap.has(cohort)
         ) {
           const color = getNodeColor ? getNodeColor(node) : '#38bdf8';
           itemMap.set(cohort, color);
