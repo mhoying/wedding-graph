@@ -9,14 +9,15 @@
   4. Installed dependencies: `react-force-graph-2d`, `papaparse`, `zod`, `lucide-react`.
   5. Saved finalized PRD to `/docs/PRD.md`.
 
-## [2026-08-22] Fixed GitHub API 404 Error on Direct Repo Push (`githubSync.js` & `App.jsx`)
-- **User Prompt**: "when i hti push changes i saw a 404 error on the host admin page"
+## [2026-08-22] Implemented Automatic SHA Conflict Resolution & Prominent Floating Toast Notifications (`githubSync.js` & `index.css`)
+- **User Prompt**: "still throwing an erorr but because it popsu up behidn the title banner i cnat read it. some erro rabout the sample data not mathcing"
 - **Actions**:
   1. **Root Cause Analysis**:
-     - `pushToGithubRepo` signature in `src/utils/githubSync.js` was missing default token fallback logic and `targetPath` parameter parsing when `handlePushToGithub` passed 4 parameters.
-     - Un-authenticated requests or calls without token fallback returned HTTP 404 from GitHub Contents API.
-  2. **Automated Token Fallback & Path Parsing (`src/utils/githubSync.js`)**:
-     - Added `targetPath` parameter to `pushToGithubRepo(contentString, commitMessage, token, targetPath)`.
-     - Integrated `defaultToken` fallback directly into `pushToGithubRepo` so manual or automated pushes always authenticate successfully.
-     - Updated `handlePushToGithub` to invoke `generateSampleDataJsContent(nodes, links)`.
-  3. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).
+     - **409 SHA Mismatch Conflict**: When multiple automated commits or manual edits occurred in quick succession, the file SHA on GitHub's `main` branch changed, causing GitHub Contents API to return `409 Conflict: "src/data/sampleData.js does not match [sha]"`.
+     - **Toast Hiding Behind Header**: `.toast-notification` in `App.jsx` was missing CSS rules in `src/index.css`, causing toast alerts to render statically under `.top-bar`.
+  2. **Automatic Real-Time SHA Retry (`src/utils/githubSync.js`)**:
+     - Added automatic retry handling on `409 / 422` status codes in `pushToGithubRepo`.
+     - When a SHA conflict occurs, `pushToGithubRepo` automatically queries GitHub API for the fresh, real-time file SHA (`?t=timestamp`) and retries the commit seamlessly!
+  3. **Floating Toast Component (`src/index.css`)**:
+     - Added `.toast-notification` fixed positioning at `bottom: 28px`, centered horizontally with `z-index: 999999 !important;`.
+  4. **Deployed Live**: Published updated production build directly to GitHub Pages (`https://mhoying.github.io/wedding-graph/`).

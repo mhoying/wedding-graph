@@ -55,6 +55,36 @@ export async function pushToGithubRepo(contentString, commitMessage = 'Update we
     });
 
     if (!putRes.ok) {
+      // Automatic retry for 409 SHA conflict
+      if (putRes.status === 409 || putRes.status === 422) {
+        const freshRes = await fetch(`${getFileUrl}?t=${Date.now()}`, {
+          headers: {
+            'Authorization': `Bearer ${githubToken.trim()}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        if (freshRes.ok) {
+          const freshData = await freshRes.json();
+          const retryRes = await fetch(getFileUrl, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${githubToken.trim()}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.v3+json'
+            },
+            body: JSON.stringify({
+              message: commitMessage,
+              content: base64Content,
+              sha: freshData.sha,
+              branch: 'main'
+            })
+          });
+          if (retryRes.ok) {
+            return { success: true, message: 'Successfully committed and pushed dataset directly to GitHub repo!' };
+          }
+        }
+      }
+
       const errJson = await putRes.json();
       if (putRes.status === 401 || putRes.status === 403) {
         localStorage.removeItem('wedding_graph_gh_token');
