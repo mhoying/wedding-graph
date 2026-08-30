@@ -342,7 +342,7 @@ export default function ForceCanvas({
     return () => clearInterval(interval);
   }, [fgRef, nodes]);
 
-  // Auto Zoom-to-Fit for Search Results: Frames search results with comfortable padding & zoom caps!
+  // Auto Zoom-to-Fit for Search Results: Uses atomic zoomToFit so single match is dead-centered on screen!
   useEffect(() => {
     if (!searchQuery || !searchQuery.trim() || !fgRef.current) return;
 
@@ -355,23 +355,12 @@ export default function ForceCanvas({
       return matchesName || matchesCohort || matchesSide || matchesInterest;
     });
 
-    if (matchingNodes.length === 1) {
-      const targetNode = matchingNodes[0];
+    if (matchingNodes.length > 0 && typeof fgRef.current.zoomToFit === 'function') {
       if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
-      if (targetNode.x !== undefined && targetNode.y !== undefined) {
-        if (typeof fgRef.current.centerAt === 'function') {
-          fgRef.current.centerAt(targetNode.x, targetNode.y, 800);
-        }
-        if (typeof fgRef.current.zoom === 'function') {
-          fgRef.current.zoom(2.2, 800); // Comfortable, non-extreme zoom level!
-        }
-      }
-    } else if (matchingNodes.length > 1) {
-      if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
-      if (typeof fgRef.current.zoomToFit === 'function') {
-        const matchingNodeIds = new Set(matchingNodes.map(n => n.id));
-        fgRef.current.zoomToFit(800, 120, (node) => matchingNodeIds.has(node.id));
-      }
+      const matchingNodeIds = new Set(matchingNodes.map(n => n.id));
+      // Single node match uses 260px padding for atomic dead-centering at a comfortable ~2x zoom level!
+      const padding = matchingNodes.length === 1 ? 260 : 120;
+      fgRef.current.zoomToFit(800, padding, (node) => matchingNodeIds.has(node.id));
     }
   }, [searchQuery, nodes, fgRef, setIsOrbiting]);
 
