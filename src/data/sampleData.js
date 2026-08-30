@@ -9,6 +9,7 @@ export const COHORT_COLORS = {
   "OWFL Blog": "#ec4899",
   "Bay FC": "#f59e0b",
   "Jenna": "#a855f7",
+  "Other": "#64748b",
   "Default": "#64748b"
 };
 
