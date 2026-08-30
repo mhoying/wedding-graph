@@ -276,23 +276,28 @@ export default function ForceCanvas({
         existingCenter.x(0);
         existingCenter.y(0);
       }
-      
-      fg.d3Force('collide', forceCollide().radius(node => {
-        return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
-      }).iterations(40));
-
-      // Multi-foci Cohort Cluster Separation Force to prevent cohort cloud overlap!
+      fg.d3Force('charge', createCustomChargeForce(nodeScaleMultiplier));
+      fg.d3Force('link', createCustomLinkForce(edgeLengthMultiplier));
       fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier));
 
-      if (isOrbiting) {
+      if (activeOrbiting) {
         fg.d3Force('orbit', createOrbitForce(orbitSpeed));
       } else {
         fg.d3Force('orbit', null);
       }
 
+      if (!activeOrbiting && (isHoverFrozen || hoverNode)) {
+        nodes.forEach(n => {
+          if (n.id !== 'maureen' && n.id !== 'matt') {
+            n.vx = 0;
+            n.vy = 0;
+          }
+        });
+      }
+
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, isOrbiting, orbitSpeed, clusterMode]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, isOrbiting, isHoverFrozen, hoverNode, orbitSpeed, clusterMode]);
 
   // Ensure The Couple (Maureen Wink & Matt Hoying) is ALWAYS anchored DEAD CENTER at (0, 0) of the graph!
   useEffect(() => {
@@ -760,7 +765,17 @@ export default function ForceCanvas({
   }, [showHeadshots, nodeScaleMultiplier]);
 
   return (
-    <div className="graph-container">
+    <div 
+      className="graph-container"
+      onMouseEnter={() => !isMobileViewport && setIsHoverFrozen(true)}
+      onMouseLeave={() => {
+        setIsHoverFrozen(false);
+        setHoverNode(null);
+        if (isOrbiting && fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+          fgRef.current.d3ReheatSimulation();
+        }
+      }}
+    >
       <ForceGraph2D
         ref={fgRef}
         nodeId="id"
@@ -774,7 +789,12 @@ export default function ForceCanvas({
         onNodeClick={handleNodeClick}
         onNodeDrag={handleNodeDrag}
         onNodeDragEnd={handleNodeDragEnd}
-        onNodeHover={(node) => !isMobileViewport && setHoverNode(node)}
+        onNodeHover={(node) => {
+          if (!isMobileViewport) {
+            setHoverNode(node);
+            setIsHoverFrozen(Boolean(node));
+          }
+        }}
         onZoom={handleZoom}
         onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
         linkColor={(link) => {
