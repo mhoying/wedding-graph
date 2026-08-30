@@ -73,7 +73,29 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       });
     }
 
-    // 1. Strong attraction toward dedicated cluster foci center (excluding "Other" cohort)
+    // 1. Outward Radial Expansion Force: Pushes all non-Couple nodes OUTWARD away from center (0, 0)
+    const outwardPush = alpha * 0.45;
+    nodesList.forEach((node) => {
+      if (node.id === 'matt' || node.id === 'maureen' || node.type === 'CONTEXT_HUB' || node.cohort === 'The Couple') return;
+      
+      const dx = node.x || (Math.random() - 0.5);
+      const dy = node.y || (Math.random() - 0.5);
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+      // 1a. Gentle outward radial vector push
+      node.vx += (dx / dist) * outwardPush * 18;
+      node.vy += (dy / dist) * outwardPush * 18;
+
+      // 1b. Center Deadzone Repulsion: Strong push away if node is within 400px of center (0, 0)
+      const centerDeadzone = 400 * edgeLengthMultiplier;
+      if (dist < centerDeadzone) {
+        const repulsionMag = ((centerDeadzone - dist) / dist) * alpha * 2.5;
+        node.vx += dx * repulsionMag;
+        node.vy += dy * repulsionMag;
+      }
+    });
+
+    // 2. Strong attraction toward dedicated cluster foci center (excluding "Other" cohort)
     const pullStrength = alpha * 0.65;
     nodesList.forEach((node) => {
       if (node.type === 'CONTEXT_HUB') return;
@@ -95,7 +117,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       }
     });
 
-    // 2. High-power inter-cluster repulsion between different true cohorts
+    // 3. High-power inter-cluster repulsion between different true cohorts
     const minDistance = 550 * edgeLengthMultiplier;
     const repulsionStrength = alpha * 1.5;
     for (let i = 0; i < nodesList.length; i++) {
