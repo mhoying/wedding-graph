@@ -86,3 +86,9 @@
   2. **Close-Up Search Zoom-In**: Tightened single-node search and inspection `zoomToFit` padding from `340px` down to `60px` in `App.jsx` and `ForceCanvas.jsx` so searched guests zoom in close and tight.
   3. **Automated JSDOM Verification**: Ran headless browser JS runtime tests in JSDOM verifying 0 reference errors and 100% clean application startup.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] ~1/5th Viewport Width Node Framing Calibration
+- **User Prompt**: "now it is ooming in too much. it shoudl be just big enough that the node takes up approiimately 1/5of the width of the view port or"
+- **Actions & Fixes**:
+  1. **Camera Framing Calibration**: Adjusted single-node `zoomToFit` padding to `210px` in `App.jsx` and `ForceCanvas.jsx`, so searched and inspected nodes occupy ~1/5th (20%) of the viewport width.
+  2. **JSDOM Verification**: Ran automated headless browser test in JSDOM verifying 0 reference errors and clean initialization.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
