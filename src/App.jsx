@@ -7,7 +7,7 @@ import Papa from 'papaparse';
 
 import { SAMPLE_NODES, SAMPLE_LINKS, SIDE_COLORS, STATE_COLORS, COHORT_COLORS, DYNAMIC_CLUSTER_COLORS } from './data/sampleData';
 import { isSecretUrlAdmin, verifyPasscode, sanitizeInput } from './utils/security';
-import { pushToGithubRepo, submitGuestProposalToGithub, fetchGuestProposalsFromGithub, closeGithubIssueProposal, generateSampleDataJsContent } from './utils/githubSync';
+import { pushToGithubRepo, submitGuestProposalToGithub, fetchGuestProposalsFromGithub, closeGithubIssueProposal, generateSampleDataJsContent, generateGuestsCsvContent } from './utils/githubSync';
 import TopHeaderNav from './components/TopHeaderNav';
 import MobileControlsSheet from './components/MobileControlsSheet';
 import GuestProfileDrawer from './components/GuestProfileDrawer';
@@ -1733,6 +1733,9 @@ export default function App() {
 
             const jsContent = generateSampleDataJsContent(updated, links);
             pushToGithubRepo(jsContent, `Approve proposal for ${proposal.targetName}`, '', 'src/data/sampleData.js');
+
+            const csvContent = generateGuestsCsvContent(updated);
+            pushToGithubRepo(csvContent, `Sync guests CSV for ${proposal.targetName} approval`, '', 'public/guests_template.csv');
 
             return updated;
           });

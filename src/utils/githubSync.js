@@ -1,7 +1,30 @@
 /**
- * Direct GitHub API Content Commit & Push Helper
- * Pushes updated sampleData.js directly to GitHub repository without local terminal commands
+ * Helper to generate CSV string matching public/guests_template.csv format
  */
+export function generateGuestsCsvContent(nodes) {
+  const headers = ['id', 'name', 'cohort', 'side', 'relationship', 'originallyFrom', 'currentlyLivesIn', 'familyStatus', 'hobbies'];
+  const lines = [headers.join(',')];
+
+  (nodes || []).forEach(node => {
+    if (!node || !node.name) return;
+    const hobbiesStr = Array.isArray(node.hobbies) ? node.hobbies.join('; ') : (node.hobbies || '');
+
+    const row = [
+      node.id || '',
+      `"${(node.name || '').replace(/"/g, '""')}"`,
+      `"${(node.cohort || '').replace(/"/g, '""')}"`,
+      `"${(node.side || '').replace(/"/g, '""')}"`,
+      `"${(node.relationship || '').replace(/"/g, '""')}"`,
+      `"${(node.originallyFrom || node.hometown || '').replace(/"/g, '""')}"`,
+      `"${(node.currentlyLivesIn || node.state || '').replace(/"/g, '""')}"`,
+      `"${(node.familyStatus || 'Couple / Group').replace(/"/g, '""')}"`,
+      `"${hobbiesStr.replace(/"/g, '""')}"`
+    ];
+    lines.push(row.join(','));
+  });
+
+  return lines.join('\n');
+}
 
 export async function pushToGithubRepo(contentString, commitMessage = 'Update wedding guest dataset via Host Admin Suite', token = '', targetPath = 'src/data/sampleData.js') {
   const repoOwner = 'mhoying';
