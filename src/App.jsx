@@ -577,18 +577,19 @@ export default function App() {
   }, [nodes]);
 
   // Camera & Node Drag Handlers
-  const flyToNode = useCallback((node) => {
+  const flyToNode = useCallback((targetNode) => {
     setIsOrbiting(false);
-    if (node && node.x !== undefined && node.y !== undefined) {
-      node.fx = node.x;
-      node.fy = node.y;
+    if (targetNode && targetNode.x !== undefined && targetNode.y !== undefined) {
+      targetNode.fx = targetNode.x;
+      targetNode.fy = targetNode.y;
     }
     if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
       fgRef.current.d3ReheatSimulation();
     }
-    if (fgRef.current && node && node.id) {
+    const targetId = targetNode ? targetNode.id : null;
+    if (fgRef.current && targetId) {
       if (typeof fgRef.current.zoomToFit === 'function') {
-        fgRef.current.zoomToFit(600, 240, n => n.id === node.id);
+        fgRef.current.zoomToFit(600, 240, (canvasItem) => Boolean(canvasItem && canvasItem.id === targetId));
       }
     }
   }, [setIsOrbiting]);
@@ -845,8 +846,8 @@ export default function App() {
   // Dynamic Inverse Tag Frequency (IDF) Weights for Interests
   const tagWeights = useMemo(() => {
     const counts = {};
-    (nodes || []).filter(n => n.type === 'GUEST').forEach(n => {
-      (n.hobbies || []).forEach(h => {
+    (nodes || []).filter(gn => gn && gn.type === 'GUEST').forEach(itemNode => {
+      (itemNode.hobbies || []).forEach(h => {
         if (h && h.trim()) {
           const key = h.trim();
           counts[key] = (counts[key] || 0) + 1;

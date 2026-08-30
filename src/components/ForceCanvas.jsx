@@ -357,10 +357,10 @@ export default function ForceCanvas({
 
     if (matchingNodes.length > 0 && typeof fgRef.current.zoomToFit === 'function') {
       if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
-      const matchingNodeIds = new Set(matchingNodes.map(n => n.id));
+      const matchingNodeIds = new Set(matchingNodes.map(m => m.id));
       // Single node match uses 260px padding for atomic dead-centering at a comfortable ~2x zoom level!
       const padding = matchingNodes.length === 1 ? 260 : 120;
-      fgRef.current.zoomToFit(800, padding, (node) => matchingNodeIds.has(node.id));
+      fgRef.current.zoomToFit(800, padding, (cNode) => Boolean(cNode && cNode.id && matchingNodeIds.has(cNode.id)));
     }
   }, [searchQuery, nodes, fgRef, setIsOrbiting]);
 
