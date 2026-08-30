@@ -1547,9 +1547,9 @@ export const SAMPLE_LINKS = [
     "relationship": "Connected"
   },
   {
-    "source": "janaki_lahorani",
-    "target": "matt",
-    "relationship": "Connected"
+    "source": "andy_schmitt",
+    "target": "janaki_lahorani",
+    "relationship": "Coworkers"
   },
   {
     "source": "jason_mcmullan",
