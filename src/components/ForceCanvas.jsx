@@ -294,10 +294,20 @@ export default function ForceCanvas({
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, isOrbiting, orbitSpeed, clusterMode]);
 
-  // Unfix node drag locks and reheat D3 simulation whenever cluster grouping mode changes!
+  // Ensure The Couple (Maureen Wink & Matt Hoying) is ALWAYS anchored DEAD CENTER at (0, 0) of the graph!
   useEffect(() => {
     nodes.forEach(node => {
-      if (node.id !== 'maureen' && node.id !== 'matt') {
+      if (node.id === 'maureen') {
+        node.fx = -36 * nodeScaleMultiplier;
+        node.fy = 0;
+        node.x = -36 * nodeScaleMultiplier;
+        node.y = 0;
+      } else if (node.id === 'matt') {
+        node.fx = 36 * nodeScaleMultiplier;
+        node.fy = 0;
+        node.x = 36 * nodeScaleMultiplier;
+        node.y = 0;
+      } else {
         node.fx = undefined;
         node.fy = undefined;
       }
@@ -306,7 +316,7 @@ export default function ForceCanvas({
     if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
       fgRef.current.d3ReheatSimulation();
     }
-  }, [clusterMode, nodes]);
+  }, [clusterMode, nodes, nodeScaleMultiplier]);
 
   // PERPETUAL KINEMATIC ORBIT TICKER: Reheat simulation when orbiting mode changes
   useEffect(() => {
