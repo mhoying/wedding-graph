@@ -1533,8 +1533,8 @@ export const SAMPLE_LINKS = [
   },
   {
     "source": "erica_festa",
-    "target": "matt",
-    "relationship": "Connected"
+    "target": "ivan_vojvodic",
+    "relationship": "Coworkers"
   },
   {
     "source": "nur_e_freedman",
