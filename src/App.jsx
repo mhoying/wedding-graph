@@ -82,10 +82,21 @@ export default function App() {
   useEffect(() => {
     fetchGuestProposalsFromGithub().then(githubProposals => {
       if (Array.isArray(githubProposals) && githubProposals.length > 0) {
+        let processedSet = new Set();
+        try {
+          processedSet = new Set(JSON.parse(localStorage.getItem('wedding_graph_processed_proposals') || '[]'));
+        } catch (e) {}
+
         setFeedbackList(prev => {
           const safePrev = Array.isArray(prev) ? prev : [];
           const existingIds = new Set(safePrev.map(p => p && p.id));
-          const newRemote = githubProposals.filter(p => p && !existingIds.has(p.id));
+          const newRemote = githubProposals.filter(p => {
+            if (!p || !p.id) return false;
+            if (processedSet.has(p.id)) return false;
+            if (p.issueNumber && processedSet.has(`issue_${p.issueNumber}`)) return false;
+            if (existingIds.has(p.id)) return false;
+            return true;
+          });
           return [...newRemote, ...safePrev];
         });
       }
@@ -1726,19 +1737,33 @@ export default function App() {
             return updated;
           });
 
+          try {
+            const processedSet = new Set(JSON.parse(localStorage.getItem('wedding_graph_processed_proposals') || '[]'));
+            if (proposal.id) processedSet.add(proposal.id);
+            if (proposal.issueNumber) processedSet.add(`issue_${proposal.issueNumber}`);
+            localStorage.setItem('wedding_graph_processed_proposals', JSON.stringify(Array.from(processedSet)));
+          } catch (e) {}
+
           if (proposal.issueNumber) {
             closeGithubIssueProposal(proposal.issueNumber);
           }
 
-          setFeedbackList(prev => (prev || []).filter(p => p && ((p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName)));
+          setFeedbackList(prev => (prev || []).filter(p => p && p.id !== proposal.id && (p.issueNumber ? p.issueNumber !== proposal.issueNumber : true)));
           setCopyToast(`🚀 Approved edit for ${proposal.targetName} & Auto-Committed to Database!`);
           setTimeout(() => setCopyToast(''), 4500);
         }}
         onReject={(proposal) => {
+          try {
+            const processedSet = new Set(JSON.parse(localStorage.getItem('wedding_graph_processed_proposals') || '[]'));
+            if (proposal.id) processedSet.add(proposal.id);
+            if (proposal.issueNumber) processedSet.add(`issue_${proposal.issueNumber}`);
+            localStorage.setItem('wedding_graph_processed_proposals', JSON.stringify(Array.from(processedSet)));
+          } catch (e) {}
+
           if (proposal.issueNumber) {
             closeGithubIssueProposal(proposal.issueNumber);
           }
-          setFeedbackList(prev => (prev || []).filter(p => p && ((p.id && proposal.id && p.id !== proposal.id) || p.targetName !== proposal.targetName)));
+          setFeedbackList(prev => (prev || []).filter(p => p && p.id !== proposal.id && (p.issueNumber ? p.issueNumber !== proposal.issueNumber : true)));
           setCopyToast(`Rejected edit proposal for ${proposal.targetName}`);
           setTimeout(() => setCopyToast(''), 3000);
         }}

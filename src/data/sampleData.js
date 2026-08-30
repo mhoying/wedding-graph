@@ -833,7 +833,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Music",
       "Band",
-      "Kids"
+      "Kids",
+      "Outdoors"
     ]
   },
   {
