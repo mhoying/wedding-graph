@@ -14,8 +14,8 @@ export default function CocktailMatchmakerModal({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-backdrop no-print">
-      <div className="glass-panel modal-card" style={{ maxWidth: 440 }}>
+    <div className="modal-backdrop no-print" onClick={onClose}>
+      <div className="glass-panel modal-card" style={{ maxWidth: 440 }} onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <span className="drawer-badge" style={{ backgroundColor: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
             <Wand2 style={{ width: 12, height: 12 }} /> Cocktail Matchmaker
