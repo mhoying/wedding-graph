@@ -361,12 +361,21 @@ export default function ForceCanvas({
       return matchesName || matchesCohort || matchesSide || matchesInterest;
     });
 
-    if (matchingNodes.length > 0 && typeof fgRef.current.zoomToFit === 'function') {
+    if (matchingNodes.length === 1 && fgRef.current) {
+      if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
+      const target = matchingNodes[0];
+      if (target && target.x !== undefined && target.y !== undefined) {
+        if (typeof fgRef.current.centerAt === 'function') {
+          fgRef.current.centerAt(target.x, target.y, 800);
+        }
+        if (typeof fgRef.current.zoom === 'function') {
+          fgRef.current.zoom(1.35, 800);
+        }
+      }
+    } else if (matchingNodes.length > 1 && fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
       if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
       const matchingNodeIds = new Set(matchingNodes.map(m => m.id));
-      // Single node search match uses 210px padding so target node takes up ~1/5th of viewport width!
-      const padding = matchingNodes.length === 1 ? 210 : 180;
-      fgRef.current.zoomToFit(800, padding, (cNode) => Boolean(cNode && cNode.id && matchingNodeIds.has(cNode.id)));
+      fgRef.current.zoomToFit(800, 180, (cNode) => Boolean(cNode && cNode.id && matchingNodeIds.has(cNode.id)));
     }
   }, [searchQuery, nodes, fgRef, setIsOrbiting]);
 

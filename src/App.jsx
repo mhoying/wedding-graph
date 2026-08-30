@@ -254,10 +254,13 @@ export default function App() {
 
   const [isListView, setIsListView] = useState(false);
 
-  // Camera & Node Drag Handlers (Generous Viewport Padding for 100% Full Display Fit!)
-  const flyToNode = useCallback((targetNodeOrNodes, customPadding) => {
+  // Camera & Node Drag Handlers (Uses centerAt + 1.35x Zoom for Single Node to take up exactly ~1/5th of viewport width!)
+  const flyToNode = useCallback((targetNodeOrNodes) => {
     setIsOrbiting(false);
-    const nodeArray = Array.isArray(targetNodeOrNodes) ? targetNodeOrNodes : [targetNodeOrNodes];
+    const nodeArray = Array.isArray(targetNodeOrNodes) ? targetNodeOrNodes.filter(Boolean) : [targetNodeOrNodes].filter(Boolean);
+    
+    if (nodeArray.length === 0 || !fgRef.current) return;
+
     nodeArray.forEach(node => {
       if (node && node.x !== undefined && node.y !== undefined) {
         node.fx = node.x;
@@ -265,17 +268,24 @@ export default function App() {
       }
     });
 
-    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+    if (typeof fgRef.current.d3ReheatSimulation === 'function') {
       fgRef.current.d3ReheatSimulation();
     }
 
-    const targetIdSet = new Set(nodeArray.filter(Boolean).map(n => typeof n === 'object' ? n.id : n));
-    // 210px padding frames single target node to take up ~1/5th of screen width!
-    const padding = customPadding || (nodeArray.length > 1 ? 220 : 210);
-
-    if (fgRef.current && targetIdSet.size > 0) {
+    if (nodeArray.length === 1) {
+      const target = nodeArray[0];
+      if (target && target.x !== undefined && target.y !== undefined) {
+        if (typeof fgRef.current.centerAt === 'function') {
+          fgRef.current.centerAt(target.x, target.y, 800);
+        }
+        if (typeof fgRef.current.zoom === 'function') {
+          fgRef.current.zoom(1.35, 800);
+        }
+      }
+    } else if (nodeArray.length > 1) {
+      const targetIdSet = new Set(nodeArray.map(n => n.id));
       if (typeof fgRef.current.zoomToFit === 'function') {
-        fgRef.current.zoomToFit(750, padding, (canvasItem) => Boolean(canvasItem && canvasItem.id && targetIdSet.has(canvasItem.id)));
+        fgRef.current.zoomToFit(800, 180, (canvasItem) => Boolean(canvasItem && canvasItem.id && targetIdSet.has(canvasItem.id)));
       }
     }
   }, [setIsOrbiting]);
