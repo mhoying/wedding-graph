@@ -1646,11 +1646,7 @@ export const SAMPLE_LINKS = [
     "target": "dog_park",
     "relationship": "Connected"
   },
-  {
-    "source": "honk",
-    "target": "owfl_blog",
-    "relationship": "Connected"
-  },
+
   {
     "source": "honk",
     "target": "bay_fc",
