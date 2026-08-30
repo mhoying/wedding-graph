@@ -143,7 +143,13 @@ export default function App() {
     let result = await pushToGithubRepo(jsContent, 'Update guest spreadsheet dataset via Host Admin Suite', '', 'src/data/sampleData.js');
 
     if (!result.success && result.isTokenError) {
-      const userToken = window.prompt('🔑 GitHub Token Error (403): Embedded token was revoked by GitHub Security scanner.\n\nPlease enter a GitHub Personal Access Token (PAT) with repo scope to enable direct commits:');
+      const userToken = window.prompt(
+        '🔑 GitHub Token Permission Error (403): "Resource not accessible by personal access token"\n\n' +
+        'If using a GitHub Fine-Grained Token, ensure Repository Permissions has:\n' +
+        '• Contents: Read and write\n' +
+        '• Issues: Read and write\n\n' +
+        'Please enter a GitHub Personal Access Token (PAT) with repo / contents permission:'
+      );
       if (userToken && userToken.trim()) {
         localStorage.setItem('wedding_graph_gh_token', userToken.trim());
         setCopyToast('⚡ Retrying direct commit with new token...');
