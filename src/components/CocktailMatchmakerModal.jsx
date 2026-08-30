@@ -68,13 +68,25 @@ export default function CocktailMatchmakerModal({
                   {res.node.cohort} • {res.node.side} Side
                 </div>
                 {res.reasons.length > 0 && (
-                  <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                    {res.reasons.map(reason => (
-                      <span key={reason} style={{ fontSize: 10, background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', padding: '2px 6px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <Sparkles style={{ width: 10, height: 10 }} />
-                        <span>{reason}</span>
-                      </span>
-                    ))}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
+                    {res.reasons.map(reason => {
+                      let icebreaker = `Connect with ${res.node.name} over your shared love for ${reason}!`;
+                      const r = reason.toLowerCase();
+                      if (r.includes('dog')) icebreaker = `Ask ${res.node.name} about their favorite dogs & pets!`;
+                      else if (r.includes('whiskey')) icebreaker = `Compare favorite whiskey & cocktail recommendations with ${res.node.name}!`;
+                      else if (r.includes('lehigh')) icebreaker = `Exchange Lehigh campus memories & stories with ${res.node.name}!`;
+                      else if (r.includes('bay fc')) icebreaker = `Talk Bay FC matches & team highlights with ${res.node.name}!`;
+                      else if (r.includes('beer') || r.includes('wine') || r.includes('cocktail')) icebreaker = `Cheers with ${res.node.name} over a glass of ${reason}!`;
+                      else if (r.includes('kid')) icebreaker = `Ask ${res.node.name} about their kids & family!`;
+                      else if (r.includes('food') || r.includes('cook') || r.includes('bake')) icebreaker = `Swap favorite food & recipe spots with ${res.node.name}!`;
+
+                      return (
+                        <div key={reason} style={{ fontSize: 11, background: 'rgba(56, 189, 248, 0.12)', color: '#7dd3fc', padding: '6px 10px', borderRadius: 8, border: '1px solid rgba(56, 189, 248, 0.2)', display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+                          <Sparkles style={{ width: 12, height: 12, marginTop: 2, flexShrink: 0, color: '#38bdf8' }} />
+                          <span><strong>💬 Icebreaker ({reason}):</strong> {icebreaker}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>

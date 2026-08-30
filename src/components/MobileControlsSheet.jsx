@@ -29,7 +29,9 @@ export default function MobileControlsSheet({
   handleCopyQrLink,
   selectedClusterFocus = '',
   setSelectedClusterFocus = () => {},
-  availableClusters = []
+  availableClusters = [],
+  isListView = false,
+  setIsListView = () => {}
 }) {
   if (!isOpen) return null;
 
@@ -234,6 +236,14 @@ export default function MobileControlsSheet({
 
         {/* Action Tools Section */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
+          <button 
+            onClick={() => { setIsListView(!isListView); onClose(); }} 
+            className={`btn-mode ${isListView ? 'active' : ''}`}
+            style={{ padding: '10px', borderRadius: 10, fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: isListView ? '#f43f5e' : 'rgba(244, 63, 94, 0.15)', color: '#fda4af', fontWeight: 800 }}
+          >
+            <span>{isListView ? '🌐 Switch to 3D Canvas Map' : '📋 Open Guest Directory List'}</span>
+          </button>
+
           <button 
             onClick={() => { setIsPathMode(!isPathMode); onClose(); }} 
             className={`btn-mode ${isPathMode ? 'active' : ''}`}

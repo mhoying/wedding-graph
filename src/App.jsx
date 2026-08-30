@@ -252,6 +252,8 @@ export default function App() {
     }
   }, [isLightMode]);
 
+  const [isListView, setIsListView] = useState(false);
+
   // Secret URL Parameter & Secret Keyboard Shortcut Listener (`Ctrl + Shift + A`)
   useEffect(() => {
     if (isSecretUrlAdmin()) {
@@ -266,6 +268,37 @@ export default function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Magic Link Auto-Targeting Effect (?guest=id or ?name=Name or ?id=node_id)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const guestParam = params.get('guest') || params.get('id') || params.get('node');
+    const nameParam = params.get('name');
+
+    if (!guestParam && !nameParam) return;
+
+    let targetNode = null;
+    if (guestParam) {
+      const q = guestParam.toLowerCase().trim();
+      targetNode = nodes.find(n => n && n.id && n.id.toLowerCase() === q) ||
+                   nodes.find(n => n && n.name && n.name.toLowerCase().replace(/\s+/g, '_') === q);
+    }
+    if (!targetNode && nameParam) {
+      const q = nameParam.toLowerCase().trim();
+      targetNode = nodes.find(n => n && n.name && n.name.toLowerCase().includes(q));
+    }
+
+    if (targetNode) {
+      const timer = setTimeout(() => {
+        setSelectedNode(targetNode);
+        flyToNode(targetNode);
+        setCopyToast(`✨ Welcome! Zoomed in on ${targetNode.name}`);
+        setTimeout(() => setCopyToast(''), 4500);
+      }, 700);
+      return () => clearTimeout(timer);
+    }
+  }, [nodes, flyToNode]);
 
   // Passcode Verification Handler
   const handleVerifyPasscodeSubmit = async (e) => {
@@ -988,6 +1021,8 @@ export default function App() {
         setSelectedClusterFocus={setSelectedClusterFocus}
         availableClusters={availableClusters}
         onOpenMapControls={() => setIsMobileControlsOpen(true)}
+        isListView={isListView}
+        setIsListView={setIsListView}
       />
 
       {/* Dedicated Host Admin Floating Control Panel */}
@@ -1249,6 +1284,8 @@ export default function App() {
             selectedClusterFocus={selectedClusterFocus}
             setSelectedClusterFocus={setSelectedClusterFocus}
             availableClusters={availableClusters}
+            isListView={isListView}
+            setIsListView={setIsListView}
           />
         </>
       )}
@@ -1299,6 +1336,202 @@ export default function App() {
         setIsOrbiting={setIsOrbiting}
         imageCacheRef={imageCacheRef}
       />
+
+      {/* Alphabetical Guest Directory List View Modal Panel */}
+      {isListView && (
+        <div className="modal-backdrop no-print" onClick={() => setIsListView(false)} style={{ zIndex: 99950 }}>
+          <div 
+            className="glass-panel modal-card" 
+            onClick={(e) => e.stopPropagation()} 
+            style={{ 
+              maxWidth: 680, 
+              width: '94vw', 
+              maxHeight: '85vh', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              padding: 20, 
+              borderRadius: 24,
+              background: 'rgba(15, 23, 42, 0.96)',
+              border: '1px solid rgba(56, 189, 248, 0.35)',
+              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.7)'
+            }}
+          >
+            {/* Header Title & Close Button */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 20 }}>📋</span>
+                <div>
+                  <h2 style={{ margin: 0, fontSize: 18, fontWeight: 900, color: '#f8fafc' }}>Guest Directory List</h2>
+                  <span style={{ fontSize: 11, color: '#94a3b8' }}>
+                    Showing {(filteredNodes || []).filter(n => n && n.type === 'GUEST').length} of {(nodes || []).filter(n => n && n.type === 'GUEST').length} wedding guests
+                  </span>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsListView(false)} 
+                style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#94a3b8', padding: '6px 12px', borderRadius: 9999, cursor: 'pointer', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}
+              >
+                <span>Close</span>
+                <X style={{ width: 14, height: 14 }} />
+              </button>
+            </div>
+
+            {/* Quick Search & Filter Filter Input */}
+            <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
+              <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <Search style={{ position: 'absolute', left: 12, width: 14, height: 14, color: '#94a3b8' }} />
+                <input 
+                  type="text" 
+                  placeholder="Filter directory by name, cohort, location, tag..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px 10px 34px',
+                    borderRadius: 12,
+                    background: 'rgba(30, 41, 59, 0.8)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    color: '#fff',
+                    outline: 'none',
+                    fontSize: 12
+                  }}
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    style={{ position: 'absolute', right: 10, background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                  >
+                    <X style={{ width: 12, height: 12 }} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Scrollable Guest Directory Cards List */}
+            <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingRight: 4 }}>
+              {(filteredNodes || [])
+                .filter(n => n && n.type === 'GUEST')
+                .sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+                .map(guest => {
+                  const cohortColor = COHORT_COLORS[guest.cohort] || '#38bdf8';
+                  return (
+                    <div 
+                      key={guest.id}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justify: 'space-between',
+                        gap: 12,
+                        padding: 12,
+                        borderRadius: 16,
+                        background: 'rgba(30, 41, 59, 0.6)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      {/* Left: Avatar + Name + Info */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
+                        <div style={{
+                          width: 42,
+                          height: 42,
+                          borderRadius: '50%',
+                          background: cohortColor,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#fff',
+                          fontWeight: 900,
+                          fontSize: 15,
+                          flexShrink: 0,
+                          border: '2px solid rgba(255, 255, 255, 0.2)',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                        }}>
+                          {guest.name ? guest.name.charAt(0) : '?'}
+                        </div>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                            <span style={{ fontWeight: 800, fontSize: 14, color: '#f8fafc' }}>{guest.name}</span>
+                            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 9999, background: `${cohortColor}25`, color: cohortColor, border: `1px solid ${cohortColor}50` }}>
+                              {guest.cohort || 'Other'}
+                            </span>
+                          </div>
+                          <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                            {guest.currentlyLivesIn && (
+                              <span>📍 {guest.currentlyLivesIn}</span>
+                            )}
+                            {guest.originallyFrom && (
+                              <span>🏡 Originally: {guest.originallyFrom}</span>
+                            )}
+                          </div>
+                          {guest.hobbies && guest.hobbies.length > 0 && (
+                            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 4 }}>
+                              {guest.hobbies.map(tag => (
+                                <span key={tag} style={{ fontSize: 9, background: 'rgba(56, 189, 248, 0.12)', color: '#38bdf8', padding: '1px 6px', borderRadius: 6 }}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Right: Quick Action Buttons */}
+                      <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                        <button 
+                          onClick={() => {
+                            setIsListView(false);
+                            flyToNode(guest);
+                            setSelectedNode(guest);
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: 10,
+                            background: 'rgba(56, 189, 248, 0.2)',
+                            color: '#38bdf8',
+                            border: '1px solid rgba(56, 189, 248, 0.4)',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 4
+                          }}
+                        >
+                          <Search style={{ width: 12, height: 12 }} />
+                          <span>Inspect</span>
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setIsListView(false);
+                            setIsPathMode(true);
+                            setPathStartId(guest.id);
+                            flyToNode(guest);
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: 10,
+                            background: 'rgba(16, 185, 129, 0.2)',
+                            color: '#34d399',
+                            border: '1px solid rgba(16, 185, 129, 0.4)',
+                            fontSize: 11,
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 4
+                          }}
+                        >
+                          <Compass style={{ width: 12, height: 12 }} />
+                          <span>Path</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Guest Profile Metadata Drawer */}
       <GuestProfileDrawer 
