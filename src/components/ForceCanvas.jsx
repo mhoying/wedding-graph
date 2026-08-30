@@ -169,6 +169,9 @@ export default function ForceCanvas({
   setIsOrbiting = () => {},
   imageCacheRef = { current: {} }
 }) {
+  const [isHoverFrozen, setIsHoverFrozen] = useState(false);
+  const activeOrbiting = Boolean(isOrbiting && !isHoverFrozen && !hoverNode);
+
   // Preload node headshots into cache for seamless rendering
   useEffect(() => {
     if (showHeadshots && nodes && nodes.length > 0) {
