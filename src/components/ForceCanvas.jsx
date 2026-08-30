@@ -778,7 +778,7 @@ export default function ForceCanvas({
           const isCoupleLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
           if (isCoupleLink) {
-            return isLightMode ? 'rgba(236, 72, 153, 0.85)' : 'rgba(244, 114, 182, 0.8)';
+            return isLightMode ? '#ec4899' : '#f472b6';
           }
 
           return isLightMode ? 'rgba(100, 116, 139, 0.45)' : 'rgba(56, 189, 248, 0.35)';
@@ -815,7 +815,7 @@ export default function ForceCanvas({
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
           const isCoupleLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
-          return isCoupleLink ? 2.2 : 1.2;
+          return isCoupleLink ? 3.0 : 1.2;
         }}
         linkDirectionalParticles={(link) => {
           if (shortestPath.length > 1) {

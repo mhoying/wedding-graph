@@ -1268,37 +1268,44 @@ export const SAMPLE_LINKS = [
   {
     "source": "allison_williams",
     "target": "jim_merizio",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "andy_schmitt",
     "target": "victoria_shi",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "anne_sweeney",
     "target": "jon_hoy",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "brian_kim",
     "target": "michelle_preston",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "chrissy_fiore",
     "target": "will_short",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "greg_goetchius",
     "target": "lauren_sofia",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "katie_conniff",
     "target": "ryan_podolak",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "leanna_habana",
@@ -1315,7 +1322,8 @@ export const SAMPLE_LINKS = [
   {
     "source": "romana_rajput",
     "target": "steve_nares",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "poukhan_philavanh_anthony",
@@ -1325,32 +1333,38 @@ export const SAMPLE_LINKS = [
   {
     "source": "cole_armstrong",
     "target": "tracy_armstrong",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "jenna_auer",
     "target": "tim_auer",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "jonathan_bibayan",
     "target": "lindsay_mayott",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "jeff_domanski",
     "target": "jill_domanski",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "dave_festa",
     "target": "erica_festa",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "james_freedman",
     "target": "eric_freedman",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "james_freedman",
@@ -1365,17 +1379,20 @@ export const SAMPLE_LINKS = [
   {
     "source": "angela_govig",
     "target": "jason_govig",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "janaki_lahorani",
     "target": "sumeet_lahorani",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "jason_mcmullan",
     "target": "jessi_mcmullan",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "alex_murillo",
@@ -1391,12 +1408,14 @@ export const SAMPLE_LINKS = [
   {
     "source": "katie_richter",
     "target": "paul_richter",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "george_sun",
     "target": "sohyun_sun",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "ivan_vojvodi_",
@@ -1406,12 +1425,14 @@ export const SAMPLE_LINKS = [
   {
     "source": "mary_mitchell",
     "target": "tim_coble",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "kathryn_potts",
     "target": "joe_wernet",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "roopak_kandasamy",
@@ -1478,7 +1499,6 @@ export const SAMPLE_LINKS = [
     "target": "jessi_mcmullan",
     "relationship": "Connected"
   },
-
   {
     "source": "liz_scott",
     "target": "owfl_blog",
@@ -1644,7 +1664,6 @@ export const SAMPLE_LINKS = [
     "target": "dog_park",
     "relationship": "Connected"
   },
-
   {
     "source": "honk",
     "target": "bay_fc",
@@ -1653,7 +1672,8 @@ export const SAMPLE_LINKS = [
   {
     "source": "nadia_shaikh",
     "target": "nishat_shaikh",
-    "relationship": "Family"
+    "relationship": "Family",
+    "type": "COUPLE"
   },
   {
     "source": "becca_winslow",
@@ -1693,12 +1713,14 @@ export const SAMPLE_LINKS = [
   {
     "source": "mira_vojvodic",
     "target": "ivan_vojvodic",
-    "relationship": "Family"
+    "relationship": "Family",
+    "type": "COUPLE"
   },
   {
     "source": "toyo_tsujino",
     "target": "danielle_sullivan",
-    "relationship": "Connected"
+    "relationship": "Connected",
+    "type": "COUPLE"
   },
   {
     "source": "toyo_tsujino",
