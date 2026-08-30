@@ -859,7 +859,8 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "Eastern PA",
     "familyStatus": "Family",
     "hobbies": [
-      "Kids"
+      "Kids",
+      "Lehigh"
     ]
   },
   {
