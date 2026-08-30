@@ -77,4 +77,12 @@
   2. **Viewport Framing for Selection & Path Finder**: Upgraded `flyToNode` and `zoomToFit` in `App.jsx` and `ForceCanvas.jsx` to use generous `300px-340px` padding, guaranteeing every selected node (Start, Hops, and End) fits 100% inside the display port.
   3. **Map Controls Theme Toggle**: Passed missing `isLightMode` and `setIsLightMode` props to `<MobileControlsSheet>` in `App.jsx`.
   4. **Alphabetical Dropdown Standard**: Standardized all dropdown `<select>` menus (`Path Finder`, `TopHeaderNav`, `MobileControlsSheet`, `SuggestEditModal`, `AddConnectionModal`, and `GuestProfileDrawer`) to sort guest names and enums strictly alphabetically.
-  5. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Mouseover Freeze, Close-Up Search Zoom-In & JSDOM Verification
+- **User Requests**:
+  1. "when you mose over, everyghin shoudl freeze, it shoudl resume when you leave the mouse over."
+  2. "now hwen you search for a person, it isnt zooming in them enough"
+- **Actions & Fixes**:
+  1. **Mouseover Freeze & Auto-Resume**: Bound `onMouseEnter` / `onMouseLeave` on graph container and node hover in `ForceCanvas.jsx` to freeze D3 physics velocity and 3D orbit rotation when hovering, and auto-resume rotation when mouse leaves.
+  2. **Close-Up Search Zoom-In**: Tightened single-node search and inspection `zoomToFit` padding from `340px` down to `60px` in `App.jsx` and `ForceCanvas.jsx` so searched guests zoom in close and tight.
+  3. **Automated JSDOM Verification**: Ran headless browser JS runtime tests in JSDOM verifying 0 reference errors and 100% clean application startup.
+  4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
