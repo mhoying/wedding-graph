@@ -86,10 +86,11 @@ export default function DynamicColorLegend({
       className="no-print"
       style={{
         position: 'fixed',
-        left: isMobileViewport ? '12px' : '20px',
-        bottom: isMobileViewport ? '72px' : '20px', // Raised on mobile to avoid Map Controls FAB button at bottom: 16px!
+        left: isMobileViewport ? '16px' : 'auto',
+        right: isMobileViewport ? 'auto' : '24px',
+        bottom: isMobileViewport ? '72px' : '24px', // Placed bottom-right on desktop & above FAB on mobile so it NEVER covers Map Controls!
         zIndex: 8500, // Below drawer (9000) & modal (9500), but well above canvas (10)
-        maxWidth: isMobileViewport ? 'calc(100vw - 150px)' : '420px',
+        maxWidth: isMobileViewport ? 'calc(100vw - 32px)' : '380px',
         background: isLightMode ? 'rgba(255, 255, 255, 0.92)' : 'rgba(15, 23, 42, 0.90)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
