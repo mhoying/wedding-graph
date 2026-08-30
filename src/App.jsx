@@ -1103,6 +1103,114 @@ export default function App() {
         </div>
       )}
 
+      {/* Path Connections Table Modal Breakdown Card */}
+      {isPathMode && shortestPath.length >= 2 && (
+        <div className="glass-panel path-table-card no-print" style={{
+          position: 'fixed',
+          bottom: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 9000,
+          width: 'calc(100vw - 40px)',
+          maxWidth: 720,
+          maxHeight: '40vh',
+          overflowY: 'auto',
+          padding: '16px 20px',
+          borderRadius: 20,
+          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.6)',
+          background: 'rgba(15, 23, 42, 0.95)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(56, 189, 248, 0.3)'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="drawer-badge" style={{ backgroundColor: '#0284c7', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Compass style={{ width: 12, height: 12 }} /> Connection Path Breakdown
+              </span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#34d399' }}>
+                {shortestPath.length - 1} {shortestPath.length - 1 === 1 ? 'hop' : 'hops'} between {nodes.find(n => n.id === shortestPath[0])?.name} & {nodes.find(n => n.id === shortestPath[shortestPath.length - 1])?.name}
+              </span>
+            </div>
+            <button 
+              onClick={() => { setPathStartId(''); setPathEndId(''); setShortestPath([]); }}
+              style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+            >
+              <X style={{ width: 16, height: 16 }} />
+            </button>
+          </div>
+
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, textAlign: 'left' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', color: '#94a3b8', fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                <th style={{ padding: '8px 6px', width: 40 }}>#</th>
+                <th style={{ padding: '8px 6px' }}>Person</th>
+                <th style={{ padding: '8px 6px' }}>Cohort</th>
+                <th style={{ padding: '8px 6px' }}>Location</th>
+                <th style={{ padding: '8px 6px' }}>Tags & Interests</th>
+              </tr>
+            </thead>
+            <tbody>
+              {shortestPath.map((nodeId, index) => {
+                const n = nodes.find(item => item.id === nodeId);
+                if (!n) return null;
+                const isStart = index === 0;
+                const isEnd = index === shortestPath.length - 1;
+                const cohortColor = COHORT_COLORS[n.cohort] || '#64748b';
+                const loc = n.currentlyLivesIn || n.originallyFrom || n.state || 'N/A';
+                const tags = (n.hobbies && n.hobbies.length > 0) ? n.hobbies : [n.relationship || n.side || 'Guest'];
+
+                return (
+                  <tr 
+                    key={n.id}
+                    onClick={() => { flyToNode(n); setSelectedNode(n); }}
+                    style={{
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                      cursor: 'pointer',
+                      transition: 'background 0.15s ease'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(56, 189, 248, 0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <td style={{ padding: '8px 6px', fontWeight: 800, color: isStart || isEnd ? '#38bdf8' : '#94a3b8' }}>
+                      {index + 1}
+                    </td>
+                    <td style={{ padding: '8px 6px', fontWeight: 700, color: '#f8fafc', display: 'flex', alignItems: 'center', gap: 8 }}>
+                      {n.image ? (
+                        <img src={n.image} alt={n.name} style={{ width: 22, height: 22, borderRadius: '50%', objectFit: 'cover' }} />
+                      ) : (
+                        <span style={{ width: 22, height: 22, borderRadius: '50%', background: cohortColor, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900, color: '#fff' }}>
+                          {n.name?.charAt(0)}
+                        </span>
+                      )}
+                      <span>{n.name}</span>
+                      {isStart && <span style={{ fontSize: 10, background: 'rgba(56, 189, 248, 0.2)', color: '#38bdf8', padding: '1px 6px', borderRadius: 9999, fontWeight: 700 }}>Start</span>}
+                      {isEnd && <span style={{ fontSize: 10, background: 'rgba(52, 211, 153, 0.2)', color: '#34d399', padding: '1px 6px', borderRadius: 9999, fontWeight: 700 }}>End</span>}
+                    </td>
+                    <td style={{ padding: '8px 6px' }}>
+                      <span style={{ fontSize: 11, background: `${cohortColor}25`, color: cohortColor, border: `1px solid ${cohortColor}40`, padding: '2px 8px', borderRadius: 9999, fontWeight: 700 }}>
+                        {n.cohort || 'Other'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '8px 6px', color: '#cbd5e1', fontSize: 12 }}>
+                      {loc}
+                    </td>
+                    <td style={{ padding: '8px 6px' }}>
+                      <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                        {tags.slice(0, 3).map(tag => (
+                          <span key={tag} style={{ fontSize: 10, background: 'rgba(255, 255, 255, 0.08)', color: '#94a3b8', padding: '1px 6px', borderRadius: 6 }}>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {/* Floating Micro-Dock Map Controls Trigger & Sheet (Rendered on all viewports when no profile drawer is open) */}
       {!selectedNode && (
         <>
