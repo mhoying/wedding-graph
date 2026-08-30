@@ -9,17 +9,17 @@ import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/samp
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
 
-  // Dedicated Foci Map for Cohort Mode to keep all clusters balanced around center
+  // Dedicated Foci Map for Cohort Mode (Compact radius ~320px to fit 100% on all screens)
   const COHORT_FOCI = {
     "The Couple": { x: 0, y: 0 },
-    "Cornell": { x: -450, y: -280 },     // Top Left
-    "Stanford": { x: 450, y: -280 },     // Top Right
-    "Google": { x: 0, y: 480 },          // Bottom Center
-    "Lehigh": { x: -450, y: 280 },       // Bottom Left
-    "Dog Park": { x: 450, y: 280 },      // Bottom Right
-    "OWFL Blog": { x: 580, y: 0 },       // Far Right
-    "Bay FC": { x: -580, y: 0 },         // Far Left
-    "Jenna": { x: -220, y: -480 }        // Top Center-Left
+    "Cornell": { x: -280, y: -180 },     // Top Left
+    "Stanford": { x: 280, y: -180 },     // Top Right
+    "Google": { x: 0, y: 310 },          // Bottom Center
+    "Lehigh": { x: -280, y: 180 },       // Bottom Left
+    "Dog Park": { x: 280, y: 180 },      // Bottom Right
+    "OWFL Blog": { x: 360, y: 0 },       // Far Right
+    "Bay FC": { x: -360, y: 0 },         // Far Left
+    "Jenna": { x: -140, y: -320 }        // Top Center-Left
   };
 
   const force = (alpha) => {
@@ -43,7 +43,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
     const numClusters = keys.length;
     if (numClusters <= 1) return;
 
-    const baseRadius = 380 * edgeLengthMultiplier;
+    const baseRadius = 260 * edgeLengthMultiplier;
 
     // Calculate target foci coordinates
     const foci = {};
@@ -268,8 +268,10 @@ export default function ForceCanvas({
         });
 
       fg.d3Force('charge')
-        .strength(-1400 * nodeScaleMultiplier * edgeLengthMultiplier)
-        .distanceMax(2000 * edgeLengthMultiplier);
+        .strength(-700 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(1200 * edgeLengthMultiplier);
+      
+      fg.d3Force('center', forceCenter(0, 0).strength(0.1));
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;

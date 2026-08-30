@@ -47,7 +47,7 @@ export default function TopHeaderNav({
         <span className="logo-subtitle">Sept 26, 2026 • Honk Wedding Map</span>
       </div>
 
-      <div className="search-controls-area" style={{ display: 'flex', alignItems: 'center', gap: 10, position: 'relative' }}>
+      <div className="search-controls-area">
         {/* Search Bar Input */}
         <div className="search-box">
           <Search style={{ width: 14, height: 14, color: '#94a3b8' }} />
