@@ -254,20 +254,27 @@ export default function App() {
 
   const [isListView, setIsListView] = useState(false);
 
-  // Camera & Node Drag Handlers
-  const flyToNode = useCallback((targetNode) => {
+  // Camera & Node Drag Handlers (Generous Viewport Padding for 100% Full Display Fit!)
+  const flyToNode = useCallback((targetNodeOrNodes, customPadding) => {
     setIsOrbiting(false);
-    if (targetNode && targetNode.x !== undefined && targetNode.y !== undefined) {
-      targetNode.fx = targetNode.x;
-      targetNode.fy = targetNode.y;
-    }
+    const nodeArray = Array.isArray(targetNodeOrNodes) ? targetNodeOrNodes : [targetNodeOrNodes];
+    nodeArray.forEach(node => {
+      if (node && node.x !== undefined && node.y !== undefined) {
+        node.fx = node.x;
+        node.fy = node.y;
+      }
+    });
+
     if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
       fgRef.current.d3ReheatSimulation();
     }
-    const targetId = targetNode ? targetNode.id : null;
-    if (fgRef.current && targetId) {
+
+    const targetIdSet = new Set(nodeArray.filter(Boolean).map(n => typeof n === 'object' ? n.id : n));
+    const padding = customPadding || (nodeArray.length > 1 ? 280 : 340);
+
+    if (fgRef.current && targetIdSet.size > 0) {
       if (typeof fgRef.current.zoomToFit === 'function') {
-        fgRef.current.zoomToFit(600, 240, (canvasItem) => Boolean(canvasItem && canvasItem.id === targetId));
+        fgRef.current.zoomToFit(750, padding, (canvasItem) => Boolean(canvasItem && canvasItem.id && targetIdSet.has(canvasItem.id)));
       }
     }
   }, [setIsOrbiting]);
@@ -839,11 +846,16 @@ export default function App() {
 
   useEffect(() => {
     if (pathStartId && pathEndId) {
-      setShortestPath(computeShortestPath(pathStartId, pathEndId));
+      const path = computeShortestPath(pathStartId, pathEndId);
+      setShortestPath(path);
+      if (path && path.length >= 2) {
+        const pathNodes = (nodes || []).filter(n => n && path.includes(n.id));
+        flyToNode(pathNodes, 300);
+      }
     } else {
       setShortestPath([]);
     }
-  }, [pathStartId, pathEndId, computeShortestPath]);
+  }, [pathStartId, pathEndId, computeShortestPath, nodes, flyToNode]);
 
   // Dynamic Inverse Tag Frequency (IDF) Weights for Interests
   const tagWeights = useMemo(() => {
@@ -1289,6 +1301,8 @@ export default function App() {
             availableClusters={availableClusters}
             isListView={isListView}
             setIsListView={setIsListView}
+            isLightMode={isLightMode}
+            setIsLightMode={setIsLightMode}
           />
         </>
       )}

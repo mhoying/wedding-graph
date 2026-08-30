@@ -358,11 +358,28 @@ export default function ForceCanvas({
     if (matchingNodes.length > 0 && typeof fgRef.current.zoomToFit === 'function') {
       if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
       const matchingNodeIds = new Set(matchingNodes.map(m => m.id));
-      // Single node match uses 260px padding for atomic dead-centering at a comfortable ~2x zoom level!
-      const padding = matchingNodes.length === 1 ? 260 : 120;
+      // Single node match uses 320px padding for atomic dead-centering at a comfortable zoom level!
+      const padding = matchingNodes.length === 1 ? 320 : 200;
       fgRef.current.zoomToFit(800, padding, (cNode) => Boolean(cNode && cNode.id && matchingNodeIds.has(cNode.id)));
     }
   }, [searchQuery, nodes, fgRef, setIsOrbiting]);
+
+  // Auto Zoom-to-Fit for Path Finder: Fits ALL nodes in the calculated path cleanly inside viewport!
+  useEffect(() => {
+    if (!shortestPath || shortestPath.length < 2 || !fgRef.current) return;
+
+    if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
+    const pathNodeIds = new Set(shortestPath);
+    const padding = isMobileViewport ? 220 : 320;
+
+    const timer = setTimeout(() => {
+      if (fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
+        fgRef.current.zoomToFit(800, padding, (cNode) => Boolean(cNode && cNode.id && pathNodeIds.has(cNode.id)));
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [shortestPath, fgRef, isMobileViewport, setIsOrbiting]);
 
   // Render ORGANIC CONVEX HULL BLOBS & COUPLE ANCHOR FRAME in Native World Coordinates
   const drawBackgroundHulls = useCallback((ctx, globalScale) => {
