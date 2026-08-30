@@ -8,9 +8,14 @@ export async function pushToGithubRepo(contentString, commitMessage = 'Update we
   const repoName = 'wedding-graph';
   const filePath = targetPath || 'src/data/sampleData.js';
 
-    const revToken = 'c7IfKXKTi7RsQ9HM3bUEiwZloRkYZswPo_phg';
-  const defaultToken = revToken.split('').reverse().join('');
-  let githubToken = token || localStorage.getItem('wedding_graph_gh_token') || defaultToken;
+  let githubToken = token || localStorage.getItem('wedding_graph_gh_token') || '';
+  if (!githubToken) {
+    return {
+      success: false,
+      isTokenError: true,
+      message: '🔑 No GitHub PAT token configured. Click "🔑 PAT Token" in Host Mode to enter your token.'
+    };
+  }
 
   try {
     // 1. Get current file SHA from GitHub API
@@ -202,11 +207,9 @@ ${JSON.stringify(proposalData, null, 2)}
 `;
 
   try {
-      const revToken = 'c7IfKXKTi7RsQ9HM3bUEiwZloRkYZswPo_phg';
-    const defaultIssueToken = revToken.split('').reverse().join('');
     const issueToken = localStorage.getItem('wedding_graph_gh_token') || 
-                       localStorage.getItem('wedding_graph_issue_token') || 
-                       defaultIssueToken;
+                       localStorage.getItem('wedding_graph_issue_token') || '';
+    if (!issueToken) return { success: false };
     const headers = { 
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
@@ -280,11 +283,9 @@ export async function closeGithubIssueProposal(issueNumber) {
   const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}`;
 
   try {
-      const revToken = 'c7IfKXKTi7RsQ9HM3bUEiwZloRkYZswPo_phg';
-    const defaultIssueToken = revToken.split('').reverse().join('');
     const issueToken = localStorage.getItem('wedding_graph_gh_token') || 
-                       localStorage.getItem('wedding_graph_issue_token') || 
-                       defaultIssueToken;
+                       localStorage.getItem('wedding_graph_issue_token') || '';
+    if (!issueToken) return;
     const headers = { 
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
