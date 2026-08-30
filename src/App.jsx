@@ -1397,7 +1397,7 @@ export default function App() {
               onSubmit={(e) => {
                 e.preventDefault();
                 const code = gateInput.trim().toLowerCase();
-                if (code === 'hoyingwink-honk' || code === 'honk2026' || code === 'maureenandmatt2026' || code === 'hoyingwink' || code === 'honk') {
+                if (code === 'hoyingwink-honk') {
                   try {
                     localStorage.setItem('wedding_graph_authenticated', 'true');
                   } catch (err) {}
