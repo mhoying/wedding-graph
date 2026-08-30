@@ -108,6 +108,18 @@ export default function App() {
   const [isOrbiting, setIsOrbiting] = useState(true);
   const [orbitSpeed, setOrbitSpeed] = useState(0.3);
 
+  // Security & Event Access Gate State
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (isSecretUrlAdmin()) return true;
+    try {
+      return localStorage.getItem('wedding_graph_authenticated') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+  const [gateInput, setGateInput] = useState('');
+  const [gateError, setGateError] = useState(false);
+
   // Hidden Security & Host Admin Mode State
   const [isAdmin, setIsAdmin] = useState(() => isSecretUrlAdmin());
   const [passcodePromptOpen, setPasscodePromptOpen] = useState(false);
@@ -1364,6 +1376,90 @@ export default function App() {
         <div className="toast-notification">
           <Check style={{ width: 14, height: 14, color: '#34d399' }} />
           <span>{copyToast}</span>
+        </div>
+      )}
+
+      {/* First-Time Visitor Event Passcode Gate Screen */}
+      {!isAuthenticated && (
+        <div className="passcode-gate-container no-print">
+          <div className="passcode-card glass-panel">
+            <div className="passcode-icon-ring">
+              <Sparkles style={{ width: 32, height: 32, color: '#38bdf8' }} />
+            </div>
+            <h1 className="passcode-title" style={{ fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 6 }}>
+              Maureen & Matt's Wedding Universe
+            </h1>
+            <p className="passcode-subtitle" style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>
+              Please enter the event passcode to enter the guest universe:
+            </p>
+
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                const code = gateInput.trim().toLowerCase();
+                if (code === 'hoyingwink-honk' || code === 'honk2026' || code === 'maureenandmatt2026' || code === 'hoyingwink' || code === 'honk') {
+                  try {
+                    localStorage.setItem('wedding_graph_authenticated', 'true');
+                  } catch (err) {}
+                  setIsAuthenticated(true);
+                  setGateError(false);
+                } else {
+                  setGateError(true);
+                }
+              }}
+              style={{ width: '100%' }}
+            >
+              <div style={{ position: 'relative', width: '100%', marginBottom: 14 }}>
+                <input 
+                  type="password"
+                  placeholder="Enter Event Passcode..."
+                  value={gateInput}
+                  onChange={(e) => {
+                    setGateInput(e.target.value);
+                    setGateError(false);
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '14px 18px',
+                    borderRadius: 14,
+                    background: 'rgba(30, 41, 59, 0.8)',
+                    border: gateError ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.2)',
+                    color: '#fff',
+                    outline: 'none',
+                    fontSize: 14,
+                    textAlign: 'center',
+                    fontWeight: 700,
+                    letterSpacing: 1
+                  }}
+                  autoFocus
+                />
+              </div>
+
+              {gateError && (
+                <div style={{ color: '#f87171', fontSize: 12, marginBottom: 14, fontWeight: 700 }}>
+                  ❌ Incorrect passcode. Please try again!
+                </div>
+              )}
+
+              <button 
+                type="submit"
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  borderRadius: 14,
+                  background: 'linear-gradient(135deg, #0284c7, #38bdf8)',
+                  color: '#fff',
+                  border: 'none',
+                  fontWeight: 800,
+                  fontSize: 14,
+                  cursor: 'pointer',
+                  boxShadow: '0 10px 25px -5px rgba(56, 189, 248, 0.4)'
+                }}
+              >
+                Enter Wedding Universe 🚀
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>
