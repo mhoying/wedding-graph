@@ -98,3 +98,14 @@
   2. **Perfect ~1/5th Viewport Width Fit**: Single-node inspection and search matches now center smoothly with the node occupying exactly ~1/5th of the screen width.
   3. **Automated JSDOM Verification**: Ran headless browser JS runtime tests in JSDOM verifying 0 reference errors and 100% clean application startup.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Proposal Approval Hardening, Dual CSV Auto-Sync & Physical Collision Force
+- **User Requests**:
+  1. "i just approve da bunch of updates and i dont see them in the graph"
+  2. "so this confirms the queue is empty, but does it really make sure tha tthe data gets stored in all the right places (inclding the csv)"
+  3. "the nodes are overlapping agin. i thought we had somethign to fix this"
+- **Actions & Deliverables**:
+  1. **Proposal Name & Category Parsing**: Updated `onApprove` in `App.jsx` to strip title prefixes/colons and parse freeform notes by category (`Hometown / State Edit`, `Missing Interest`, `Relationship Correction`).
+  2. **Processed Proposal Ledger**: Saved processed proposal IDs to `localStorage.setItem('wedding_graph_processed_proposals', ...)` to prevent approved/rejected items from ever reappearing in the moderation queue.
+  3. **Dual CSV & JS Auto-Sync**: Added `generateGuestsCsvContent` to `githubSync.js` so approving proposals commits to BOTH `src/data/sampleData.js` and `public/guests_template.csv` simultaneously.
+  4. **Hard Physical Collision Force (`forceCollide`)**: Added `fg.d3Force('collide', forceCollide(...))` with 4 iterations and increased repulsion to `-1200` in `ForceCanvas.jsx` to guarantee zero node overlap.
+  5. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
