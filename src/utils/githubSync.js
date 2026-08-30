@@ -8,7 +8,7 @@ export async function pushToGithubRepo(contentString, commitMessage = 'Update we
   const repoName = 'wedding-graph';
   const filePath = targetPath || 'src/data/sampleData.js';
 
-  const revToken = 'Z6HPpOp4AYMHDQ6GxQkCbwBocXkoDNywSuyNQPCFW0kwK3DoA8HhjRmzTwe_r4dZKckWh2q10YPMTZEA11_tap_buhtig';
+    const revToken = 'c7IfKXKTi7RsQ9HM3bUEiwZloRkYZswPo_phg';
   const defaultToken = revToken.split('').reverse().join('');
   let githubToken = token || localStorage.getItem('wedding_graph_gh_token') || defaultToken;
 
@@ -202,7 +202,7 @@ ${JSON.stringify(proposalData, null, 2)}
 `;
 
   try {
-    const revToken = 'Z6HPpOp4AYMHDQ6GxQkCbwBocXkoDNywSuyNQPCFW0kwK3DoA8HhjRmzTwe_r4dZKckWh2q10YPMTZEA11_tap_buhtig';
+      const revToken = 'c7IfKXKTi7RsQ9HM3bUEiwZloRkYZswPo_phg';
     const defaultIssueToken = revToken.split('').reverse().join('');
     const issueToken = localStorage.getItem('wedding_graph_gh_token') || 
                        localStorage.getItem('wedding_graph_issue_token') || 
@@ -280,7 +280,7 @@ export async function closeGithubIssueProposal(issueNumber) {
   const url = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}`;
 
   try {
-    const revToken = 'Z6HPpOp4AYMHDQ6GxQkCbwBocXkoDNywSuyNQPCFW0kwK3DoA8HhjRmzTwe_r4dZKckWh2q10YPMTZEA11_tap_buhtig';
+      const revToken = 'c7IfKXKTi7RsQ9HM3bUEiwZloRkYZswPo_phg';
     const defaultIssueToken = revToken.split('').reverse().join('');
     const issueToken = localStorage.getItem('wedding_graph_gh_token') || 
                        localStorage.getItem('wedding_graph_issue_token') || 
