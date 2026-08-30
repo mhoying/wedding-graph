@@ -306,18 +306,18 @@ export default function ForceCanvas({
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, isOrbiting, isHoverFrozen, hoverNode, orbitSpeed, clusterMode]);
 
-  // Ensure The Couple (Maureen Wink & Matt Hoying) is ALWAYS anchored DEAD CENTER at (0, 0) of the graph!
+  // Ensure The Couple (Maureen Wink & Matt Hoying) is ALWAYS anchored SIDE-BY-SIDE DEAD CENTER at (0, 0) of the graph!
   useEffect(() => {
     nodes.forEach(node => {
       if (node.id === 'maureen') {
-        node.fx = -36 * nodeScaleMultiplier;
+        node.fx = -110 * nodeScaleMultiplier;
         node.fy = 0;
-        node.x = -36 * nodeScaleMultiplier;
+        node.x = -110 * nodeScaleMultiplier;
         node.y = 0;
       } else if (node.id === 'matt') {
-        node.fx = 36 * nodeScaleMultiplier;
+        node.fx = 110 * nodeScaleMultiplier;
         node.fy = 0;
-        node.x = 36 * nodeScaleMultiplier;
+        node.x = 110 * nodeScaleMultiplier;
         node.y = 0;
       } else {
         node.fx = undefined;
