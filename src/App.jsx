@@ -1613,9 +1613,18 @@ export default function App() {
         proposals={feedbackList}
         nodes={nodes}
         onApprove={(proposal) => {
+          const cleanTarget = (proposal.targetName || '').split(':')[0].trim().toLowerCase();
+          const cleanTargetId = (proposal.targetId || '').toLowerCase();
+
           setNodes(prev => {
             const updated = prev.map(node => {
-              if (node.id === proposal.targetId || node.name === proposal.targetName) {
+              const nodeName = (node.name || '').toLowerCase();
+              const nodeId = (node.id || '').toLowerCase();
+
+              const isMatch = (cleanTargetId && nodeId === cleanTargetId) ||
+                              (cleanTarget && (nodeName === cleanTarget || nodeName.includes(cleanTarget) || cleanTarget.includes(nodeName)));
+
+              if (isMatch) {
                 const newNode = { ...node };
                 // 1. Proposed Name
                 if (proposal.proposedName) {
@@ -1651,22 +1660,18 @@ export default function App() {
                 if (proposal.proposedRelationship) {
                   newNode.relationship = proposal.proposedRelationship;
                 }
-                if (proposal.proposedFamilyStatus) {
-                  newNode.familyStatus = proposal.proposedFamilyStatus;
-                }
 
-                // 4. Proposed Attendance Status
-                if (proposal.proposedIsAttending === false || proposal.isAttending === false || (proposal.note && (proposal.note.toLowerCase().includes('not attending') || proposal.note.toLowerCase().includes('declined')))) {
-                  newNode.isAttending = false;
-                  newNode.rsvpStatus = 'Declined';
-                  newNode.attendanceStatus = 'Not Attending';
-                }
-                
-                // 5. Proposed Hobbies
+                // 4. Proposed Hobbies
                 if (proposal.proposedHobbies || proposal.note) {
                   const hobbyText = proposal.proposedHobbies || proposal.note || '';
-                  const newHobbies = hobbyText.split(/[,;\n]/).map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship):?/i, '').trim()).filter(Boolean);
-                  newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
+                  const newHobbies = hobbyText
+                    .split(/[,;\n]/)
+                    .map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship|Category|Notes \/ Details):?/i, '').trim())
+                    .filter(h => h && !h.includes(':') && !h.toLowerCase().includes('proposal') && !h.toLowerCase().includes('guest name'));
+
+                  if (newHobbies.length > 0) {
+                    newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
+                  }
                 }
                 return newNode;
               }
@@ -1674,7 +1679,7 @@ export default function App() {
             });
 
             try {
-              localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(updated));
+              localStorage.setItem('wedding_graph_nodes_v3', JSON.stringify(updated));
             } catch (e) {}
 
             const jsContent = generateSampleDataJsContent(updated, links);

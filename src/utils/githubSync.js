@@ -265,10 +265,34 @@ export async function fetchGuestProposalsFromGithub() {
             return { ...data, issueNumber: issue.number, issueUrl: issue.html_url };
           } catch (e) {}
         }
+        let rawTargetName = issue.title.replace(/^\[Proposed Edit\]\s*/i, '').trim();
+        let parsedCategory = 'Profile Edit';
+        if (rawTargetName.includes(':')) {
+          const parts = rawTargetName.split(':');
+          rawTargetName = parts[0].trim();
+          parsedCategory = parts.slice(1).join(':').trim();
+        }
+
+        const nameMatch = issue.body.match(/-\s*\*\*Guest Name\*\*:\s*\*\*([^*]+)\*\*/i) || issue.body.match(/Guest Name:\s*([^\n\r|]+)/i);
+        if (nameMatch && nameMatch[1].trim()) rawTargetName = nameMatch[1].trim();
+
+        const locMatch = issue.body.match(/-\s*\*\*Currently Lives In\*\*:\s*\*\*([^*]+)\*\*/i) || issue.body.match(/Lives In:\s*([^\n\r|]+)/i);
+        const originMatch = issue.body.match(/-\s*\*\*Originally From\*\*:\s*\*\*([^*]+)\*\*/i) || issue.body.match(/Originally From:\s*([^\n\r|]+)/i);
+        const cohortMatch = issue.body.match(/-\s*\*\*Cohort\*\*:\s*\*\*([^*]+)\*\*/i) || issue.body.match(/Cohort:\s*([^\n\r|]+)/i);
+        const sideMatch = issue.body.match(/-\s*\*\*Side\*\*:\s*\*\*([^*]+)\*\*/i) || issue.body.match(/Side:\s*([^\n\r|]+)/i);
+        const hobbiesMatch = issue.body.match(/-\s*\*\*Interests\*\*:\s*\*\*([^*]+)\*\*/i) || issue.body.match(/Interests:\s*([^\n\r|]+)/i);
+
         return {
           id: `issue_${issue.number}`,
           issueNumber: issue.number,
-          targetName: issue.title.replace('[Proposed Edit] ', ''),
+          issueUrl: issue.html_url,
+          targetName: rawTargetName,
+          category: parsedCategory,
+          proposedLocation: locMatch ? locMatch[1].trim() : undefined,
+          proposedOriginallyFrom: originMatch ? originMatch[1].trim() : undefined,
+          proposedCohort: cohortMatch ? cohortMatch[1].trim() : undefined,
+          proposedSide: sideMatch ? sideMatch[1].trim() : undefined,
+          proposedHobbies: hobbiesMatch ? hobbiesMatch[1].trim() : undefined,
           note: issue.body,
           status: 'PENDING',
           timestamp: issue.created_at
