@@ -594,33 +594,41 @@ body {
   }
 }
 
-/* Map Controls Floating FAB Trigger (Available on all Desktop & Mobile screens) */
-.mobile-drawer-toggle-fab {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 8900;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  border-radius: 9999px;
-  color: #f8fafc;
-  font-size: 13px;
-  font-weight: 700;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* Map Controls Floating FAB Trigger (Only visible on Mobile viewports < 769px) */
+@media (max-width: 768px) {
+  .mobile-drawer-toggle-fab {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    z-index: 8400;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 9999px;
+    color: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-drawer-toggle-fab:hover {
+    background: rgba(2, 132, 199, 0.9);
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+  }
 }
 
-.mobile-drawer-toggle-fab:hover {
-  background: rgba(2, 132, 199, 0.9);
-  border-color: #38bdf8;
-  transform: translateY(-2px);
+@media (min-width: 769px) {
+  .mobile-drawer-toggle-fab {
+    display: none !important;
+  }
 }
 
 @media (max-width: 1400px) {
