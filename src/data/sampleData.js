@@ -514,7 +514,7 @@ export const SAMPLE_NODES = [
   {
     "id": "cole_armstrong",
     "name": "Cole Armstrong",
-    "type": "GUEST",
+    "type": "NON_ATTENDING",
     "cohort": "Dog Park",
     "side": "Joint",
     "relationship": "The Armstrong Family",
