@@ -9,18 +9,17 @@ import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/samp
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
 
-  // Dedicated Foci Map for Cohort Mode to guarantee massive separation between main clusters
+  // Dedicated Foci Map for Cohort Mode to keep all clusters tight and well-balanced around center
   const COHORT_FOCI = {
     "The Couple": { x: 0, y: 0 },
-    "Cornell": { x: -1100, y: -700 },      // Top Left
-    "Stanford": { x: 1100, y: -700 },      // Top Right
-    "Google": { x: 0, y: 1150 },           // Bottom Center
-    "Lehigh": { x: -1100, y: 700 },        // Bottom Left
-    "Dog Park": { x: 1100, y: 700 },       // Bottom Right
-    "OWFL Blog": { x: 1450, y: 0 },        // Far Right
-    "Bay FC": { x: -1450, y: 0 },          // Far Left
-    "Jenna": { x: -600, y: -1250 },        // Top Left Sector
-    "Other": { x: 600, y: -1250 }          // Top Right Sector
+    "Cornell": { x: -380, y: -250 },     // Top Left
+    "Stanford": { x: 380, y: -250 },     // Top Right
+    "Google": { x: 0, y: 400 },          // Bottom Center
+    "Lehigh": { x: -380, y: 250 },       // Bottom Left
+    "Dog Park": { x: 380, y: 250 },      // Bottom Right
+    "OWFL Blog": { x: 480, y: 0 },       // Far Right
+    "Bay FC": { x: -480, y: 0 },         // Far Left
+    "Jenna": { x: -200, y: -420 }        // Top Center-Left
   };
 
   const force = (alpha) => {
@@ -44,7 +43,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
     const numClusters = keys.length;
     if (numClusters <= 1) return;
 
-    const baseRadius = 850 * edgeLengthMultiplier;
+    const baseRadius = 380 * edgeLengthMultiplier;
 
     // Calculate target foci coordinates
     const foci = {};
@@ -73,34 +72,12 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       });
     }
 
-    // 1. Outward Radial Expansion Force: Subtle outward vector away from center (0, 0)
-    const outwardPush = alpha * 0.08;
-    nodesList.forEach((node) => {
-      if (node.id === 'matt' || node.id === 'maureen' || node.type === 'CONTEXT_HUB' || node.cohort === 'The Couple') return;
-      
-      const dx = node.x || (Math.random() - 0.5);
-      const dy = node.y || (Math.random() - 0.5);
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-
-      // 1a. Subtle outward radial vector push
-      node.vx += (dx / dist) * outwardPush * 4;
-      node.vy += (dy / dist) * outwardPush * 4;
-
-      // 1b. Center Deadzone Repulsion: Gentle push away if node is within 250px of center (0, 0)
-      const centerDeadzone = 250 * edgeLengthMultiplier;
-      if (dist < centerDeadzone) {
-        const repulsionMag = ((centerDeadzone - dist) / dist) * alpha * 1.2;
-        node.vx += dx * repulsionMag;
-        node.vy += dy * repulsionMag;
-      }
-    });
-
-    // 2. Strong attraction toward dedicated cluster foci center (excluding "Other" cohort)
-    const pullStrength = alpha * 0.65;
+    // 1. Attraction toward dedicated cluster foci center (excluding "Other" cohort)
+    const pullStrength = alpha * 0.45;
     nodesList.forEach((node) => {
       if (node.type === 'CONTEXT_HUB') return;
       if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) {
-        // "Other" guests have ZERO cluster force -- they float completely freely next to their partner!
+        // "Other" guests have ZERO cluster force -- they float naturally next to their partner!
         return;
       }
 
@@ -117,9 +94,9 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       }
     });
 
-    // 3. High-power inter-cluster repulsion between different true cohorts
-    const minDistance = 550 * edgeLengthMultiplier;
-    const repulsionStrength = alpha * 1.5;
+    // 2. Compact inter-cluster repulsion between different true cohorts
+    const minDistance = 280 * edgeLengthMultiplier;
+    const repulsionStrength = alpha * 1.0;
     for (let i = 0; i < nodesList.length; i++) {
       for (let j = i + 1; j < nodesList.length; j++) {
         const n1 = nodesList[i];
@@ -129,7 +106,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
         let key1 = clusterMode === 'cohort' ? n1.cohort : n1.currentlyLivesIn;
         let key2 = clusterMode === 'cohort' ? n2.cohort : n2.currentlyLivesIn;
 
-        // Skip repulsion if either node is "Other" (so partners in "Other" float naturally next to their spouse)
+        // Skip repulsion if either node is "Other"
         if (clusterMode === 'cohort' && (key1 === 'Other' || key2 === 'Other')) continue;
 
         if (key1 !== key2) {
@@ -282,8 +259,8 @@ export default function ForceCanvas({
         });
 
       fg.d3Force('charge')
-        .strength(-3200 * nodeScaleMultiplier * edgeLengthMultiplier)
-        .distanceMax(3200 * edgeLengthMultiplier);
+        .strength(-1200 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(1800 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
