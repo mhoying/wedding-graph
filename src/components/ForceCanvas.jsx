@@ -75,9 +75,18 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
 
     // 1. Strong attraction toward dedicated cluster foci center (excluding "Other" cohort)
     const pullStrength = alpha * 0.65;
-    nodesList.forEach(node => {
+    nodesList.forEach((node, idx) => {
       if (node.type === 'CONTEXT_HUB') return;
-      if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) return; // Other cohort floats freely!
+      if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) {
+        // Scatter "Other" guests individually around the outer perimeter so they float as independent nodes!
+        const scatterAngle = (idx / nodesList.length) * 2 * Math.PI;
+        const scatterDist = 1100 * edgeLengthMultiplier;
+        const targetX = Math.cos(scatterAngle) * scatterDist;
+        const targetY = Math.sin(scatterAngle) * scatterDist;
+        node.vx += (targetX - node.x) * alpha * 0.25;
+        node.vy += (targetY - node.y) * alpha * 0.25;
+        return;
+      }
 
       let key = 'Other';
       if (clusterMode === 'cohort') key = node.cohort;
@@ -92,7 +101,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       }
     });
 
-    // 2. High-power inter-cluster repulsion between different cohort nodes
+    // 2. High-power inter-cluster repulsion (including full repulsion between "Other" guests!)
     const minDistance = 550 * edgeLengthMultiplier;
     const repulsionStrength = alpha * 1.5;
     for (let i = 0; i < nodesList.length; i++) {
@@ -104,7 +113,10 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
         let key1 = clusterMode === 'cohort' ? n1.cohort : n1.currentlyLivesIn;
         let key2 = clusterMode === 'cohort' ? n2.cohort : n2.currentlyLivesIn;
 
-        if (key1 !== key2) {
+        // Force repulsion if different clusters OR if either node belongs to "Other"
+        const isDifferentCluster = (key1 !== key2) || (clusterMode === 'cohort' && (key1 === 'Other' || key2 === 'Other'));
+
+        if (isDifferentCluster) {
           const dx = n2.x - n1.x;
           const dy = n2.y - n1.y;
           const distSq = dx * dx + dy * dy;
@@ -207,7 +219,10 @@ export default function ForceCanvas({
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
           const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
-          const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
+          // Strictly exclude "Other" from same-cohort grouping forces!
+          const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && 
+                               sObj.cohort !== 'Other' && tObj.cohort !== 'Other' && 
+                               (sObj.cohort === tObj.cohort);
           const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
 
           let cohortMultiplier;
@@ -241,11 +256,13 @@ export default function ForceCanvas({
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
           const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
-          const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
+          const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && 
+                               sObj.cohort !== 'Other' && tObj.cohort !== 'Other' && 
+                               (sObj.cohort === tObj.cohort);
 
           if (isCoupleOrFamilyLink) return 1.0;
           if (isSameCohort) return 0.7;
-          return 0.05; // Relaxed loose tension for cross-cohort links so they don't collapse different cohort clusters into each other!
+          return 0.05; // Relaxed loose tension for cross-cohort and "Other" links!
         });
 
       fg.d3Force('charge')
