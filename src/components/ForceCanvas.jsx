@@ -279,8 +279,6 @@ export default function ForceCanvas({
         existingCenter.x(0);
         existingCenter.y(0);
       }
-      fg.d3Force('charge', createCustomChargeForce(nodeScaleMultiplier));
-      fg.d3Force('link', createCustomLinkForce(edgeLengthMultiplier));
       fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier));
 
       if (activeOrbiting) {
