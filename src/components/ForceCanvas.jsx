@@ -9,17 +9,17 @@ import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/samp
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
 
-  // Dedicated Foci Map for Cohort Mode (Compact radius ~320px to fit 100% on all screens)
+  // Dedicated Foci Map for Cohort Mode (Spreads cohorts into wide, non-overlapping solar system orbits!)
   const COHORT_FOCI = {
     "The Couple": { x: 0, y: 0 },
-    "Cornell": { x: -280, y: -180 },     // Top Left
-    "Stanford": { x: 280, y: -180 },     // Top Right
-    "Google": { x: 0, y: 310 },          // Bottom Center
-    "Lehigh": { x: -280, y: 180 },       // Bottom Left
-    "Dog Park": { x: 280, y: 180 },      // Bottom Right
-    "OWFL Blog": { x: 360, y: 0 },       // Far Right
-    "Bay FC": { x: -360, y: 0 },         // Far Left
-    "Jenna": { x: -140, y: -320 }        // Top Center-Left
+    "Cornell": { x: -350, y: -300 },     // Top Left
+    "Stanford": { x: 350, y: -300 },     // Top Right
+    "Google": { x: 0, y: 460 },          // Bottom Center
+    "Lehigh": { x: -440, y: 160 },       // Bottom Left
+    "Dog Park": { x: 440, y: 160 },      // Bottom Right
+    "OWFL Blog": { x: 480, y: -100 },     // Far Right
+    "Bay FC": { x: -480, y: -100 },       // Far Left
+    "Jenna": { x: 0, y: -460 }          // Top Center
   };
 
   const force = (alpha) => {
@@ -43,7 +43,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
     const numClusters = keys.length;
     if (numClusters <= 1) return;
 
-    const baseRadius = 260 * edgeLengthMultiplier;
+    const baseRadius = 380 * edgeLengthMultiplier;
 
     // Calculate target foci coordinates
     const foci = {};
@@ -72,8 +72,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       });
     }
 
-    // 1. Attraction toward dedicated cluster foci center (excluding "Other" cohort)
-    const pullStrength = alpha * 0.45;
+    // 1. Strong attraction toward dedicated cluster foci center (keeps cohort nodes grouped in distinct clouds)
+    const pullStrength = alpha * 0.65;
     nodesList.forEach((node) => {
       if (node.type === 'CONTEXT_HUB') return;
       if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) {
@@ -94,9 +94,9 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       }
     });
 
-    // 2. Compact inter-cluster repulsion between different true cohorts
-    const minDistance = 280 * edgeLengthMultiplier;
-    const repulsionStrength = alpha * 1.0;
+    // 2. Powerful inter-cluster repulsion between different true cohorts to prevent overlapping clouds!
+    const minDistance = 380 * edgeLengthMultiplier;
+    const repulsionStrength = alpha * 2.5;
     for (let i = 0; i < nodesList.length; i++) {
       for (let j = i + 1; j < nodesList.length; j++) {
         const n1 = nodesList[i];
@@ -228,7 +228,7 @@ export default function ForceCanvas({
           } else if (isHubLink) {
             cohortMultiplier = 1.8;
           } else if (isCrossCohort) {
-            cohortMultiplier = 2.2; // Clean, natural cross-cohort spacing without extreme stretching!
+            cohortMultiplier = 3.5; // Long cross-cohort distance so separate cohorts remain distinct!
           } else {
             cohortMultiplier = 1.2; // Comfortable distance for unclustered partners/guests!
           }
@@ -263,7 +263,7 @@ export default function ForceCanvas({
 
           if (isCoupleOrFamilyLink) return 1.0;
           if (isSameCohort) return 0.7;
-          if (isCrossCohort) return 0.15; // Balanced spring tension
+          if (isCrossCohort) return 0.05; // Gentle spring tension so cross-cohort links do NOT drag cohorts into overlapping!
           return 0.45; // Solid link strength for unclustered guests so they stay right next to their friends!
         });
 
