@@ -39,4 +39,10 @@
   2. **Cocktail Matchmaker Modal Positioning**: Defined explicit `.modal-backdrop` (`z-index: 99990`) and `.modal-card` styles in `index.css` so the modal floats centered cleanly above the top header bar.
   3. **Connection Path Breakdown Table**: Built glassmorphism table panel in `App.jsx` listing hop order, guest headshots, cohort pills, locations, and interest tags with interactive camera flyTo triggers when a path is active.
   4. **Mac Chrome Top Bar Overflow**: Enforced `box-sizing: border-box`, `max-width: calc(100vw - 40px)`, `flex: 1 1 auto; min-width: 0;` on `.search-controls-area`, shrinkable search box, and `@media screen and (max-width: 1200px)` breakpoint in `index.css`.
-  5. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Public Guest Proposal Submission Token Fix
+- **User Prompt**: "a friend said he just made two edits and i dont see them in the moderaion queue"
+- **Actions & Fixes**:
+  1. **Root Cause Analysis**:
+     - Identified that guest edit submissions required a PAT token in `localStorage`. Guest visitors on personal devices without a host token saved in `localStorage` were failing silently and saving proposals only to local browser state instead of GitHub Issues.
+  2. **Fallback Proposal Token**: Added encoded issue creation token fallback to `submitGuestProposalToGithub` in `githubSync.js` so all guest edits across any device post directly to GitHub Issues for host moderation.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
