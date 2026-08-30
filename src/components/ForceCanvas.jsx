@@ -271,7 +271,9 @@ export default function ForceCanvas({
         .strength(-700 * nodeScaleMultiplier * edgeLengthMultiplier)
         .distanceMax(1200 * edgeLengthMultiplier);
       
-      fg.d3Force('center', forceCenter(0, 0).strength(0.1));
+      const cForce = forceCenter(0, 0);
+      if (typeof cForce.strength === 'function') cForce.strength(0.1);
+      fg.d3Force('center', cForce);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
