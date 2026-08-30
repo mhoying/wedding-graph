@@ -860,7 +860,7 @@ export const SAMPLE_NODES = [
     "id": "paul_richter",
     "name": "Paul Richter",
     "type": "GUEST",
-    "cohort": "Other",
+    "cohort": "OWFL Blog",
     "side": "Joint",
     "relationship": "The Richter Family",
     "originallyFrom": "",
@@ -1553,6 +1553,11 @@ export const SAMPLE_LINKS = [
   {
     "source": "leslie_davidsson",
     "target": "dog_park",
+    "relationship": "Connected"
+  },
+  {
+    "source": "paul_richter",
+    "target": "owfl_blog",
     "relationship": "Connected"
   },
   {
