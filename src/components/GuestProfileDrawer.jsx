@@ -246,9 +246,9 @@ export default function GuestProfileDrawer({
                   onChange={(e) => setEditSide(e.target.value)}
                   style={{ width: '100%', padding: 8, borderRadius: 10, background: 'rgba(15, 23, 42, 0.8)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.15)', outline: 'none', fontSize: 12 }}
                 >
-                  <option value="Maureen">Maureen</option>
-                  <option value="Matt">Matt</option>
                   <option value="Joint">Joint</option>
+                  <option value="Matt">Matt</option>
+                  <option value="Maureen">Maureen</option>
                 </select>
               </div>
             </div>

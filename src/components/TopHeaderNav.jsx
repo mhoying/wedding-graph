@@ -111,11 +111,11 @@ export default function TopHeaderNav({
             style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
           >
             <option value="cohort">Cohorts</option>
-            <option value="locations">Locations (Combined)</option>
             <option value="current_location">Current Location</option>
-            <option value="original_location">Original Location</option>
             <option value="interests">Interests</option>
+            <option value="locations">Locations (Combined)</option>
             <option value="none">Off (Hide)</option>
+            <option value="original_location">Original Location</option>
           </select>
         </div>
 
@@ -132,21 +132,21 @@ export default function TopHeaderNav({
               <option value="">All Clusters (Show All)</option>
               {availableClusters.interests?.length > 0 && (
                 <optgroup label="🎨 Interests">
-                  {availableClusters.interests.map(item => (
+                  {[...availableClusters.interests].sort((a, b) => a.localeCompare(b)).map(item => (
                     <option key={`int_${item}`} value={item}>{item}</option>
                   ))}
                 </optgroup>
               )}
               {availableClusters.locations?.length > 0 && (
                 <optgroup label="📍 Locations (Current or Home)">
-                  {availableClusters.locations.map(item => (
+                  {[...availableClusters.locations].sort((a, b) => a.localeCompare(b)).map(item => (
                     <option key={`loc_${item}`} value={item}>{item}</option>
                   ))}
                 </optgroup>
               )}
               {availableClusters.cohorts?.length > 0 && (
                 <optgroup label="🎓 Cohorts">
-                  {availableClusters.cohorts.map(item => (
+                  {[...availableClusters.cohorts].sort((a, b) => a.localeCompare(b)).map(item => (
                     <option key={`coh_${item}`} value={item}>{item}</option>
                   ))}
                 </optgroup>
@@ -165,10 +165,10 @@ export default function TopHeaderNav({
             style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '3px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
           >
             <option value="cohort">Cohorts</option>
-            <option value="side">Side (Matt/Maureen)</option>
             <option value="locations">Combined Locations</option>
             <option value="current_location">Current Location</option>
             <option value="original_location">Hometown / Original</option>
+            <option value="side">Side (Matt/Maureen)</option>
           </select>
         </div>
 

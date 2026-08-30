@@ -59,11 +59,11 @@ export default function SuggestEditModal({
             onChange={(e) => setFeedbackCategory(e.target.value)}
             style={{ width: '100%', padding: '8px 12px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}
           >
-            <option value="Missing Interest">Missing Interest (e.g. "You forgot that I like Wine!")</option>
             <option value="Family Status Update">Family Status Update (e.g. "My daughter is 17 now!")</option>
             <option value="Hometown / State Edit">Hometown / State Correction</option>
-            <option value="Relationship Correction">Relationship Connection Edit</option>
+            <option value="Missing Interest">Missing Interest (e.g. "You forgot that I like Wine!")</option>
             <option value="Other">Other Suggestion</option>
+            <option value="Relationship Correction">Relationship Connection Edit</option>
           </select>
         </div>
 

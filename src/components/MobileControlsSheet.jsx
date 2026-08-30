@@ -177,11 +177,11 @@ export default function MobileControlsSheet({
             style={{ width: '100%', padding: '8px', borderRadius: 10, background: 'rgba(30, 41, 59, 0.9)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.2)', outline: 'none', fontSize: 12 }}
           >
             <option value="cohort">Cohorts</option>
-            <option value="locations">Locations (Combined)</option>
             <option value="current_location">Current Location</option>
-            <option value="original_location">Original Location</option>
             <option value="interests">Interests</option>
+            <option value="locations">Locations (Combined)</option>
             <option value="none">Off (Hide)</option>
+            <option value="original_location">Original Location</option>
           </select>
         </div>
 
@@ -199,21 +199,21 @@ export default function MobileControlsSheet({
               <option value="">All Clusters (Show All)</option>
               {availableClusters.interests?.length > 0 && (
                 <optgroup label="🎨 Interests">
-                  {availableClusters.interests.map(item => (
+                  {[...availableClusters.interests].sort((a, b) => a.localeCompare(b)).map(item => (
                     <option key={`int_${item}`} value={item}>{item}</option>
                   ))}
                 </optgroup>
               )}
               {availableClusters.locations?.length > 0 && (
                 <optgroup label="📍 Locations (Current or Home)">
-                  {availableClusters.locations.map(item => (
+                  {[...availableClusters.locations].sort((a, b) => a.localeCompare(b)).map(item => (
                     <option key={`loc_${item}`} value={item}>{item}</option>
                   ))}
                 </optgroup>
               )}
               {availableClusters.cohorts?.length > 0 && (
                 <optgroup label="🎓 Cohorts">
-                  {availableClusters.cohorts.map(item => (
+                  {[...availableClusters.cohorts].sort((a, b) => a.localeCompare(b)).map(item => (
                     <option key={`coh_${item}`} value={item}>{item}</option>
                   ))}
                 </optgroup>

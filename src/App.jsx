@@ -1104,7 +1104,7 @@ export default function App() {
               style={{ background: '#0f172a', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
             >
               <option value="">-- Click or Pick 1st --</option>
-              {(nodes || []).filter(n => n && n.type === 'GUEST').map(n => (
+              {(nodes || []).filter(n => n && n.type === 'GUEST').sort((a, b) => (a.name || '').localeCompare(b.name || '')).map(n => (
                 <option key={n.id} value={n.id}>{n.name}</option>
               ))}
             </select>
@@ -1121,7 +1121,7 @@ export default function App() {
               style={{ background: '#0f172a', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
             >
               <option value="">-- Click or Pick 2nd --</option>
-              {(nodes || []).filter(n => n && n.type === 'GUEST' && n.id !== pathStartId).map(n => (
+              {(nodes || []).filter(n => n && n.type === 'GUEST' && n.id !== pathStartId).sort((a, b) => (a.name || '').localeCompare(b.name || '')).map(n => (
                 <option key={n.id} value={n.id}>{n.name}</option>
               ))}
             </select>

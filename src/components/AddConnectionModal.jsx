@@ -110,7 +110,7 @@ export default function AddConnectionModal({
               Relationship Label:
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginBottom: 6 }}>
-              {['Friends', 'Family', 'College Friends', 'Coworkers', 'Dog Park', 'Custom'].map(labelOption => (
+              {['College Friends', 'Coworkers', 'Custom', 'Dog Park', 'Family', 'Friends'].map(labelOption => (
                 <button
                   type="button"
                   key={labelOption}
