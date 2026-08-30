@@ -254,6 +254,24 @@ export default function App() {
 
   const [isListView, setIsListView] = useState(false);
 
+  // Camera & Node Drag Handlers
+  const flyToNode = useCallback((targetNode) => {
+    setIsOrbiting(false);
+    if (targetNode && targetNode.x !== undefined && targetNode.y !== undefined) {
+      targetNode.fx = targetNode.x;
+      targetNode.fy = targetNode.y;
+    }
+    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+      fgRef.current.d3ReheatSimulation();
+    }
+    const targetId = targetNode ? targetNode.id : null;
+    if (fgRef.current && targetId) {
+      if (typeof fgRef.current.zoomToFit === 'function') {
+        fgRef.current.zoomToFit(600, 240, (canvasItem) => Boolean(canvasItem && canvasItem.id === targetId));
+      }
+    }
+  }, [setIsOrbiting]);
+
   // Secret URL Parameter & Secret Keyboard Shortcut Listener (`Ctrl + Shift + A`)
   useEffect(() => {
     if (isSecretUrlAdmin()) {
@@ -577,22 +595,6 @@ export default function App() {
   }, [nodes]);
 
   // Camera & Node Drag Handlers
-  const flyToNode = useCallback((targetNode) => {
-    setIsOrbiting(false);
-    if (targetNode && targetNode.x !== undefined && targetNode.y !== undefined) {
-      targetNode.fx = targetNode.x;
-      targetNode.fy = targetNode.y;
-    }
-    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
-      fgRef.current.d3ReheatSimulation();
-    }
-    const targetId = targetNode ? targetNode.id : null;
-    if (fgRef.current && targetId) {
-      if (typeof fgRef.current.zoomToFit === 'function') {
-        fgRef.current.zoomToFit(600, 240, (canvasItem) => Boolean(canvasItem && canvasItem.id === targetId));
-      }
-    }
-  }, [setIsOrbiting]);
 
   const handleNodeClick = useCallback((node) => {
     setIsOrbiting(false);
