@@ -270,7 +270,7 @@ export default function App() {
     }
 
     const targetIdSet = new Set(nodeArray.filter(Boolean).map(n => typeof n === 'object' ? n.id : n));
-    const padding = customPadding || (nodeArray.length > 1 ? 280 : 340);
+    const padding = customPadding || (nodeArray.length > 1 ? 180 : 60);
 
     if (fgRef.current && targetIdSet.size > 0) {
       if (typeof fgRef.current.zoomToFit === 'function') {
