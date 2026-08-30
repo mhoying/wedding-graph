@@ -69,7 +69,7 @@ export default function GuestProfileDrawer({
         {!isEditingDrawer ? (
           /* VIEW MODE */
           <>
-            <p className="drawer-subtitle">{selectedNode.relationship}</p>
+            <p className="drawer-subtitle">{selectedNode.relationship ? selectedNode.relationship.replace(/\s*&\s*guest/gi, '').trim() : ''}</p>
 
             <div className="drawer-section">
               {selectedNode.type === 'NON_ATTENDING' && (
