@@ -764,12 +764,6 @@ export default function ForceCanvas({
             return isLightMode ? 'rgba(203, 213, 225, 0.15)' : 'rgba(30, 41, 59, 0.15)';
           }
 
-          if (link.type === 'COUPLE' || link.label === 'Married' || link.label === 'Partner') {
-            return isLightMode ? 'rgba(244, 114, 182, 0.7)' : 'rgba(244, 114, 182, 0.6)';
-          }
-          if (link.type === 'FAMILY' || link.type === 'SIBLING') {
-            return isLightMode ? 'rgba(56, 189, 248, 0.65)' : 'rgba(56, 189, 248, 0.5)';
-          }
           return isLightMode ? 'rgba(100, 116, 139, 0.45)' : 'rgba(56, 189, 248, 0.35)';
         }}
         linkWidth={(link) => {
