@@ -5,6 +5,106 @@ import { getNodeBounds, hexToRgba } from '../utils/nodeGeometry';
 import { getConvexHull2D } from '../utils/convexHull';
 import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/sampleData';
 
+// Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits!
+function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
+  let nodesList = [];
+
+  const force = (alpha) => {
+    if (clusterMode === 'off' || !nodesList || nodesList.length === 0) return;
+
+    // Group nodes by cluster key
+    const clusters = {};
+    nodesList.forEach(node => {
+      if (node.type === 'CONTEXT_HUB') return;
+      let key = 'Other';
+      if (clusterMode === 'cohort') key = node.cohort || 'Other';
+      else if (clusterMode === 'location' || clusterMode === 'currentLocation') key = node.currentlyLivesIn || 'Other';
+      else if (clusterMode === 'originalLocation') key = node.originallyFrom || 'Other';
+      else if (clusterMode === 'interest') key = (node.hobbies && node.hobbies[0]) ? node.hobbies[0] : 'Other';
+
+      if (!clusters[key]) clusters[key] = [];
+      clusters[key].push(node);
+    });
+
+    const keys = Object.keys(clusters);
+    const numClusters = keys.length;
+    if (numClusters <= 1) return;
+
+    const baseRadius = 650 * edgeLengthMultiplier;
+
+    // Calculate radial target coordinates for each cluster
+    const foci = {};
+    let nonCoupleIdx = 0;
+    const nonCoupleKeys = keys.filter(k => !k.includes('Couple'));
+
+    keys.forEach((key) => {
+      if (key === 'The Couple' || key.includes('Couple')) {
+        foci[key] = { x: 0, y: 0 };
+      } else {
+        const angle = (nonCoupleIdx / (nonCoupleKeys.length || 1)) * 2 * Math.PI - (Math.PI / 2);
+        foci[key] = {
+          x: Math.cos(angle) * baseRadius,
+          y: Math.sin(angle) * baseRadius
+        };
+        nonCoupleIdx++;
+      }
+    });
+
+    // 1. Gently pull nodes toward their cohort center focus
+    const pullStrength = alpha * 0.14;
+    nodesList.forEach(node => {
+      if (node.type === 'CONTEXT_HUB') return;
+      let key = 'Other';
+      if (clusterMode === 'cohort') key = node.cohort || 'Other';
+      else if (clusterMode === 'location' || clusterMode === 'currentLocation') key = node.currentlyLivesIn || 'Other';
+      else if (clusterMode === 'originalLocation') key = node.originallyFrom || 'Other';
+      else if (clusterMode === 'interest') key = (node.hobbies && node.hobbies[0]) ? node.hobbies[0] : 'Other';
+
+      const focus = foci[key];
+      if (focus) {
+        node.vx += (focus.x - node.x) * pullStrength;
+        node.vy += (focus.y - node.y) * pullStrength;
+      }
+    });
+
+    // 2. Strong repulsion between nodes of different clusters to prevent cohort hull overlap
+    const minDistance = 300 * edgeLengthMultiplier;
+    const repulsionStrength = alpha * 0.45;
+    for (let i = 0; i < nodesList.length; i++) {
+      for (let j = i + 1; j < nodesList.length; j++) {
+        const n1 = nodesList[i];
+        const n2 = nodesList[j];
+        if (n1.type === 'CONTEXT_HUB' || n2.type === 'CONTEXT_HUB') continue;
+
+        let key1 = clusterMode === 'cohort' ? n1.cohort : n1.currentlyLivesIn;
+        let key2 = clusterMode === 'cohort' ? n2.cohort : n2.currentlyLivesIn;
+
+        if (key1 !== key2) {
+          const dx = n2.x - n1.x;
+          const dy = n2.y - n1.y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq > 0 && distSq < minDistance * minDistance) {
+            const dist = Math.sqrt(distSq);
+            const forceMag = (minDistance - dist) / dist * repulsionStrength;
+            const fx = dx * forceMag;
+            const fy = dy * forceMag;
+            n1.vx -= fx;
+            n1.vy -= fy;
+            n2.vx += fx;
+            n2.vy += fy;
+          }
+        }
+      }
+    }
+  };
+
+  force.initialize = (n) => {
+    nodesList = n;
+  };
+
+  return force;
+}
+
 export default function ForceCanvas({
   fgRef,
   dimensions = { width: 1200, height: 800 },
@@ -120,12 +220,15 @@ export default function ForceCanvas({
         });
 
       fg.d3Force('charge')
-        .strength(-2400 * nodeScaleMultiplier * edgeLengthMultiplier)
-        .distanceMax(2400 * edgeLengthMultiplier);
+        .strength(-3200 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(3200 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
       }).iterations(40));
+
+      // Multi-foci Cohort Cluster Separation Force to prevent cohort cloud overlap!
+      fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier));
 
       if (isOrbiting) {
         fg.d3Force('orbit', createOrbitForce(orbitSpeed));
