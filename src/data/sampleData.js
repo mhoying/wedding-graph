@@ -1423,8 +1423,8 @@ export const SAMPLE_LINKS = [
   },
   {
     "source": "andy_schmitt",
-    "target": "matt",
-    "relationship": "Connected"
+    "target": "jason_govig",
+    "relationship": "Coworkers"
   },
   {
     "source": "anne_sweeney",
