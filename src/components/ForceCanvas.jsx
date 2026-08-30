@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import { forceCollide, forceCenter } from 'd3-force';
+import { forceCollide } from 'd3-force';
 import { getNodeBounds, hexToRgba } from '../utils/nodeGeometry';
 import { getConvexHull2D } from '../utils/convexHull';
 import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/sampleData';
@@ -271,9 +271,11 @@ export default function ForceCanvas({
         .strength(-700 * nodeScaleMultiplier * edgeLengthMultiplier)
         .distanceMax(1200 * edgeLengthMultiplier);
       
-      const cForce = forceCenter(0, 0);
-      if (typeof cForce.strength === 'function') cForce.strength(0.1);
-      fg.d3Force('center', cForce);
+      const existingCenter = fg.d3Force('center');
+      if (existingCenter && typeof existingCenter.x === 'function') {
+        existingCenter.x(0);
+        existingCenter.y(0);
+      }
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
