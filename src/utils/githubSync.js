@@ -103,9 +103,9 @@ export function generateSampleDataJsContent(nodes, links) {
   return `// Real Wedding Guest List Data - Auto-updated via Host Admin Suite
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
-  "Cornell": "#b31b1b",
+  "Cornell": "#ef4444",
   "Google": "#4285f4",
-  "Stanford": "#8c1515",
+  "Stanford": "#881337",
   "Lehigh": "#653819",
   "Dog Park": "#10b981",
   "OWFL Blog": "#ec4899",
