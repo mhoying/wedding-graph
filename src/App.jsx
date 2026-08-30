@@ -1613,8 +1613,10 @@ export default function App() {
         proposals={feedbackList}
         nodes={nodes}
         onApprove={(proposal) => {
-          const cleanTarget = (proposal.targetName || '').split(':')[0].trim().toLowerCase();
+          const cleanTarget = (proposal.targetName || '').split(':')[0].replace(/^(Edit|Proposal|Update|Fix):?/i, '').trim().toLowerCase();
           const cleanTargetId = (proposal.targetId || '').toLowerCase();
+          const category = (proposal.category || '').toLowerCase();
+          const noteText = (proposal.note || '').trim();
 
           setNodes(prev => {
             const updated = prev.map(node => {
@@ -1626,53 +1628,89 @@ export default function App() {
 
               if (isMatch) {
                 const newNode = { ...node };
-                // 1. Proposed Name
+
+                // 1. Name Updates
                 if (proposal.proposedName) {
                   newNode.name = proposal.proposedName;
-                } else if (proposal.note && proposal.note.includes('Name:')) {
-                  const match = proposal.note.match(/Name:\s*([^|]+)/i);
+                } else if (noteText.includes('Name:')) {
+                  const match = noteText.match(/Name:\s*([^|\n]+)/i);
                   if (match) newNode.name = match[1].trim();
                 }
 
-                // 2. Proposed Originally From / Hometown
+                // 2. Location / Hometown Updates
+                if (proposal.proposedLocation) {
+                  newNode.currentlyLivesIn = proposal.proposedLocation;
+                  newNode.state = proposal.proposedLocation;
+                }
                 if (proposal.proposedOriginallyFrom) {
                   newNode.originallyFrom = proposal.proposedOriginallyFrom;
                   newNode.hometown = proposal.proposedOriginallyFrom;
-                } else if (proposal.note && proposal.note.includes('Originally From:')) {
-                  const match = proposal.note.match(/Originally From:\s*([^|]+)/i);
+                }
+
+                // Parse Location from Note or Category
+                if (category.includes('hometown') || category.includes('state') || category.includes('location')) {
+                  const locVal = noteText.replace(/^(Lives In|Location|Originally From|Hometown|State|State Correction|Edit):?/i, '').trim();
+                  if (locVal) {
+                    newNode.currentlyLivesIn = locVal;
+                    newNode.state = locVal;
+                    newNode.originallyFrom = locVal;
+                    newNode.hometown = locVal;
+                  }
+                } else if (noteText.includes('Lives In:') || noteText.includes('Location:')) {
+                  const match = noteText.match(/(?:Lives In|Location):\s*([^|\n]+)/i);
+                  if (match) {
+                    newNode.currentlyLivesIn = match[1].trim();
+                    newNode.state = match[1].trim();
+                  }
+                } else if (noteText.includes('Originally From:') || noteText.includes('Hometown:')) {
+                  const match = noteText.match(/(?:Originally From|Hometown):\s*([^|\n]+)/i);
                   if (match) {
                     newNode.originallyFrom = match[1].trim();
                     newNode.hometown = match[1].trim();
                   }
                 }
 
-                // 3. Proposed Currently Lives In Location
-                if (proposal.proposedLocation) {
-                  newNode.currentlyLivesIn = proposal.proposedLocation;
-                  newNode.state = proposal.proposedLocation;
-                }
+                // 3. Cohort & Side Updates
                 if (proposal.proposedCohort) {
                   newNode.cohort = proposal.proposedCohort;
+                } else if (noteText.includes('Cohort:')) {
+                  const match = noteText.match(/Cohort:\s*([^|\n]+)/i);
+                  if (match) newNode.cohort = match[1].trim();
                 }
+
                 if (proposal.proposedSide) {
                   newNode.side = proposal.proposedSide;
+                } else if (noteText.includes('Side:')) {
+                  const match = noteText.match(/Side:\s*([^|\n]+)/i);
+                  if (match) newNode.side = match[1].trim();
                 }
+
+                // 4. Relationship Updates
                 if (proposal.proposedRelationship) {
                   newNode.relationship = proposal.proposedRelationship;
+                } else if (category.includes('relationship') || category.includes('family')) {
+                  const relVal = noteText.replace(/^(Relationship|Family|Status|Correction|Edit):?/i, '').trim();
+                  if (relVal) newNode.relationship = relVal;
+                } else if (noteText.includes('Relationship:')) {
+                  const match = noteText.match(/Relationship:\s*([^|\n]+)/i);
+                  if (match) newNode.relationship = match[1].trim();
                 }
 
-                // 4. Proposed Hobbies
-                if (proposal.proposedHobbies || proposal.note) {
-                  const hobbyText = proposal.proposedHobbies || proposal.note || '';
-                  const newHobbies = hobbyText
-                    .split(/[,;\n]/)
-                    .map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship|Category|Notes \/ Details):?/i, '').trim())
-                    .filter(h => h && !h.includes(':') && !h.toLowerCase().includes('proposal') && !h.toLowerCase().includes('guest name'));
+                // 5. Hobbies / Interests Updates
+                if (proposal.proposedHobbies || category.includes('interest') || category.includes('hobby') || noteText) {
+                  const hobbyText = proposal.proposedHobbies || noteText;
+                  if (hobbyText && !category.includes('hometown') && !category.includes('state') && !category.includes('location') && !category.includes('relationship')) {
+                    const newHobbies = hobbyText
+                      .split(/[,;\n]/)
+                      .map(h => h.replace(/^(Add|Proposed|Interest|hobbies|hometown|Name|Lives In|Originally From|Group|Relationship|Category|Notes \/ Details):?/i, '').trim())
+                      .filter(h => h && !h.includes(':') && !h.toLowerCase().includes('proposal') && !h.toLowerCase().includes('guest name'));
 
-                  if (newHobbies.length > 0) {
-                    newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
+                    if (newHobbies.length > 0) {
+                      newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
+                    }
                   }
                 }
+
                 return newNode;
               }
               return node;
