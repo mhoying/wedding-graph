@@ -51,8 +51,8 @@ export default function DynamicColorLegend({
         });
       });
     } else {
-      // Default: Cohorts (Only render true social cohorts & Other, strictly exclude all family groups)
-      const validCohorts = new Set(['Cornell', 'Google', 'Stanford', 'Lehigh', 'Dog Park', 'OWFL Blog', 'Bay FC', 'The Couple', 'Other']);
+      // Default: Cohorts (Only render true social cohorts, strictly exclude Other & family groups)
+      const validCohorts = new Set(['Cornell', 'Google', 'Stanford', 'Lehigh', 'Dog Park', 'OWFL Blog', 'Bay FC', 'Jenna', 'The Couple']);
       filteredNodes.forEach(node => {
         if (!node || node.type === 'CONTEXT_HUB') return;
         const cohort = node.cohort;

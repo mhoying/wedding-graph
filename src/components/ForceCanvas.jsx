@@ -73,12 +73,14 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       });
     }
 
-    // 1. Strong attraction toward dedicated cluster foci center
+    // 1. Strong attraction toward dedicated cluster foci center (excluding "Other" cohort)
     const pullStrength = alpha * 0.65;
     nodesList.forEach(node => {
       if (node.type === 'CONTEXT_HUB') return;
+      if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) return; // Other cohort floats freely!
+
       let key = 'Other';
-      if (clusterMode === 'cohort') key = node.cohort || 'Other';
+      if (clusterMode === 'cohort') key = node.cohort;
       else if (clusterMode === 'location' || clusterMode === 'currentLocation') key = node.currentlyLivesIn || 'Other';
       else if (clusterMode === 'originalLocation') key = node.originallyFrom || 'Other';
       else if (clusterMode === 'interest') key = (node.hobbies && node.hobbies[0]) ? node.hobbies[0] : 'Other';
@@ -404,7 +406,7 @@ export default function ForceCanvas({
       Object.assign(clusterGroups, dynamicOriginalLocationClusters || {});
     } else if (clusterMode !== 'none') {
       filteredNodes.forEach(node => {
-        if (node.cohort && node.cohort !== 'The Couple' && node.x !== undefined) {
+        if (node.cohort && node.cohort !== 'The Couple' && node.cohort !== 'Other' && node.x !== undefined) {
           const key = `${node.cohort} Cluster`;
           if (!clusterGroups[key]) clusterGroups[key] = [];
           clusterGroups[key].push(node);
