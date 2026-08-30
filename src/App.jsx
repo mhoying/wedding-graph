@@ -135,7 +135,7 @@ export default function App() {
     setNodes(combinedNodes);
 
     try {
-      localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(combinedNodes));
+      localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(combinedNodes));
     } catch (e) {}
 
     setCopyToast('⚡ Committing updated spreadsheet dataset to GitHub Repo...');
@@ -149,8 +149,8 @@ export default function App() {
     setNodes(newNodes);
     setLinks(newLinks);
     try {
-      localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(newNodes));
-      localStorage.setItem('wedding_graph_links_v10', JSON.stringify(newLinks));
+      localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(newNodes));
+      localStorage.setItem('wedding_graph_links_v85', JSON.stringify(newLinks));
     } catch (e) {
       console.warn('Could not save to localStorage:', e);
     }
@@ -160,7 +160,7 @@ export default function App() {
     setLinks(prev => {
       const updated = [...prev, newLink];
       try {
-        localStorage.setItem('wedding_graph_links_v10', JSON.stringify(updated));
+        localStorage.setItem('wedding_graph_links_v85', JSON.stringify(updated));
       } catch (e) {
         console.warn('Could not save links to localStorage:', e);
       }
@@ -714,7 +714,7 @@ export default function App() {
       hobbies: editHobbies
     });
     try {
-      localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(updated));
+      localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(updated));
     } catch (e) {}
     const jsContent = generateSampleDataJsContent(updated, links);
     pushToGithubRepo(jsContent, `Update profile dataset for ${selectedNode.name}`, '', 'src/data/sampleData.js');
@@ -1256,7 +1256,7 @@ export default function App() {
             });
 
             try {
-              localStorage.setItem('wedding_graph_nodes_v10', JSON.stringify(updated));
+              localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(updated));
             } catch (e) {}
 
             const jsContent = generateSampleDataJsContent(updated, links);
