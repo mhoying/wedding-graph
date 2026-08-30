@@ -114,10 +114,10 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
           const dy = n2.y - n1.y;
           const distSq = dx * dx + dy * dy;
           if (distSq > 0 && distSq < minDistance * minDistance) {
-            const dist = Math.sqrt(distSq);
-            const forceMag = (minDistance - dist) / dist * repulsionStrength;
-            const fx = dx * forceMag;
-            const fy = dy * forceMag;
+            const dist = Math.max(Math.sqrt(distSq), 10);
+            const forceMag = Math.min(((minDistance - dist) / dist) * repulsionStrength * 2.0, 5.0);
+            const fx = (dx / dist) * forceMag;
+            const fy = (dy / dist) * forceMag;
             n1.vx -= fx;
             n1.vy -= fy;
             n2.vx += fx;
