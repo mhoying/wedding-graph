@@ -477,7 +477,7 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "San Diego Chargers",
+      "Chargers",
       "Beer"
     ]
   },
@@ -1219,7 +1219,7 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "Southern California",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "San Diego Chargers",
+      "Chargers",
       "Dogs",
       "Swimming"
     ]

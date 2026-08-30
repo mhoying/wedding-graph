@@ -34,7 +34,6 @@ export default function GuestProfileDrawer({
 }) {
   const availableTags = React.useMemo(() => {
     const set = new Set([
-      'San Diego Chargers',
       'Chargers',
       'Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming'
     ]);
