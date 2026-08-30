@@ -541,7 +541,8 @@ export const SAMPLE_NODES = [
       "Goats",
       "Kids",
       "Dogs",
-      "Gardening"
+      "Gardening",
+      "Baking"
     ]
   },
   {
