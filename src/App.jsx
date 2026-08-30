@@ -270,7 +270,8 @@ export default function App() {
     }
 
     const targetIdSet = new Set(nodeArray.filter(Boolean).map(n => typeof n === 'object' ? n.id : n));
-    const padding = customPadding || (nodeArray.length > 1 ? 180 : 60);
+    // 210px padding frames single target node to take up ~1/5th of screen width!
+    const padding = customPadding || (nodeArray.length > 1 ? 220 : 210);
 
     if (fgRef.current && targetIdSet.size > 0) {
       if (typeof fgRef.current.zoomToFit === 'function') {

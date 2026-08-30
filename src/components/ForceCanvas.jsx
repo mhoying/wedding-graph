@@ -364,8 +364,8 @@ export default function ForceCanvas({
     if (matchingNodes.length > 0 && typeof fgRef.current.zoomToFit === 'function') {
       if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
       const matchingNodeIds = new Set(matchingNodes.map(m => m.id));
-      // Single node search match uses 60px padding for close, high-clarity zoom-in!
-      const padding = matchingNodes.length === 1 ? 60 : 160;
+      // Single node search match uses 210px padding so target node takes up ~1/5th of viewport width!
+      const padding = matchingNodes.length === 1 ? 210 : 180;
       fgRef.current.zoomToFit(800, padding, (cNode) => Boolean(cNode && cNode.id && matchingNodeIds.has(cNode.id)));
     }
   }, [searchQuery, nodes, fgRef, setIsOrbiting]);
