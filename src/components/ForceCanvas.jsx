@@ -271,8 +271,14 @@ export default function ForceCanvas({
         });
 
       fg.d3Force('charge')
-        .strength(-700 * nodeScaleMultiplier * edgeLengthMultiplier)
-        .distanceMax(1200 * edgeLengthMultiplier);
+        .strength(-1200 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(1600 * edgeLengthMultiplier);
+
+      // Hard Collision Force: Prevents ANY node overlap by enforcing collision radius buffer around every headshot/halo!
+      fg.d3Force('collide', forceCollide(node => {
+        const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
+        return (bounds.collisionRadius || 55) + 18 * nodeScaleMultiplier;
+      }).iterations(4));
       
       const existingCenter = fg.d3Force('center');
       if (existingCenter && typeof existingCenter.x === 'function') {
