@@ -75,16 +75,10 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
 
     // 1. Strong attraction toward dedicated cluster foci center (excluding "Other" cohort)
     const pullStrength = alpha * 0.65;
-    nodesList.forEach((node, idx) => {
+    nodesList.forEach((node) => {
       if (node.type === 'CONTEXT_HUB') return;
       if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) {
-        // Scatter "Other" guests individually around the outer perimeter so they float as independent nodes!
-        const scatterAngle = (idx / nodesList.length) * 2 * Math.PI;
-        const scatterDist = 1100 * edgeLengthMultiplier;
-        const targetX = Math.cos(scatterAngle) * scatterDist;
-        const targetY = Math.sin(scatterAngle) * scatterDist;
-        node.vx += (targetX - node.x) * alpha * 0.25;
-        node.vy += (targetY - node.y) * alpha * 0.25;
+        // "Other" guests have ZERO cluster force -- they float completely freely next to their partner!
         return;
       }
 
@@ -101,7 +95,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       }
     });
 
-    // 2. High-power inter-cluster repulsion (including full repulsion between "Other" guests!)
+    // 2. High-power inter-cluster repulsion between different true cohorts
     const minDistance = 550 * edgeLengthMultiplier;
     const repulsionStrength = alpha * 1.5;
     for (let i = 0; i < nodesList.length; i++) {
@@ -113,10 +107,10 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
         let key1 = clusterMode === 'cohort' ? n1.cohort : n1.currentlyLivesIn;
         let key2 = clusterMode === 'cohort' ? n2.cohort : n2.currentlyLivesIn;
 
-        // Force repulsion if different clusters OR if either node belongs to "Other"
-        const isDifferentCluster = (key1 !== key2) || (clusterMode === 'cohort' && (key1 === 'Other' || key2 === 'Other'));
+        // Skip repulsion if either node is "Other" (so partners in "Other" float naturally next to their spouse)
+        if (clusterMode === 'cohort' && (key1 === 'Other' || key2 === 'Other')) continue;
 
-        if (isDifferentCluster) {
+        if (key1 !== key2) {
           const dx = n2.x - n1.x;
           const dy = n2.y - n1.y;
           const distSq = dx * dx + dy * dy;
