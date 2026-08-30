@@ -32,7 +32,8 @@ export default function TopHeaderNav({
   setIsSpreadsheetOpen,
   selectedClusterFocus = '',
   setSelectedClusterFocus = () => {},
-  availableClusters = []
+  availableClusters = [],
+  onOpenMapControls = () => {}
 }) {
   const [isTunePopoverOpen, setIsTunePopoverOpen] = useState(false);
 
@@ -168,6 +169,17 @@ export default function TopHeaderNav({
             <option value="original_location">Hometown / Original</option>
           </select>
         </div>
+
+        {/* Desktop Map Controls Full Sheet Trigger Button */}
+        <button 
+          onClick={onOpenMapControls}
+          className="glass-panel btn-icon desktop-only-inline"
+          title="Open Full Map Controls Sheet"
+          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 800, color: '#f8fafc', background: 'rgba(2, 132, 199, 0.25)', border: '1px solid rgba(56, 189, 248, 0.5)', flexShrink: 0 }}
+        >
+          <SlidersHorizontal style={{ width: 14, height: 14, color: '#38bdf8' }} />
+          <span>Map Controls</span>
+        </button>
 
         {/* Desktop Sliders Popover Button (Node Size & Map Spacing) */}
         <div className="desktop-only-inline" style={{ position: 'relative' }}>

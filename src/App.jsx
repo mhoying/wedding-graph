@@ -937,6 +937,7 @@ export default function App() {
         selectedClusterFocus={selectedClusterFocus}
         setSelectedClusterFocus={setSelectedClusterFocus}
         availableClusters={availableClusters}
+        onOpenMapControls={() => setIsMobileControlsOpen(true)}
       />
 
       {/* Dedicated Host Admin Floating Control Panel */}
@@ -1052,8 +1053,8 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating Mobile Micro-Dock Control Trigger & Sheet (ONLY rendered on mobile viewports when no profile drawer is open) */}
-      {isMobileViewport && !selectedNode && (
+      {/* Floating Micro-Dock Map Controls Trigger & Sheet (Rendered on all viewports when no profile drawer is open) */}
+      {!selectedNode && (
         <>
           <button 
             className="mobile-drawer-toggle-fab no-print"
