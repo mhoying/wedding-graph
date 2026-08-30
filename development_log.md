@@ -67,4 +67,14 @@
   1. **Root Cause Analysis**:
      - Identified that chained `.filter(n => ...).forEach(n => ...)` in `tagWeights` and nested parameters `(node) => ...` in `zoomToFit` / `flyToNode` caused variable minification shadowing (`nn`), triggering a JavaScript Temporal Dead Zone (TDZ) `ReferenceError`.
   2. **Parameter Disambiguation**: Refactored array iteration and callback parameter names in `App.jsx` and `ForceCanvas.jsx` to avoid shadowing.
-  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Hoisting TDZ Fix, Viewport Framing & Alphabetical Dropdown Standardization
+- **User Requests**:
+  1. "whenever it selcts poeple ike in the path finder or inspect or clicing on a node it shoudl be very surethat all the selected nodes are fully showing wihtin the display port"
+  2. "also the dark button in the map controls doesnt work when clicked..."
+  3. "in all drop downs the enums shoudl be sorted alphabeticaly"
+- **Actions & Fixes**:
+  1. **Function Hoisting TDZ & Terser Minifier**: Hoisted `flyToNode` definition above all `useEffect` hooks in `App.jsx` and configured `minify: 'terser'` with `keep_fnames: true` in `vite.config.js`.
+  2. **Viewport Framing for Selection & Path Finder**: Upgraded `flyToNode` and `zoomToFit` in `App.jsx` and `ForceCanvas.jsx` to use generous `300px-340px` padding, guaranteeing every selected node (Start, Hops, and End) fits 100% inside the display port.
+  3. **Map Controls Theme Toggle**: Passed missing `isLightMode` and `setIsLightMode` props to `<MobileControlsSheet>` in `App.jsx`.
+  4. **Alphabetical Dropdown Standard**: Standardized all dropdown `<select>` menus (`Path Finder`, `TopHeaderNav`, `MobileControlsSheet`, `SuggestEditModal`, `AddConnectionModal`, and `GuestProfileDrawer`) to sort guest names and enums strictly alphabetically.
+  5. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
