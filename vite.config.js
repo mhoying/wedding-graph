@@ -78,7 +78,7 @@ export const SAMPLE_LINKS = ${JSON.stringify(cleanLinks, null, 2)};
 }
 
 export default defineConfig({
-  base: '/wedding-graph/',
+  base: './',
   plugins: [react(), saveDatasetPlugin()],
   build: {
     rollupOptions: {
