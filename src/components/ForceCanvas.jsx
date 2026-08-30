@@ -215,7 +215,9 @@ export default function ForceCanvas({
           // Cross-Cohort vs Unclustered Link identification
           const sCohort = sObj && sObj.cohort;
           const tCohort = tObj && tObj.cohort;
+          const isSameCohort = sCohort && tCohort && sCohort !== 'Other' && tCohort !== 'Other' && (sCohort === tCohort);
           const isCrossCohort = sCohort && tCohort && sCohort !== 'Other' && tCohort !== 'Other' && sCohort !== tCohort;
+          const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
           const isUnclustered = (sCohort === 'Other' || tCohort === 'Other') && !isCoupleOrFamilyLink;
 
           let cohortMultiplier;
