@@ -19,7 +19,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
     "Dog Park": { x: 1100, y: 700 },       // Bottom Right
     "OWFL Blog": { x: 1450, y: 0 },        // Far Right
     "Bay FC": { x: -1450, y: 0 },          // Far Left
-    "Other": { x: 0, y: -1200 }            // Top Center
+    "Jenna": { x: -600, y: -1250 },        // Top Left Sector
+    "Other": { x: 600, y: -1250 }          // Top Right Sector
   };
 
   const force = (alpha) => {

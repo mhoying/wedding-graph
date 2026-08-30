@@ -110,7 +110,7 @@ export const COHORT_COLORS = {
   "Dog Park": "#10b981",
   "OWFL Blog": "#ec4899",
   "Bay FC": "#f59e0b",
-  "Honk Family": "#a855f7",
+  "Jenna": "#a855f7",
   "Default": "#64748b"
 };
 
