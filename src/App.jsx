@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { 
   SlidersHorizontal, X, Camera, Sun, Moon, Layers, Palette, 
-  Compass, Wand2, Edit3, Copy, Download, Heart, ShieldAlert, Check, Sparkles
+  Compass, Wand2, Edit3, Copy, Download, Heart, ShieldAlert, Check, Sparkles, Search
 } from 'lucide-react';
 import Papa from 'papaparse';
 
