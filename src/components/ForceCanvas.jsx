@@ -73,8 +73,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       });
     }
 
-    // 1. Outward Radial Expansion Force: Pushes all non-Couple nodes OUTWARD away from center (0, 0)
-    const outwardPush = alpha * 0.45;
+    // 1. Outward Radial Expansion Force: Subtle outward vector away from center (0, 0)
+    const outwardPush = alpha * 0.08;
     nodesList.forEach((node) => {
       if (node.id === 'matt' || node.id === 'maureen' || node.type === 'CONTEXT_HUB' || node.cohort === 'The Couple') return;
       
@@ -82,14 +82,14 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       const dy = node.y || (Math.random() - 0.5);
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-      // 1a. Gentle outward radial vector push
-      node.vx += (dx / dist) * outwardPush * 18;
-      node.vy += (dy / dist) * outwardPush * 18;
+      // 1a. Subtle outward radial vector push
+      node.vx += (dx / dist) * outwardPush * 4;
+      node.vy += (dy / dist) * outwardPush * 4;
 
-      // 1b. Center Deadzone Repulsion: Strong push away if node is within 400px of center (0, 0)
-      const centerDeadzone = 400 * edgeLengthMultiplier;
+      // 1b. Center Deadzone Repulsion: Gentle push away if node is within 250px of center (0, 0)
+      const centerDeadzone = 250 * edgeLengthMultiplier;
       if (dist < centerDeadzone) {
-        const repulsionMag = ((centerDeadzone - dist) / dist) * alpha * 2.5;
+        const repulsionMag = ((centerDeadzone - dist) / dist) * alpha * 1.2;
         node.vx += dx * repulsionMag;
         node.vy += dy * repulsionMag;
       }
@@ -247,9 +247,9 @@ export default function ForceCanvas({
           } else if (isSameCohort) {
             cohortMultiplier = 0.65;
           } else if (isHubLink) {
-            cohortMultiplier = 3.5;
+            cohortMultiplier = 1.8;
           } else {
-            cohortMultiplier = 3.0;
+            cohortMultiplier = 1.2;
           }
 
           const baseSum = sRadius + tRadius + 10 * nodeScaleMultiplier;
@@ -278,7 +278,7 @@ export default function ForceCanvas({
 
           if (isCoupleOrFamilyLink) return 1.0;
           if (isSameCohort) return 0.7;
-          return 0.05; // Relaxed loose tension for cross-cohort and "Other" links!
+          return 0.4; // Solid link strength for unclustered & cross-cohort friends so they stay right next to their friends!
         });
 
       fg.d3Force('charge')

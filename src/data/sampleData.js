@@ -1383,7 +1383,8 @@ export const SAMPLE_LINKS = [
   {
     "source": "jess_phan",
     "target": "mark_macdonald",
-    "relationship": "Connected"
+    "relationship": "Family",
+    "type": "COUPLE"
   },
   {
     "source": "katie_richter",
