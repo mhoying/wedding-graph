@@ -9,6 +9,19 @@ import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/samp
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
 
+  // Dedicated Foci Map for Cohort Mode to guarantee massive separation between main clusters
+  const COHORT_FOCI = {
+    "The Couple": { x: 0, y: 0 },
+    "Cornell": { x: -1100, y: -700 },      // Top Left
+    "Stanford": { x: 1100, y: -700 },      // Top Right
+    "Google": { x: 0, y: 1150 },           // Bottom Center
+    "Lehigh": { x: -1100, y: 700 },        // Bottom Left
+    "Dog Park": { x: 1100, y: 700 },       // Bottom Right
+    "OWFL Blog": { x: 1450, y: 0 },        // Far Right
+    "Bay FC": { x: -1450, y: 0 },          // Far Left
+    "Other": { x: 0, y: -1200 }            // Top Center
+  };
+
   const force = (alpha) => {
     if (clusterMode === 'off' || !nodesList || nodesList.length === 0) return;
 
@@ -30,28 +43,37 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
     const numClusters = keys.length;
     if (numClusters <= 1) return;
 
-    const baseRadius = 650 * edgeLengthMultiplier;
+    const baseRadius = 850 * edgeLengthMultiplier;
 
-    // Calculate radial target coordinates for each cluster
+    // Calculate target foci coordinates
     const foci = {};
-    let nonCoupleIdx = 0;
-    const nonCoupleKeys = keys.filter(k => !k.includes('Couple'));
+    if (clusterMode === 'cohort') {
+      keys.forEach(k => {
+        foci[k] = COHORT_FOCI[k] ? {
+          x: COHORT_FOCI[k].x * edgeLengthMultiplier,
+          y: COHORT_FOCI[k].y * edgeLengthMultiplier
+        } : { x: 0, y: 0 };
+      });
+    } else {
+      let nonCoupleIdx = 0;
+      const nonCoupleKeys = keys.filter(k => !k.includes('Couple'));
 
-    keys.forEach((key) => {
-      if (key === 'The Couple' || key.includes('Couple')) {
-        foci[key] = { x: 0, y: 0 };
-      } else {
-        const angle = (nonCoupleIdx / (nonCoupleKeys.length || 1)) * 2 * Math.PI - (Math.PI / 2);
-        foci[key] = {
-          x: Math.cos(angle) * baseRadius,
-          y: Math.sin(angle) * baseRadius
-        };
-        nonCoupleIdx++;
-      }
-    });
+      keys.forEach((key) => {
+        if (key === 'The Couple' || key.includes('Couple')) {
+          foci[key] = { x: 0, y: 0 };
+        } else {
+          const angle = (nonCoupleIdx / (nonCoupleKeys.length || 1)) * 2 * Math.PI - (Math.PI / 2);
+          foci[key] = {
+            x: Math.cos(angle) * baseRadius,
+            y: Math.sin(angle) * baseRadius
+          };
+          nonCoupleIdx++;
+        }
+      });
+    }
 
-    // 1. Gently pull nodes toward their cohort center focus
-    const pullStrength = alpha * 0.14;
+    // 1. Strong attraction toward dedicated cluster foci center
+    const pullStrength = alpha * 0.65;
     nodesList.forEach(node => {
       if (node.type === 'CONTEXT_HUB') return;
       let key = 'Other';
@@ -67,9 +89,9 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       }
     });
 
-    // 2. Strong repulsion between nodes of different clusters to prevent cohort hull overlap
-    const minDistance = 300 * edgeLengthMultiplier;
-    const repulsionStrength = alpha * 0.45;
+    // 2. High-power inter-cluster repulsion between different cohort nodes
+    const minDistance = 550 * edgeLengthMultiplier;
+    const repulsionStrength = alpha * 1.5;
     for (let i = 0; i < nodesList.length; i++) {
       for (let j = i + 1; j < nodesList.length; j++) {
         const n1 = nodesList[i];
@@ -139,9 +161,9 @@ export default function ForceCanvas({
   setIsOrbiting = () => {},
   imageCacheRef = { current: {} }
 }) {
-  // Pre-load guest photo images into ref cache
+  // Preload node headshots into cache for seamless rendering
   useEffect(() => {
-    if (nodes && imageCacheRef && imageCacheRef.current) {
+    if (showHeadshots && nodes && nodes.length > 0) {
       nodes.forEach(node => {
         if (node.image && !imageCacheRef.current[node.image]) {
           const img = new Image();
@@ -152,7 +174,7 @@ export default function ForceCanvas({
         }
       });
     }
-  }, [nodes, imageCacheRef]);
+  }, [nodes, imageCacheRef, showHeadshots]);
 
   // Configure D3 forces: PROPORTIONAL COHORT MULTIPLIERS & DYNAMIC ORBITAL GALAXY FORCE!
   useEffect(() => {
@@ -189,11 +211,11 @@ export default function ForceCanvas({
           if (isCoupleOrFamilyLink) {
             cohortMultiplier = 0.15; // Extremely close edge distance for couples and families!
           } else if (isSameCohort) {
-            cohortMultiplier = 0.85;
+            cohortMultiplier = 0.65;
           } else if (isHubLink) {
-            cohortMultiplier = 2.2;
+            cohortMultiplier = 3.5;
           } else {
-            cohortMultiplier = 1.8;
+            cohortMultiplier = 3.0;
           }
 
           const baseSum = sRadius + tRadius + 10 * nodeScaleMultiplier;
@@ -216,7 +238,11 @@ export default function ForceCanvas({
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
           const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
-          return isCoupleOrFamilyLink ? 1.0 : 0.25;
+          const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
+
+          if (isCoupleOrFamilyLink) return 1.0;
+          if (isSameCohort) return 0.7;
+          return 0.05; // Relaxed loose tension for cross-cohort links so they don't collapse different cohort clusters into each other!
         });
 
       fg.d3Force('charge')
