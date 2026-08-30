@@ -761,15 +761,33 @@ export default function ForceCanvas({
             if (s === targetId || t === targetId) {
               return '#38bdf8';
             }
-            return isLightMode ? 'rgba(203, 213, 225, 0.15)' : 'rgba(30, 41, 59, 0.15)';
+          }
+          const sObj = typeof link.source === 'object' ? link.source : nodes.find(n => n.id === s);
+          const tObj = typeof link.target === 'object' ? link.target : nodes.find(n => n.id === t);
+          const sId = String(s).toLowerCase();
+          const tId = String(t).toLowerCase();
+
+          const isExplicitType = link.type === 'COUPLE' || link.type === 'MARRIED' || link.type === 'FAMILY' || link.label === 'Married' || link.label === 'Partner' || link.label === 'Spouse';
+          const isExplicitCoupleRel = link.relationship === 'Family' || link.relationship === 'Married' || link.relationship === 'Partner' || link.relationship === 'Spouse';
+          const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && 
+                                   sObj.relationship === tObj.relationship && 
+                                   !['Friends', 'Coworkers', 'Guest', 'Connected'].includes(sObj.relationship) &&
+                                   !String(sObj.relationship).toLowerCase().includes('cluster');
+          const isMattMaureen = (sId === 'matt' && tId === 'maureen') || (sId === 'maureen' && tId === 'matt');
+          const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
+          const isCoupleLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
+
+          if (isCoupleLink) {
+            return isLightMode ? 'rgba(236, 72, 153, 0.85)' : 'rgba(244, 114, 182, 0.8)';
           }
 
           return isLightMode ? 'rgba(100, 116, 139, 0.45)' : 'rgba(56, 189, 248, 0.35)';
         }}
         linkWidth={(link) => {
+          const s = typeof link.source === 'object' ? link.source.id : link.source;
+          const t = typeof link.target === 'object' ? link.target.id : link.target;
+          
           if (shortestPath.length > 1) {
-            const s = typeof link.source === 'object' ? link.source.id : link.source;
-            const t = typeof link.target === 'object' ? link.target.id : link.target;
             for (let i = 0; i < shortestPath.length - 1; i++) {
               if ((shortestPath[i] === s && shortestPath[i+1] === t) || (shortestPath[i] === t && shortestPath[i+1] === s)) {
                 return 4;
@@ -778,14 +796,26 @@ export default function ForceCanvas({
             return 1;
           }
           if (hoverNode || selectedNode) {
-            const s = typeof link.source === 'object' ? link.source.id : link.source;
-            const t = typeof link.target === 'object' ? link.target.id : link.target;
             const targetId = hoverNode?.id || selectedNode?.id;
             if (s === targetId || t === targetId) return 3.5;
-            return 1;
           }
-          if (link.type === 'COUPLE') return 2.5;
-          return 1.8;
+
+          const sObj = typeof link.source === 'object' ? link.source : nodes.find(n => n.id === s);
+          const tObj = typeof link.target === 'object' ? link.target : nodes.find(n => n.id === t);
+          const sId = String(s).toLowerCase();
+          const tId = String(t).toLowerCase();
+
+          const isExplicitType = link.type === 'COUPLE' || link.type === 'MARRIED' || link.type === 'FAMILY' || link.label === 'Married' || link.label === 'Partner' || link.label === 'Spouse';
+          const isExplicitCoupleRel = link.relationship === 'Family' || link.relationship === 'Married' || link.relationship === 'Partner' || link.relationship === 'Spouse';
+          const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && 
+                                   sObj.relationship === tObj.relationship && 
+                                   !['Friends', 'Coworkers', 'Guest', 'Connected'].includes(sObj.relationship) &&
+                                   !String(sObj.relationship).toLowerCase().includes('cluster');
+          const isMattMaureen = (sId === 'matt' && tId === 'maureen') || (sId === 'maureen' && tId === 'matt');
+          const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
+          const isCoupleLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
+
+          return isCoupleLink ? 2.2 : 1.2;
         }}
         linkDirectionalParticles={(link) => {
           if (shortestPath.length > 1) {
