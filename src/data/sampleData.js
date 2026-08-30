@@ -664,30 +664,6 @@ export const SAMPLE_NODES = [
     ]
   },
   {
-    "id": "ari_freedman",
-    "name": "Ari Freedman",
-    "type": "GUEST",
-    "cohort": "Other",
-    "side": "Maureen",
-    "relationship": "The Freedman Family",
-    "originallyFrom": "",
-    "currentlyLivesIn": "SF Bay Area",
-    "familyStatus": "Couple / Group",
-    "hobbies": []
-  },
-  {
-    "id": "eric_freedman",
-    "name": "Eric Freedman",
-    "type": "GUEST",
-    "cohort": "Other",
-    "side": "Maureen",
-    "relationship": "The Freedman Family",
-    "originallyFrom": "",
-    "currentlyLivesIn": "SF Bay Area",
-    "familyStatus": "Couple / Group",
-    "hobbies": []
-  },
-  {
     "id": "james_freedman",
     "name": "James Freedman",
     "type": "GUEST",
@@ -1310,8 +1286,8 @@ export const SAMPLE_LINKS = [
   {
     "source": "leanna_habana",
     "target": "emy_habana",
-    "relationship": "Family",
-    "type": "COUPLE"
+    "relationship": "Mother / Daughter",
+    "type": "FAMILY"
   },
   {
     "source": "matt",
@@ -1359,17 +1335,6 @@ export const SAMPLE_LINKS = [
     "target": "erica_festa",
     "relationship": "Connected",
     "type": "COUPLE"
-  },
-  {
-    "source": "james_freedman",
-    "target": "eric_freedman",
-    "relationship": "Connected",
-    "type": "COUPLE"
-  },
-  {
-    "source": "james_freedman",
-    "target": "ari_freedman",
-    "relationship": "Connected"
   },
   {
     "source": "nur_e_freedman",
@@ -1437,7 +1402,8 @@ export const SAMPLE_LINKS = [
   {
     "source": "roopak_kandasamy",
     "target": "ashley_prichard",
-    "relationship": "Connected"
+    "relationship": "Partner",
+    "type": "COUPLE"
   },
   {
     "source": "allison_williams",
@@ -1672,8 +1638,8 @@ export const SAMPLE_LINKS = [
   {
     "source": "nadia_shaikh",
     "target": "nishat_shaikh",
-    "relationship": "Family",
-    "type": "COUPLE"
+    "relationship": "Sister",
+    "type": "SIBLING"
   },
   {
     "source": "becca_winslow",
