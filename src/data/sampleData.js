@@ -98,7 +98,7 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Beer",
       "Cocktails",
-      "Pickleball"
+      "Hiking"
     ]
   },
   {
@@ -765,7 +765,9 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Kids"
+      "Kids",
+      "Cooking",
+      "Hiking"
     ]
   },
   {
@@ -1056,7 +1058,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dogs",
       "Kids",
-      "Cycling"
+      "Cycling",
+      "Photography"
     ]
   },
   {
