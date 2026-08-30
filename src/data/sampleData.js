@@ -33,6 +33,7 @@ export const STATE_COLORS = {
   "Boston, MA": "#6366f1",
   "Minnesota": "#84cc16",
   "Northern CA": "#d946ef",
+  "Southern CA": "#f43f5e",
   "Maryland": "#0284c7",
   "Puerto Rico": "#b45309",
   "Eastern PA": "#4f46e5",
@@ -901,7 +902,7 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "cohort": "Dog Park",
     "relationship": "The Murillo-Davisson Family",
-    "originallyFrom": "Stockton, Ca",
+    "originallyFrom": "Stockton, CA",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1260,7 +1261,7 @@ export const SAMPLE_NODES = [
     "cohort": "Cornell",
     "relationship": "Toyo Tsujino and Danielle Sullivan",
     "originallyFrom": "",
-    "currentlyLivesIn": "Southern California",
+    "currentlyLivesIn": "Southern CA",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Chargers",
@@ -1276,7 +1277,7 @@ export const SAMPLE_NODES = [
     "cohort": "Other",
     "relationship": "Toyo Tsujino and Danielle Sullivan",
     "originallyFrom": "",
-    "currentlyLivesIn": "Southern California",
+    "currentlyLivesIn": "Southern CA",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Dogs"

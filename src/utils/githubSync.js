@@ -146,6 +146,7 @@ export const STATE_COLORS = {
   "Boston, MA": "#6366f1",
   "Minnesota": "#84cc16",
   "Northern CA": "#d946ef",
+  "Southern CA": "#f43f5e",
   "Maryland": "#0284c7",
   "Puerto Rico": "#b45309",
   "Eastern PA": "#4f46e5",
