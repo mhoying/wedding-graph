@@ -9,17 +9,17 @@ import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/samp
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
 
-  // Dedicated Foci Map for Cohort Mode to keep all clusters tight and well-balanced around center
+  // Dedicated Foci Map for Cohort Mode to keep all clusters well-spaced
   const COHORT_FOCI = {
     "The Couple": { x: 0, y: 0 },
-    "Cornell": { x: -380, y: -250 },     // Top Left
-    "Stanford": { x: 380, y: -250 },     // Top Right
-    "Google": { x: 0, y: 400 },          // Bottom Center
-    "Lehigh": { x: -380, y: 250 },       // Bottom Left
-    "Dog Park": { x: 380, y: 250 },      // Bottom Right
-    "OWFL Blog": { x: 480, y: 0 },       // Far Right
-    "Bay FC": { x: -480, y: 0 },         // Far Left
-    "Jenna": { x: -200, y: -420 }        // Top Center-Left
+    "Cornell": { x: -650, y: -420 },     // Top Left
+    "Stanford": { x: 650, y: -420 },     // Top Right
+    "Google": { x: 0, y: 680 },          // Bottom Center
+    "Lehigh": { x: -650, y: 420 },       // Bottom Left
+    "Dog Park": { x: 650, y: 420 },      // Bottom Right
+    "OWFL Blog": { x: 800, y: 0 },       // Far Right
+    "Bay FC": { x: -800, y: 0 },         // Far Left
+    "Jenna": { x: -350, y: -680 }        // Top Center-Left
   };
 
   const force = (alpha) => {
@@ -212,11 +212,11 @@ export default function ForceCanvas({
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
           const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
-          // Strictly exclude "Other" from same-cohort grouping forces!
-          const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && 
-                               sObj.cohort !== 'Other' && tObj.cohort !== 'Other' && 
-                               (sObj.cohort === tObj.cohort);
-          const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
+          // Cross-Cohort vs Unclustered Link identification
+          const sCohort = sObj && sObj.cohort;
+          const tCohort = tObj && tObj.cohort;
+          const isCrossCohort = sCohort && tCohort && sCohort !== 'Other' && tCohort !== 'Other' && sCohort !== tCohort;
+          const isUnclustered = (sCohort === 'Other' || tCohort === 'Other') && !isCoupleOrFamilyLink;
 
           let cohortMultiplier;
           if (isCoupleOrFamilyLink) {
@@ -224,9 +224,11 @@ export default function ForceCanvas({
           } else if (isSameCohort) {
             cohortMultiplier = 0.65;
           } else if (isHubLink) {
-            cohortMultiplier = 1.8;
+            cohortMultiplier = 2.5;
+          } else if (isCrossCohort) {
+            cohortMultiplier = 3.5; // Long cross-cohort edges to keep different cohorts wide apart!
           } else {
-            cohortMultiplier = 1.2;
+            cohortMultiplier = 1.3; // Comfortable distance for unclustered partners/guests!
           }
 
           const baseSum = sRadius + tRadius + 10 * nodeScaleMultiplier;
@@ -253,9 +255,14 @@ export default function ForceCanvas({
                                sObj.cohort !== 'Other' && tObj.cohort !== 'Other' && 
                                (sObj.cohort === tObj.cohort);
 
+          const sCohort = sObj && sObj.cohort;
+          const tCohort = tObj && tObj.cohort;
+          const isCrossCohort = sCohort && tCohort && sCohort !== 'Other' && tCohort !== 'Other' && sCohort !== tCohort;
+
           if (isCoupleOrFamilyLink) return 1.0;
           if (isSameCohort) return 0.7;
-          return 0.4; // Solid link strength for unclustered & cross-cohort friends so they stay right next to their friends!
+          if (isCrossCohort) return 0.05; // Soft spring so different main cohorts don't drag into each other!
+          return 0.45; // Solid link strength for unclustered guests so they stay right next to their friends!
         });
 
       fg.d3Force('charge')
