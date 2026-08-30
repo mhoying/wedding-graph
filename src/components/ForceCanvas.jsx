@@ -342,24 +342,36 @@ export default function ForceCanvas({
     return () => clearInterval(interval);
   }, [fgRef, nodes]);
 
-  // Auto Zoom-to-Fit for Search Results: Frames 100% of all matching search result nodes!
+  // Auto Zoom-to-Fit for Search Results: Frames search results with comfortable padding & zoom caps!
   useEffect(() => {
-    if (!searchQuery || !searchQuery.trim() || !fgRef.current || typeof fgRef.current.zoomToFit !== 'function') return;
+    if (!searchQuery || !searchQuery.trim() || !fgRef.current) return;
 
     const q = searchQuery.trim().toLowerCase();
-    const matchingNodeIds = new Set(
-      nodes.filter(node => {
-        const matchesName = node.name.toLowerCase().includes(q);
-        const matchesCohort = node.cohort ? node.cohort.toLowerCase().includes(q) : false;
-        const matchesSide = node.side ? node.side.toLowerCase().includes(q) : false;
-        const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase().includes(q)) : false;
-        return matchesName || matchesCohort || matchesSide || matchesInterest;
-      }).map(n => n.id)
-    );
+    const matchingNodes = nodes.filter(node => {
+      const matchesName = node.name ? node.name.toLowerCase().includes(q) : false;
+      const matchesCohort = node.cohort ? node.cohort.toLowerCase().includes(q) : false;
+      const matchesSide = node.side ? node.side.toLowerCase().includes(q) : false;
+      const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase().includes(q)) : false;
+      return matchesName || matchesCohort || matchesSide || matchesInterest;
+    });
 
-    if (matchingNodeIds.size > 0) {
+    if (matchingNodes.length === 1) {
+      const targetNode = matchingNodes[0];
       if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
-      fgRef.current.zoomToFit(800, 60, (node) => matchingNodeIds.has(node.id));
+      if (targetNode.x !== undefined && targetNode.y !== undefined) {
+        if (typeof fgRef.current.centerAt === 'function') {
+          fgRef.current.centerAt(targetNode.x, targetNode.y, 800);
+        }
+        if (typeof fgRef.current.zoom === 'function') {
+          fgRef.current.zoom(2.2, 800); // Comfortable, non-extreme zoom level!
+        }
+      }
+    } else if (matchingNodes.length > 1) {
+      if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
+      if (typeof fgRef.current.zoomToFit === 'function') {
+        const matchingNodeIds = new Set(matchingNodes.map(n => n.id));
+        fgRef.current.zoomToFit(800, 120, (node) => matchingNodeIds.has(node.id));
+      }
     }
   }, [searchQuery, nodes, fgRef, setIsOrbiting]);
 
