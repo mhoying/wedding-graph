@@ -70,21 +70,24 @@ export default function ForceCanvas({
           const sId = String(sObj ? sObj.id : l.source).toLowerCase();
           const tId = String(tObj ? tObj.id : l.target).toLowerCase();
 
-          // Precise Couple & Family group link identification
+          // Precise Couple & Partner link identification
           const isExplicitType = l.type === 'COUPLE' || l.type === 'MARRIED' || l.type === 'FAMILY' || l.label === 'Married' || l.label === 'Partner' || l.label === 'Spouse';
-          const isCoupleOrFamilyRel = l.relationship === 'Family' || l.relationship === 'Connected' || l.relationship === 'Married' || l.relationship === 'Partner';
-          const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && sObj.relationship === tObj.relationship && !['Friends', 'Coworkers', 'Guest'].includes(sObj.relationship);
-          const isMattMaureen = (sId.includes('maureen') && tId.includes('matt')) || (sId.includes('matt') && tId.includes('maureen'));
+          const isExplicitCoupleRel = l.relationship === 'Family' || l.relationship === 'Married' || l.relationship === 'Partner' || l.relationship === 'Spouse';
+          const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && 
+                                   sObj.relationship === tObj.relationship && 
+                                   !['Friends', 'Coworkers', 'Guest', 'Connected'].includes(sObj.relationship) &&
+                                   !String(sObj.relationship).toLowerCase().includes('cluster');
+          const isMattMaureen = (sId === 'matt' && tId === 'maureen') || (sId === 'maureen' && tId === 'matt');
 
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
-          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isCoupleOrFamilyRel || hasSameHousehold || isMattMaureen);
+          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
           const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && (sObj.cohort === tObj.cohort);
           const isHubLink = (sObj && sObj.type === 'CONTEXT_HUB') || (tObj && tObj.type === 'CONTEXT_HUB');
 
           let cohortMultiplier;
           if (isCoupleOrFamilyLink) {
-            cohortMultiplier = 0.12; // Extremely close edge distance for couples and families!
+            cohortMultiplier = 0.15; // Extremely close edge distance for couples and families!
           } else if (isSameCohort) {
             cohortMultiplier = 0.85;
           } else if (isHubLink) {
@@ -103,12 +106,15 @@ export default function ForceCanvas({
           const tId = String(tObj ? tObj.id : l.target).toLowerCase();
 
           const isExplicitType = l.type === 'COUPLE' || l.type === 'MARRIED' || l.type === 'FAMILY' || l.label === 'Married' || l.label === 'Partner' || l.label === 'Spouse';
-          const isCoupleOrFamilyRel = l.relationship === 'Family' || l.relationship === 'Connected' || l.relationship === 'Married' || l.relationship === 'Partner';
-          const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && sObj.relationship === tObj.relationship && !['Friends', 'Coworkers', 'Guest'].includes(sObj.relationship);
-          const isMattMaureen = (sId.includes('maureen') && tId.includes('matt')) || (sId.includes('matt') && tId.includes('maureen'));
+          const isExplicitCoupleRel = l.relationship === 'Family' || l.relationship === 'Married' || l.relationship === 'Partner' || l.relationship === 'Spouse';
+          const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && 
+                                   sObj.relationship === tObj.relationship && 
+                                   !['Friends', 'Coworkers', 'Guest', 'Connected'].includes(sObj.relationship) &&
+                                   !String(sObj.relationship).toLowerCase().includes('cluster');
+          const isMattMaureen = (sId === 'matt' && tId === 'maureen') || (sId === 'maureen' && tId === 'matt');
 
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
-          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isCoupleOrFamilyRel || hasSameHousehold || isMattMaureen);
+          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
           return isCoupleOrFamilyLink ? 1.0 : 0.25;
         });
