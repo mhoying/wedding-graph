@@ -61,4 +61,10 @@
   1. **Magic Links**: Added URL query parameter listener (`?guest=id` / `?name=Name`) in `App.jsx` auto-zooming camera & opening target guest drawer.
   2. **Alphabetical Guest Directory List View**: Added `📋 Directory List` view toggle to `TopHeaderNav.jsx`, `MobileControlsSheet.jsx`, and `App.jsx` with search filtering and 1-click Inspect & Path actions.
   3. **Conversational Icebreakers**: Enhanced `CocktailMatchmakerModal.jsx` with personalized conversation starters based on overlapping interests and cohorts.
-  4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Lexical Declaration TDZ Fix (`App.jsx` & `ForceCanvas.jsx`)
+- **User Prompt**: "this is throwing an error now ReferenceError: can't access lexical declaration 'nn' before initialization"
+- **Actions & Fixes**:
+  1. **Root Cause Analysis**:
+     - Identified that chained `.filter(n => ...).forEach(n => ...)` in `tagWeights` and nested parameters `(node) => ...` in `zoomToFit` / `flyToNode` caused variable minification shadowing (`nn`), triggering a JavaScript Temporal Dead Zone (TDZ) `ReferenceError`.
+  2. **Parameter Disambiguation**: Refactored array iteration and callback parameter names in `App.jsx` and `ForceCanvas.jsx` to avoid shadowing.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
