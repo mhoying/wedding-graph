@@ -1303,12 +1303,14 @@ export const SAMPLE_LINKS = [
   {
     "source": "leanna_habana",
     "target": "emy_habana",
-    "relationship": "Connected"
+    "relationship": "Family",
+    "type": "COUPLE"
   },
   {
     "source": "matt",
     "target": "maureen",
-    "relationship": "Connected"
+    "relationship": "Married",
+    "type": "COUPLE"
   },
   {
     "source": "romana_rajput",
@@ -1476,11 +1478,7 @@ export const SAMPLE_LINKS = [
     "target": "jessi_mcmullan",
     "relationship": "Connected"
   },
-  {
-    "source": "leanna_habana",
-    "target": "matt",
-    "relationship": "Connected"
-  },
+
   {
     "source": "liz_scott",
     "target": "owfl_blog",
