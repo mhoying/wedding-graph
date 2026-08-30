@@ -3,6 +3,7 @@ import { X, Edit3, Ghost, Landmark, Home, MapPin, Users, Sparkles } from 'lucide
 
 export default function GuestProfileDrawer({
   selectedNode,
+  nodes,
   onClose,
   isEditingDrawer,
   setIsEditingDrawer,
@@ -31,6 +32,45 @@ export default function GuestProfileDrawer({
   colorMode,
   getNodeColor
 }) {
+  const availableTags = React.useMemo(() => {
+    const set = new Set([
+      'San Diego Chargers',
+      'Chargers',
+      'Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming'
+    ]);
+    if (nodes && Array.isArray(nodes)) {
+      nodes.forEach(n => {
+        if (n.hobbies && Array.isArray(n.hobbies)) {
+          n.hobbies.forEach(h => {
+            if (h && typeof h === 'string' && h.trim()) set.add(h.trim());
+          });
+        }
+      });
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [nodes]);
+
+  const availableCohorts = React.useMemo(() => {
+    const set = new Set(['Bay FC', 'Cornell', 'Dog Park', 'Google', 'Lehigh', 'OWFL Blog', 'The Couple', 'Other']);
+    if (nodes && Array.isArray(nodes)) {
+      nodes.forEach(n => {
+        if (n.cohort && typeof n.cohort === 'string' && n.cohort.trim()) set.add(n.cohort.trim());
+      });
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [nodes]);
+
+  const availableLocations = React.useMemo(() => {
+    const set = new Set(['SF Bay Area', 'NYC', 'Chicago', 'DC', 'Baltimore', 'Bermuda', 'Madison, WI', 'Houston', 'Boston, MA', 'Stockton, Ca', 'Upstate NY', 'Western PA', 'Eastern PA', 'Colorado']);
+    if (nodes && Array.isArray(nodes)) {
+      nodes.forEach(n => {
+        if (n.originallyFrom && typeof n.originallyFrom === 'string' && n.originallyFrom.trim()) set.add(n.originallyFrom.trim());
+        if (n.currentlyLivesIn && typeof n.currentlyLivesIn === 'string' && n.currentlyLivesIn.trim()) set.add(n.currentlyLivesIn.trim());
+      });
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [nodes]);
+
   if (!selectedNode) return null;
 
   const nodeColor = getNodeColor ? getNodeColor(selectedNode) : '#38bdf8';
@@ -250,8 +290,8 @@ export default function GuestProfileDrawer({
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#38bdf8', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                   Select Existing Universe Tags:
                 </div>
-                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', maxHeight: 80, overflowY: 'auto' }}>
-                  {['Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming']
+                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', maxHeight: 90, overflowY: 'auto' }}>
+                  {availableTags
                     .filter(tag => !editHobbies.includes(tag))
                     .map(tag => (
                       <button
@@ -281,17 +321,17 @@ export default function GuestProfileDrawer({
 
             {/* Datalists for Autocomplete */}
             <datalist id="existing-hobbies-list">
-              {['Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming'].map(h => (
+              {availableTags.map(h => (
                 <option key={h} value={h} />
               ))}
             </datalist>
             <datalist id="existing-cohorts-list">
-              {['Bay FC', 'Cornell', 'Dog Park', 'Google', 'Lehigh', 'OWFL Blog', 'The Couple', 'Other'].map(c => (
+              {availableCohorts.map(c => (
                 <option key={c} value={c} />
               ))}
             </datalist>
             <datalist id="existing-locations-list">
-              {['SF Bay Area', 'NYC', 'Chicago', 'DC', 'Baltimore', 'Bermuda', 'Madison, WI', 'Houston', 'Boston, MA', 'Stockton, Ca', 'Upstate NY', 'Western PA', 'Eastern PA', 'Colorado'].map(l => (
+              {availableLocations.map(l => (
                 <option key={l} value={l} />
               ))}
             </datalist>
