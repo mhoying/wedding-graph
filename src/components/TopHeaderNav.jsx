@@ -182,7 +182,7 @@ export default function TopHeaderNav({
         </button>
 
         {/* Desktop Sliders Popover Button (Node Size & Map Spacing) */}
-        <div className="desktop-only-inline" style={{ position: 'relative' }}>
+        <div className="desktop-only-inline desktop-secondary-toggle" style={{ position: 'relative' }}>
           <button 
             onClick={() => setIsTunePopoverOpen(!isTunePopoverOpen)}
             className={`glass-panel btn-icon ${isTunePopoverOpen ? 'active' : ''}`}
@@ -276,7 +276,7 @@ export default function TopHeaderNav({
         {/* Desktop Headshot Photos Toggle */}
         <button 
           onClick={() => setShowHeadshots(!showHeadshots)}
-          className={`glass-panel btn-icon desktop-only-inline ${showHeadshots ? 'active' : ''}`}
+          className={`glass-panel btn-icon desktop-only-inline desktop-secondary-toggle ${showHeadshots ? 'active' : ''}`}
           title="Toggle Guest Photos on Canvas"
           style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: showHeadshots ? '#38bdf8' : '#94a3b8', flexShrink: 0 }}
         >
@@ -287,7 +287,7 @@ export default function TopHeaderNav({
         {/* Desktop Orbit Motion Toggle */}
         <button 
           onClick={() => setIsOrbiting(!isOrbiting)}
-          className={`glass-panel btn-icon desktop-only-inline ${isOrbiting ? 'active' : ''}`}
+          className={`glass-panel btn-icon desktop-only-inline desktop-secondary-toggle ${isOrbiting ? 'active' : ''}`}
           title="Toggle Celestial Orbit Rotation"
           style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: isOrbiting ? '#a855f7' : '#94a3b8', flexShrink: 0 }}
         >
@@ -298,7 +298,7 @@ export default function TopHeaderNav({
         {/* Desktop Path Finder Toggle */}
         <button 
           onClick={() => setIsPathMode(!isPathMode)}
-          className={`glass-panel btn-icon desktop-only-inline ${isPathMode ? 'active' : ''}`}
+          className={`glass-panel btn-icon desktop-only-inline desktop-secondary-toggle ${isPathMode ? 'active' : ''}`}
           title="Calculate Social Distance Path"
           style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#94a3b8', flexShrink: 0 }}
         >
@@ -309,7 +309,7 @@ export default function TopHeaderNav({
         {/* Desktop Matchmaker Button */}
         <button 
           onClick={() => setIsMatchmakerOpen(true)}
-          className="glass-panel btn-icon desktop-only-inline"
+          className="glass-panel btn-icon desktop-only-inline desktop-secondary-toggle"
           title="Find Guest Match Recommendations"
           style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: '#34d399', flexShrink: 0 }}
         >

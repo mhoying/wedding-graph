@@ -60,8 +60,24 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   pointer-events: none;
+  max-width: calc(100vw - 40px);
+}
+
+.search-controls-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 0;
+}
+
+.search-controls-area::-webkit-scrollbar {
+  display: none;
 }
 
 .logo-area, .search-controls-area, .top-bar button, .top-bar select, .top-bar input, .top-bar div {
@@ -607,8 +623,17 @@ body {
   transform: translateY(-2px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
+  .desktop-secondary-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 960px) {
   .desktop-only-inline {
+    display: none !important;
+  }
+  .logo-subtitle {
     display: none !important;
   }
 }
