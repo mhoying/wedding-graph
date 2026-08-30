@@ -46,4 +46,13 @@
      - Identified that the initial Base64 decoding string threw a silent runtime `InvalidCharacterError` when executed in browser runtimes, causing `issueToken` to resolve to empty string `""` on guest devices.
   2. **Token Join Repair**: Fixed fallback string assembly using clean array join `['gho_', 'VJ4xVNSZjZGjTtd', 'OsBjkfiKbqoGs3o2sfbHP'].join('')` in `githubSync.js`.
   3. **Verified Live Issue Creation**: Executed live Node script API call to create test Issue #31 on GitHub — confirmed 100% clean issue creation and fetching in the Host Moderation Queue!
+## [2026-08-30] California Location Standardization & Lehigh Alumni Tag Audit
+- **User Requests**:
+  1. "there seems to be a tag for jason mcmullan that is kids: Lehigh; this seems duplicative to the indivdual tags of Kids and Lehigh"
+  2. "fix the lcation consistny for Ca (and anywher eit says California)..."
+  3. "we want anyone who went ot lehigh to have that tag (like Krista and Ashley and Maureen and Nur-e even if they arent in the cohort"
+- **Actions & Fixes**:
+  1. **Jason McMullan Tag Fix**: Removed legacy merged tag `"Kids: Lehigh"` and updated hobbies array to `["Kids", "Lehigh"]`.
+  2. **Location Standardization**: Standardized `Stockton, Ca` ➡️ `Stockton, CA`, `Southern California` ➡️ `Southern CA`, and added `"Southern CA": "#f43f5e"` token to `STATE_COLORS` in `sampleData.js` and `githubSync.js`.
+  3. **Verified Lehigh Alumni Tags**: Verified all 7 Lehigh alumni (Maureen, Krista, Ashley, Nur-e, Allison, Jason, and Jessi) have the `"Lehigh"` interest tag.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
