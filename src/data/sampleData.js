@@ -73,7 +73,10 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs",
       "Beer",
-      "Bay FC"
+      "Bay FC",
+      "Music",
+      "Photography",
+      "Outdoors"
     ],
     "__indexColor": "#ec0001",
     "fx": 36,
@@ -660,7 +663,8 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Outdoors",
       "Kids",
-      "Dogs"
+      "Dogs",
+      "cheese"
     ]
   },
   {
