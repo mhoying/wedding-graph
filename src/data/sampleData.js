@@ -73,12 +73,12 @@ export const SAMPLE_NODES = [
       "Beer",
       "Bay FC"
     ],
-    "__indexColor": "#5c0015",
+    "__indexColor": "#ec0001",
     "fx": 36,
     "fy": 0,
     "x": 36,
     "y": 0,
-    "index": 20,
+    "index": 0,
     "vx": 0,
     "vy": 0
   },
@@ -102,12 +102,12 @@ export const SAMPLE_NODES = [
       "Wine",
       "RPI Medal"
     ],
-    "__indexColor": "#480016",
+    "__indexColor": "#d80002",
     "fx": -36,
     "fy": 0,
     "x": -36,
     "y": 0,
-    "index": 21,
+    "index": 1,
     "vx": 0,
     "vy": 0
   },
@@ -127,12 +127,12 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Kids"
     ],
-    "__indexColor": "#a8001e",
-    "index": 29,
-    "x": 515.3486266366743,
-    "y": 469.10511759948963,
-    "vx": -0.1658748865381217,
-    "vy": 0.19719037055324895
+    "__indexColor": "#c40003",
+    "index": 2,
+    "x": 874.6253932370599,
+    "y": 123.44278665754454,
+    "vx": -0.042921483593461464,
+    "vy": 0.3367158042960829
   },
   {
     "id": "dog_park",
@@ -147,12 +147,12 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dogs"
     ],
-    "__indexColor": "#4c0049",
-    "index": 72,
-    "x": 352.37154971931284,
-    "y": 32.043704713105726,
-    "vx": 0.051970026469818624,
-    "vy": 0.1036742441431225
+    "__indexColor": "#b00004",
+    "index": 3,
+    "x": 1056.5807850853591,
+    "y": 353.23710016161175,
+    "vx": -0.13227974282805177,
+    "vy": 0.40735595787270723
   },
   {
     "id": "owfl_blog",
@@ -167,12 +167,12 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Food"
     ],
-    "__indexColor": "#38004a",
-    "index": 73,
-    "x": 1180.224846977532,
-    "y": 235.1706118788916,
-    "vx": -0.03292270081045506,
-    "vy": 0.3232452146441797
+    "__indexColor": "#9c0005",
+    "index": 4,
+    "x": 925.3279903106203,
+    "y": -560.2379400577717,
+    "vx": 0.2214389455332955,
+    "vy": 0.34390785396091517
   },
   {
     "id": "bay_fc",
@@ -188,12 +188,12 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Soccer"
     ],
-    "__indexColor": "#24004b",
-    "index": 74,
-    "x": -851.9325114218614,
-    "y": 460.50773290234895,
-    "vx": -0.156402381314393,
-    "vy": -0.31762206942035265
+    "__indexColor": "#880006",
+    "index": 5,
+    "x": -883.9022568186804,
+    "y": -561.8220902581063,
+    "vx": 0.21760380190945153,
+    "vy": -0.34006272920298686
   },
   {
     "id": "honk",
@@ -206,12 +206,12 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "",
     "familyStatus": "Single",
     "hobbies": [],
-    "__indexColor": "#10004c",
-    "index": 75,
-    "x": -83.67101546733032,
-    "y": -196.1486712271448,
-    "vx": 0.12055376935777062,
-    "vy": 0.003859292414306961
+    "__indexColor": "#740007",
+    "index": 6,
+    "x": -225.0627613770851,
+    "y": 165.27795191259844,
+    "vx": -0.07964738460006256,
+    "vy": -0.049050848362070555
   },
   {
     "id": "allison_williams",
@@ -781,7 +781,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "nur_e_freedman",
-    "name": "Nur-e Freedman",
+    "name": "Nur-e Rahman Freedman",
     "type": "GUEST",
     "side": "Maureen",
     "cohort": "Lehigh",
