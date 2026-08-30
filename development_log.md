@@ -55,4 +55,10 @@
   1. **Jason McMullan Tag Fix**: Removed legacy merged tag `"Kids: Lehigh"` and updated hobbies array to `["Kids", "Lehigh"]`.
   2. **Location Standardization**: Standardized `Stockton, Ca` ➡️ `Stockton, CA`, `Southern California` ➡️ `Southern CA`, and added `"Southern CA": "#f43f5e"` token to `STATE_COLORS` in `sampleData.js` and `githubSync.js`.
   3. **Verified Lehigh Alumni Tags**: Verified all 7 Lehigh alumni (Maureen, Krista, Ashley, Nur-e, Allison, Jason, and Jessi) have the `"Lehigh"` interest tag.
+## [2026-08-30] Phase 1 UX & Guest Experience Deliverables
+- **User Prompt**: "proceed with phase 1 only"
+- **Actions & Deliverables**:
+  1. **Magic Links**: Added URL query parameter listener (`?guest=id` / `?name=Name`) in `App.jsx` auto-zooming camera & opening target guest drawer.
+  2. **Alphabetical Guest Directory List View**: Added `📋 Directory List` view toggle to `TopHeaderNav.jsx`, `MobileControlsSheet.jsx`, and `App.jsx` with search filtering and 1-click Inspect & Path actions.
+  3. **Conversational Icebreakers**: Enhanced `CocktailMatchmakerModal.jsx` with personalized conversation starters based on overlapping interests and cohorts.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
