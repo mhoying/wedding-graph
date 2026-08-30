@@ -9,17 +9,17 @@ import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/samp
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
 
-  // Dedicated Foci Map for Cohort Mode to keep all clusters well-spaced
+  // Dedicated Foci Map for Cohort Mode to keep all clusters balanced around center
   const COHORT_FOCI = {
     "The Couple": { x: 0, y: 0 },
-    "Cornell": { x: -650, y: -420 },     // Top Left
-    "Stanford": { x: 650, y: -420 },     // Top Right
-    "Google": { x: 0, y: 680 },          // Bottom Center
-    "Lehigh": { x: -650, y: 420 },       // Bottom Left
-    "Dog Park": { x: 650, y: 420 },      // Bottom Right
-    "OWFL Blog": { x: 800, y: 0 },       // Far Right
-    "Bay FC": { x: -800, y: 0 },         // Far Left
-    "Jenna": { x: -350, y: -680 }        // Top Center-Left
+    "Cornell": { x: -450, y: -280 },     // Top Left
+    "Stanford": { x: 450, y: -280 },     // Top Right
+    "Google": { x: 0, y: 480 },          // Bottom Center
+    "Lehigh": { x: -450, y: 280 },       // Bottom Left
+    "Dog Park": { x: 450, y: 280 },      // Bottom Right
+    "OWFL Blog": { x: 580, y: 0 },       // Far Right
+    "Bay FC": { x: -580, y: 0 },         // Far Left
+    "Jenna": { x: -220, y: -480 }        // Top Center-Left
   };
 
   const force = (alpha) => {
@@ -222,15 +222,15 @@ export default function ForceCanvas({
 
           let cohortMultiplier;
           if (isCoupleOrFamilyLink) {
-            cohortMultiplier = 0.15; // Extremely close edge distance for couples and families!
+            cohortMultiplier = 0.2; // Extremely close edge distance for couples and families!
           } else if (isSameCohort) {
-            cohortMultiplier = 0.65;
+            cohortMultiplier = 0.75;
           } else if (isHubLink) {
-            cohortMultiplier = 2.5;
+            cohortMultiplier = 1.8;
           } else if (isCrossCohort) {
-            cohortMultiplier = 3.5; // Long cross-cohort edges to keep different cohorts wide apart!
+            cohortMultiplier = 2.2; // Clean, natural cross-cohort spacing without extreme stretching!
           } else {
-            cohortMultiplier = 1.3; // Comfortable distance for unclustered partners/guests!
+            cohortMultiplier = 1.2; // Comfortable distance for unclustered partners/guests!
           }
 
           const baseSum = sRadius + tRadius + 10 * nodeScaleMultiplier;
@@ -263,13 +263,13 @@ export default function ForceCanvas({
 
           if (isCoupleOrFamilyLink) return 1.0;
           if (isSameCohort) return 0.7;
-          if (isCrossCohort) return 0.05; // Soft spring so different main cohorts don't drag into each other!
+          if (isCrossCohort) return 0.15; // Balanced spring tension
           return 0.45; // Solid link strength for unclustered guests so they stay right next to their friends!
         });
 
       fg.d3Force('charge')
-        .strength(-1200 * nodeScaleMultiplier * edgeLengthMultiplier)
-        .distanceMax(1800 * edgeLengthMultiplier);
+        .strength(-1400 * nodeScaleMultiplier * edgeLengthMultiplier)
+        .distanceMax(2000 * edgeLengthMultiplier);
       
       fg.d3Force('collide', forceCollide().radius(node => {
         return getNodeBounds(node, showHeadshots, nodeScaleMultiplier).collisionRadius;
