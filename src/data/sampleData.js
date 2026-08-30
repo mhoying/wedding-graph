@@ -1226,6 +1226,36 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "",
     "familyStatus": "Single",
     "hobbies": []
+  },
+  {
+    "id": "toyo_tsujino",
+    "name": "Toyo Tsujino",
+    "type": "GUEST",
+    "cohort": "Cornell",
+    "side": "Matt",
+    "relationship": "Toyo Tsujino and Danielle Sullivan",
+    "originallyFrom": "",
+    "currentlyLivesIn": "Southern California",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "San Diego Chargers",
+      "Dogs",
+      "Swimming"
+    ]
+  },
+  {
+    "id": "danielle_sullivan",
+    "name": "Danielle Sullivan",
+    "type": "GUEST",
+    "cohort": "Other",
+    "side": "Matt",
+    "relationship": "Toyo Tsujino and Danielle Sullivan",
+    "originallyFrom": "",
+    "currentlyLivesIn": "Southern California",
+    "familyStatus": "Couple / Group",
+    "hobbies": [
+      "Dogs"
+    ]
   }
 ];
 
@@ -1664,6 +1694,16 @@ export const SAMPLE_LINKS = [
     "source": "mira_vojvodic",
     "target": "ivan_vojvodic",
     "relationship": "Family"
+  },
+  {
+    "source": "toyo_tsujino",
+    "target": "danielle_sullivan",
+    "relationship": "Connected"
+  },
+  {
+    "source": "toyo_tsujino",
+    "target": "george_sun",
+    "relationship": "Connected"
   }
 ];
 
