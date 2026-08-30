@@ -140,9 +140,19 @@ export default function App() {
 
     setCopyToast('⚡ Committing updated spreadsheet dataset to GitHub Repo...');
     const jsContent = generateSampleDataJsContent(combinedNodes, links);
-    const result = await pushToGithubRepo(jsContent, 'Update guest spreadsheet dataset via Host Admin Suite', '', 'src/data/sampleData.js');
+    let result = await pushToGithubRepo(jsContent, 'Update guest spreadsheet dataset via Host Admin Suite', '', 'src/data/sampleData.js');
+
+    if (!result.success && result.isTokenError) {
+      const userToken = window.prompt('🔑 GitHub Token Error (403): Embedded token was revoked by GitHub Security scanner.\n\nPlease enter a GitHub Personal Access Token (PAT) with repo scope to enable direct commits:');
+      if (userToken && userToken.trim()) {
+        localStorage.setItem('wedding_graph_gh_token', userToken.trim());
+        setCopyToast('⚡ Retrying direct commit with new token...');
+        result = await pushToGithubRepo(jsContent, 'Update guest spreadsheet dataset via Host Admin Suite', userToken.trim(), 'src/data/sampleData.js');
+      }
+    }
+
     setCopyToast(result.message);
-    setTimeout(() => setCopyToast(''), 4500);
+    setTimeout(() => setCopyToast(''), 5500);
   };
 
   const handleApplyDataset = useCallback((newNodes, newLinks) => {

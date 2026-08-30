@@ -150,6 +150,27 @@ export default function HostSpreadsheetEditorModal({
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <button
               type="button"
+              onClick={() => {
+                const current = localStorage.getItem('wedding_graph_gh_token') || '';
+                const newToken = window.prompt('🔑 Enter GitHub Personal Access Token (PAT) with repo scope:', current);
+                if (newToken !== null) {
+                  if (newToken.trim()) {
+                    localStorage.setItem('wedding_graph_gh_token', newToken.trim());
+                    alert('✅ GitHub Access Token saved to local browser storage!');
+                  } else {
+                    localStorage.removeItem('wedding_graph_gh_token');
+                    alert('Cleared custom GitHub Access Token.');
+                  }
+                }
+              }}
+              style={{ padding: '8px 12px', borderRadius: 10, background: 'rgba(255, 255, 255, 0.08)', color: '#94a3b8', border: '1px solid rgba(255, 255, 255, 0.15)', fontWeight: 700, cursor: 'pointer', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}
+              title="Configure GitHub Personal Access Token for Direct Commits"
+            >
+              <span>🔑 PAT Token</span>
+            </button>
+
+            <button
+              type="button"
               onClick={handleAddRow}
               style={{ padding: '8px 14px', borderRadius: 10, background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', fontWeight: 700, cursor: 'pointer', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}
             >

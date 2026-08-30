@@ -85,9 +85,14 @@ export async function pushToGithubRepo(contentString, commitMessage = 'Update we
         }
       }
 
-      const errJson = await putRes.json();
+      const errJson = await putRes.json().catch(() => ({}));
       if (putRes.status === 401 || putRes.status === 403) {
         localStorage.removeItem('wedding_graph_gh_token');
+        return { 
+          success: false, 
+          isTokenError: true,
+          message: `🔑 GitHub Token Error (403 Forbidden): Token revoked by GitHub Security (${errJson.message || 'Resource not accessible'}). Click "Set GitHub Token" in Host Mode to enter a Personal Access Token.` 
+        };
       }
       return { success: false, message: `GitHub API Error (${putRes.status}): ${errJson.message || 'Push failed'}` };
     }
