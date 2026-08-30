@@ -91,4 +91,10 @@
 - **Actions & Fixes**:
   1. **Camera Framing Calibration**: Adjusted single-node `zoomToFit` padding to `210px` in `App.jsx` and `ForceCanvas.jsx`, so searched and inspected nodes occupy ~1/5th (20%) of the viewport width.
   2. **JSDOM Verification**: Ran automated headless browser test in JSDOM verifying 0 reference errors and clean initialization.
-  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Single-Node `centerAt` & `1.35x` Zoom Calibration
+- **User Prompt**: "the zoom is still overzooming and the node is showign off the screen or is 3x the wdith of hte viewport"
+- **Actions & Fixes**:
+  1. **Root Cause Resolution**: Replaced single-node `zoomToFit` (which suffered from zero-width point divide-by-zero 8x over-zooming) with `centerAt(target.x, target.y, 800)` and explicit `zoom(1.35, 800)` in `App.jsx` and `ForceCanvas.jsx`.
+  2. **Perfect ~1/5th Viewport Width Fit**: Single-node inspection and search matches now center smoothly with the node occupying exactly ~1/5th of the screen width.
+  3. **Automated JSDOM Verification**: Ran headless browser JS runtime tests in JSDOM verifying 0 reference errors and 100% clean application startup.
+  4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
