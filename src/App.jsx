@@ -646,17 +646,34 @@ export default function App() {
   }, [isPathMode, pathStartId, flyToNode, setIsOrbiting]);
 
   const handleNodeDrag = useCallback((node) => {
-    if (node && node.id !== 'matt' && node.id !== 'maureen') {
-      node.fx = node.x;
-      node.fy = node.y;
-    }
-  }, []);
+    if (!node || node.id === 'matt' || node.id === 'maureen') return;
+    node.fx = node.x;
+    node.fy = node.y;
+
+    // Apply gentle elastic spring pull to directly attached neighbor nodes while dragging
+    (links || []).forEach(l => {
+      if (!l) return;
+      const sId = typeof l.source === 'object' ? l.source.id : l.source;
+      const tId = typeof l.target === 'object' ? l.target.id : l.target;
+
+      let nbrObj = null;
+      if (sId === node.id) nbrObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === tId);
+      else if (tId === node.id) nbrObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === sId);
+
+      if (nbrObj && nbrObj.id !== 'matt' && nbrObj.id !== 'maureen') {
+        const dx = node.x - (nbrObj.x || 0);
+        const dy = node.y - (nbrObj.y || 0);
+        nbrObj.vx += dx * 0.06;
+        nbrObj.vy += dy * 0.06;
+      }
+    });
+  }, [links, nodes]);
 
   const handleNodeDragEnd = useCallback((node) => {
-    if (node && node.id !== 'matt' && node.id !== 'maureen') {
-      node.fx = node.x;
-      node.fy = node.y;
-    }
+    if (!node || node.id === 'matt' || node.id === 'maureen') return;
+    // Release fixed anchor on drag end so the node resumes orbiting with the rest of the galaxy!
+    node.fx = undefined;
+    node.fy = undefined;
   }, []);
 
   const handleZoom = useCallback(({ k }) => {
