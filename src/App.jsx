@@ -267,21 +267,9 @@ export default function App() {
 
   // Camera & Node Drag Handlers (Uses centerAt + 1.35x Zoom for Single Node to take up exactly ~1/5th of viewport width!)
   const flyToNode = useCallback((targetNodeOrNodes) => {
-    setIsOrbiting(false);
     const nodeArray = Array.isArray(targetNodeOrNodes) ? targetNodeOrNodes.filter(Boolean) : [targetNodeOrNodes].filter(Boolean);
     
     if (nodeArray.length === 0 || !fgRef.current) return;
-
-    nodeArray.forEach(node => {
-      if (node && node.x !== undefined && node.y !== undefined) {
-        node.fx = node.x;
-        node.fy = node.y;
-      }
-    });
-
-    if (typeof fgRef.current.d3ReheatSimulation === 'function') {
-      fgRef.current.d3ReheatSimulation();
-    }
 
     if (nodeArray.length === 1) {
       const target = nodeArray[0];
@@ -299,7 +287,7 @@ export default function App() {
         fgRef.current.zoomToFit(800, 180, (canvasItem) => Boolean(canvasItem && canvasItem.id && targetIdSet.has(canvasItem.id)));
       }
     }
-  }, [setIsOrbiting]);
+  }, []);
 
   // Secret URL Parameter & Secret Keyboard Shortcut Listener (`Ctrl + Shift + A`)
   useEffect(() => {
