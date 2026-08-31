@@ -119,3 +119,10 @@
   2. **Widen Maureen & Matt Anchors**: Updated fixed anchors for Maureen (`x = -110`) and Matt (`x = 110`) in `ForceCanvas.jsx` to eliminate center node overlap and provide a clean 220px separation.
   3. **Zero-Config Write Token Fallback**: Added repo write-scoped token fallback to `pushToGithubRepo` and `closeGithubIssueProposal` in `githubSync.js` so clicking **Approve** on ANY device automatically commits edits to GitHub and closes issues without requiring manual token setup.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Concentric Hop Radial Distance Force Implementation
+- **User Prompt**: "it still seems to have nodes one hop further going back toward s the center. i woudl expet that the more hops you are from matt and maureen, the farther from the center you'd be"
+- **Actions & Deliverables**:
+  1. **BFS Degrees of Separation**: Added `calculateHopDistances` to `ForceCanvas.jsx` to compute shortest-path hop distances from `{Matt, Maureen}` to every node in the graph.
+  2. **D3 Radial Concentric Force (`radialHop`)**: Created `createConcentricHopRadialForce` in `ForceCanvas.jsx` which enforces expanding target orbital radii ($R = 100 + \text{hops} \times 170$) so direct friends (1 hop) orbit in an inner ring, 2-hop guests orbit in a middle ring, and 3+ hop guests orbit in outer rings.
+  3. **Automated Verification**: Ran JSDOM headless browser runtime tests verifying zero reference errors and clean execution.
+  4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
