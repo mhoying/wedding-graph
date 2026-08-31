@@ -59,7 +59,7 @@ function createConcentricHopRadialForce(edgeLengthMultiplier, clusterMode) {
     const forceWeight = clusterMode !== 'off' ? 0.12 : 0.35;
 
     nodesList.forEach(node => {
-      if (!node || !node.id || node.id === 'matt' || node.id === 'maureen' || node.type === 'CONTEXT_HUB') return;
+      if (!node || !node.id || node.id === 'matt' || node.id === 'maureen') return;
 
       const hops = Math.max(1, hopDistances.get(node.id) ?? 2);
 
@@ -440,8 +440,6 @@ export default function ForceCanvas({
             cohortMultiplier = 0.2; // Extremely close edge distance for couples and families!
           } else if (isSameCohort) {
             cohortMultiplier = 0.75;
-          } else if (isHubLink) {
-            cohortMultiplier = 1.8;
           } else if (isCrossCohort) {
             cohortMultiplier = 3.5; // Long cross-cohort distance so separate cohorts remain distinct!
           } else {
