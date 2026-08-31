@@ -591,17 +591,18 @@ export default function ForceCanvas({
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, orbitSpeed, clusterMode]);
 
-  // Smooth Hover Damping without aggressive simulation reheating (prevents network shaking!)
+  // PERPETUAL KINEMATIC ORBIT TICKER: Guarantees D3 simulation timer NEVER stops while activeOrbiting is true!
   useEffect(() => {
-    if (!activeOrbiting && (isHoverFrozen || hoverNode)) {
-      (nodes || []).forEach(n => {
-        if (n && n.id !== 'maureen' && n.id !== 'matt') {
-          n.vx = 0;
-          n.vy = 0;
-        }
-      });
-    }
-  }, [isHoverFrozen, hoverNode, activeOrbiting, nodes]);
+    if (!activeOrbiting) return;
+
+    const interval = setInterval(() => {
+      if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
+        fgRef.current.d3ReheatSimulation();
+      }
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [activeOrbiting]);
 
   // Ensure The Couple (Maureen Wink & Matt Hoying) is ALWAYS anchored SIDE-BY-SIDE DEAD CENTER at (0, 0) of the graph!
   useEffect(() => {

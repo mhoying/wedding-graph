@@ -600,12 +600,10 @@ export default function App() {
     return result;
   }, [nodes]);
 
-  // Orbit Force Factory with Velocity Decay Compensation so Orbit Speed NEVER Decays Below Target Speed!
+  // Orbit Force Factory: Smooth kinematic rotation that NEVER decays or stops!
   const createOrbitForce = useCallback((speedMultiplier = 1.0) => {
-    const omega = 0.007 * speedMultiplier;
-    // Compensation factor for D3 velocity decay (0.45) -> 1 / (1 - 0.45) = 1.818
-    const decayCompensation = 1.818;
-    return () => {
+    const omega = 0.006 * speedMultiplier;
+    const force = (alpha) => {
       nodes.forEach(node => {
         if (!node || node.id === 'maureen' || node.id === 'matt' || node.type === 'CONTEXT_HUB') return;
         const x = node.x || 0;
@@ -616,15 +614,18 @@ export default function App() {
           const newTheta = theta + omega;
           const targetX = r * Math.cos(newTheta);
           const targetY = r * Math.sin(newTheta);
-          const desVx = targetX - x;
-          const desVy = targetY - y;
 
-          // Additive tangential velocity blending: Preserves repulsion, link, and radial hop forces!
-          node.vx += (desVx - node.vx) * 0.22;
-          node.vy += (desVy - node.vy) * 0.22;
+          const tangVx = targetX - x;
+          const tangVy = targetY - y;
+
+          node.vx += (tangVx * 1.5 - node.vx) * 0.35;
+          node.vy += (tangVy * 1.5 - node.vy) * 0.35;
         }
       });
     };
+
+    force.initialize = () => {};
+    return force;
   }, [nodes]);
 
   // Camera & Node Drag Handlers
