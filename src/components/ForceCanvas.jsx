@@ -681,7 +681,7 @@ export default function ForceCanvas({
       ctx.font = `800 ${22 * nodeScaleMultiplier}px Inter, sans-serif`;
       ctx.fillStyle = '#38bdf8';
       ctx.textAlign = 'center';
-      ctx.fillText('THE COUPLE (MAUREEN & MATT)', minX + (maxX - minX) / 2, y - 12);
+      ctx.fillText('THE COUPLE', minX + (maxX - minX) / 2, y - 12);
       ctx.restore();
     }
 
@@ -803,7 +803,7 @@ export default function ForceCanvas({
         let labelX = topPoint.x;
         let labelY = topPoint.y - 18 * nodeScaleMultiplier;
         const fontSize = (isCoupleCluster ? 28 : 22) * nodeScaleMultiplier;
-        const displayLabelText = isCoupleCluster ? '👑 THE COUPLE (MATT & MAUREEN)' : label.toUpperCase();
+        const displayLabelText = isCoupleCluster ? 'THE COUPLE' : label.toUpperCase();
 
         ctx.font = `900 ${fontSize}px Inter, sans-serif`;
         const textWidth = ctx.measureText(displayLabelText).width || (160 * nodeScaleMultiplier);
