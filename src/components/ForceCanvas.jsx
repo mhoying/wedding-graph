@@ -511,10 +511,8 @@ export default function ForceCanvas({
 
       if (activeOrbiting) {
         fg.d3Force('orbit', createOrbitForce(orbitSpeed));
-        fg.d3AlphaTarget(0.015);
       } else {
         fg.d3Force('orbit', null);
-        fg.d3AlphaTarget(0);
       }
 
       fg.d3ReheatSimulation();
@@ -1024,6 +1022,7 @@ export default function ForceCanvas({
         graphData={graphData}
         d3VelocityDecay={0.45}
         d3AlphaDecay={0.04}
+        d3AlphaTarget={activeOrbiting ? 0.015 : 0}
         warmupTicks={200}
         cooldownTicks={isOrbiting ? Infinity : 250}
         nodeCanvasObject={drawNode}

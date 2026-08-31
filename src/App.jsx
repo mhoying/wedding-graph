@@ -600,12 +600,14 @@ export default function App() {
     return result;
   }, [nodes]);
 
-  // Orbit Force Factory with Additive Velocity Blending for Preserving Collision Physics
+  // Orbit Force Factory with Velocity Decay Compensation so Orbit Speed NEVER Decays Below Target Speed!
   const createOrbitForce = useCallback((speedMultiplier = 1.0) => {
     const omega = 0.007 * speedMultiplier;
-    return (alpha) => {
+    // Compensation factor for D3 velocity decay (0.45) -> 1 / (1 - 0.45) = 1.818
+    const decayCompensation = 1.818;
+    return () => {
       nodes.forEach(node => {
-        if (node.id === 'maureen' || node.id === 'matt') return;
+        if (!node || node.id === 'maureen' || node.id === 'matt' || node.type === 'CONTEXT_HUB') return;
         const x = node.x || 0;
         const y = node.y || 0;
         const r = Math.hypot(x, y);
@@ -614,10 +616,12 @@ export default function App() {
           const newTheta = theta + omega;
           const targetX = r * Math.cos(newTheta);
           const targetY = r * Math.sin(newTheta);
-          const vx = targetX - x;
-          const vy = targetY - y;
-          node.vx += (vx - node.vx) * 0.15;
-          node.vy += (vy - node.vy) * 0.15;
+          const desVx = targetX - x;
+          const desVy = targetY - y;
+
+          // Directly inject decay-compensated velocity so orbit speed NEVER decays below target speed!
+          node.vx = desVx * decayCompensation;
+          node.vy = desVy * decayCompensation;
         }
       });
     };
