@@ -588,11 +588,13 @@ export default function App() {
     return result;
   }, [nodes]);
 
-  // Orbit Force Factory: Smooth kinematic rotation with dynamic in-place speed updates!
+  // Orbit Force Factory: Smooth kinematic rotation with dynamic in-place speed & enable toggles!
   const createOrbitForce = useCallback((initialSpeedMultiplier = 1.0) => {
     let speedMult = initialSpeedMultiplier;
+    let enabled = true;
 
     const force = (alpha) => {
+      if (!enabled) return;
       const omega = 0.006 * speedMult;
       nodes.forEach(node => {
         if (!node || node.id === 'maureen' || node.id === 'matt' || node.type === 'CONTEXT_HUB') return;
@@ -615,9 +617,8 @@ export default function App() {
     };
 
     force.initialize = () => {};
-    force.updateSpeed = (newSpeed) => {
-      speedMult = newSpeed;
-    };
+    force.updateSpeed = (newSpeed) => { speedMult = newSpeed; };
+    force.setEnabled = (isEnabled) => { enabled = isEnabled; };
     return force;
   }, [nodes]);
 

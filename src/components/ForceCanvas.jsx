@@ -581,15 +581,15 @@ export default function ForceCanvas({
       untangleForce.updateLinks(links);
       fg.d3Force('untangleEdges', untangleForce);
 
-      if (activeOrbiting) {
-        fg.d3Force('orbit', createOrbitForce(orbitSpeed));
-      } else {
-        fg.d3Force('orbit', null);
+      const orbitF = createOrbitForce(orbitSpeed);
+      if (typeof orbitF.setEnabled === 'function') {
+        orbitF.setEnabled(activeOrbiting);
       }
+      fg.d3Force('orbit', orbitF);
 
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, clusterMode]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, clusterMode]);
 
   // Dynamic In-Place Orbit Speed Update (Zero reheat, zero exploding nodes!)
   useEffect(() => {
@@ -601,17 +601,19 @@ export default function ForceCanvas({
     }
   }, [orbitSpeed]);
 
-  // Perpetual Low-Energy Orbit Activation without shudder or simulation reheating!
+  // Zero-Reheat Orbit Enable/Disable Toggle: Smooth kinetic motion without energy spikes or freaking out!
   useEffect(() => {
     const fg = fgRef.current;
     if (!fg) return;
 
+    const orbitF = fg.d3Force('orbit');
+    if (orbitF && typeof orbitF.setEnabled === 'function') {
+      orbitF.setEnabled(activeOrbiting);
+    }
+
     if (activeOrbiting) {
       if (typeof fg.d3AlphaTarget === 'function') {
         fg.d3AlphaTarget(0.02);
-      }
-      if (typeof fg.d3ReheatSimulation === 'function') {
-        fg.d3ReheatSimulation();
       }
     } else {
       if (typeof fg.d3AlphaTarget === 'function') {
