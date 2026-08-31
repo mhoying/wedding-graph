@@ -641,59 +641,19 @@ export default function App() {
     flyToNode(node);
   }, [isPathMode, pathStartId, flyToNode, setIsOrbiting]);
 
-  const handleNodeDrag = useCallback((node, translate) => {
-    const dx = translate.x;
-    const dy = translate.y;
-    node._prevX = node._prevX ?? (node.x - dx);
-    node._prevY = node._prevY ?? (node.y - dy);
-    const shiftX = node.x - node._prevX;
-    const shiftY = node.y - node._prevY;
-
-    let memberNodes = [];
-    if (clusterMode === 'cohort' && node.cohort) {
-      memberNodes = nodes.filter(n => n.cohort === node.cohort);
-    } else if (clusterMode === 'locations' || clusterMode === 'current_location' || clusterMode === 'original_location') {
-      const loc = node.currentlyLivesIn || node.originallyFrom;
-      memberNodes = nodes.filter(n => n.currentlyLivesIn === loc || n.originallyFrom === loc);
+  const handleNodeDrag = useCallback((node) => {
+    if (node && node.id !== 'matt' && node.id !== 'maureen') {
+      node.fx = node.x;
+      node.fy = node.y;
     }
-
-    if (memberNodes.length > 1) {
-      memberNodes.forEach(other => {
-        if (other.id !== node.id && other.id !== 'maureen' && other.id !== 'matt') {
-          other.x += shiftX;
-          other.y += shiftY;
-          other.fx = other.x;
-          other.fy = other.y;
-        }
-      });
-    }
-    node._prevX = node.x;
-    node._prevY = node.y;
-  }, [nodes, clusterMode]);
+  }, []);
 
   const handleNodeDragEnd = useCallback((node) => {
-    node._prevX = undefined;
-    node._prevY = undefined;
-
-    let memberNodes = [];
-    if (clusterMode === 'cohort' && node.cohort) {
-      memberNodes = nodes.filter(n => n.cohort === node.cohort);
-    } else if (clusterMode === 'locations' || clusterMode === 'current_location' || clusterMode === 'original_location') {
-      const loc = node.currentlyLivesIn || node.originallyFrom;
-      memberNodes = nodes.filter(n => n.currentlyLivesIn === loc || n.originallyFrom === loc);
+    if (node && node.id !== 'matt' && node.id !== 'maureen') {
+      node.fx = node.x;
+      node.fy = node.y;
     }
-
-    if (memberNodes.length > 1) {
-      memberNodes.forEach(other => {
-        other.fx = undefined;
-        other.fy = undefined;
-      });
-    }
-
-    if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
-      fgRef.current.d3ReheatSimulation();
-    }
-  }, [nodes, clusterMode]);
+  }, []);
 
   const handleZoom = useCallback(({ k }) => {
     if (fgRef.current) {
