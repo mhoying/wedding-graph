@@ -135,3 +135,13 @@
   2. **Couple Proximity Tolerance Buffer**: Added automatic couple/household link detection so spouses/partners receive a $\pm 70\text{px}$ tolerance buffer, keeping partners tightly side-by-side at their exact couple edge length.
   3. **Cluster Mode Weight Tuning**: Adjusted `radialHop` force weight (`0.12`) when Cluster Mode is active so cohort cluster foci and intra-cohort edge lengths take precedence.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Zero-Shudder Hover Transitions, Smooth Velocity Steering & Prop Fix
+- **User Prompts**:
+  1. "after exiting a mouseover or person detail view, the whole network seems to shake and shudder agressively. can we prevent this"
+  2. "the movement is still kidna jerky and jittery"
+  3. "this resulted in an error: TypeError: o.d3VelocityDecay is not a function"
+- **Actions & Deliverables**:
+  1. **Eliminate Hover Reheat Spikes**: Extracted hover velocity freezing into an isolated `useEffect` hook in `ForceCanvas.jsx` without triggering `d3ReheatSimulation()`, preventing force impulse spikes when un-hovering or closing detail view.
+  2. **Smooth Velocity Steering Acceleration**: Replaced hard `node.x = ...` and `node.y = ...` position mutations with continuous velocity steering accelerations ($\Delta v_x = \text{unitX} \times \delta \times \alpha \times 0.45$), eliminating 60fps micro-jitter loops.
+  3. **React Component Props Fix**: Configured `d3VelocityDecay={0.45}` and `d3AlphaDecay={0.04}` as standard React props on `<ForceGraph2D>`, resolving `TypeError: o.d3VelocityDecay is not a function`.
+  4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
