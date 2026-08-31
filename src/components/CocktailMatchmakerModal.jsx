@@ -33,149 +33,149 @@ export function getEmojiForInterest(interest) {
 
 const ACTION_PROMPTS_MAP = {
   cat: [
-    "Ask about their favorite cat stories & feline antics",
-    "Swap funny cat photos & favorite pet moments",
-    "Compare cat breeds & favorite pet stories"
+    "Ask: What's the funniest cat chaos moment they've ever witnessed?",
+    "Debate: Are cats secretly running the household?",
+    "Swap hilarious pet photos & favorite feline memories!"
   ],
   dog: [
-    "Ask about their favorite dog & pet stories",
-    "Swap funny pet photos & favorite animal moments",
-    "Ask what pet breeds & animals they love most"
+    "Ask: What's the wildest dog adventure or mischief story they have?",
+    "Debate: What is the single best dog breed of all time?",
+    "Trade pet photo show-and-tells & favorite park spots!"
   ],
   whiskey: [
-    "Compare favorite whiskeys & cocktail spots",
-    "Swap top bourbon & scotch recommendations",
-    "Cheers over a glass of good whiskey"
+    "Ask: What's the prized bottle on their top shelf right now?",
+    "Debate: Neat, on the rocks, or classic Old Fashioned?",
+    "Toast to discovering your next favorite whiskey or bourbon!"
   ],
   beer: [
-    "Cheers over a craft beer recommendation",
-    "Swap favorite local breweries & beer styles",
-    "Ask what craft beers they recommend trying"
+    "Ask: Which local craft brewery is their absolute #1 pick?",
+    "Debate: Hazy IPAs vs. classic crisp lagers!",
+    "Toast with a craft beer recommendation at the bar!"
   ],
   wine: [
-    "Cheers over a glass of wine",
-    "Swap favorite wine regions & vintages",
-    "Ask for their go-to wine recommendation"
+    "Ask: What's their go-to secret value wine region?",
+    "Debate: Bold Red Cabernets vs. crisp Chardonnays!",
+    "Cheers over a glass of wine & favorite vineyard trips!"
   ],
   cocktail: [
-    "Cheers over a favorite signature cocktail",
-    "Swap favorite cocktail bar spots",
-    "Ask what drink they recommend trying at the bar"
+    "Ask: What is their ultimate signature drink order?",
+    "Debate: What makes a truly perfect cocktail bar ambiance?",
+    "Cheers over a signature cocktail recommendation!"
   ],
   campus: [
-    "Exchange campus memories & stories",
-    "Ask about their favorite college spots & memories",
-    "Swap alumni highlights & traditions"
+    "Ask: What was their favorite late-night campus food spot?",
+    "Bond over the worst-kept secrets of college campus life!",
+    "Exchange campus memories, rivalries, & alumni traditions!"
   ],
   sports: [
-    "Talk game highlights & favorite sports moments",
-    "Ask about their favorite sports team memories",
-    "Swap matchday stories & stadium picks"
+    "Ask: What was the single most electric game they've watched live?",
+    "Compare your boldest match predictions & team highlights!",
+    "Trade matchday stories, stadium food, & fan traditions!"
   ],
   food: [
-    "Swap favorite food & local recipe spots",
-    "Ask for their top restaurant & cheese picks",
-    "Talk favorite dishes & cooking experiments"
+    "Ask: What secret local restaurant do they swear by?",
+    "Debate: Is sweet or savory the ultimate food craving?",
+    "Trade favorite secret recipes & local dining hidden gems!"
   ],
   travel: [
-    "Compare favorite trip destinations",
-    "Ask about their best travel adventure",
-    "Swap top bucket-list travel spots"
+    "Ask: What was the most unexpected travel adventure of their life?",
+    "Debate: Relaxing beach resort vs. packed city exploration!",
+    "Swap top bucket-list travel spots & road trip highlights!"
   ],
   music: [
-    "Talk concert & playlist recommendations",
-    "Swap favorite live music & show memories",
-    "Ask what bands & songs they love"
+    "Ask: What was the first live concert they ever attended?",
+    "Debate: What is the greatest album of all time?",
+    "Trade favorite live show memories & playlist picks!"
   ],
   outdoor: [
-    "Swap favorite hiking & outdoor trail picks",
-    "Ask about their best camping & park adventures",
-    "Compare outdoor bucket-list destinations"
+    "Ask: What is the most breathtaking hiking trail they've completed?",
+    "Debate: Tent camping under stars vs. cozy cabin getaway!",
+    "Trade secret trail maps & epic outdoor fail stories!"
   ],
   golf: [
-    "Talk favorite golf courses & rounds",
-    "Ask about their favorite golf memories",
-    "Swap course recommendations & tips"
+    "Ask: What was the most memorable hole-in-one or round of their life?",
+    "Debate: Early morning tee times vs. twilight rounds!",
+    "Swap favorite course recommendations & round stories!"
   ],
   tennis: [
-    "Chat about tennis matches & favorite players",
-    "Ask if they play tennis & favorite courts",
-    "Swap match highlights & court picks"
+    "Ask: Who is their favorite all-time tennis legend?",
+    "Debate: Hard court speed vs. clay court rallies!",
+    "Swap tennis match highlights & court recommendations!"
   ],
   cycling: [
-    "Swap favorite cycling & bike routes",
-    "Ask about their favorite rides & gear",
-    "Talk cycling adventures & road trip picks"
+    "Ask: What is the longest or most scenic bike ride they've done?",
+    "Debate: Road cycling speed vs. mountain trail adrenaline!",
+    "Talk cycling adventures & favorite scenic routes!"
   ],
   books: [
-    "Compare book & reading recommendations",
-    "Ask what great book they read recently",
-    "Swap favorite authors & literature picks"
+    "Ask: What book completely changed the way they view the world?",
+    "Debate: Physical paper books vs. audiobooks on the go!",
+    "Swap favorite authors & current reading recommendations!"
   ],
   crafts: [
-    "Swap creative & craft projects",
-    "Ask about their favorite artistic inspirations",
-    "Talk about favorite creative hobbies"
+    "Ask: What is the coolest DIY or creative project they've finished?",
+    "Bond over favorite artistic inspirations & creative outlets!",
+    "Trade creative craft projects & design ideas!"
   ],
   gaming: [
-    "Swap favorite game picks & gaming memories",
-    "Ask what games they are currently playing",
-    "Talk favorite board & video games"
+    "Ask: What game consumed the most hours of their life?",
+    "Debate: Cozy board games vs. competitive multiplayer gaming!",
+    "Swap favorite game picks & high score memories!"
   ],
   vehicles: [
-    "Swap favorite vehicle & road trip stories",
-    "Ask about their favorite rides & adventures",
-    "Talk shop & gear highlights"
+    "Ask: What was their dream first car or ultimate dream ride?",
+    "Debate: Classic vintage cruisers vs. modern high-tech rigs!",
+    "Talk road trips, vehicle builds, & mechanic stories!"
   ],
   kids: [
-    "Ask about kids & family stories",
-    "Swap fun family moments & stories",
-    "Talk about family highlights"
+    "Ask: What is the funniest or sweetest thing their kids have said?",
+    "Bond over the chaos & joys of parenting & family life!",
+    "Trade fun family moments & weekend outing spots!"
   ],
   gardening: [
-    "Swap gardening & plant tips",
-    "Ask about their favorite garden plants & flowers",
-    "Talk backyard & green thumb projects"
+    "Ask: What is their proudest plant achievement or garden bloom?",
+    "Debate: Growing fresh veggies vs. lush colorful flower beds!",
+    "Trade green thumb tips & garden secret hacks!"
   ],
   bayarea: [
-    "Compare favorite Bay Area & California spots",
-    "Ask for their go-to local CA dining & weekend picks",
-    "Swap stories about living in California"
+    "Ask: What secret Bay Area local spot do they swear by?",
+    "Debate: SF microclimates — fog, sun, or ocean breeze?",
+    "Swap stories about living in the Bay Area & NorCal!"
   ],
   eastcoast: [
-    "Exchange Jersey, NY & PA memories and favorite spots",
-    "Ask about their favorite local East Coast hangouts",
-    "Swap top East Coast diner & food picks"
+    "Ask: What is their absolute favorite East Coast diner order?",
+    "Toast to surviving East Coast winters & late-night diner runs!",
+    "Exchange Jersey, NY & PA memories and favorite local spots!"
   ],
   chicago: [
-    "Talk Chicago food, neighborhoods & city stories",
-    "Ask about their favorite Chicago spots & memories",
-    "Swap Chicago food picks & favorite hangouts"
+    "Ask: What is their go-to Chicago neighborhood spot?",
+    "Challenge them to a friendly debate: Deep dish vs. tavern style pizza!",
+    "Talk Chicago food, lakefront summers, & city stories!"
   ],
   dc_md: [
-    "Talk DMV area memories & favorite local spots",
-    "Ask about their go-to Baltimore & DC hangouts",
-    "Exchange stories about living in the Capital region"
+    "Ask: What is their favorite hidden hangout in DC or Baltimore?",
+    "Debate: Steamed crabs vs. iconic DMV mumbo sauce!",
+    "Exchange stories about living in the Capital region!"
   ],
   midwest: [
-    "Swap Midwest memories & favorite local spots",
-    "Ask about their favorite Midwest hangouts & stories",
-    "Exchange Midwest food & community memories"
+    "Ask: What is the most iconic Midwest comfort food they love?",
+    "Debate: Midwest nice vs. brutal winter snowstorms!",
+    "Exchange Midwest community memories & favorite spots!"
   ],
   islands: [
-    "Ask about their island memories & trip highlights",
-    "Swap top island dining & beach recommendations",
-    "Compare favorite tropical getaway spots"
+    "Ask: What was the most stunning beach or island sunset they've seen?",
+    "Debate: Snorkeling coral reefs vs. lounging with a tropical drink!",
+    "Swap island travel highlights & beach recommendations!"
   ],
   mountains: [
-    "Swap mountain & trail stories in Colorado & Europe",
-    "Ask about their favorite mountain trips & hikes",
-    "Compare outdoor adventures & scenic spots"
+    "Ask: What mountain view took their breath away the most?",
+    "Debate: Fresh powder skiing vs. summer mountain hiking!",
+    "Swap alpine adventure stories & mountain trip tips!"
   ],
   south: [
-    "Exchange local spots & sunshine stories",
-    "Ask about their favorite local dining & weekend picks",
-    "Swap stories about living in the South"
+    "Ask: What is their ultimate southern comfort food or BBQ spot?",
+    "Debate: Sweet tea vs. lemonade on a hot summer afternoon!",
+    "Exchange sunshine stories & southern hospitalities!"
   ]
 };
 
