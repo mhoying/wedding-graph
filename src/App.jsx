@@ -865,46 +865,55 @@ export default function App() {
     return weights;
   }, [nodes]);
 
-  // Cocktail Matchmaker Engine (Focuses strictly on shared interests weighted by Inverse Tag Frequency!)
+  // Cocktail Matchmaker Engine (Focuses strictly on shared interests, locations & cohorts)
   const matchmakerResults = useMemo(() => {
     if (!myGuestId) return [];
     const me = nodes.find(n => n.id === myGuestId);
     if (!me) return [];
 
-    const meHobbies = new Set(me.hobbies || []);
+    const meHobbies = new Set((me.hobbies || []).map(h => String(h).trim()));
 
     return nodes
-      .filter(n => n.id !== me.id && n.type === 'GUEST')
+      .filter(n => n && n.id !== me.id && n.type !== 'CONTEXT_HUB')
       .map(other => {
         let sharedScore = 0;
-        const reasons = [];
+        const reasonsSet = new Set();
 
         // 1. Shared Interests weighted dynamically by Inverse Tag Frequency!
         (other.hobbies || []).forEach(h => {
-          if (meHobbies.has(h)) {
-            const weight = tagWeights[h] || 40;
+          if (h && meHobbies.has(String(h).trim())) {
+            const cleanH = String(h).trim();
+            const weight = tagWeights[cleanH] || 40;
             sharedScore += weight;
-            reasons.push(`Shared Interest: ${h} (+${weight} pts)`);
+            reasonsSet.add(cleanH);
           }
         });
 
         // 2. Shared Hometown / Originally From (+30 points)
-        const myHome = (me.originallyFrom || me.hometown || '').toLowerCase();
-        const otherHome = (other.originallyFrom || other.hometown || '').toLowerCase();
-        if (myHome && otherHome && myHome === otherHome) {
+        const myHome = (me.originallyFrom || me.hometown || '').trim();
+        const otherHome = (other.originallyFrom || other.hometown || '').trim();
+        if (myHome && otherHome && myHome.toLowerCase() === otherHome.toLowerCase() && !myHome.toLowerCase().includes('family')) {
           sharedScore += 30;
-          reasons.push(`Both originally from ${me.originallyFrom || me.hometown}`);
+          reasonsSet.add(myHome);
         }
 
         // 3. Shared Current Location (+25 points)
-        const myLive = (me.currentlyLivesIn || me.state || '').toLowerCase();
-        const otherLive = (other.currentlyLivesIn || other.state || '').toLowerCase();
-        if (myLive && otherLive && myLive === otherLive) {
+        const myLive = (me.currentlyLivesIn || me.state || '').trim();
+        const otherLive = (other.currentlyLivesIn || other.state || '').trim();
+        if (myLive && otherLive && myLive.toLowerCase() === otherLive.toLowerCase() && !myLive.toLowerCase().includes('family')) {
           sharedScore += 25;
-          reasons.push(`Both live in ${me.currentlyLivesIn || me.state}`);
+          reasonsSet.add(myLive);
         }
 
-        return { node: other, sharedScore, reasons };
+        // 4. Shared Cohort (+20 points, excluding generic "Other" or "The Couple")
+        const myCohort = (me.cohort || '').trim();
+        const otherCohort = (other.cohort || '').trim();
+        if (myCohort && otherCohort && myCohort.toLowerCase() === otherCohort.toLowerCase() && !['other', 'default', 'the couple'].includes(myCohort.toLowerCase())) {
+          sharedScore += 20;
+          reasonsSet.add(myCohort);
+        }
+
+        return { node: other, sharedScore, reasons: Array.from(reasonsSet) };
       })
       .filter(r => r.sharedScore > 0)
       .sort((a, b) => b.sharedScore - a.sharedScore)
