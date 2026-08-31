@@ -12,7 +12,8 @@ export default function SuggestEditModal({
   setFeedbackCategory,
   feedbackNote,
   setFeedbackNote,
-  handleSubmitFeedback
+  handleSubmitFeedback,
+  allInterests = []
 }) {
   if (!isOpen) return null;
 
@@ -83,7 +84,7 @@ export default function SuggestEditModal({
               Click Existing Tag to Append:
             </div>
             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', maxHeight: 70, overflowY: 'auto' }}>
-              {['Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming']
+              {(allInterests && allInterests.length > 0 ? allInterests : ['Cycling', 'Tennis', 'Dogs', 'Kids', 'Whiskey', 'Beer', 'Wine', 'Cocktails', 'Pottery', 'Design', 'Spa days', 'Music', 'Art', 'Books', 'Sailing', 'Lehigh', 'Bay FC', 'Food', 'Gardening', 'Embroidery', 'Knitting', 'Aquaria', 'Travel', 'Hiking', 'Running', 'Golf', 'Baking', 'Gaming'])
                 .map(tag => (
                   <button
                     key={tag}

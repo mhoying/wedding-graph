@@ -37,7 +37,7 @@ export default function CocktailMatchmakerModal({
           >
             <option value="">-- Choose Guest --</option>
             {[...nodes]
-              .filter(n => n && n.type === 'GUEST' && n.name)
+              .filter(n => n && n.name && n.type !== 'CONTEXT_HUB')
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(n => (
                 <option key={n.id} value={n.id}>{n.name}</option>

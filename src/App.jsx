@@ -636,7 +636,6 @@ export default function App() {
   // Camera & Node Drag Handlers
 
   const handleNodeClick = useCallback((node) => {
-    setIsOrbiting(false);
     setIsMobileControlsOpen(false);
     if (isPathMode) {
       if (!pathStartId) {
@@ -649,7 +648,7 @@ export default function App() {
     setSelectedNode(node);
     setIsEditingDrawer(false);
     flyToNode(node);
-  }, [isPathMode, pathStartId, flyToNode, setIsOrbiting]);
+  }, [isPathMode, pathStartId, flyToNode]);
 
   const handleNodeDrag = useCallback((node) => {
     if (!node || node.id === 'matt' || node.id === 'maureen') return;
@@ -692,25 +691,16 @@ export default function App() {
     }
   }, []);
 
-  // Auto-resume orbit rotation when no node is hovered or selected
-  useEffect(() => {
-    const isInteracting = Boolean(
-      hoverNode || 
-      selectedNode || 
-      (searchQuery && searchQuery.trim()) || 
-      isPathMode || 
-      isSpreadsheetOpen || 
-      isFeedbackQueueOpen || 
-      passcodePromptOpen || 
-      isMatchmakerOpen
-    );
-
-    if (!isInteracting) {
-      setIsOrbiting(true);
-    } else {
-      setIsOrbiting(false);
-    }
-  }, [hoverNode, selectedNode, searchQuery, isPathMode, isSpreadsheetOpen, isFeedbackQueueOpen, passcodePromptOpen, isMatchmakerOpen]);
+  // Clear node pins on deselection
+  const handleCloseProfile = useCallback(() => {
+    setSelectedNode(null);
+    (nodes || []).forEach(n => {
+      if (n && n.id !== 'matt' && n.id !== 'maureen') {
+        n.fx = undefined;
+        n.fy = undefined;
+      }
+    });
+  }, [nodes]);
 
   // Sync Selected Node Edit Form Fields
   useEffect(() => {
@@ -1113,7 +1103,7 @@ export default function App() {
               style={{ background: '#0f172a', color: '#38bdf8', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
             >
               <option value="">-- Click or Pick 1st --</option>
-              {(nodes || []).filter(n => n && n.type === 'GUEST').sort((a, b) => (a.name || '').localeCompare(b.name || '')).map(n => (
+              {(nodes || []).filter(n => n && n.name).sort((a, b) => (a.name || '').localeCompare(b.name || '')).map(n => (
                 <option key={n.id} value={n.id}>{n.name}</option>
               ))}
             </select>
@@ -1130,7 +1120,7 @@ export default function App() {
               style={{ background: '#0f172a', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '5px 10px', borderRadius: 10, fontSize: 12, fontWeight: 700, outline: 'none', cursor: 'pointer', maxWidth: 160 }}
             >
               <option value="">-- Click or Pick 2nd --</option>
-              {(nodes || []).filter(n => n && n.type === 'GUEST' && n.id !== pathStartId).sort((a, b) => (a.name || '').localeCompare(b.name || '')).map(n => (
+              {(nodes || []).filter(n => n && n.name && n.id !== pathStartId).sort((a, b) => (a.name || '').localeCompare(b.name || '')).map(n => (
                 <option key={n.id} value={n.id}>{n.name}</option>
               ))}
             </select>
@@ -1563,7 +1553,7 @@ export default function App() {
       <GuestProfileDrawer 
         selectedNode={selectedNode}
         nodes={nodes}
-        onClose={() => setSelectedNode(null)}
+        onClose={handleCloseProfile}
         isEditingDrawer={isEditingDrawer}
         setIsEditingDrawer={setIsEditingDrawer}
         editName={editName}
@@ -1771,6 +1761,7 @@ export default function App() {
         feedbackNote={feedbackNote}
         setFeedbackNote={setFeedbackNote}
         handleSubmitFeedback={handleSubmitFeedback}
+        allInterests={allInterestsAndLocations.interests}
       />
 
       {/* Host Passcode Prompt Modal (Triggered via secret shortcut Ctrl+Shift+A) */}
