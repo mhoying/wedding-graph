@@ -429,8 +429,6 @@ export default function ForceCanvas({
         fg.d3Force('orbit', null);
       }
 
-      fg.d3VelocityDecay(0.45);
-      fg.d3AlphaDecay(0.04);
       fg.d3ReheatSimulation();
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, orbitSpeed, clusterMode]);
@@ -936,6 +934,8 @@ export default function ForceCanvas({
         width={dimensions.width}
         height={dimensions.height}
         graphData={graphData}
+        d3VelocityDecay={0.45}
+        d3AlphaDecay={0.04}
         warmupTicks={200}
         cooldownTicks={250}
         nodeCanvasObject={drawNode}
