@@ -600,10 +600,12 @@ export default function App() {
     return result;
   }, [nodes]);
 
-  // Orbit Force Factory: Smooth kinematic rotation that NEVER decays or stops!
-  const createOrbitForce = useCallback((speedMultiplier = 1.0) => {
-    const omega = 0.006 * speedMultiplier;
+  // Orbit Force Factory: Smooth kinematic rotation with dynamic in-place speed updates!
+  const createOrbitForce = useCallback((initialSpeedMultiplier = 1.0) => {
+    let speedMult = initialSpeedMultiplier;
+
     const force = (alpha) => {
+      const omega = 0.006 * speedMult;
       nodes.forEach(node => {
         if (!node || node.id === 'maureen' || node.id === 'matt' || node.type === 'CONTEXT_HUB') return;
         const x = node.x || 0;
@@ -625,6 +627,9 @@ export default function App() {
     };
 
     force.initialize = () => {};
+    force.updateSpeed = (newSpeed) => {
+      speedMult = newSpeed;
+    };
     return force;
   }, [nodes]);
 

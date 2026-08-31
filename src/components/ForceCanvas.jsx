@@ -589,7 +589,17 @@ export default function ForceCanvas({
 
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, orbitSpeed, clusterMode]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, clusterMode]);
+
+  // Dynamic In-Place Orbit Speed Update (Zero reheat, zero exploding nodes!)
+  useEffect(() => {
+    const fg = fgRef.current;
+    if (!fg) return;
+    const orbitF = fg.d3Force('orbit');
+    if (orbitF && typeof orbitF.updateSpeed === 'function') {
+      orbitF.updateSpeed(orbitSpeed);
+    }
+  }, [orbitSpeed]);
 
   // Perpetual Low-Energy Orbit Activation without shudder or simulation reheating!
   useEffect(() => {
