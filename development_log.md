@@ -153,3 +153,9 @@
   1. **1.3 Default Node Distance**: Set initial `edgeLengthMultiplier` state to `1.3` in `App.jsx` for +30% wider, more readable default layout spacing.
   2. **Single-Node Drag Isolation**: Updated `handleNodeDrag` and `handleNodeDragEnd` in `App.jsx` to move and pin ONLY the single dragged node, preventing cohort shift loops.
   3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Planarization & Edge Crossing Minimization Force Implementation
+- **User Prompt**: "is there any easy way to try and avoid having edges cross if it is possible?otherwise just minimize the number of intersecting edges"
+- **Actions & Deliverables**:
+  1. **2D Segment Intersection Detection**: Added `checkLineIntersection` to `ForceCanvas.jsx` to evaluate non-adjacent edge pairs during simulation ticks.
+  2. **Untangle Edges Force (`untangleEdges`)**: Created `createUntangleEdgesForce` in `ForceCanvas.jsx` which applies perpendicular untangling impulses to edge endpoints when intersections are detected, rotating connected nodes to minimize crossing lines.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
