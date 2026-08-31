@@ -1,5 +1,42 @@
 import React from 'react';
-import { X, Wand2, Sparkles, MapPin } from 'lucide-react';
+import { X, Wand2, Sparkles } from 'lucide-react';
+
+export function getEmojiForInterest(interest) {
+  if (!interest) return '✨';
+  const r = String(interest).toLowerCase();
+  if (r.includes('dog') || r.includes('pet')) return '🐕';
+  if (r.includes('whiskey') || r.includes('bourbon')) return '🥃';
+  if (r.includes('cocktail')) return '🍸';
+  if (r.includes('beer')) return '🍺';
+  if (r.includes('wine')) return '🍷';
+  if (r.includes('soccer') || r.includes('bay fc')) return '⚽';
+  if (r.includes('tennis')) return '🎾';
+  if (r.includes('golf')) return '⛳';
+  if (r.includes('cycling') || r.includes('bike')) return '🚴';
+  if (r.includes('running') || r.includes('hike') || r.includes('hiking')) return '🏃';
+  if (r.includes('lehigh') || r.includes('stanford') || r.includes('cornell')) return '🎓';
+  if (r.includes('food') || r.includes('cook') || r.includes('bake') || r.includes('baking')) return '🍕';
+  if (r.includes('music') || r.includes('art') || r.includes('design')) return '🎨';
+  if (r.includes('book') || r.includes('reading')) return '📚';
+  if (r.includes('travel')) return '✈️';
+  if (r.includes('kid')) return '👶';
+  return '✨';
+}
+
+export function getShortActionPrompt(reason) {
+  if (!reason) return null;
+  const r = String(reason).toLowerCase();
+  if (r.includes('dog') || r.includes('pet')) return 'Ask about favorite dogs & pets';
+  if (r.includes('whiskey') || r.includes('bourbon')) return 'Compare favorite whiskeys & cocktails';
+  if (r.includes('lehigh') || r.includes('stanford') || r.includes('cornell')) return 'Exchange campus memories & stories';
+  if (r.includes('bay fc') || r.includes('soccer')) return 'Talk Bay FC & match highlights';
+  if (r.includes('beer') || r.includes('wine') || r.includes('cocktail')) return `Cheers over a glass of ${reason}`;
+  if (r.includes('kid')) return 'Ask about kids & family';
+  if (r.includes('food') || r.includes('cook') || r.includes('bake')) return 'Swap favorite food & recipe spots';
+  if (r.includes('travel')) return 'Compare favorite trip destinations';
+  if (r.includes('music')) return 'Talk concert & playlist recommendations';
+  return `Chat about shared interest in ${reason}`;
+}
 
 export default function CocktailMatchmakerModal({
   isOpen,
@@ -68,25 +105,57 @@ export default function CocktailMatchmakerModal({
                   {res.node.cohort} • {res.node.side} Side
                 </div>
                 {res.reasons.length > 0 && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
-                    {res.reasons.map(reason => {
-                      let icebreaker = `Connect with ${res.node.name} over your shared love for ${reason}!`;
-                      const r = reason.toLowerCase();
-                      if (r.includes('dog')) icebreaker = `Ask ${res.node.name} about their favorite dogs & pets!`;
-                      else if (r.includes('whiskey')) icebreaker = `Compare favorite whiskey & cocktail recommendations with ${res.node.name}!`;
-                      else if (r.includes('lehigh')) icebreaker = `Exchange Lehigh campus memories & stories with ${res.node.name}!`;
-                      else if (r.includes('bay fc')) icebreaker = `Talk Bay FC matches & team highlights with ${res.node.name}!`;
-                      else if (r.includes('beer') || r.includes('wine') || r.includes('cocktail')) icebreaker = `Cheers with ${res.node.name} over a glass of ${reason}!`;
-                      else if (r.includes('kid')) icebreaker = `Ask ${res.node.name} about their kids & family!`;
-                      else if (r.includes('food') || r.includes('cook') || r.includes('bake')) icebreaker = `Swap favorite food & recipe spots with ${res.node.name}!`;
+                  <div style={{ marginTop: 8 }}>
+                    {/* Shared Interest Emoji Pill Badges */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 8 }}>
+                      {res.reasons.map(reason => (
+                        <span 
+                          key={reason} 
+                          style={{ 
+                            fontSize: 11, 
+                            fontWeight: 700, 
+                            background: 'rgba(56, 189, 248, 0.15)', 
+                            color: '#7dd3fc', 
+                            padding: '3px 9px', 
+                            borderRadius: 9999, 
+                            border: '1px solid rgba(56, 189, 248, 0.3)', 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            gap: 4 
+                          }}
+                        >
+                          <span>{getEmojiForInterest(reason)}</span>
+                          <span>{reason}</span>
+                        </span>
+                      ))}
+                    </div>
 
-                      return (
-                        <div key={reason} style={{ fontSize: 11, background: 'rgba(56, 189, 248, 0.12)', color: '#7dd3fc', padding: '6px 10px', borderRadius: 8, border: '1px solid rgba(56, 189, 248, 0.2)', display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-                          <Sparkles style={{ width: 12, height: 12, marginTop: 2, flexShrink: 0, color: '#38bdf8' }} />
-                          <span><strong>💬 Icebreaker ({reason}):</strong> {icebreaker}</span>
-                        </div>
-                      );
-                    })}
+                    {/* Top 1-2 Concise Action Prompts */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                      {res.reasons.slice(0, 2).map(reason => {
+                        const promptText = getShortActionPrompt(reason);
+                        if (!promptText) return null;
+                        return (
+                          <div 
+                            key={reason} 
+                            style={{ 
+                              fontSize: 11, 
+                              color: '#94a3b8', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: 6,
+                              background: 'rgba(15, 23, 42, 0.4)',
+                              padding: '4px 8px',
+                              borderRadius: 6,
+                              border: '1px solid rgba(255, 255, 255, 0.06)'
+                            }}
+                          >
+                            <Sparkles style={{ width: 11, height: 11, color: '#34d399', flexShrink: 0 }} />
+                            <span>💬 <em>"{promptText}"</em></span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
