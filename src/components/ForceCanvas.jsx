@@ -423,18 +423,21 @@ export default function ForceCanvas({
         fg.d3Force('orbit', null);
       }
 
-      if (!activeOrbiting && (isHoverFrozen || hoverNode)) {
-        nodes.forEach(n => {
-          if (n.id !== 'maureen' && n.id !== 'matt') {
-            n.vx = 0;
-            n.vy = 0;
-          }
-        });
-      }
-
       fg.d3ReheatSimulation();
     }
-  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, isOrbiting, isHoverFrozen, hoverNode, orbitSpeed, clusterMode]);
+  }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, orbitSpeed, clusterMode]);
+
+  // Smooth Hover Damping without aggressive simulation reheating (prevents network shaking!)
+  useEffect(() => {
+    if (!activeOrbiting && (isHoverFrozen || hoverNode)) {
+      (nodes || []).forEach(n => {
+        if (n && n.id !== 'maureen' && n.id !== 'matt') {
+          n.vx = 0;
+          n.vy = 0;
+        }
+      });
+    }
+  }, [isHoverFrozen, hoverNode, activeOrbiting, nodes]);
 
   // Ensure The Couple (Maureen Wink & Matt Hoying) is ALWAYS anchored SIDE-BY-SIDE DEAD CENTER at (0, 0) of the graph!
   useEffect(() => {
@@ -917,9 +920,6 @@ export default function ForceCanvas({
       onMouseLeave={() => {
         setIsHoverFrozen(false);
         setHoverNode(null);
-        if (isOrbiting && fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
-          fgRef.current.d3ReheatSimulation();
-        }
       }}
     >
       <ForceGraph2D
