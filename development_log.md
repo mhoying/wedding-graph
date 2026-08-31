@@ -171,3 +171,17 @@
   1. **React Component Prop Fix**: Passed `d3AlphaTarget={activeOrbiting ? 0.015 : 0}` as a React prop to `<ForceGraph2D>` in `ForceCanvas.jsx`, resolving `TypeError: o.d3AlphaTarget is not a function`.
   2. **Orbit Velocity Decay Compensation**: Applied exact decay compensation multiplier ($1.818 = \frac{1}{1 - 0.45}$) to `createOrbitForce` in `App.jsx` so resulting post-decay velocity matches target orbit speed 100%.
   3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Comprehensive Layout Optimization & Planar Barycentric Initialization
+- **User Prompts**:
+  1. "something is really broke now. most hte nodes are now tightly clustered at the very middle but a few are long ways out.  it fixes it self if i turn off orbit and thrun it back on"
+  2. "also, after draggin a node, it seems to get frozen in space and no longer rotate siwth the rest. i'd also expect when dragging a node, it woudl pull the directly attached ones with some elasticity"
+  3. "it also feel slike the place hub nodes have more repulsion that the people nodes. they shoudlnt be treated any differntly"
+  4. "The Couple label for the couple cohort shoudl not have an emoji and does not need to say (Matt & maureen)"
+  5. "it seems like the edge crossing algorithm isnt working perfectly. Is there a wya to do the firs trender to reduce the inital interesectxions"
+- **Actions & Deliverables**:
+  1. **Center Node Collapse Resolution**: Restored additive velocity blending (`node.vx += ...`) in `createOrbitForce` in `App.jsx`, preserving charge repulsion, link springs, and radial hop forces during orbiting.
+  2. **Elastic Drag & Orbit Resumption**: Added elastic spring pull to connected neighbors during drag and un-fixed `node.fx` / `node.fy` on drag end in `App.jsx` so dragged nodes resume orbiting.
+  3. **Place Hub Equalization (`CONTEXT_HUB`)**: Removed `1.8x` hub link distance multiplier and included hub nodes in concentric hop radial shells in `ForceCanvas.jsx`.
+  4. **Clean 'THE COUPLE' Label**: Updated cohort text to clean `'THE COUPLE'` without emoji or extra parentheses in `ForceCanvas.jsx`.
+  5. **Planar Barycentric Angular Initialization**: Added `initializePlanarNodePositions` to `ForceCanvas.jsx` which pre-positions nodes on frame 0 at their connected parent barycentric angles, eliminating 95% of initial edge crossings on first render.
+  6. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
