@@ -198,3 +198,21 @@
   3. **Hop-Scaled Cluster Foci & Radial Shell Guarantees**: Updated `createClusterSeparationForce` in `ForceCanvas.jsx` to scale cluster focal targets by each node's hop level ($R_{\text{focus}}(H_i) = 110 + H_i \cdot 150 \cdot \text{multiplier}$), guaranteeing Hop 1 < Hop 2 < Hop 3 < Hop 4 < Hop 5 < Hop 6+ outward radial separation.
   4. **Perpetual Kinetic Orbit Ticker**: Added a dedicated kinematic ticker interval in `ForceCanvas.jsx` that maintains D3's simulation timer loop whenever orbiting is active, ensuring orbit speed never decays to zero.
   5. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Smooth Kinetic Orbiting, Pathfinder Access & ReferenceError Resolution
+- **User Prompts**:
+  1. "now it seems to shutter every second. basically as soon as it hits a stable state it seems to reset"
+  2. "will this solve the porbelm of it stopping rotate after a few seconds"
+  3. "it s still freezeing"
+  4. "when i adjust the orbit slider all the nodes go crazy moving eveywhere and it still eventually freelzes"
+  5. "the pathfinder doesnt seem to have all the interst in it any more. is it getting truncated or pulling form a differnt soruce"
+  6. "and after slecting a person, it seems to freeze the node again"
+  7. "and after selection a person it seems to freeze the node again, but doesnt let it unfreeze after deslection"
+  8. "i am seeing this error now ReferenceError: allInterestsAndLocations is not defined"
+- **Actions & Deliverables**:
+  1. **Zero-Shudder Orbit Activation**: Removed periodic 1.5s `setInterval` reheat loop in `ForceCanvas.jsx` and set low-energy `d3AlphaTarget(0.02)` upon orbit activation, eliminating periodic shuddering resets.
+  2. **Mouse Hover Freeze Removal**: Removed container `onMouseEnter` freeze triggers in `ForceCanvas.jsx` and bound `activeOrbiting` strictly to the `isOrbiting` toggle state so mouse movement never freezes the orbit.
+  3. **In-Place Orbit Speed Updates**: Added `force.updateSpeed` mutator in `App.jsx` and decoupled `orbitSpeed` from simulation reheating in `ForceCanvas.jsx`, allowing smooth speed changes without energy spikes or exploding nodes.
+  4. **Complete Pathfinder & Matchmaker Node Access**: Updated dropdown filters in `App.jsx` and `CocktailMatchmakerModal.jsx` to include Maureen, Matt, and place hubs alongside guest nodes.
+  5. **Explicit Node Un-Pinning Handler**: Added `handleCloseProfile` in `App.jsx` to clear `node.fx` / `node.fy` upon profile drawer close so deselected nodes instantly resume orbiting.
+  6. **ReferenceError Resolution**: Fixed `allInterestsAndLocations` variable reference in `App.jsx` by passing `availableClusters.interests` down to `SuggestEditModal.jsx`.
+  7. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
