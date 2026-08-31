@@ -32,10 +32,16 @@ export function getShortActionPrompt(reason) {
   if (r.includes('bay fc') || r.includes('soccer')) return 'Talk Bay FC & match highlights';
   if (r.includes('beer') || r.includes('wine') || r.includes('cocktail')) return `Cheers over a glass of ${reason}`;
   if (r.includes('kid')) return 'Ask about kids & family';
-  if (r.includes('food') || r.includes('cook') || r.includes('bake')) return 'Swap favorite food & recipe spots';
+  if (r.includes('food') || r.includes('cook') || r.includes('bake') || r.includes('baking')) return 'Swap favorite food & recipe spots';
   if (r.includes('travel')) return 'Compare favorite trip destinations';
   if (r.includes('music')) return 'Talk concert & playlist recommendations';
-  return `Chat about shared interest in ${reason}`;
+  if (r.includes('running') || r.includes('hike') || r.includes('hiking')) return 'Swap favorite running & hiking trails';
+  if (r.includes('golf')) return 'Talk favorite golf courses';
+  if (r.includes('tennis')) return 'Chat about tennis matches';
+  if (r.includes('cycling') || r.includes('bike')) return 'Swap favorite cycling routes';
+  if (r.includes('book') || r.includes('reading')) return 'Compare book & reading recommendations';
+  if (r.includes('art') || r.includes('design') || r.includes('pottery')) return 'Swap creative & design projects';
+  return null;
 }
 
 export default function CocktailMatchmakerModal({
