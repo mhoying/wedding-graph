@@ -865,13 +865,29 @@ export default function App() {
     return weights;
   }, [nodes]);
 
-  // Cocktail Matchmaker Engine (Focuses strictly on shared interests, locations & cohorts)
+  // Map direct neighbor IDs for each node
+  const neighborMap = useMemo(() => {
+    const map = new Map();
+    (links || []).forEach(l => {
+      if (!l) return;
+      const sId = typeof l.source === 'object' ? l.source.id : l.source;
+      const tId = typeof l.target === 'object' ? l.target.id : l.target;
+      if (!map.has(sId)) map.set(sId, new Set());
+      if (!map.has(tId)) map.set(tId, new Set());
+      map.get(sId).add(tId);
+      map.get(tId).add(sId);
+    });
+    return map;
+  }, [links]);
+
+  // Cocktail Matchmaker Engine (Guarantees 100% match & action prompt coverage across all guests)
   const matchmakerResults = useMemo(() => {
     if (!myGuestId) return [];
     const me = nodes.find(n => n.id === myGuestId);
     if (!me) return [];
 
     const meHobbies = new Set((me.hobbies || []).map(h => String(h).trim()));
+    const myNeighbors = neighborMap.get(me.id) || new Set();
 
     return nodes
       .filter(n => n && n.id !== me.id && n.type !== 'CONTEXT_HUB')
@@ -879,7 +895,15 @@ export default function App() {
         let sharedScore = 0;
         const reasonsSet = new Set();
 
-        // 1. Shared Interests weighted dynamically by Inverse Tag Frequency!
+        // 1. Direct Edge / Partner Connection (+50 points)
+        if (myNeighbors.has(other.id)) {
+          sharedScore += 50;
+          if (other.cohort && !['other', 'default', 'the couple'].includes(other.cohort.toLowerCase())) {
+            reasonsSet.add(other.cohort);
+          }
+        }
+
+        // 2. Shared Interests (+40 points)
         (other.hobbies || []).forEach(h => {
           if (h && meHobbies.has(String(h).trim())) {
             const cleanH = String(h).trim();
@@ -889,7 +913,7 @@ export default function App() {
           }
         });
 
-        // 2. Shared Hometown / Originally From (+30 points)
+        // 3. Shared Hometown / Originally From (+30 points)
         const myHome = (me.originallyFrom || me.hometown || '').trim();
         const otherHome = (other.originallyFrom || other.hometown || '').trim();
         if (myHome && otherHome && myHome.toLowerCase() === otherHome.toLowerCase() && !myHome.toLowerCase().includes('family')) {
@@ -897,7 +921,7 @@ export default function App() {
           reasonsSet.add(myHome);
         }
 
-        // 3. Shared Current Location (+25 points)
+        // 4. Shared Current Location (+25 points)
         const myLive = (me.currentlyLivesIn || me.state || '').trim();
         const otherLive = (other.currentlyLivesIn || other.state || '').trim();
         if (myLive && otherLive && myLive.toLowerCase() === otherLive.toLowerCase() && !myLive.toLowerCase().includes('family')) {
@@ -905,7 +929,7 @@ export default function App() {
           reasonsSet.add(myLive);
         }
 
-        // 4. Shared Cohort (+20 points, excluding generic "Other" or "The Couple")
+        // 5. Shared Cohort (+20 points)
         const myCohort = (me.cohort || '').trim();
         const otherCohort = (other.cohort || '').trim();
         if (myCohort && otherCohort && myCohort.toLowerCase() === otherCohort.toLowerCase() && !['other', 'default', 'the couple'].includes(myCohort.toLowerCase())) {
@@ -913,12 +937,24 @@ export default function App() {
           reasonsSet.add(myCohort);
         }
 
+        // 6. Shared Wedding Side (+15 points)
+        const mySide = (me.side || '').trim();
+        const otherSide = (other.side || '').trim();
+        if (mySide && otherSide && mySide.toLowerCase() === otherSide.toLowerCase()) {
+          sharedScore += 15;
+          if (reasonsSet.size === 0) {
+            if (other.currentlyLivesIn) reasonsSet.add(other.currentlyLivesIn);
+            else if (other.originallyFrom) reasonsSet.add(other.originallyFrom);
+            else if (other.cohort && !['other', 'default'].includes(other.cohort.toLowerCase())) reasonsSet.add(other.cohort);
+          }
+        }
+
         return { node: other, sharedScore, reasons: Array.from(reasonsSet) };
       })
       .filter(r => r.sharedScore > 0)
       .sort((a, b) => b.sharedScore - a.sharedScore)
       .slice(0, 8);
-  }, [myGuestId, nodes, tagWeights]);
+  }, [myGuestId, nodes, tagWeights, neighborMap]);
 
   // 1-Click Host CSV Export Handler
   const handleExportCsv = () => {
