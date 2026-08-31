@@ -145,3 +145,11 @@
   2. **Smooth Velocity Steering Acceleration**: Replaced hard `node.x = ...` and `node.y = ...` position mutations with continuous velocity steering accelerations ($\Delta v_x = \text{unitX} \times \delta \times \alpha \times 0.45$), eliminating 60fps micro-jitter loops.
   3. **React Component Props Fix**: Configured `d3VelocityDecay={0.45}` and `d3AlphaDecay={0.04}` as standard React props on `<ForceGraph2D>`, resolving `TypeError: o.d3VelocityDecay is not a function`.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] 1.3 Default Node Spacing & Single-Node Drag Isolation
+- **User Prompts**:
+  1. "can we increase the defualt node distance to 1.3"
+  2. "also it look slike when i drag a single node, it drags the entire cohort with it. it should not carry the resto fthe cohort when a single node is dragged"
+- **Actions & Deliverables**:
+  1. **1.3 Default Node Distance**: Set initial `edgeLengthMultiplier` state to `1.3` in `App.jsx` for +30% wider, more readable default layout spacing.
+  2. **Single-Node Drag Isolation**: Updated `handleNodeDrag` and `handleNodeDragEnd` in `App.jsx` to move and pin ONLY the single dragged node, preventing cohort shift loops.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
