@@ -129,10 +129,8 @@ function initializePlanarNodePositions(nodes, links, hopDistances, edgeLengthMul
 
       nodeAngles.set(node.id, angle);
 
-      if (node.x === undefined || node.y === undefined || (node.x === 0 && node.y === 0)) {
-        node.x = radius * Math.cos(angle);
-        node.y = radius * Math.sin(angle);
-      }
+      node.x = radius * Math.cos(angle);
+      node.y = radius * Math.sin(angle);
     });
   }
 }
@@ -310,7 +308,7 @@ function createUntangleEdgesForce() {
 }
 
 // Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits dynamically!
-function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
+function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances) {
   let nodesList = [];
 
   const force = (alpha) => {
@@ -334,37 +332,32 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
     const numClusters = keys.length;
     if (numClusters <= 1) return;
 
-    const baseRadius = 380 * edgeLengthMultiplier;
+    const baseStep = 150 * edgeLengthMultiplier;
+    const baseOffset = 110 * edgeLengthMultiplier;
 
-    // Calculate target foci coordinates dynamically for ANY cohort, location, or interest!
-    const foci = {};
+    // Calculate target foci angles dynamically for ANY cohort, location, or interest!
+    const fociAngles = {};
     let nonCoupleIdx = 0;
     const nonCoupleKeys = keys.filter(k => k !== 'The Couple' && !k.includes('Couple') && k !== 'Other');
     const totalNonCouple = nonCoupleKeys.length || 1;
 
     keys.forEach((key) => {
       if (key === 'The Couple' || key.includes('Couple')) {
-        foci[key] = { x: 0, y: 0 };
+        fociAngles[key] = null;
       } else if (key === 'Other') {
-        foci[key] = null;
+        fociAngles[key] = null;
       } else {
         const angle = (nonCoupleIdx / totalNonCouple) * 2 * Math.PI - (Math.PI / 2);
-        const radius = baseRadius * (1 + (nonCoupleIdx % 2 === 0 ? 0 : 0.15));
-        foci[key] = {
-          x: Math.cos(angle) * radius,
-          y: Math.sin(angle) * radius
-        };
+        fociAngles[key] = angle;
         nonCoupleIdx++;
       }
     });
-    // 1. Strong attraction toward dedicated cluster foci center (keeps cohort nodes grouped in distinct clouds)
-    const pullStrength = alpha * 0.65;
+
+    // 1. Strong attraction toward dedicated hop-scaled cluster foci (preserves concentric hop rings!)
+    const pullStrength = alpha * 0.45;
     nodesList.forEach((node) => {
-      if (node.type === 'CONTEXT_HUB') return;
-      if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) {
-        // "Other" guests have ZERO cluster force -- they float naturally next to their partner!
-        return;
-      }
+      if (node.type === 'CONTEXT_HUB' || node.id === 'matt' || node.id === 'maureen') return;
+      if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) return;
 
       let key = 'Other';
       if (clusterMode === 'cohort') key = node.cohort;
@@ -372,10 +365,16 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
       else if (clusterMode === 'originalLocation') key = node.originallyFrom || 'Other';
       else if (clusterMode === 'interest') key = (node.hobbies && node.hobbies[0]) ? node.hobbies[0] : 'Other';
 
-      const focus = foci[key];
-      if (focus) {
-        node.vx += (focus.x - node.x) * pullStrength;
-        node.vy += (focus.y - node.y) * pullStrength;
+      const focusAngle = fociAngles[key];
+      if (focusAngle !== null && focusAngle !== undefined) {
+        const nodeHops = Math.max(1, (hopDistances ? hopDistances.get(node.id) : 2) ?? 2);
+        const hopRadius = baseOffset + nodeHops * baseStep;
+
+        const targetFocusX = Math.cos(focusAngle) * hopRadius;
+        const targetFocusY = Math.sin(focusAngle) * hopRadius;
+
+        node.vx += (targetFocusX - node.x) * pullStrength;
+        node.vy += (targetFocusY - node.y) * pullStrength;
       }
     });
 
@@ -576,7 +575,7 @@ export default function ForceCanvas({
       hopForce.updateHopDistances(hopDistances, links);
       fg.d3Force('radialHop', hopForce);
 
-      fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier));
+      fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances));
 
       const untangleForce = createUntangleEdgesForce();
       untangleForce.updateLinks(links);
