@@ -28,10 +28,16 @@ export function getEmojiForInterest(interest) {
   if (r.includes('bermuda') || r.includes('puerto rico')) return '🏝️';
   if (r.includes('colorado') || r.includes('zurich')) return '🏔️';
   if (r.includes('chicago') || r.includes('nyc') || r.includes('ny') || r.includes('boston') || r.includes('dc') || r.includes('jersey') || r.includes('nj') || r.includes('pa') || r.includes('maryland') || r.includes('baltimore')) return '🏙️';
+  if (r.includes('side')) return '🥂';
   return '📍';
 }
 
 const ACTION_PROMPTS_MAP = {
+  side: [
+    "Ask: How did they first meet Matt & Maureen?",
+    "Toast to celebrating Matt & Maureen's big day!",
+    "Swap your favorite fun memories with the happy couple!"
+  ],
   cat: [
     "Ask: What's the funniest cat chaos moment they've ever witnessed?",
     "Debate: Are cats secretly running the household?",
@@ -184,7 +190,8 @@ export function getShortActionPrompt(reason, seed = Math.random()) {
   const r = String(reason).toLowerCase();
   
   let key = null;
-  if (r.includes('cat')) key = 'cat';
+  if (r.includes('side')) key = 'side';
+  else if (r.includes('cat')) key = 'cat';
   else if (r.includes('dog') || r.includes('pet') || r.includes('goat')) key = 'dog';
   else if (r.includes('whiskey') || r.includes('bourbon')) key = 'whiskey';
   else if (r.includes('beer')) key = 'beer';

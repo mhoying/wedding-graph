@@ -967,9 +967,7 @@ export default function App() {
         if (mySide && otherSide && mySide.toLowerCase() === otherSide.toLowerCase()) {
           sharedScore += 15;
           if (reasonsSet.size === 0) {
-            if (other.currentlyLivesIn) reasonsSet.add(other.currentlyLivesIn);
-            else if (other.originallyFrom) reasonsSet.add(other.originallyFrom);
-            else if (other.cohort && !['other', 'default'].includes(other.cohort.toLowerCase())) reasonsSet.add(other.cohort);
+            reasonsSet.add(`${mySide} Side`);
           }
         }
 
