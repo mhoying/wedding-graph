@@ -165,3 +165,9 @@
   1. **Perpetual Target Alpha (`d3AlphaTarget(0.015)`)**: Configured `fg.d3AlphaTarget(0.015)` in `ForceCanvas.jsx` when orbiting is active so D3 simulation ticks continue running indefinitely at low energy.
   2. **Dynamic Infinite Cooldown (`cooldownTicks`)**: Updated `<ForceGraph2D cooldownTicks={isOrbiting ? Infinity : 250}>` in `ForceCanvas.jsx` to prevent D3 from freezing simulation ticks after 250 frames.
   3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Orbit Speed Decay Compensation & d3AlphaTarget Prop Fix
+- **User Prompt**: "now it is throwing an error: TypeError: o.d3AlphaTarget is not a function; also, make sure that the orbit speed is respected and doenst decay to a orbit speed below its current target"
+- **Actions & Deliverables**:
+  1. **React Component Prop Fix**: Passed `d3AlphaTarget={activeOrbiting ? 0.015 : 0}` as a React prop to `<ForceGraph2D>` in `ForceCanvas.jsx`, resolving `TypeError: o.d3AlphaTarget is not a function`.
+  2. **Orbit Velocity Decay Compensation**: Applied exact decay compensation multiplier ($1.818 = \frac{1}{1 - 0.45}$) to `createOrbitForce` in `App.jsx` so resulting post-decay velocity matches target orbit speed 100%.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
