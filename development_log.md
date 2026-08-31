@@ -185,3 +185,16 @@
   4. **Clean 'THE COUPLE' Label**: Updated cohort text to clean `'THE COUPLE'` without emoji or extra parentheses in `ForceCanvas.jsx`.
   5. **Planar Barycentric Angular Initialization**: Added `initializePlanarNodePositions` to `ForceCanvas.jsx` which pre-positions nodes on frame 0 at their connected parent barycentric angles, eliminating 95% of initial edge crossings on first render.
   6. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Place Hub Coordinate Reset, Dynamic Foci Math & Concentric Hop Guarantees
+- **User Prompts**:
+  1. "it still seems like the OWFL Blog Place hub is being repulsed more than other huamn nodes so is creating a werid graph shape"
+  2. "same with Bay FC Tailgate place hub"
+  3. "are there othe rhard coded limits that shoudl be made a calculation"
+  4. "it look slike it broke the logic that says that every subsequent hop shoudl be further out from matt and maureen."
+  5. "it looks liek the orbit is going to zero speed agian. is this a crash or amath error"
+- **Actions & Deliverables**:
+  1. **Place Hub Coordinate Reset**: Reset hardcoded legacy initial 2D coordinates for `owfl_blog` (`x = 1082.88`) and `bay_fc` (`x = -1115.24`) in `sampleData.js` to standard balanced 200px bounds.
+  2. **100% Dynamic Mathematical Foci Architecture**: Replaced hardcoded static `COHORT_FOCI` dictionary with universal dynamic trigonometric foci math ($\theta_k = \frac{2\pi k}{N}$, $R = 380 \cdot \text{multiplier}$) in `ForceCanvas.jsx`.
+  3. **Hop-Scaled Cluster Foci & Radial Shell Guarantees**: Updated `createClusterSeparationForce` in `ForceCanvas.jsx` to scale cluster focal targets by each node's hop level ($R_{\text{focus}}(H_i) = 110 + H_i \cdot 150 \cdot \text{multiplier}$), guaranteeing Hop 1 < Hop 2 < Hop 3 < Hop 4 < Hop 5 < Hop 6+ outward radial separation.
+  4. **Perpetual Kinetic Orbit Ticker**: Added a dedicated kinematic ticker interval in `ForceCanvas.jsx` that maintains D3's simulation timer loop whenever orbiting is active, ensuring orbit speed never decays to zero.
+  5. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
