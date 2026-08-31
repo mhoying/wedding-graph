@@ -23,25 +23,141 @@ export function getEmojiForInterest(interest) {
   return '✨';
 }
 
-export function getShortActionPrompt(reason) {
+const ACTION_PROMPTS_MAP = {
+  dog: [
+    "Ask about their favorite dog & pet stories",
+    "Swap funny pet photos & favorite animal moments",
+    "Ask what pet breeds & animals they love most"
+  ],
+  whiskey: [
+    "Compare favorite whiskeys & cocktail spots",
+    "Swap top bourbon & scotch recommendations",
+    "Cheers over a glass of good whiskey"
+  ],
+  beer: [
+    "Cheers over a craft beer recommendation",
+    "Swap favorite local breweries & beer styles",
+    "Ask what craft beers they recommend trying"
+  ],
+  wine: [
+    "Cheers over a glass of wine",
+    "Swap favorite wine regions & vintages",
+    "Ask for their go-to wine recommendation"
+  ],
+  cocktail: [
+    "Cheers over a favorite signature cocktail",
+    "Swap favorite cocktail bar spots",
+    "Ask what drink they recommend trying at the bar"
+  ],
+  campus: [
+    "Exchange campus memories & stories",
+    "Ask about their favorite college spots & memories",
+    "Swap alumni highlights & traditions"
+  ],
+  sports: [
+    "Talk game highlights & favorite sports moments",
+    "Ask about their favorite sports team memories",
+    "Swap matchday stories & stadium picks"
+  ],
+  food: [
+    "Swap favorite food & local recipe spots",
+    "Ask for their top restaurant & food picks",
+    "Talk favorite dishes & cooking experiments"
+  ],
+  travel: [
+    "Compare favorite trip destinations",
+    "Ask about their best travel adventure",
+    "Swap top bucket-list travel spots"
+  ],
+  music: [
+    "Talk concert & playlist recommendations",
+    "Swap favorite live music & show memories",
+    "Ask what bands & songs they love"
+  ],
+  outdoor: [
+    "Swap favorite hiking & outdoor trail picks",
+    "Ask about their best camping & park adventures",
+    "Compare outdoor bucket-list destinations"
+  ],
+  golf: [
+    "Talk favorite golf courses & rounds",
+    "Ask about their favorite golf memories",
+    "Swap course recommendations & tips"
+  ],
+  tennis: [
+    "Chat about tennis matches & favorite players",
+    "Ask if they play tennis & favorite courts",
+    "Swap match highlights & court picks"
+  ],
+  cycling: [
+    "Swap favorite cycling & bike routes",
+    "Ask about their favorite rides & gear",
+    "Talk cycling adventures & road trip picks"
+  ],
+  books: [
+    "Compare book & reading recommendations",
+    "Ask what great book they read recently",
+    "Swap favorite authors & literature picks"
+  ],
+  crafts: [
+    "Swap creative & craft projects",
+    "Ask about their favorite artistic inspirations",
+    "Talk about favorite creative hobbies"
+  ],
+  gaming: [
+    "Swap favorite game picks & gaming memories",
+    "Ask what games they are currently playing",
+    "Talk favorite board & video games"
+  ],
+  vehicles: [
+    "Swap favorite vehicle & road trip stories",
+    "Ask about their favorite rides & adventures",
+    "Talk shop & gear highlights"
+  ],
+  kids: [
+    "Ask about kids & family stories",
+    "Swap fun family moments & stories",
+    "Talk about family highlights"
+  ]
+};
+
+export function getShortActionPrompt(reason, seed = Math.random()) {
   if (!reason) return null;
   const r = String(reason).toLowerCase();
-  if (r.includes('dog') || r.includes('pet')) return 'Ask about favorite dogs & pets';
-  if (r.includes('whiskey') || r.includes('bourbon')) return 'Compare favorite whiskeys & cocktails';
-  if (r.includes('lehigh') || r.includes('stanford') || r.includes('cornell')) return 'Exchange campus memories & stories';
-  if (r.includes('bay fc') || r.includes('soccer')) return 'Talk Bay FC & match highlights';
-  if (r.includes('beer') || r.includes('wine') || r.includes('cocktail')) return `Cheers over a glass of ${reason}`;
-  if (r.includes('kid')) return 'Ask about kids & family';
-  if (r.includes('food') || r.includes('cook') || r.includes('bake') || r.includes('baking')) return 'Swap favorite food & recipe spots';
-  if (r.includes('travel')) return 'Compare favorite trip destinations';
-  if (r.includes('music')) return 'Talk concert & playlist recommendations';
-  if (r.includes('running') || r.includes('hike') || r.includes('hiking')) return 'Swap favorite running & hiking trails';
-  if (r.includes('golf')) return 'Talk favorite golf courses';
-  if (r.includes('tennis')) return 'Chat about tennis matches';
-  if (r.includes('cycling') || r.includes('bike')) return 'Swap favorite cycling routes';
-  if (r.includes('book') || r.includes('reading')) return 'Compare book & reading recommendations';
-  if (r.includes('art') || r.includes('design') || r.includes('pottery')) return 'Swap creative & design projects';
-  return null;
+  
+  let key = null;
+  if (r.includes('dog') || r.includes('pet') || r.includes('cat') || r.includes('goat')) key = 'dog';
+  else if (r.includes('whiskey') || r.includes('bourbon')) key = 'whiskey';
+  else if (r.includes('beer')) key = 'beer';
+  else if (r.includes('wine')) key = 'wine';
+  else if (r.includes('cocktail')) key = 'cocktail';
+  else if (r.includes('lehigh') || r.includes('stanford') || r.includes('cornell') || r.includes('rpi')) key = 'campus';
+  else if (r.includes('bay fc') || r.includes('soccer') || r.includes('rugby') || r.includes('bears') || r.includes('chargers') || r.includes('knicks') || r.includes('wrestling')) key = 'sports';
+  else if (r.includes('food') || r.includes('cook') || r.includes('bake') || r.includes('baking') || r.includes('cheese')) key = 'food';
+  else if (r.includes('travel')) key = 'travel';
+  else if (r.includes('music') || r.includes('band') || r.includes('bass') || r.includes('bluegrass') || r.includes('ska') || r.includes('bad bunny') || r.includes('grateful dead')) key = 'music';
+  else if (r.includes('hiking') || r.includes('hike') || r.includes('camping') || r.includes('outdoors') || r.includes('yellowstone')) key = 'outdoor';
+  else if (r.includes('golf')) key = 'golf';
+  else if (r.includes('tennis')) key = 'tennis';
+  else if (r.includes('cycling') || r.includes('bike') || r.includes('motorcycle')) key = 'cycling';
+  else if (r.includes('book') || r.includes('reading') || r.includes('words')) key = 'books';
+  else if (r.includes('art') || r.includes('design') || r.includes('pottery') || r.includes('embroidery') || r.includes('knitting') || r.includes('photography') || r.includes('woodworking')) key = 'crafts';
+  else if (r.includes('gaming')) key = 'gaming';
+  else if (r.includes('cars') || r.includes('landcruiser') || r.includes('rv') || r.includes('rocket')) key = 'vehicles';
+  else if (r.includes('kid')) key = 'kids';
+
+  let prompts = key ? ACTION_PROMPTS_MAP[key] : null;
+
+  if (!prompts) {
+    prompts = [
+      `Swap stories & favorite picks for ${reason}`,
+      `Ask for their top ${reason} recommendations`,
+      `Compare ${reason} experiences & memories`
+    ];
+  }
+
+  const index = Math.floor(seed * prompts.length) % prompts.length;
+  return prompts[index];
 }
 
 export default function CocktailMatchmakerModal({
