@@ -309,22 +309,9 @@ function createUntangleEdgesForce() {
   return force;
 }
 
-// Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits!
+// Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits dynamically!
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
-
-  // Dedicated Foci Map for Cohort Mode (Spreads cohorts into wide, non-overlapping solar system orbits!)
-  const COHORT_FOCI = {
-    "The Couple": { x: 0, y: 0 },
-    "Cornell": { x: -350, y: -300 },     // Top Left
-    "Stanford": { x: 350, y: -300 },     // Top Right
-    "Google": { x: 0, y: 460 },          // Bottom Center
-    "Lehigh": { x: -440, y: 160 },       // Bottom Left
-    "Dog Park": { x: 440, y: 160 },      // Bottom Right
-    "OWFL Blog": { x: 320, y: -100 },     // Right
-    "Bay FC": { x: -320, y: -100 },       // Left
-    "Jenna": { x: 0, y: -460 }          // Top Center
-  };
 
   const force = (alpha) => {
     if (clusterMode === 'off' || !nodesList || nodesList.length === 0) return;
@@ -349,33 +336,27 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
 
     const baseRadius = 380 * edgeLengthMultiplier;
 
-    // Calculate target foci coordinates
+    // Calculate target foci coordinates dynamically for ANY cohort, location, or interest!
     const foci = {};
-    if (clusterMode === 'cohort') {
-      keys.forEach(k => {
-        foci[k] = COHORT_FOCI[k] ? {
-          x: COHORT_FOCI[k].x * edgeLengthMultiplier,
-          y: COHORT_FOCI[k].y * edgeLengthMultiplier
-        } : { x: 0, y: 0 };
-      });
-    } else {
-      let nonCoupleIdx = 0;
-      const nonCoupleKeys = keys.filter(k => !k.includes('Couple'));
+    let nonCoupleIdx = 0;
+    const nonCoupleKeys = keys.filter(k => k !== 'The Couple' && !k.includes('Couple') && k !== 'Other');
+    const totalNonCouple = nonCoupleKeys.length || 1;
 
-      keys.forEach((key) => {
-        if (key === 'The Couple' || key.includes('Couple')) {
-          foci[key] = { x: 0, y: 0 };
-        } else {
-          const angle = (nonCoupleIdx / (nonCoupleKeys.length || 1)) * 2 * Math.PI - (Math.PI / 2);
-          foci[key] = {
-            x: Math.cos(angle) * baseRadius,
-            y: Math.sin(angle) * baseRadius
-          };
-          nonCoupleIdx++;
-        }
-      });
-    }
-
+    keys.forEach((key) => {
+      if (key === 'The Couple' || key.includes('Couple')) {
+        foci[key] = { x: 0, y: 0 };
+      } else if (key === 'Other') {
+        foci[key] = null;
+      } else {
+        const angle = (nonCoupleIdx / totalNonCouple) * 2 * Math.PI - (Math.PI / 2);
+        const radius = baseRadius * (1 + (nonCoupleIdx % 2 === 0 ? 0 : 0.15));
+        foci[key] = {
+          x: Math.cos(angle) * radius,
+          y: Math.sin(angle) * radius
+        };
+        nonCoupleIdx++;
+      }
+    });
     // 1. Strong attraction toward dedicated cluster foci center (keeps cohort nodes grouped in distinct clouds)
     const pullStrength = alpha * 0.65;
     nodesList.forEach((node) => {
