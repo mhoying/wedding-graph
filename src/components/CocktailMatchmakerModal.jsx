@@ -4,26 +4,39 @@ import { X, Wand2, Sparkles } from 'lucide-react';
 export function getEmojiForInterest(interest) {
   if (!interest) return '✨';
   const r = String(interest).toLowerCase();
-  if (r.includes('dog') || r.includes('pet')) return '🐕';
+  if (r.includes('cat')) return '🐱';
+  if (r.includes('dog') || r.includes('pet') || r.includes('goat')) return '🐕';
   if (r.includes('whiskey') || r.includes('bourbon')) return '🥃';
   if (r.includes('cocktail')) return '🍸';
   if (r.includes('beer')) return '🍺';
   if (r.includes('wine')) return '🍷';
-  if (r.includes('soccer') || r.includes('bay fc')) return '⚽';
+  if (r.includes('soccer') || r.includes('bay fc') || r.includes('rugby')) return '⚽';
   if (r.includes('tennis')) return '🎾';
   if (r.includes('golf')) return '⛳';
-  if (r.includes('cycling') || r.includes('bike')) return '🚴';
-  if (r.includes('running') || r.includes('hike') || r.includes('hiking')) return '🏃';
-  if (r.includes('lehigh') || r.includes('stanford') || r.includes('cornell')) return '🎓';
-  if (r.includes('food') || r.includes('cook') || r.includes('bake') || r.includes('baking')) return '🍕';
-  if (r.includes('music') || r.includes('art') || r.includes('design')) return '🎨';
-  if (r.includes('book') || r.includes('reading')) return '📚';
+  if (r.includes('cycling') || r.includes('bike') || r.includes('motorcycle')) return '🚴';
+  if (r.includes('running') || r.includes('hike') || r.includes('hiking') || r.includes('outdoor') || r.includes('yellowstone') || r.includes('camping')) return '🏃';
+  if (r.includes('lehigh') || r.includes('stanford') || r.includes('cornell') || r.includes('rpi')) return '🎓';
+  if (r.includes('food') || r.includes('cook') || r.includes('bake') || r.includes('baking') || r.includes('cheese')) return '🍕';
+  if (r.includes('music') || r.includes('art') || r.includes('design') || r.includes('pottery') || r.includes('band') || r.includes('bluegrass') || r.includes('ska')) return '🎨';
+  if (r.includes('book') || r.includes('reading') || r.includes('words')) return '📚';
   if (r.includes('travel')) return '✈️';
   if (r.includes('kid')) return '👶';
-  return '✨';
+  if (r.includes('garden') || r.includes('pollinator')) return '🌱';
+  if (r.includes('car') || r.includes('landcruiser') || r.includes('rv') || r.includes('rocket')) return '🚗';
+  if (r.includes('game') || r.includes('gaming')) return '🎮';
+  if (r.includes('sf bay area') || r.includes('ca') || r.includes('california')) return '🌉';
+  if (r.includes('bermuda') || r.includes('puerto rico')) return '🏝️';
+  if (r.includes('colorado') || r.includes('zurich')) return '🏔️';
+  if (r.includes('chicago') || r.includes('nyc') || r.includes('ny') || r.includes('boston') || r.includes('dc') || r.includes('jersey') || r.includes('nj') || r.includes('pa') || r.includes('maryland') || r.includes('baltimore')) return '🏙️';
+  return '📍';
 }
 
 const ACTION_PROMPTS_MAP = {
+  cat: [
+    "Ask about their favorite cat stories & feline antics",
+    "Swap funny cat photos & favorite pet moments",
+    "Compare cat breeds & favorite pet stories"
+  ],
   dog: [
     "Ask about their favorite dog & pet stories",
     "Swap funny pet photos & favorite animal moments",
@@ -61,7 +74,7 @@ const ACTION_PROMPTS_MAP = {
   ],
   food: [
     "Swap favorite food & local recipe spots",
-    "Ask for their top restaurant & food picks",
+    "Ask for their top restaurant & cheese picks",
     "Talk favorite dishes & cooking experiments"
   ],
   travel: [
@@ -118,6 +131,51 @@ const ACTION_PROMPTS_MAP = {
     "Ask about kids & family stories",
     "Swap fun family moments & stories",
     "Talk about family highlights"
+  ],
+  gardening: [
+    "Swap gardening & plant tips",
+    "Ask about their favorite garden plants & flowers",
+    "Talk backyard & green thumb projects"
+  ],
+  bayarea: [
+    "Compare favorite Bay Area & California spots",
+    "Ask for their go-to local CA dining & weekend picks",
+    "Swap stories about living in California"
+  ],
+  eastcoast: [
+    "Exchange Jersey, NY & PA memories and favorite spots",
+    "Ask about their favorite local East Coast hangouts",
+    "Swap top East Coast diner & food picks"
+  ],
+  chicago: [
+    "Talk Chicago food, neighborhoods & city stories",
+    "Ask about their favorite Chicago spots & memories",
+    "Swap Chicago food picks & favorite hangouts"
+  ],
+  dc_md: [
+    "Talk DMV area memories & favorite local spots",
+    "Ask about their go-to Baltimore & DC hangouts",
+    "Exchange stories about living in the Capital region"
+  ],
+  midwest: [
+    "Swap Midwest memories & favorite local spots",
+    "Ask about their favorite Midwest hangouts & stories",
+    "Exchange Midwest food & community memories"
+  ],
+  islands: [
+    "Ask about their island memories & trip highlights",
+    "Swap top island dining & beach recommendations",
+    "Compare favorite tropical getaway spots"
+  ],
+  mountains: [
+    "Swap mountain & trail stories in Colorado & Europe",
+    "Ask about their favorite mountain trips & hikes",
+    "Compare outdoor adventures & scenic spots"
+  ],
+  south: [
+    "Exchange local spots & sunshine stories",
+    "Ask about their favorite local dining & weekend picks",
+    "Swap stories about living in the South"
   ]
 };
 
@@ -126,7 +184,8 @@ export function getShortActionPrompt(reason, seed = Math.random()) {
   const r = String(reason).toLowerCase();
   
   let key = null;
-  if (r.includes('dog') || r.includes('pet') || r.includes('cat') || r.includes('goat')) key = 'dog';
+  if (r.includes('cat')) key = 'cat';
+  else if (r.includes('dog') || r.includes('pet') || r.includes('goat')) key = 'dog';
   else if (r.includes('whiskey') || r.includes('bourbon')) key = 'whiskey';
   else if (r.includes('beer')) key = 'beer';
   else if (r.includes('wine')) key = 'wine';
@@ -145,6 +204,15 @@ export function getShortActionPrompt(reason, seed = Math.random()) {
   else if (r.includes('gaming')) key = 'gaming';
   else if (r.includes('cars') || r.includes('landcruiser') || r.includes('rv') || r.includes('rocket')) key = 'vehicles';
   else if (r.includes('kid')) key = 'kids';
+  else if (r.includes('garden') || r.includes('pollinator')) key = 'gardening';
+  else if (r.includes('sf bay area') || r.includes('stockton') || r.includes('ca') || r.includes('california')) key = 'bayarea';
+  else if (r.includes('nj') || r.includes('jersey') || r.includes('ny') || r.includes('nyc') || r.includes('pa') || r.includes('boston') || r.includes('amherst')) key = 'eastcoast';
+  else if (r.includes('chicago')) key = 'chicago';
+  else if (r.includes('dc') || r.includes('maryland') || r.includes('baltimore')) key = 'dc_md';
+  else if (r.includes('madison') || r.includes('iowa') || r.includes('minnesota')) key = 'midwest';
+  else if (r.includes('bermuda') || r.includes('puerto rico')) key = 'islands';
+  else if (r.includes('colorado') || r.includes('zurich')) key = 'mountains';
+  else if (r.includes('houston') || r.includes('florida')) key = 'south';
 
   let prompts = key ? ACTION_PROMPTS_MAP[key] : null;
 
