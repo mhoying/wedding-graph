@@ -591,17 +591,23 @@ export default function ForceCanvas({
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, orbitSpeed, clusterMode]);
 
-  // PERPETUAL KINEMATIC ORBIT TICKER: Guarantees D3 simulation timer NEVER stops while activeOrbiting is true!
+  // Perpetual Low-Energy Orbit Activation without shudder or simulation reheating!
   useEffect(() => {
-    if (!activeOrbiting) return;
+    const fg = fgRef.current;
+    if (!fg) return;
 
-    const interval = setInterval(() => {
-      if (fgRef.current && typeof fgRef.current.d3ReheatSimulation === 'function') {
-        fgRef.current.d3ReheatSimulation();
+    if (activeOrbiting) {
+      if (typeof fg.d3AlphaTarget === 'function') {
+        fg.d3AlphaTarget(0.02);
       }
-    }, 1500);
-
-    return () => clearInterval(interval);
+      if (typeof fg.d3ReheatSimulation === 'function') {
+        fg.d3ReheatSimulation();
+      }
+    } else {
+      if (typeof fg.d3AlphaTarget === 'function') {
+        fg.d3AlphaTarget(0);
+      }
+    }
   }, [activeOrbiting]);
 
   // Ensure The Couple (Maureen Wink & Matt Hoying) is ALWAYS anchored SIDE-BY-SIDE DEAD CENTER at (0, 0) of the graph!
