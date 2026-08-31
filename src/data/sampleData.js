@@ -76,7 +76,8 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Music",
       "Photography",
-      "Outdoors"
+      "Outdoors",
+      "RPI Medal"
     ],
     "__indexColor": "#ec0001",
     "fx": 36,
@@ -85,7 +86,8 @@ export const SAMPLE_NODES = [
     "y": 0,
     "index": 0,
     "vx": 0,
-    "vy": 0
+    "vy": 0,
+    "state": "SF Bay Area"
   },
   {
     "id": "maureen",
@@ -367,13 +369,15 @@ export const SAMPLE_NODES = [
     "side": "Matt",
     "cohort": "Other",
     "relationship": "The Kimpreston Family",
-    "originallyFrom": "",
+    "originallyFrom": "Iowa",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Dance",
       "Wine"
-    ]
+    ],
+    "state": "NYC",
+    "hometown": "Iowa"
   },
   {
     "id": "chrissy_fiore",
@@ -398,14 +402,23 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "cohort": "Dog Park",
     "relationship": "Greg Goetchius & Lauren Sofia",
-    "originallyFrom": "",
+    "originallyFrom": "New Jersey",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Music",
       "Band",
-      "Dogs"
-    ]
+      "Dogs",
+      "Cycling",
+      "Golf",
+      "Wine",
+      "Tennis",
+      "Motorcycles",
+      "Cars",
+      "Motorcycling"
+    ],
+    "state": "SF Bay Area",
+    "hometown": "New Jersey"
   },
   {
     "id": "lauren_sofia",
@@ -496,7 +509,11 @@ export const SAMPLE_NODES = [
     "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
-    "hobbies": []
+    "hobbies": [
+      "Kids",
+      "Dogs"
+    ],
+    "state": "SF Bay Area"
   },
   {
     "id": "liz_scott",
@@ -664,8 +681,11 @@ export const SAMPLE_NODES = [
       "Outdoors",
       "Kids",
       "Dogs",
-      "cheese"
-    ]
+      "cheese",
+      "Books",
+      "Dance"
+    ],
+    "state": "SF Bay Area"
   },
   {
     "id": "tim_auer",
@@ -681,8 +701,20 @@ export const SAMPLE_NODES = [
       "Photography",
       "Dogs",
       "Outdoors",
-      "Kids"
-    ]
+      "Kids",
+      "Swimming",
+      "Woodworking",
+      "Travel",
+      "LandCruisers",
+      "Bears",
+      "RVs",
+      "Camping",
+      "Yellowstone",
+      "Beer",
+      "Grateful Dead",
+      "Bluegrass"
+    ],
+    "state": "SF Bay Area"
   },
   {
     "id": "jonathan_bibayan",
@@ -973,8 +1005,13 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "DC",
     "familyStatus": "Family",
     "hobbies": [
-      "Kids"
-    ]
+      "Kids",
+      "Pollinators",
+      "Cooking",
+      "Whiskey",
+      "Wine"
+    ],
+    "state": "DC"
   },
   {
     "id": "lauren_schmied",
@@ -1079,7 +1116,8 @@ export const SAMPLE_NODES = [
       "Kids",
       "Woodworking",
       "Cars"
-    ]
+    ],
+    "state": "SF Bay Area"
   },
   {
     "id": "becca_winslow",
@@ -1176,12 +1214,16 @@ export const SAMPLE_NODES = [
     "side": "Matt",
     "cohort": "Stanford",
     "relationship": "Kathryn Flack & Joe Wernet",
-    "originallyFrom": "",
-    "currentlyLivesIn": "Boston, MA",
+    "originallyFrom": "Ohio",
+    "currentlyLivesIn": "Amherst, MA",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Words"
-    ]
+      "Words",
+      "Books",
+      "cheese"
+    ],
+    "state": "Amherst, MA",
+    "hometown": "Ohio"
   },
   {
     "id": "joe_wernet",
@@ -1190,10 +1232,16 @@ export const SAMPLE_NODES = [
     "side": "Matt",
     "cohort": "Other",
     "relationship": "Kathryn Flack & Joe Wernet",
-    "originallyFrom": "",
-    "currentlyLivesIn": "Boston, MA",
+    "originallyFrom": "Ohio",
+    "currentlyLivesIn": "Amherst, MA",
     "familyStatus": "Couple / Group",
-    "hobbies": []
+    "hobbies": [
+      "Cats",
+      "Gaming",
+      "Beer"
+    ],
+    "state": "Amherst, MA",
+    "hometown": "Ohio"
   },
   {
     "id": "mira_vojvodic",
