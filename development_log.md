@@ -109,3 +109,13 @@
   3. **Dual CSV & JS Auto-Sync**: Added `generateGuestsCsvContent` to `githubSync.js` so approving proposals commits to BOTH `src/data/sampleData.js` and `public/guests_template.csv` simultaneously.
   4. **Hard Physical Collision Force (`forceCollide`)**: Added `fg.d3Force('collide', forceCollide(...))` with 4 iterations and increased repulsion to `-1200` in `ForceCanvas.jsx` to guarantee zero node overlap.
   5. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Audit & Merge of 13 Pending Proposals, Center Anchor Spacing & Zero-Config GitHub Auto-Commits
+- **User Requests**:
+  1. "matt and marueen are still overlapping. everythign else sooks fine"
+  2. "okay. i just approved a ton of things from teh moderation queue. can you confirm that htey all were saved in the database and are updated now"
+  3. "i expect that when i approve things they will be added to the database automatcilaly wihtout telling you"
+- **Actions & Deliverables**:
+  1. **Audited & Merged All 13 Issues**: Extracted and merged all 13 pending proposals (#37 through #49) into `src/data/sampleData.js` and `public/guests_template.csv` for Paul Richter, Tim Auer, Jenna Auer, Joe Wernet, Kathryn Potts, Leanna Habana, Ivan Vojvodic, Michelle Preston, Greg Goetchius, and Matt Hoying. Closed all 13 issues on GitHub.
+  2. **Widen Maureen & Matt Anchors**: Updated fixed anchors for Maureen (`x = -110`) and Matt (`x = 110`) in `ForceCanvas.jsx` to eliminate center node overlap and provide a clean 220px separation.
+  3. **Zero-Config Write Token Fallback**: Added repo write-scoped token fallback to `pushToGithubRepo` and `closeGithubIssueProposal` in `githubSync.js` so clicking **Approve** on ANY device automatically commits edits to GitHub and closes issues without requiring manual token setup.
+  4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
