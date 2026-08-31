@@ -454,7 +454,7 @@ export default function ForceCanvas({
   imageCacheRef = { current: {} }
 }) {
   const [isHoverFrozen, setIsHoverFrozen] = useState(false);
-  const activeOrbiting = Boolean(isOrbiting && !isHoverFrozen && !hoverNode);
+  const activeOrbiting = Boolean(isOrbiting);
 
   // Preload node headshots into cache for seamless rendering
   useEffect(() => {
@@ -1087,11 +1087,7 @@ export default function ForceCanvas({
   return (
     <div 
       className="graph-container"
-      onMouseEnter={() => !isMobileViewport && setIsHoverFrozen(true)}
-      onMouseLeave={() => {
-        setIsHoverFrozen(false);
-        setHoverNode(null);
-      }}
+      onMouseLeave={() => setHoverNode(null)}
     >
       <ForceGraph2D
         ref={fgRef}
