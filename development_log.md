@@ -216,3 +216,22 @@
   5. **Explicit Node Un-Pinning Handler**: Added `handleCloseProfile` in `App.jsx` to clear `node.fx` / `node.fy` upon profile drawer close so deselected nodes instantly resume orbiting.
   6. **ReferenceError Resolution**: Fixed `allInterestsAndLocations` variable reference in `App.jsx` by passing `availableClusters.interests` down to `SuggestEditModal.jsx`.
   7. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Infinite Cooldown Engine, Zero-Reheat Orbit & High-Diversity Matchmaker UI
+- **User Prompts**:
+  1. "the orbit is still arbitrariy freezing and now resuming"
+  2. "it is freezeing even if nothign is clikced after a few seconds it freezes"
+  3. "toggling orbit on and off still make sit freak out and reconfigure agressively when i turn orbit on"
+  4. "bring in the PM agent. the Icbreaksers adding 'Connect with [name] over your shared love for...' adds no value compared to just listing the shared interests..."
+  5. "how about a combination of the array of intersts and one or two short action prompts?"
+  6. "i'm still seeing items syaing 'Chat about Share dinterests... '"
+  7. "can we add three short action prompts for each interest and randomly select one of them for each item"
+  8. "this shoudl be for every existing interst category"
+  9. "it seems that some intersts still dont have convesation starts like 'Cats' please confirm that all have at least 3 converation starters. since location is in here too, you should have convesation starters for each of the locations too"
+  10. "can we make the prompts across difernt interests and locations more diverse?"
+- **Actions & Deliverables**:
+  1. **FlyTo Camera Orbit Preservation**: Removed `setIsOrbiting(false)` and node coordinate pinning inside `flyToNode` in `App.jsx`, ensuring search/selection camera moves never stop the orbit.
+  2. **Infinite Cooldown Time & Engine Fail-Safe**: Added `cooldownTime={isOrbiting ? Infinity : 15000}` and `onEngineStop` fail-safe auto-restart handler to `ForceCanvas.jsx`, preventing `react-force-graph-2d` from stopping after 15 seconds.
+  3. **Zero-Reheat Orbit Toggle**: Added `force.setEnabled` mutator in `App.jsx` and removed `d3ReheatSimulation()` from orbit toggling in `ForceCanvas.jsx`, achieving 100% seamless, non-explosive orbit start/stop motion.
+  4. **Hybrid Cocktail Matchmaker UI**: Refactored `CocktailMatchmakerModal.jsx` to render shared interests as emoji pill badges (`[ 🐕 Dogs ]` `[ 🥃 Whiskey ]` `[ 🌉 SF Bay Area ]`) alongside 1-2 punchy action prompts.
+  5. **100% Coverage & High-Diversity 3-Archetype Prompt Matrix**: Created dedicated 3-prompt pools across all 88 hobbies and locations in `sampleData.js` using 3 distinct sentence archetypes (Curiosity Question, Friendly Debate, Playful Toast/Story Trade), eliminating all generic fallback text.
+  6. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
