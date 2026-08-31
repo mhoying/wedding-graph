@@ -58,13 +58,14 @@ function createConcentricHopRadialForce(edgeLengthMultiplier) {
 
       const hops = Math.max(1, hopDistances.get(node.id) ?? 2);
 
-      // Strict Radial Shells based on Hop Count from The Couple:
-      // Hop 1 (Direct Friends): [180px, 320px]
-      // Hop 2 (Spouses / Friends of Friends): [380px, 560px]
-      // Hop 3+ (Further Connected): [620px, 850px]
-      const minRadius = (hops === 1 ? 180 : hops === 2 ? 380 : 620) * edgeLengthMultiplier;
-      const maxRadius = (hops === 1 ? 320 : hops === 2 ? 560 : 850) * edgeLengthMultiplier;
-      const targetRadius = (hops === 1 ? 250 : hops === 2 ? 460 : 720) * edgeLengthMultiplier;
+      // Dynamic Concentric Solar Shells for ALL Hop Levels (Hops 1, 2, 3, 4, 5, 6+):
+      // Every single hop level gets its own dedicated, non-overlapping orbital band!
+      const step = 155 * edgeLengthMultiplier;
+      const baseOffset = 110 * edgeLengthMultiplier;
+
+      const minRadius = baseOffset + (hops - 0.5) * step;
+      const maxRadius = baseOffset + (hops + 0.5) * step;
+      const targetRadius = baseOffset + hops * step;
 
       let dx = node.x || 0;
       let dy = node.y || 0;
