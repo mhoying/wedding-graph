@@ -56,21 +56,42 @@ function createConcentricHopRadialForce(edgeLengthMultiplier) {
     nodesList.forEach(node => {
       if (!node || !node.id || node.id === 'matt' || node.id === 'maureen' || node.type === 'CONTEXT_HUB') return;
 
-      const hops = hopDistances.get(node.id) ?? 2;
-      // Target radius grows strictly with hop distance:
-      // Hop 1 (direct friends): ~260px
-      // Hop 2 (friends of friends): ~460px
-      // Hop 3+ (further connected): ~680px+
-      const targetRadius = (100 + hops * 170) * edgeLengthMultiplier;
+      const hops = Math.max(1, hopDistances.get(node.id) ?? 2);
 
-      const dx = node.x || (Math.random() - 0.5);
-      const dy = node.y || (Math.random() - 0.5);
-      const currRadius = Math.sqrt(dx * dx + dy * dy) || 1;
+      // Strict Radial Shells based on Hop Count from The Couple:
+      // Hop 1 (Direct Friends): [180px, 320px]
+      // Hop 2 (Spouses / Friends of Friends): [380px, 560px]
+      // Hop 3+ (Further Connected): [620px, 850px]
+      const minRadius = (hops === 1 ? 180 : hops === 2 ? 380 : 620) * edgeLengthMultiplier;
+      const maxRadius = (hops === 1 ? 320 : hops === 2 ? 560 : 850) * edgeLengthMultiplier;
+      const targetRadius = (hops === 1 ? 250 : hops === 2 ? 460 : 720) * edgeLengthMultiplier;
 
-      // Gentle radial steering toward concentric hop ring
-      const k = (currRadius - targetRadius) * alpha * 0.28;
-      node.vx -= (dx / currRadius) * k;
-      node.vy -= (dy / currRadius) * k;
+      let dx = node.x || 0;
+      let dy = node.y || 0;
+      let currRadius = Math.sqrt(dx * dx + dy * dy);
+
+      if (currRadius < 1e-3) {
+        dx = (Math.random() - 0.5) * 10;
+        dy = (Math.random() - 0.5) * 10;
+        currRadius = Math.sqrt(dx * dx + dy * dy);
+      }
+
+      const unitX = dx / currRadius;
+      const unitY = dy / currRadius;
+
+      // 1. Force Steering toward Target Radius
+      const k = (currRadius - targetRadius) * Math.max(alpha, 0.15) * 0.4;
+      node.vx -= unitX * k;
+      node.vy -= unitY * k;
+
+      // 2. HARD Boundary Clamp: Enforces that Hop 2 nodes NEVER drift inside Hop 1 ring!
+      if (currRadius < minRadius) {
+        node.x = unitX * minRadius;
+        node.y = unitY * minRadius;
+      } else if (currRadius > maxRadius) {
+        node.x = unitX * maxRadius;
+        node.y = unitY * maxRadius;
+      }
     });
   };
 
