@@ -46,25 +46,34 @@ function calculateHopDistances(nodes, links) {
 }
 
 // Custom D3 Radial Force: Places nodes in concentric radial orbits based strictly on hop distance from Matt & Maureen!
-function createConcentricHopRadialForce(edgeLengthMultiplier) {
+// Preserves couple edge lengths and cohort cluster forces!
+function createConcentricHopRadialForce(edgeLengthMultiplier, clusterMode) {
   let nodesList = [];
   let hopDistances = new Map();
+  let couplePartnerMap = new Map();
 
   const force = (alpha) => {
     if (!nodesList || nodesList.length === 0) return;
+
+    // Weight adjustment: gentle guiding when cluster mode is active so cohort clusters remain intact
+    const forceWeight = clusterMode !== 'off' ? 0.12 : 0.35;
 
     nodesList.forEach(node => {
       if (!node || !node.id || node.id === 'matt' || node.id === 'maureen' || node.type === 'CONTEXT_HUB') return;
 
       const hops = Math.max(1, hopDistances.get(node.id) ?? 2);
 
-      // Dynamic Concentric Solar Shells for ALL Hop Levels (Hops 1, 2, 3, 4, 5, 6+):
-      // Every single hop level gets its own dedicated, non-overlapping orbital band!
-      const step = 155 * edgeLengthMultiplier;
+      // Dynamic Concentric Solar Shells for ALL Hop Levels:
+      // Every single hop level gets its own dedicated orbital band while respecting couple edge lengths!
+      const step = 150 * edgeLengthMultiplier;
       const baseOffset = 110 * edgeLengthMultiplier;
 
-      const minRadius = baseOffset + (hops - 0.5) * step;
-      const maxRadius = baseOffset + (hops + 0.5) * step;
+      // Allow a 70px Proximity Tolerance Buffer if node is in a Couple/Household link with a partner
+      const isCoupleNode = couplePartnerMap.has(node.id);
+      const tolerance = isCoupleNode ? 70 * edgeLengthMultiplier : 0;
+
+      const minRadius = Math.max(80, baseOffset + (hops - 0.5) * step - tolerance);
+      const maxRadius = baseOffset + (hops + 0.5) * step + tolerance;
       const targetRadius = baseOffset + hops * step;
 
       let dx = node.x || 0;
@@ -80,12 +89,12 @@ function createConcentricHopRadialForce(edgeLengthMultiplier) {
       const unitX = dx / currRadius;
       const unitY = dy / currRadius;
 
-      // 1. Force Steering toward Target Radius
-      const k = (currRadius - targetRadius) * Math.max(alpha, 0.15) * 0.4;
+      // 1. Gentle Force Steering toward Target Hop Orbit
+      const k = (currRadius - targetRadius) * Math.max(alpha, 0.1) * forceWeight;
       node.vx -= unitX * k;
       node.vy -= unitY * k;
 
-      // 2. HARD Boundary Clamp: Enforces that Hop 2 nodes NEVER drift inside Hop 1 ring!
+      // 2. Boundary Clamp with Couple Buffer: Prevents cross-hop inversion while respecting couple tightness!
       if (currRadius < minRadius) {
         node.x = unitX * minRadius;
         node.y = unitY * minRadius;
@@ -100,8 +109,21 @@ function createConcentricHopRadialForce(edgeLengthMultiplier) {
     nodesList = nodes;
   };
 
-  force.updateHopDistances = (distances) => {
+  force.updateHopDistances = (distances, links) => {
     hopDistances = distances;
+    couplePartnerMap.clear();
+
+    (links || []).forEach(l => {
+      if (!l) return;
+      const sId = typeof l.source === 'object' ? l.source.id : l.source;
+      const tId = typeof l.target === 'object' ? l.target.id : l.target;
+
+      const isCouple = l.type === 'COUPLE' || l.type === 'MARRIED' || l.relationship === 'Family' || l.relationship === 'Spouse' || l.relationship === 'Partner';
+      if (isCouple && sId && tId) {
+        couplePartnerMap.set(sId, tId);
+        couplePartnerMap.set(tId, sId);
+      }
+    });
   };
 
   return force;
@@ -389,8 +411,8 @@ export default function ForceCanvas({
       }
       // Calculate BFS Hop Distances from Matt & Maureen for concentric radial ring layout
       const hopDistances = calculateHopDistances(nodes, links);
-      const hopForce = createConcentricHopRadialForce(edgeLengthMultiplier);
-      hopForce.updateHopDistances(hopDistances);
+      const hopForce = createConcentricHopRadialForce(edgeLengthMultiplier, clusterMode);
+      hopForce.updateHopDistances(hopDistances, links);
       fg.d3Force('radialHop', hopForce);
 
       fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier));
