@@ -135,6 +135,88 @@ function createConcentricHopRadialForce(edgeLengthMultiplier, clusterMode) {
   return force;
 }
 
+// Helper to check 2D line segment intersection
+function checkLineIntersection(a, b, c, d) {
+  const det = (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x);
+  if (Math.abs(det) < 1e-5) return null; // Parallel
+
+  const lambda = ((d.y - c.y) * (d.x - a.x) + (c.x - d.x) * (d.y - a.y)) / det;
+  const gamma = ((a.y - b.y) * (d.x - a.x) + (b.x - a.x) * (d.y - a.y)) / det;
+
+  if (0.05 < lambda && lambda < 0.95 && 0.05 < gamma && gamma < 0.95) {
+    return {
+      x: a.x + lambda * (b.x - a.x),
+      y: a.y + lambda * (b.y - a.y)
+    };
+  }
+  return null;
+}
+
+// Custom D3 Force: Minimizes edge crossings by detecting link segment intersections and applying untangling angular impulses!
+function createUntangleEdgesForce() {
+  let nodesList = [];
+  let linksList = [];
+
+  const force = (alpha) => {
+    if (!linksList || linksList.length === 0 || alpha < 0.02) return;
+
+    const validLinks = linksList.filter(l => l && l.source && l.target && l.source.x !== undefined && l.target.x !== undefined);
+    const nLinks = validLinks.length;
+    if (nLinks < 2) return;
+
+    const untangleImpulse = alpha * 1.6;
+
+    for (let i = 0; i < nLinks; i++) {
+      const l1 = validLinks[i];
+      const a = l1.source;
+      const b = l1.target;
+
+      for (let j = i + 1; j < nLinks; j++) {
+        const l2 = validLinks[j];
+        const c = l2.source;
+        const d = l2.target;
+
+        if (a.id === c.id || a.id === d.id || b.id === c.id || b.id === d.id) continue;
+
+        const intersect = checkLineIntersection(a, b, c, d);
+        if (intersect) {
+          const dx1 = b.x - a.x;
+          const dy1 = b.y - a.y;
+          const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1) || 1;
+          const nx1 = -dy1 / len1;
+          const ny1 = dx1 / len1;
+
+          const dx2 = d.x - c.x;
+          const dy2 = d.y - c.y;
+          const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2) || 1;
+          const nx2 = -dy2 / len2;
+          const ny2 = dx2 / len2;
+
+          a.vx += nx1 * untangleImpulse;
+          a.vy += ny1 * untangleImpulse;
+          b.vx -= nx1 * untangleImpulse;
+          b.vy -= ny1 * untangleImpulse;
+
+          c.vx += nx2 * untangleImpulse;
+          c.vy += ny2 * untangleImpulse;
+          d.vx -= nx2 * untangleImpulse;
+          d.vy -= ny2 * untangleImpulse;
+        }
+      }
+    }
+  };
+
+  force.initialize = (nodes) => {
+    nodesList = nodes;
+  };
+
+  force.updateLinks = (links) => {
+    linksList = links;
+  };
+
+  return force;
+}
+
 // Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits!
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
@@ -422,6 +504,10 @@ export default function ForceCanvas({
       fg.d3Force('radialHop', hopForce);
 
       fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier));
+
+      const untangleForce = createUntangleEdgesForce();
+      untangleForce.updateLinks(links);
+      fg.d3Force('untangleEdges', untangleForce);
 
       if (activeOrbiting) {
         fg.d3Force('orbit', createOrbitForce(orbitSpeed));
