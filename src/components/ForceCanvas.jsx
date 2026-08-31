@@ -1107,9 +1107,20 @@ export default function ForceCanvas({
         graphData={graphData}
         d3VelocityDecay={0.45}
         d3AlphaDecay={0.04}
-        d3AlphaTarget={activeOrbiting ? 0.015 : 0}
+        d3AlphaTarget={activeOrbiting ? 0.02 : 0}
         warmupTicks={200}
         cooldownTicks={isOrbiting ? Infinity : 250}
+        cooldownTime={isOrbiting ? Infinity : 15000}
+        onEngineStop={() => {
+          if (activeOrbiting && fgRef.current) {
+            if (typeof fgRef.current.d3AlphaTarget === 'function') {
+              fgRef.current.d3AlphaTarget(0.02);
+            }
+            if (typeof fgRef.current.d3ReheatSimulation === 'function') {
+              fgRef.current.d3ReheatSimulation();
+            }
+          }
+        }}
         nodeCanvasObject={drawNode}
         nodePointerAreaPaint={drawPointerArea}
         onNodeClick={handleNodeClick}
