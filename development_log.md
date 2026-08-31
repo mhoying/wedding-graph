@@ -235,3 +235,17 @@
   4. **Hybrid Cocktail Matchmaker UI**: Refactored `CocktailMatchmakerModal.jsx` to render shared interests as emoji pill badges (`[ 🐕 Dogs ]` `[ 🥃 Whiskey ]` `[ 🌉 SF Bay Area ]`) alongside 1-2 punchy action prompts.
   5. **100% Coverage & High-Diversity 3-Archetype Prompt Matrix**: Created dedicated 3-prompt pools across all 88 hobbies and locations in `sampleData.js` using 3 distinct sentence archetypes (Curiosity Question, Friendly Debate, Playful Toast/Story Trade), eliminating all generic fallback text.
   6. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Social Discovery Matchmaker Engine & Location Prompt Accuracy
+- **User Prompts**:
+  1. "when i tried the matchamker on nishat, there were no suggested matches"
+  2. "are we sure that all people will have some converstaiotn starters?"
+  3. "i actualy think that peopel that have direct connections should have a lower connection score for match making as they already know each other .. ask the pm agent what she htinks"
+  4. "i still see spouses/couples getting ranked very high. i think the 50 pointes is sitll in there"
+  5. "somethign weird is happenign. when i look at kathryn, there are prompts for biran kim asking about survinvig the east coast winters and missy ask about secret bay area local spots.. when neither of htem are from teh bay area"
+- **Actions & Deliverables**:
+  1. **Nishat Shaikh Matchmaker Resolution**: Cleaned `reasons` array in `App.jsx` to pass raw tag names instead of debug strings, allowing guests like Nishat Shaikh (`Boston, MA`, `Cornell`, `Knitting`) to match cleanly with fellow alumni and location peers.
+  2. **100% Guest Coverage Empirical Verification**: Created `scratch/test_all_guests.cjs` test suite and verified that 100% of all 74 guests have high-scoring match suggestions and tailored conversation starters.
+  3. **Strict Spouse / Partner Unit Exclusion**: Added robust partner unit matching in `App.jsx` (`isSamePartnerUnit`), completely filtering out spouses and immediate couples from matchmaker suggestions (`score: -999`).
+  4. **Heavy Direct Connection Penalty (-120 pts)**: Applied a -120 pt penalty to direct graph neighbors in `App.jsx`, ensuring unfamiliar 2nd/3rd-degree acquaintances with shared interests always rank at the top of recommendations.
+  5. **Location Prompt Accuracy Fix**: Eliminated unshared location fallbacks in `App.jsx` and added clean Side affinity (`[ 🥂 Matt Side ]` / `[ 🥂 Maureen Side ]`) prompts in `CocktailMatchmakerModal.jsx`, ensuring guests only see location prompts for locations they actually share.
+  6. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
