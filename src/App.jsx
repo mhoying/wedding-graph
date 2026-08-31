@@ -895,23 +895,35 @@ export default function App() {
         let sharedScore = 0;
         const reasonsSet = new Set();
 
-        // Check if spouse / partner
-        const isSpouse = (me.relationship && other.name && me.relationship.toLowerCase().includes(other.name.toLowerCase())) ||
-                         (other.relationship && me.name && other.relationship.toLowerCase().includes(me.name.toLowerCase()));
-        if (isSpouse) return { node: other, sharedScore: -999, reasons: [] };
+        // 1. Strict Spouse / Partner Filter
+        const myRel = (me.relationship || '').trim().toLowerCase();
+        const otherRel = (other.relationship || '').trim().toLowerCase();
+        const myName = (me.name || '').trim().toLowerCase();
+        const otherName = (other.name || '').trim().toLowerCase();
 
-        // 1. Deprioritize Direct Graph Neighbors (-20 points) so new acquaintances rank higher!
+        const isSamePartnerUnit = 
+          (myRel.length > 3 && myRel === otherRel && !myRel.includes('family')) ||
+          (myRel.length > 3 && myRel.includes(otherName)) ||
+          (otherRel.length > 3 && otherRel.includes(myName)) ||
+          (me.id === 'matt' && other.id === 'maureen') ||
+          (me.id === 'maureen' && other.id === 'matt');
+
+        if (isSamePartnerUnit) {
+          return { node: other, sharedScore: -999, reasons: [] };
+        }
+
+        // 2. Heavy Direct Connection Penalty (-120 points) so new acquaintances ALWAYS rank higher!
         if (myNeighbors.has(other.id)) {
-          sharedScore -= 20;
+          sharedScore -= 120;
         } else {
-          // 2nd-degree mutual connections boost (+20 points)
+          // 2nd-degree mutual connections boost (+25 points)
           const otherNeighbors = neighborMap.get(other.id) || new Set();
           let mutualsCount = 0;
           myNeighbors.forEach(nId => {
             if (otherNeighbors.has(nId)) mutualsCount++;
           });
           if (mutualsCount > 0) {
-            sharedScore += 20;
+            sharedScore += 25;
           }
         }
 
