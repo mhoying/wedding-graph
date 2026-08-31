@@ -895,11 +895,23 @@ export default function App() {
         let sharedScore = 0;
         const reasonsSet = new Set();
 
-        // 1. Direct Edge / Partner Connection (+50 points)
+        // Check if spouse / partner
+        const isSpouse = (me.relationship && other.name && me.relationship.toLowerCase().includes(other.name.toLowerCase())) ||
+                         (other.relationship && me.name && other.relationship.toLowerCase().includes(me.name.toLowerCase()));
+        if (isSpouse) return { node: other, sharedScore: -999, reasons: [] };
+
+        // 1. Deprioritize Direct Graph Neighbors (-20 points) so new acquaintances rank higher!
         if (myNeighbors.has(other.id)) {
-          sharedScore += 50;
-          if (other.cohort && !['other', 'default', 'the couple'].includes(other.cohort.toLowerCase())) {
-            reasonsSet.add(other.cohort);
+          sharedScore -= 20;
+        } else {
+          // 2nd-degree mutual connections boost (+20 points)
+          const otherNeighbors = neighborMap.get(other.id) || new Set();
+          let mutualsCount = 0;
+          myNeighbors.forEach(nId => {
+            if (otherNeighbors.has(nId)) mutualsCount++;
+          });
+          if (mutualsCount > 0) {
+            sharedScore += 20;
           }
         }
 
