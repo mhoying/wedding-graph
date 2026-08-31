@@ -159,3 +159,9 @@
   1. **2D Segment Intersection Detection**: Added `checkLineIntersection` to `ForceCanvas.jsx` to evaluate non-adjacent edge pairs during simulation ticks.
   2. **Untangle Edges Force (`untangleEdges`)**: Created `createUntangleEdgesForce` in `ForceCanvas.jsx` which applies perpendicular untangling impulses to edge endpoints when intersections are detected, rotating connected nodes to minimize crossing lines.
   3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Perpetual Kinetic Orbiting & Infinite Cooldown Fix
+- **User Prompt**: "it seems that the grpah is getting frozen. even if i dont do anyting, it seems to freeze after two or three seconds of orbiting"
+- **Actions & Deliverables**:
+  1. **Perpetual Target Alpha (`d3AlphaTarget(0.015)`)**: Configured `fg.d3AlphaTarget(0.015)` in `ForceCanvas.jsx` when orbiting is active so D3 simulation ticks continue running indefinitely at low energy.
+  2. **Dynamic Infinite Cooldown (`cooldownTicks`)**: Updated `<ForceGraph2D cooldownTicks={isOrbiting ? Infinity : 250}>` in `ForceCanvas.jsx` to prevent D3 from freezing simulation ticks after 250 frames.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
