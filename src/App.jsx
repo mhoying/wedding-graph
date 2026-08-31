@@ -115,7 +115,7 @@ export default function App() {
 
   // Scalable Canvas & Motion Controls
   const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(1.0);
-  const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(1.0);
+  const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(1.3);
   const [isOrbiting, setIsOrbiting] = useState(true);
   const [orbitSpeed, setOrbitSpeed] = useState(0.3);
 
