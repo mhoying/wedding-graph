@@ -427,7 +427,7 @@ export default function App() {
     const interestsSet = new Set();
 
     (nodes || []).forEach(node => {
-      if (!node || node.type === 'CONTEXT_HUB') return;
+      if (!node) return;
       
       // Cohorts (Exclude family units)
       if (node.cohort && !node.cohort.toLowerCase().includes('family')) {
@@ -1761,7 +1761,7 @@ export default function App() {
         feedbackNote={feedbackNote}
         setFeedbackNote={setFeedbackNote}
         handleSubmitFeedback={handleSubmitFeedback}
-        allInterests={allInterestsAndLocations.interests}
+        allInterests={availableClusters.interests}
       />
 
       {/* Host Passcode Prompt Modal (Triggered via secret shortcut Ctrl+Shift+A) */}
