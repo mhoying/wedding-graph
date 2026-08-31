@@ -321,8 +321,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
     "Google": { x: 0, y: 460 },          // Bottom Center
     "Lehigh": { x: -440, y: 160 },       // Bottom Left
     "Dog Park": { x: 440, y: 160 },      // Bottom Right
-    "OWFL Blog": { x: 480, y: -100 },     // Far Right
-    "Bay FC": { x: -480, y: -100 },       // Far Left
+    "OWFL Blog": { x: 320, y: -100 },     // Right
+    "Bay FC": { x: -320, y: -100 },       // Left
     "Jenna": { x: 0, y: -460 }          // Top Center
   };
 
