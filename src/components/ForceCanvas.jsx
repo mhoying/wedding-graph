@@ -94,14 +94,20 @@ function createConcentricHopRadialForce(edgeLengthMultiplier, clusterMode) {
       node.vx -= unitX * k;
       node.vy -= unitY * k;
 
-      // 2. Boundary Clamp with Couple Buffer: Prevents cross-hop inversion while respecting couple tightness!
+      // 2. Smooth Velocity Steering Boundaries (Eliminates position jumps & micro-jitter!)
       if (currRadius < minRadius) {
-        node.x = unitX * minRadius;
-        node.y = unitY * minRadius;
+        const delta = (minRadius - currRadius);
+        node.vx += unitX * delta * alpha * 0.45;
+        node.vy += unitY * delta * alpha * 0.45;
       } else if (currRadius > maxRadius) {
-        node.x = unitX * maxRadius;
-        node.y = unitY * maxRadius;
+        const delta = (currRadius - maxRadius);
+        node.vx -= unitX * delta * alpha * 0.45;
+        node.vy -= unitY * delta * alpha * 0.45;
       }
+
+      // Smooth velocity damping for liquid motion
+      node.vx *= 0.92;
+      node.vy *= 0.92;
     });
   };
 
@@ -423,6 +429,8 @@ export default function ForceCanvas({
         fg.d3Force('orbit', null);
       }
 
+      fg.d3VelocityDecay(0.45);
+      fg.d3AlphaDecay(0.04);
       fg.d3ReheatSimulation();
     }
   }, [nodes, links, showHeadshots, nodeScaleMultiplier, edgeLengthMultiplier, activeOrbiting, orbitSpeed, clusterMode]);
