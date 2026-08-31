@@ -5,6 +5,86 @@ import { getNodeBounds, hexToRgba } from '../utils/nodeGeometry';
 import { getConvexHull2D } from '../utils/convexHull';
 import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/sampleData';
 
+// Calculate BFS Hop Distances from The Couple (Matt & Maureen)
+function calculateHopDistances(nodes, links) {
+  const adj = new Map();
+  (nodes || []).forEach(n => n && n.id && adj.set(n.id, []));
+
+  (links || []).forEach(link => {
+    if (!link) return;
+    const sId = typeof link.source === 'object' ? link.source.id : link.source;
+    const tId = typeof link.target === 'object' ? link.target.id : link.target;
+    if (sId && tId) {
+      if (adj.has(sId)) adj.get(sId).push(tId);
+      if (adj.has(tId)) adj.get(tId).push(sId);
+    }
+  });
+
+  const distances = new Map();
+  const queue = [];
+
+  ['matt', 'maureen'].forEach(cId => {
+    if (adj.has(cId)) {
+      distances.set(cId, 0);
+      queue.push(cId);
+    }
+  });
+
+  while (queue.length > 0) {
+    const curr = queue.shift();
+    const d = distances.get(curr);
+    const neighbors = adj.get(curr) || [];
+    for (const nbr of neighbors) {
+      if (!distances.has(nbr)) {
+        distances.set(nbr, d + 1);
+        queue.push(nbr);
+      }
+    }
+  }
+
+  return distances;
+}
+
+// Custom D3 Radial Force: Places nodes in concentric radial orbits based strictly on hop distance from Matt & Maureen!
+function createConcentricHopRadialForce(edgeLengthMultiplier) {
+  let nodesList = [];
+  let hopDistances = new Map();
+
+  const force = (alpha) => {
+    if (!nodesList || nodesList.length === 0) return;
+
+    nodesList.forEach(node => {
+      if (!node || !node.id || node.id === 'matt' || node.id === 'maureen' || node.type === 'CONTEXT_HUB') return;
+
+      const hops = hopDistances.get(node.id) ?? 2;
+      // Target radius grows strictly with hop distance:
+      // Hop 1 (direct friends): ~260px
+      // Hop 2 (friends of friends): ~460px
+      // Hop 3+ (further connected): ~680px+
+      const targetRadius = (100 + hops * 170) * edgeLengthMultiplier;
+
+      const dx = node.x || (Math.random() - 0.5);
+      const dy = node.y || (Math.random() - 0.5);
+      const currRadius = Math.sqrt(dx * dx + dy * dy) || 1;
+
+      // Gentle radial steering toward concentric hop ring
+      const k = (currRadius - targetRadius) * alpha * 0.28;
+      node.vx -= (dx / currRadius) * k;
+      node.vy -= (dy / currRadius) * k;
+    });
+  };
+
+  force.initialize = (nodes) => {
+    nodesList = nodes;
+  };
+
+  force.updateHopDistances = (distances) => {
+    hopDistances = distances;
+  };
+
+  return force;
+}
+
 // Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits!
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier) {
   let nodesList = [];
@@ -285,6 +365,12 @@ export default function ForceCanvas({
         existingCenter.x(0);
         existingCenter.y(0);
       }
+      // Calculate BFS Hop Distances from Matt & Maureen for concentric radial ring layout
+      const hopDistances = calculateHopDistances(nodes, links);
+      const hopForce = createConcentricHopRadialForce(edgeLengthMultiplier);
+      hopForce.updateHopDistances(hopDistances);
+      fg.d3Force('radialHop', hopForce);
+
       fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier));
 
       if (activeOrbiting) {
