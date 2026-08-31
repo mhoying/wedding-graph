@@ -619,9 +619,9 @@ export default function App() {
           const desVx = targetX - x;
           const desVy = targetY - y;
 
-          // Directly inject decay-compensated velocity so orbit speed NEVER decays below target speed!
-          node.vx = desVx * decayCompensation;
-          node.vy = desVy * decayCompensation;
+          // Additive tangential velocity blending: Preserves repulsion, link, and radial hop forces!
+          node.vx += (desVx - node.vx) * 0.22;
+          node.vy += (desVy - node.vy) * 0.22;
         }
       });
     };
