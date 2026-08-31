@@ -126,3 +126,12 @@
   2. **D3 Radial Concentric Force (`radialHop`)**: Created `createConcentricHopRadialForce` in `ForceCanvas.jsx` which enforces expanding target orbital radii ($R = 100 + \text{hops} \times 170$) so direct friends (1 hop) orbit in an inner ring, 2-hop guests orbit in a middle ring, and 3+ hop guests orbit in outer rings.
   3. **Automated Verification**: Ran JSDOM headless browser runtime tests verifying zero reference errors and clean execution.
   4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-30] Dynamic All-Hop Radial Shells & Couple Edge Length Preservation
+- **User Prompts**:
+  1. "shoudl this go out to the maximum number of hops from matt and maureen?"
+  2. "lets make sure that these don't overwrite the edge lenghts for special cases liek couples and cohorts"
+- **Actions & Deliverables**:
+  1. **Dynamic All-Hop Concentric Formula**: Updated `createConcentricHopRadialForce` in `ForceCanvas.jsx` to dynamically calculate non-overlapping orbital rings for ALL hop degrees ($H = 1, 2, 3, 4, 5, 6+$) using $R_{\text{target}}(H) = 110 + H \times 155\text{px}$.
+  2. **Couple Proximity Tolerance Buffer**: Added automatic couple/household link detection so spouses/partners receive a $\pm 70\text{px}$ tolerance buffer, keeping partners tightly side-by-side at their exact couple edge length.
+  3. **Cluster Mode Weight Tuning**: Adjusted `radialHop` force weight (`0.12`) when Cluster Mode is active so cohort cluster foci and intra-cohort edge lengths take precedence.
+  4. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
