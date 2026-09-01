@@ -256,3 +256,8 @@
   1. **Floating Map Controls FAB Availability**: Updated `.mobile-drawer-toggle-fab` media query rules in `index.css` from `@media (max-width: 768px)` to `@media (max-width: 1200px)`, ensuring the floating **"🎛️ Map Controls"** FAB button is 100% visible on non-maximized Chrome OS/laptop screens whenever inline controls condense.
   2. **Responsive Top Bar Wrapping**: Added `flex-wrap: wrap`, custom scrollbar, and flexible layout padding to `.top-bar` and `.search-controls-area` in `index.css`, preventing the header bar from overflowing or clipping off the side of narrower screens.
   3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Follow-up User Prompt**:
+  - "in the narrow top header version can we includ the matchmaker button even in a colapsed state if it fits?"
+- **Follow-up Actions & Deliverables**:
+  - **Always-Accessible Matchmaker Header Button**: Refactored the Matchmaker button in `TopHeaderNav.jsx` and `index.css` (`.matchmaker-header-btn` & `.matchmaker-btn-text`). It renders as `[ 🪄 Matchmaker ]` on wide screens and automatically collapses into a compact `[ 🪄 ]` icon button on narrow/mobile viewports (<960px), keeping it permanently accessible right in the top header bar without taking up excessive width.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
