@@ -4,7 +4,9 @@ import { X, Edit3, Ghost, Landmark, Home, MapPin, Users, Sparkles } from 'lucide
 export default function GuestProfileDrawer({
   selectedNode,
   nodes,
+  links,
   onClose,
+  onSelectNode,
   isEditingDrawer,
   setIsEditingDrawer,
   editName,
@@ -32,6 +34,22 @@ export default function GuestProfileDrawer({
   colorMode,
   getNodeColor
 }) {
+  const connectedNeighbors = React.useMemo(() => {
+    if (!selectedNode || !links || !nodes) return [];
+    const selectedId = selectedNode.id;
+    const neighborIds = new Set();
+    
+    links.forEach(l => {
+      if (!l) return;
+      const sId = typeof l.source === 'object' ? l.source.id : l.source;
+      const tId = typeof l.target === 'object' ? l.target.id : l.target;
+      if (sId === selectedId) neighborIds.add(tId);
+      if (tId === selectedId) neighborIds.add(sId);
+    });
+
+    return nodes.filter(n => n && neighborIds.has(n.id));
+  }, [selectedNode, links, nodes]);
+
   const availableTags = React.useMemo(() => {
     const set = new Set([
       'Chargers',
@@ -140,8 +158,50 @@ export default function GuestProfileDrawer({
                   <span>Currently lives in: {selectedNode.currentlyLivesIn || selectedNode.state}</span>
                 </div>
               )}
+
+              {/* DIRECTLY CONNECTED NEIGHBORS CHIPS SECTION */}
+              {connectedNeighbors && connectedNeighbors.length > 0 && (
+                <div style={{ marginTop: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8, color: '#38bdf8' }}>
+                    <Users style={{ width: 16, height: 16, color: '#38bdf8' }} />
+                    <span>Direct Connections ({connectedNeighbors.length}):</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {connectedNeighbors.map(neighbor => {
+                      const chipColor = getNodeColor ? getNodeColor(neighbor) : '#38bdf8';
+                      return (
+                        <button
+                          key={neighbor.id}
+                          onClick={() => {
+                            if (onSelectNode) onSelectNode(neighbor);
+                          }}
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 600,
+                            padding: '4px 10px',
+                            borderRadius: 9999,
+                            border: `1px solid ${chipColor}66`,
+                            background: `${chipColor}22`,
+                            color: '#f8fafc',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 5,
+                            transition: 'all 0.15s ease'
+                          }}
+                          title={`Click to inspect ${neighbor.name}`}
+                        >
+                          <span style={{ width: 7, height: 7, borderRadius: '50%', background: chipColor, display: 'inline-block' }} />
+                          <span>{neighbor.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {selectedNode.hobbies && selectedNode.hobbies.length > 0 && (
-                <div style={{ marginTop: 8 }}>
+                <div style={{ marginTop: 12 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
                     <Sparkles style={{ width: 16, height: 16, color: '#10b981' }} />
                     <span>Interests:</span>

@@ -1626,7 +1626,9 @@ export default function App() {
       <GuestProfileDrawer 
         selectedNode={selectedNode}
         nodes={nodes}
+        links={links}
         onClose={handleCloseProfile}
+        onSelectNode={(node) => setSelectedNode(node)}
         isEditingDrawer={isEditingDrawer}
         setIsEditingDrawer={setIsEditingDrawer}
         editName={editName}
