@@ -366,7 +366,7 @@ function createSpouseRadialRayForce(linksList) {
       const rx = px / pLen;
       const ry = py / pLen;
 
-      const targetSpouseDist = pLen + 65;
+      const targetSpouseDist = pLen + 130; // 130px directly outward along radial ray so spouse sits OUTSIDE the cohort hull!
       const targetSx = rx * targetSpouseDist;
       const targetSy = ry * targetSpouseDist;
 
@@ -410,16 +410,16 @@ function getPartnerCohortMap(nodesList, linksList) {
   return partnerMap;
 }
 
-// Topological ordering of ground-truth cohorts around 360 degrees so connected cohorts (e.g. Jenna & Dog Park) sit directly next to each other!
+// Topological ordering of ground-truth cohorts around 360 degrees so connected cohorts (e.g. Bay FC, Lehigh & Dog Park) sit directly next to each other!
 const TOPOLOGICAL_COHORT_ORDER = [
   "Dog Park",   // Top (North)
-  "Jenna",      // Directly next to Dog Park!
-  "OWFL Blog",  // Next to Jenna & Dog Park
+  "Jenna",      // Next to Dog Park
+  "OWFL Blog",  // North-West
   "Cornell",    // West
-  "Bay FC",     // South-West
-  "Stanford",   // South-East
-  "Google",     // East
-  "Lehigh"      // North-East (next to Google)
+  "Stanford",   // South-West
+  "Google",     // South-East
+  "Lehigh",     // East (next to Google and Bay FC)
+  "Bay FC"      // North-East (directly between Lehigh and Dog Park!)
 ];
 
 // Helper to compute node-count proportional sector angles based on topological adjacency
@@ -676,7 +676,9 @@ export default function ForceCanvas({
           const sId = String(sObj ? sObj.id : l.source).toLowerCase();
           const tId = String(tObj ? tObj.id : l.target).toLowerCase();
 
-          // Precise Couple & Partner link identification
+          const partnerCohortMap = getPartnerCohortMap(nodes, links);
+
+          // Comprehensive Couple & Spouse identification (matches explicit type, relationship, family status, or partnerCohortMap pairing!)
           const isExplicitType = l.type === 'COUPLE' || l.type === 'MARRIED' || l.type === 'FAMILY' || l.label === 'Married' || l.label === 'Partner' || l.label === 'Spouse';
           const isExplicitCoupleRel = l.relationship === 'Family' || l.relationship === 'Married' || l.relationship === 'Partner' || l.relationship === 'Spouse';
           const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && 
@@ -684,9 +686,11 @@ export default function ForceCanvas({
                                    !['Friends', 'Coworkers', 'Guest', 'Connected'].includes(sObj.relationship) &&
                                    !String(sObj.relationship).toLowerCase().includes('cluster');
           const isMattMaureen = (sId === 'matt' && tId === 'maureen') || (sId === 'maureen' && tId === 'matt');
+          const isPartnerMappedSpouse = partnerCohortMap.has(sObj?.id) || partnerCohortMap.has(tObj?.id);
+          const isCoupleStatus = sObj?.familyStatus === 'Couple / Group' || tObj?.familyStatus === 'Couple / Group';
 
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
-          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
+          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen || (isPartnerMappedSpouse && isCoupleStatus));
 
           // Cross-Cohort vs Unclustered Link identification
           const sCohort = sObj && sObj.cohort;
@@ -698,13 +702,13 @@ export default function ForceCanvas({
 
           let cohortMultiplier;
           if (isCoupleOrFamilyLink) {
-            cohortMultiplier = 0.2; // Extremely close edge distance for couples and families!
+            cohortMultiplier = 0.15; // Ultra-short tight edge distance (~35px) for couples and families!
           } else if (isSameCohort) {
-            cohortMultiplier = 0.75;
+            cohortMultiplier = 0.85; // Spacious distance for non-couple friends in same cohort!
           } else if (isCrossCohort) {
-            cohortMultiplier = 3.5; // Long cross-cohort distance so edges can curve outward around cohort hulls!
+            cohortMultiplier = 3.5; // Long cross-cohort distance so separate cohorts remain distinct!
           } else if (isUnclustered) {
-            cohortMultiplier = 0.9; // Close friend distance so unclustered guests (e.g. Jess Phan & Leslie) stay close to their friends!
+            cohortMultiplier = 1.0;
           } else {
             cohortMultiplier = 1.0;
           }
@@ -719,6 +723,8 @@ export default function ForceCanvas({
           const sId = String(sObj ? sObj.id : l.source).toLowerCase();
           const tId = String(tObj ? tObj.id : l.target).toLowerCase();
 
+          const partnerCohortMap = getPartnerCohortMap(nodes, links);
+
           const isExplicitType = l.type === 'COUPLE' || l.type === 'MARRIED' || l.type === 'FAMILY' || l.label === 'Married' || l.label === 'Partner' || l.label === 'Spouse';
           const isExplicitCoupleRel = l.relationship === 'Family' || l.relationship === 'Married' || l.relationship === 'Partner' || l.relationship === 'Spouse';
           const hasSameHousehold = sObj && tObj && sObj.relationship && tObj.relationship && 
@@ -726,9 +732,11 @@ export default function ForceCanvas({
                                    !['Friends', 'Coworkers', 'Guest', 'Connected'].includes(sObj.relationship) &&
                                    !String(sObj.relationship).toLowerCase().includes('cluster');
           const isMattMaureen = (sId === 'matt' && tId === 'maureen') || (sId === 'maureen' && tId === 'matt');
+          const isPartnerMappedSpouse = partnerCohortMap.has(sObj?.id) || partnerCohortMap.has(tObj?.id);
+          const isCoupleStatus = sObj?.familyStatus === 'Couple / Group' || tObj?.familyStatus === 'Couple / Group';
 
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
-          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
+          const isCoupleOrFamilyLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen || (isPartnerMappedSpouse && isCoupleStatus));
 
           const isSameCohort = sObj && tObj && sObj.cohort && tObj.cohort && 
                                sObj.cohort !== 'Other' && tObj.cohort !== 'Other' && 
@@ -1332,19 +1340,7 @@ export default function ForceCanvas({
         }}
         onZoom={handleZoom}
         onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
-        linkCurvature={(link) => {
-          if (!link) return 0;
-          const sObj = typeof link.source === 'object' ? link.source : nodes.find(n => n.id === link.source);
-          const tObj = typeof link.target === 'object' ? link.target : nodes.find(n => n.id === link.target);
-          if (!sObj || !tObj) return 0;
-
-          const sCohort = sObj.cohort;
-          const tCohort = tObj.cohort;
-          const isCrossCohort = sCohort && tCohort && sCohort !== 'Other' && tCohort !== 'Other' && sCohort !== tCohort;
-
-          // Cross-cohort edges (e.g. Romana in Cornell to Nur-E in Dog Park) curve in a smooth outer arc around foreign hulls!
-          return isCrossCohort ? 0.35 : 0;
-        }}
+        linkCurvature={0}
         linkColor={(link) => {
           const s = typeof link.source === 'object' ? link.source.id : link.source;
           const t = typeof link.target === 'object' ? link.target.id : link.target;

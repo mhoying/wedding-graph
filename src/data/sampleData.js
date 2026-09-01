@@ -1560,11 +1560,6 @@ export const SAMPLE_LINKS = [
     "relationship": "Connected"
   },
   {
-    "source": "krista_kobeski",
-    "target": "jessi_mcmullan",
-    "relationship": "Connected"
-  },
-  {
     "source": "liz_scott",
     "target": "owfl_blog",
     "relationship": "Connected"
@@ -1761,11 +1756,6 @@ export const SAMPLE_LINKS = [
     "relationship": "Coworkers"
   },
   {
-    "source": "romana_rajput",
-    "target": "nur_e_freedman",
-    "relationship": "Coworkers"
-  },
-  {
     "source": "ivan_vojvodic",
     "target": "matt",
     "relationship": "Coworkers"
@@ -1790,6 +1780,16 @@ export const SAMPLE_LINKS = [
   {
     "source": "toyo_tsujino",
     "target": "george_sun",
+    "relationship": "Connected"
+  },
+  {
+    "source": "romana_rajput",
+    "target": "nur_e_freedman",
+    "relationship": "Coworkers"
+  },
+  {
+    "source": "krista_kobeski",
+    "target": "bay_fc",
     "relationship": "Connected"
   }
 ];
