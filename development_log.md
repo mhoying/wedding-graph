@@ -363,3 +363,10 @@
   - **Minimum Central Radius ($260\text{px}$) Repulsion for All Cohorts**: Added explicit central anchor repulsion in `createClusterSeparationForce` for all primary cohort nodes (including `Jenna` cohort: `jenna_auer`, `tim_auer`, `becca_winslow`, `jonathan_bibayan`). If any cohort node drops below $260\text{px}$ from center $(0,0)$, an outward push force restores a clean central buffer.
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Clickable Direct Connection Chips User Prompt**:
+  - "one last feature. when ou click someoen for details; it shoudl also provide a list of direclty connected nodes as a slit of clicable chips"
+- **Clickable Direct Connection Chips Actions & Deliverables**:
+  - **Implemented Direct Connections Section**: Updated `GuestProfileDrawer.jsx` to dynamically calculate all directly connected neighbors from `links`.
+  - **Interactive Clickable Chips**: Renders a **Direct Connections (N)** section with color-coded cohort pill badges for every neighbor. Clicking any chip immediately shifts focus to inspect that connected neighbor node!
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
