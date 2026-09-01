@@ -317,3 +317,10 @@
   - **Topological Adjacency Sequence**: Ordered cohorts along 360° based on actual inter-cluster link density (`Dog Park` ➔ `Jenna` ➔ `OWFL Blog` ➔ `Cornell` ➔ `Bay FC` ➔ `Stanford` ➔ `Google` ➔ `Lehigh`). `Jenna` now sits directly adjacent to `Dog Park`, eliminating awkward cross-sector link crossings!
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Spouse Radial Ray Alignment User Prompt**:
+  - "i'm still seen the spouse nodes act weird; they aren't looking radiant form the center and some are stsilla t 90d from the radial direction form the center"
+- **Spouse Radial Ray Alignment Actions & Deliverables**:
+  - **Implemented `createSpouseRadialRayForce`**: Created a dedicated D3 force in `ForceCanvas.jsx` that projects every spouse/partner node $S$ directly along the radial ray vector $\hat{r} = \frac{(P_x, P_y)}{\sqrt{P_x^2 + P_y^2}}$ extending from center `(0, 0)` through primary partner $P$.
+  - **Eliminated 90-Degree Tangential Skew**: Spouses (e.g. `Angela Tsung` with `Jason Tsung`, `Jean McMillan` with `Jason McMillan`, `Mary Wetzel` with `Tom Crain`) now sit at $\theta_S = \theta_P$ (0° angular deviation), positioned directly behind their partner along the radial line radiating 100% perpendicularly outward from center `(0, 0)`.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
