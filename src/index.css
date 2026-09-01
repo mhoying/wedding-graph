@@ -60,38 +60,51 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   pointer-events: none;
   width: calc(100vw - 40px);
   max-width: calc(100vw - 40px);
   box-sizing: border-box;
-  flex-wrap: wrap;
   padding: 10px 16px;
 }
 
-.logo-area {
+.logo-area-tall {
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.search-controls-area {
+.header-controls-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.header-controls-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 1 1 auto;
-  min-width: 0;
-  max-width: 100%;
+  width: 100%;
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(56, 189, 248, 0.4) transparent;
-  padding: 2px 0;
   white-space: nowrap;
 }
 
-.search-controls-area::-webkit-scrollbar {
-  display: none;
+.header-controls-row::-webkit-scrollbar {
+  height: 4px;
+}
+.header-controls-row::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.4);
+  border-radius: 4px;
 }
 
-.logo-area, .search-controls-area, .top-bar button, .top-bar select, .top-bar input, .top-bar div {
+.logo-area-tall, .header-controls-grid, .top-bar button, .top-bar select, .top-bar input, .top-bar div {
   pointer-events: auto !important;
 }
 
