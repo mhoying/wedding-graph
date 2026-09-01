@@ -90,13 +90,8 @@ body {
   align-items: center;
   gap: 8px;
   width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   white-space: nowrap;
-}
-
-.header-controls-row::-webkit-scrollbar {
-  display: none;
 }
 
 .logo-area-tall, .header-controls-grid, .top-bar button, .top-bar select, .top-bar input, .top-bar div {
@@ -497,9 +492,10 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* RESPONSIVE MEDIUM SCREEN MEDIA QUERIES (<1200px MacBook / Laptop Screens) */
-@media screen and (max-width: 1200px) {
-  .desktop-only-inline {
+/* RESPONSIVE MEDIUM & HALF-SCREEN MEDIA QUERIES (<1280px / Half Screen Widths) */
+@media screen and (max-width: 1280px) {
+  .desktop-only-inline,
+  .hide-on-constrained {
     display: none !important;
   }
 }

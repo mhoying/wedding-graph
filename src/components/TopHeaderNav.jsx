@@ -47,10 +47,8 @@ export default function TopHeaderNav({
           <span style={{ fontSize: 24, lineHeight: 1 }} role="img" aria-label="Goose">🪿</span>
           <h1 className="logo-title" style={{ background: 'linear-gradient(135deg, #38bdf8 0%, #ec4899 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', color: '#38bdf8', margin: 0, fontSize: 17, fontWeight: 900 }}>Honk Wedding Universe</h1>
         </div>
-        <span className="logo-subtitle">Sept 26, 2026 • Honk Wedding Map</span>
-      </div>
-
-      {/* Right Controls Area (Divided into 2 Clean Rows) */}
+        <span className="logo-subtitle hide-on-constrained">Sept 26, 2026 • Honk Wedding Map</span>
+      </div>      {/* Right Controls Area (Divided into 2 Clean Rows) */}
       <div className="header-controls-grid">
         {/* ROW 1: Search & View Actions Bar */}
         <div className="header-controls-row top-row">
@@ -76,7 +74,7 @@ export default function TopHeaderNav({
 
           {/* Selected Interests Filter Badges */}
           {selectedInterests.length > 0 && (
-            <div className="active-interests-bar">
+            <div className="active-interests-bar hide-on-constrained">
               {selectedInterests.map(interest => (
                 <span key={interest} className="interest-chip">
                   <span>{interest}</span>
@@ -120,7 +118,7 @@ export default function TopHeaderNav({
             <>
               <button 
                 onClick={() => setIsSpreadsheetOpen && setIsSpreadsheetOpen(true)}
-                className="glass-panel btn-icon"
+                className="glass-panel btn-icon hide-on-constrained"
                 title="Open Live Guest Spreadsheet Grid Editor"
                 style={{ 
                   height: 34, 
@@ -164,9 +162,9 @@ export default function TopHeaderNav({
           )}
         </div>
 
-        {/* ROW 2: Essential Map & Discovery Tools (Compact & 100% Fit) */}
+        {/* ROW 2: Essential Map & Discovery Tools (Omitted on narrow/half-screen widths as user can use Map Controls Drawer) */}
         <div className="header-controls-row bottom-row">
-          {/* Map Controls Sheet Trigger Button */}
+          {/* Map Controls Sheet Trigger Button (ALWAYS VISIBLE) */}
           <button 
             onClick={onOpenMapControls}
             className="glass-panel btn-icon"
@@ -177,10 +175,10 @@ export default function TopHeaderNav({
             <span>Map Controls</span>
           </button>
 
-          {/* Path Finder Toggle */}
+          {/* Path Finder Toggle (Omitted when width is constrained) */}
           <button 
             onClick={() => setIsPathMode(!isPathMode)}
-            className={`glass-panel btn-icon ${isPathMode ? 'active' : ''}`}
+            className={`glass-panel btn-icon hide-on-constrained ${isPathMode ? 'active' : ''}`}
             title="Calculate Social Distance Path"
             style={{ height: 32, padding: '0 8px', gap: 4, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
           >
@@ -188,10 +186,10 @@ export default function TopHeaderNav({
             <span>Path Finder</span>
           </button>
 
-          {/* Matchmaker Button */}
+          {/* Matchmaker Button (Omitted when width is constrained) */}
           <button 
             onClick={() => setIsMatchmakerOpen(true)}
-            className="glass-panel btn-icon matchmaker-header-btn"
+            className="glass-panel btn-icon matchmaker-header-btn hide-on-constrained"
             title="Find Guest Match Recommendations"
             style={{ 
               height: 32, 
@@ -209,8 +207,8 @@ export default function TopHeaderNav({
             <span>Matchmaker</span>
           </button>
 
-          {/* Cluster Overlays Dropdown */}
-          <div className="glass-panel color-mode-bar" style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 6px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 8, flexShrink: 0 }}>
+          {/* Cluster Overlays Dropdown (Omitted when width is constrained) */}
+          <div className="glass-panel color-mode-bar hide-on-constrained" style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 6px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 8, flexShrink: 0 }}>
             <Layers style={{ width: 13, height: 13, color: '#ec4899', marginRight: 4 }} />
             <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Clusters:</span>
             <select 
@@ -233,7 +231,6 @@ export default function TopHeaderNav({
               <option value="interests">Interests</option>
               <option value="locations">Locations (Combined)</option>
               <option value="none">Off (Hide)</option>
-              <option value="original_location">Original Location</option>
             </select>
           </div>
         </div>
