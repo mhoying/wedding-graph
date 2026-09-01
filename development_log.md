@@ -281,3 +281,8 @@
   - **Streamlined 4-Tool Row 2 (Zero Scrollbar Guaranteed)**: Refactored Row 2 in `TopHeaderNav.jsx` to hold strictly the 4 core essential tools: `[ 🎛️ Map Controls ]` | `[ 🧭 Path Finder ]` | `[ 🪄 Matchmaker ]` | `[ 🎨 Clusters Dropdown ]`. Removed redundant secondary toggles (all 100% accessible via Map Controls sheet), reducing Row 2 width to ~420px for perfect zero-scroll fitting.
   - **Fixed Search Box Input Flex Sizing**: Added `min-width: 0` to `.search-box input` and set `.search-box` `flex: 0 1 auto; max-width: 200px; min-width: 100px;` in `index.css`, preventing search input overflow and eliminating all overlap with the Directory List button.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Matchmaker Button Clipping User Prompt**:
+  - "now mathmake button is slightly clipped on the left side"
+- **Matchmaker Button Clipping Actions & Deliverables**:
+  - **Compact Item Padding & Invisible Overflow Scroll**: Optimized button padding in `TopHeaderNav.jsx` (`padding: '0 8px'; gap: 4`) and updated `.header-controls-row` in `index.css` (`overflow-x: auto; scrollbar-width: none;`). Total Row 2 width is now reduced to ~380px, eliminating left-side edge clipping on all viewports.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
