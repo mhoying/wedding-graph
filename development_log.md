@@ -269,3 +269,9 @@
     - **Row 2 (Interactive Visualizer Toolbar Ribbon)**: Map Controls Sheet Button + Tune Sliders Popover + Photos Toggle + Orbit Toggle + Path Finder + Matchmaker + Clusters Dropdown + Focus Dropdown + Color Mode Dropdown.
   - **Zero Horizontal Scrollbar**: Eliminates horizontal scrollbar clipping on Linux Zen Browser, Firefox, Chrome, and all laptop screens.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Half-Screen Viewport User Prompt**:
+  - "when ihave it at half scrren on this laptop the directory list overlaps the search boxand the onlyt thing on the second row si the matchmaker icon"
+- **Half-Screen Viewport Actions & Deliverables**:
+  - **Balanced 2-Row Controls on Half-Screen**: Removed restrictive `.desktop-only-inline` hiders from Row 2 tools in `TopHeaderNav.jsx`. Map Controls, Photos, Orbit, Path Finder, Matchmaker, Clusters, and Focus now remain populated on Row 2 on half-screen viewports.
+  - **Eliminated Search Box Overlap**: Constrained `.search-box` max-width and min-width rules in `index.css` (`max-width: 180px; min-width: 110px`), ensuring the Directory List button and Theme toggle align cleanly without overlapping the search input.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
