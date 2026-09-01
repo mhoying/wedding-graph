@@ -335,17 +335,48 @@ function getPartnerCohortMap(nodesList, linksList) {
   return partnerMap;
 }
 
-// Fixed 360-degree radial sector angle mapping for ground-truth cohorts around The Couple (0, 0)
-const GROUND_TRUTH_SECTOR_ANGLES = {
-  "Dog Park": -Math.PI / 2,             // -90 deg (Top / North)
-  "OWFL Blog": -3 * Math.PI / 4,         // -135 deg (North-West)
-  "Cornell": Math.PI,                    // 180 deg (West / Left)
-  "Bay FC": 3 * Math.PI / 4,             // 135 deg (South-West)
-  "Jenna": -5 * Math.PI / 8,             // -112.5 deg (North-North-West)
-  "Stanford": Math.PI / 4,               // 45 deg (South-East)
-  "Google": 0,                           // 0 deg (East / Right)
-  "Lehigh": -Math.PI / 4,                // -45 deg (North-East)
-};
+// Topological ordering of ground-truth cohorts around 360 degrees so connected cohorts (e.g. Jenna & Dog Park) sit directly next to each other!
+const TOPOLOGICAL_COHORT_ORDER = [
+  "Dog Park",   // Top (North)
+  "Jenna",      // Directly next to Dog Park!
+  "OWFL Blog",  // Next to Jenna & Dog Park
+  "Cornell",    // West
+  "Bay FC",     // South-West
+  "Stanford",   // South-East
+  "Google",     // East
+  "Lehigh"      // North-East (next to Google)
+];
+
+// Helper to compute node-count proportional sector angles based on topological adjacency
+function computeProportionalSectorAngles(clusters) {
+  const fociAngles = {};
+  
+  const activeKeys = TOPOLOGICAL_COHORT_ORDER.filter(k => clusters[k] && clusters[k].length > 0);
+  
+  Object.keys(clusters).forEach(k => {
+    if (k !== 'The Couple' && !k.includes('Couple') && k !== 'Other' && !activeKeys.includes(k)) {
+      activeKeys.push(k);
+    }
+  });
+
+  if (activeKeys.length === 0) return fociAngles;
+
+  const totalClusterNodes = activeKeys.reduce((sum, k) => sum + clusters[k].length, 0) || 1;
+
+  let currentAngle = -Math.PI / 2; // Start at Top (North) for Dog Park
+
+  activeKeys.forEach(key => {
+    const count = clusters[key].length;
+    const wedgeAngle = (count / totalClusterNodes) * 2 * Math.PI;
+    
+    // Assign center angle of this proportional wedge
+    fociAngles[key] = currentAngle + wedgeAngle / 2;
+    
+    currentAngle += wedgeAngle;
+  });
+
+  return fociAngles;
+}
 
 // Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits dynamically!
 function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances, linksList) {
@@ -378,25 +409,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
     const baseStep = 160 * edgeLengthMultiplier;
     const baseOffset = 130 * edgeLengthMultiplier;
 
-    // Calculate target foci angles dynamically with fixed sector slots for ground-truth cohorts!
-    const fociAngles = {};
-    let nonCoupleIdx = 0;
-    const nonCoupleKeys = keys.filter(k => k !== 'The Couple' && !k.includes('Couple') && k !== 'Other');
-    const totalNonCouple = nonCoupleKeys.length || 1;
-
-    keys.forEach((key) => {
-      if (key === 'The Couple' || key.includes('Couple')) {
-        fociAngles[key] = null;
-      } else if (key === 'Other') {
-        fociAngles[key] = null;
-      } else if (GROUND_TRUTH_SECTOR_ANGLES[key] !== undefined) {
-        fociAngles[key] = GROUND_TRUTH_SECTOR_ANGLES[key];
-      } else {
-        const angle = (nonCoupleIdx / totalNonCouple) * 2 * Math.PI - (Math.PI / 2);
-        fociAngles[key] = angle;
-        nonCoupleIdx++;
-      }
-    });
+    // Calculate target foci angles dynamically with topological adjacency & proportional wedge allocation!
+    const fociAngles = computeProportionalSectorAngles(clusters);
 
     // 1. Pure radial attraction toward dedicated sector angles (nodes radiate 100% perpendicularly from center!)
     const pullStrength = alpha * 0.60;
