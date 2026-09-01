@@ -349,3 +349,10 @@
   - **Ultra-Short Couple Edge Distance ($\approx 35\text{px}$)**: Enhanced `isCoupleOrFamilyLink` matching logic to detect all spouses/partners (including `partnerCohortMap` pairs) and set `cohortMultiplier = 0.15` ($\approx 35\text{px}$ rest distance, `strength = 1.0`), keeping all couples pinned side-by-side!
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Dual Repulsion Vector Force for Other Nodes User Prompt**:
+  - "maybe ther eshoudl be more math that has the the 'other' people repulsing from both the center and from the center of the cluster? tell me if htis woudl work... go for it"
+- **Dual Repulsion Vector Force for Other Nodes Actions & Deliverables**:
+  - **Implemented Dual Repulsion Vector Physics**: Added Force Step 4 in `createClusterSeparationForce` in `ForceCanvas.jsx`. For every node in cohort `Other`, applies outward radial force $\vec{F}_1 = \frac{\alpha \cdot 180}{\|\vec{x}\|}$ repelling from central couple anchor $(0,0)$, and outward force $\vec{F}_2 = \frac{\alpha \cdot 240}{\|\vec{x} - \vec{C}_{\text{cohort}}\|}$ repelling from partner's cohort centroid $\vec{C}_{\text{cohort}}$.
+  - **Clean Hull Separation**: Guarantees non-cohort spouses and unclustered friends glide smoothly past the outer perimeter ($R_{\text{hull}} + 50\text{px}$) of translucent cohort hull bubbles.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
