@@ -356,3 +356,10 @@
   - **Clean Hull Separation**: Guarantees non-cohort spouses and unclustered friends glide smoothly past the outer perimeter ($R_{\text{hull}} + 50\text{px}$) of translucent cohort hull bubbles.
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Jenna Central Repulsion & Outer Hop 2+ Closest Cohort Repulsion User Prompt**:
+  - "when ther eare more than one node attached outside of the cluseter (like clyde and jesse lindberger) the second node out shoudl also have the repusion from the closest cohort and hte center... and i'm seeing a similar thing with the jenna cohort where the other members of that cohort seem to have lost the repusion from the center"
+- **Jenna Central Repulsion & Outer Hop 2+ Closest Cohort Repulsion Actions & Deliverables**:
+  - **Dynamic Closest Cohort Repulsion for Hop 2+ Outer Nodes**: Updated Step 4 in `createClusterSeparationForce` in `ForceCanvas.jsx` so unclustered nodes without a partner map (like `Jesse Lindenberger-Schutz`) dynamically detect their **closest cohort centroid** among all active hulls, repelling outward from both the closest cohort hull ($R_{\text{hull}} + 80\text{px}$) and center $(0,0)$!
+  - **Minimum Central Radius ($260\text{px}$) Repulsion for All Cohorts**: Added explicit central anchor repulsion in `createClusterSeparationForce` for all primary cohort nodes (including `Jenna` cohort: `jenna_auer`, `tim_auer`, `becca_winslow`, `jonathan_bibayan`). If any cohort node drops below $260\text{px}$ from center $(0,0)$, an outward push force restores a clean central buffer.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
