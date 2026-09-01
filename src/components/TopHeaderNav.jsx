@@ -166,19 +166,19 @@ export default function TopHeaderNav({
 
         {/* ROW 2: Interactive Map Tools Ribbon */}
         <div className="header-controls-row bottom-row">
-          {/* Desktop Map Controls Sheet Trigger Button */}
+          {/* Map Controls Sheet Trigger Button */}
           <button 
             onClick={onOpenMapControls}
-            className="glass-panel btn-icon desktop-only-inline"
+            className="glass-panel btn-icon"
             title="Open Full Map Controls Sheet"
             style={{ height: 34, padding: '0 10px', gap: 5, fontSize: 11, fontWeight: 800, color: '#f8fafc', background: 'rgba(2, 132, 199, 0.25)', border: '1px solid rgba(56, 189, 248, 0.5)', flexShrink: 0 }}
           >
             <SlidersHorizontal style={{ width: 13, height: 13, color: '#38bdf8' }} />
-            <span>Map Controls</span>
+            <span className="btn-label-text">Map Controls</span>
           </button>
 
-          {/* Desktop Sliders Popover Button */}
-          <div className="desktop-only-inline desktop-secondary-toggle" style={{ position: 'relative' }}>
+          {/* Sliders Popover Button */}
+          <div className="desktop-secondary-toggle" style={{ position: 'relative' }}>
             <button 
               onClick={() => setIsTunePopoverOpen(!isTunePopoverOpen)}
               className={`glass-panel btn-icon ${isTunePopoverOpen ? 'active' : ''}`}
@@ -186,7 +186,7 @@ export default function TopHeaderNav({
               style={{ height: 34, padding: '0 10px', gap: 5, fontSize: 11, fontWeight: 700, color: isTunePopoverOpen ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
             >
               <SlidersHorizontal style={{ width: 13, height: 13 }} />
-              <span>Sliders</span>
+              <span className="btn-label-text">Sliders</span>
             </button>
 
             {/* Glass Sliders Popover */}
@@ -266,37 +266,37 @@ export default function TopHeaderNav({
             )}
           </div>
 
-          {/* Desktop Headshot Photos Toggle */}
+          {/* Headshot Photos Toggle */}
           <button 
             onClick={() => setShowHeadshots(!showHeadshots)}
-            className={`glass-panel btn-icon desktop-only-inline desktop-secondary-toggle ${showHeadshots ? 'active' : ''}`}
+            className={`glass-panel btn-icon ${showHeadshots ? 'active' : ''}`}
             title="Toggle Guest Photos on Canvas"
             style={{ height: 34, padding: '0 10px', gap: 5, fontSize: 11, fontWeight: 700, color: showHeadshots ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
           >
             {showHeadshots ? <Eye style={{ width: 13, height: 13 }} /> : <EyeOff style={{ width: 13, height: 13 }} />}
-            <span>Photos</span>
+            <span className="btn-label-text">Photos</span>
           </button>
 
-          {/* Desktop Orbit Motion Toggle */}
+          {/* Orbit Motion Toggle */}
           <button 
             onClick={() => setIsOrbiting(!isOrbiting)}
-            className={`glass-panel btn-icon desktop-only-inline desktop-secondary-toggle ${isOrbiting ? 'active' : ''}`}
+            className={`glass-panel btn-icon ${isOrbiting ? 'active' : ''}`}
             title="Toggle Celestial Orbit Rotation"
             style={{ height: 34, padding: '0 10px', gap: 5, fontSize: 11, fontWeight: 700, color: isOrbiting ? '#a855f7' : '#cbd5e1', flexShrink: 0 }}
           >
             {isOrbiting ? <Pause style={{ width: 13, height: 13 }} /> : <Play style={{ width: 13, height: 13 }} />}
-            <span>Orbit</span>
+            <span className="btn-label-text">Orbit</span>
           </button>
 
-          {/* Desktop Path Finder Toggle */}
+          {/* Path Finder Toggle */}
           <button 
             onClick={() => setIsPathMode(!isPathMode)}
-            className={`glass-panel btn-icon desktop-only-inline desktop-secondary-toggle ${isPathMode ? 'active' : ''}`}
+            className={`glass-panel btn-icon ${isPathMode ? 'active' : ''}`}
             title="Calculate Social Distance Path"
             style={{ height: 34, padding: '0 10px', gap: 5, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
           >
             <Compass style={{ width: 13, height: 13 }} />
-            <span>Path Finder</span>
+            <span className="btn-label-text">Path Finder</span>
           </button>
 
           {/* Matchmaker Button */}
@@ -317,13 +317,13 @@ export default function TopHeaderNav({
             }}
           >
             <Wand2 style={{ width: 13, height: 13, color: '#34d399' }} />
-            <span className="matchmaker-btn-text">Matchmaker</span>
+            <span className="btn-label-text">Matchmaker</span>
           </button>
 
-          {/* Desktop Cluster Overlays Dropdown */}
-          <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 34, padding: '0 8px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 10, flexShrink: 0 }}>
+          {/* Cluster Overlays Dropdown */}
+          <div className="glass-panel color-mode-bar" style={{ display: 'flex', alignItems: 'center', height: 34, padding: '0 8px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 10, flexShrink: 0 }}>
             <Layers style={{ width: 13, height: 13, color: '#ec4899', marginRight: 4 }} />
-            <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Clusters:</span>
+            <span className="dropdown-label-text" style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Clusters:</span>
             <select 
               value={clusterMode}
               onChange={(e) => {
@@ -348,11 +348,11 @@ export default function TopHeaderNav({
             </select>
           </div>
 
-          {/* Desktop Focus Cluster Dropdown */}
+          {/* Focus Cluster Dropdown */}
           {availableClusters && (availableClusters.all?.length > 0 || Array.isArray(availableClusters)) && (
-            <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 34, padding: '0 8px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 10, flexShrink: 0 }}>
+            <div className="glass-panel color-mode-bar" style={{ display: 'flex', alignItems: 'center', height: 34, padding: '0 8px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 10, flexShrink: 0 }}>
               <Compass style={{ width: 13, height: 13, color: '#34d399', marginRight: 4 }} />
-              <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Focus:</span>
+              <span className="dropdown-label-text" style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Focus:</span>
               <select 
                 value={selectedClusterFocus}
                 onChange={(e) => setSelectedClusterFocus(e.target.value)}
@@ -384,10 +384,10 @@ export default function TopHeaderNav({
             </div>
           )}
 
-          {/* Desktop Color Mode Selector */}
-          <div className="glass-panel color-mode-bar desktop-only-inline" style={{ display: 'flex', alignItems: 'center', height: 34, padding: '0 8px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 10, flexShrink: 0 }}>
+          {/* Color Mode Selector */}
+          <div className="glass-panel color-mode-bar" style={{ display: 'flex', alignItems: 'center', height: 34, padding: '0 8px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 10, flexShrink: 0 }}>
             <Palette style={{ width: 13, height: 13, color: '#38bdf8', marginRight: 4 }} />
-            <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Color:</span>
+            <span className="dropdown-label-text" style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Color:</span>
             <select 
               value={colorMode}
               onChange={(e) => setColorMode(e.target.value)}

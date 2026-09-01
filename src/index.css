@@ -696,24 +696,26 @@ body {
   }
 }
 
-@media (max-width: 1400px) {
-  .desktop-secondary-toggle {
-    display: none !important;
-  }
-}
-
+/* Responsive Collapsing for Narrow / Half-Screen Viewports */
 @media (max-width: 960px) {
-  .desktop-only-inline {
-    display: none !important;
-  }
   .logo-subtitle {
     display: none !important;
   }
-  .matchmaker-btn-text {
+  .dropdown-label-text {
     display: none !important;
   }
-  .matchmaker-header-btn {
-    padding: 0 10px !important;
+  .search-box {
+    max-width: 180px !important;
+    min-width: 110px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn-label-text {
+    display: none !important;
+  }
+  .search-box {
+    max-width: 130px !important;
   }
 }
 
