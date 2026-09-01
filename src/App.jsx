@@ -1628,7 +1628,11 @@ export default function App() {
         nodes={nodes}
         links={links}
         onClose={handleCloseProfile}
-        onSelectNode={(node) => setSelectedNode(node)}
+        onSelectNode={(node) => {
+          setSelectedNode(node);
+          setIsEditingDrawer(false);
+          flyToNode(node);
+        }}
         isEditingDrawer={isEditingDrawer}
         setIsEditingDrawer={setIsEditingDrawer}
         editName={editName}
