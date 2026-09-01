@@ -379,7 +379,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
     });
 
     // 2. Powerful inter-cluster repulsion between different true cohorts to prevent overlapping clouds!
-    const minDistance = 380 * edgeLengthMultiplier;
+    const minDistance = Math.min(460, 340 + numClusters * 15) * edgeLengthMultiplier;
     const repulsionStrength = alpha * 2.5;
     for (let i = 0; i < nodesList.length; i++) {
       for (let j = i + 1; j < nodesList.length; j++) {
@@ -986,7 +986,7 @@ export default function ForceCanvas({
     if (isNonAttending) labelText = `🚫 ${node.name} (Not Attending)`;
 
     ctx.save();
-    ctx.globalAlpha = isDimmed ? 0.12 : (isNonAttending ? 0.65 : 1.0);
+    ctx.globalAlpha = isDimmed ? 0.08 : (isNonAttending ? 0.65 : 1.0);
 
     const renderAvatar = showHeadshots && !isHub;
     const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
