@@ -599,6 +599,33 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
         }
       });
     });
+
+    // 4. Dual Repulsion Force for 'Other' Nodes: Repel from center (0,0) and partner's cohort centroid!
+    const otherRepulsionStrength = alpha * 4.0;
+    nodesList.forEach(node => {
+      if (node.id === 'matt' || node.id === 'maureen' || node.x === undefined) return;
+      if (!node.cohort || node.cohort === 'Other') {
+        // Force 1: Outward Repulsion from Central Couple Anchor (0,0)
+        const distFromCenter = Math.hypot(node.x, node.y) || 1;
+        const pushCenterMag = Math.min((180 * edgeLengthMultiplier / distFromCenter) * otherRepulsionStrength, 6.0);
+        node.vx += (node.x / distFromCenter) * pushCenterMag;
+        node.vy += (node.y / distFromCenter) * pushCenterMag;
+
+        // Force 2: Outward Repulsion from Partner's Cohort Centroid
+        const partnerCohort = partnerCohortMap.get(node.id);
+        if (partnerCohort && clusterCentroids[partnerCohort]) {
+          const hull = clusterCentroids[partnerCohort];
+          const dx = node.x - hull.cx;
+          const dy = node.y - hull.cy;
+          const distFromHull = Math.hypot(dx, dy) || 1;
+          if (distFromHull < hull.radius + 50) {
+            const pushHullMag = Math.min(((hull.radius + 50 - distFromHull) / distFromHull) * otherRepulsionStrength * 2.5, 9.0);
+            node.vx += (dx / distFromHull) * pushHullMag;
+            node.vy += (dy / distFromHull) * pushHullMag;
+          }
+        }
+      }
+    });
   };
 
   force.initialize = (n) => {
