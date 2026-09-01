@@ -701,15 +701,17 @@ export default function ForceCanvas({
             cohortMultiplier = 0.2; // Extremely close edge distance for couples and families!
           } else if (isSameCohort) {
             cohortMultiplier = 0.75;
-          } else if (isCrossCohort || isUnclustered) {
-            cohortMultiplier = 3.5; // Long cross-cohort/unclustered distance (d_cross ~ 450px) so edges bend outward around cohort hulls!
+          } else if (isCrossCohort) {
+            cohortMultiplier = 3.5; // Long cross-cohort distance so edges can curve outward around cohort hulls!
+          } else if (isUnclustered) {
+            cohortMultiplier = 0.9; // Close friend distance so unclustered guests (e.g. Jess Phan & Leslie) stay close to their friends!
           } else {
-            cohortMultiplier = 1.2; // Comfortable distance for unclustered partners/guests!
+            cohortMultiplier = 1.0;
           }
 
           const baseSum = sRadius + tRadius + 10 * nodeScaleMultiplier;
           const computedDist = baseSum * cohortMultiplier * edgeLengthMultiplier;
-          return (isCrossCohort || isUnclustered) ? Math.max(450 * edgeLengthMultiplier, computedDist) : computedDist;
+          return isCrossCohort ? Math.max(450 * edgeLengthMultiplier, computedDist) : computedDist;
         })
         .strength(l => {
           const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
@@ -739,8 +741,9 @@ export default function ForceCanvas({
 
           if (isCoupleOrFamilyLink) return 1.0;
           if (isSameCohort) return 0.7;
-          if (isCrossCohort || isUnclustered) return 0.05; // Gentle spring tension so cross-cohort and unclustered links do NOT drag nodes across cohort boundaries!
-          return 0.45; // Solid link strength for unclustered guests so they stay right next to their friends!
+          if (isCrossCohort) return 0.05; // Gentle spring tension so cross-cohort links do NOT drag cohorts into overlapping!
+          if (isUnclustered) return 0.65; // Solid spring tension so unclustered friends stay right next to their primary friend!
+          return 0.45;
         });
 
       fg.d3Force('charge')
@@ -1329,6 +1332,19 @@ export default function ForceCanvas({
         }}
         onZoom={handleZoom}
         onRenderFramePre={(ctx, globalScale) => drawBackgroundHulls(ctx, globalScale)}
+        linkCurvature={(link) => {
+          if (!link) return 0;
+          const sObj = typeof link.source === 'object' ? link.source : nodes.find(n => n.id === link.source);
+          const tObj = typeof link.target === 'object' ? link.target : nodes.find(n => n.id === link.target);
+          if (!sObj || !tObj) return 0;
+
+          const sCohort = sObj.cohort;
+          const tCohort = tObj.cohort;
+          const isCrossCohort = sCohort && tCohort && sCohort !== 'Other' && tCohort !== 'Other' && sCohort !== tCohort;
+
+          // Cross-cohort edges (e.g. Romana in Cornell to Nur-E in Dog Park) curve in a smooth outer arc around foreign hulls!
+          return isCrossCohort ? 0.35 : 0;
+        }}
         linkColor={(link) => {
           const s = typeof link.source === 'object' ? link.source.id : link.source;
           const t = typeof link.target === 'object' ? link.target.id : link.target;
