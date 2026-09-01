@@ -1430,7 +1430,7 @@ export default function ForceCanvas({
           const isCoupleLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
           if (isCoupleLink) {
-            return isLightMode ? '#ec4899' : '#f472b6';
+            return isLightMode ? 'rgba(219, 39, 119, 0.45)' : 'rgba(244, 143, 177, 0.45)'; // Soft subtle rose/slate (no harsh bright magenta)
           }
 
           return isLightMode ? 'rgba(100, 116, 139, 0.45)' : 'rgba(56, 189, 248, 0.35)';
@@ -1467,7 +1467,7 @@ export default function ForceCanvas({
           const isNonHub = sObj && tObj && sObj.type !== 'CONTEXT_HUB' && tObj.type !== 'CONTEXT_HUB';
           const isCoupleLink = isNonHub && (isExplicitType || isExplicitCoupleRel || hasSameHousehold || isMattMaureen);
 
-          return isCoupleLink ? 3.0 : 1.2;
+          return isCoupleLink ? 1.4 : 1.2; // Reduced weight for subtle elegance
         }}
         linkDirectionalParticles={(link) => {
           if (shortestPath.length > 1) {
