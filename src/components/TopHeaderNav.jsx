@@ -308,15 +308,25 @@ export default function TopHeaderNav({
           <span>Path Finder</span>
         </button>
 
-        {/* Desktop Matchmaker Button */}
+        {/* Matchmaker Button (Always visible; shows icon + text on wide screens, compact icon on narrow screens) */}
         <button 
           onClick={() => setIsMatchmakerOpen(true)}
-          className="glass-panel btn-icon desktop-only-inline desktop-secondary-toggle"
+          className="glass-panel btn-icon matchmaker-header-btn"
           title="Find Guest Match Recommendations"
-          style={{ height: 36, padding: '0 12px', gap: 6, fontSize: 12, fontWeight: 700, color: '#34d399', flexShrink: 0 }}
+          style={{ 
+            height: 36, 
+            padding: '0 12px', 
+            gap: 6, 
+            fontSize: 12, 
+            fontWeight: 800, 
+            color: '#34d399', 
+            background: 'rgba(52, 211, 153, 0.15)',
+            border: '1px solid rgba(52, 211, 153, 0.4)',
+            flexShrink: 0 
+          }}
         >
-          <Wand2 style={{ width: 14, height: 14 }} />
-          <span>Matchmaker</span>
+          <Wand2 style={{ width: 14, height: 14, color: '#34d399' }} />
+          <span className="matchmaker-btn-text">Matchmaker</span>
         </button>
 
         {/* Host Live Spreadsheet & Moderation Queue Buttons */}

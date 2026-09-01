@@ -696,6 +696,12 @@ body {
   .logo-subtitle {
     display: none !important;
   }
+  .matchmaker-btn-text {
+    display: none !important;
+  }
+  .matchmaker-header-btn {
+    padding: 0 10px !important;
+  }
 }
 
 /* Toast Notifications */
