@@ -286,3 +286,9 @@
 - **Matchmaker Button Clipping Actions & Deliverables**:
   - **Compact Item Padding & Invisible Overflow Scroll**: Optimized button padding in `TopHeaderNav.jsx` (`padding: '0 8px'; gap: 4`) and updated `.header-controls-row` in `index.css` (`overflow-x: auto; scrollbar-width: none;`). Total Row 2 width is now reduced to ~380px, eliminating left-side edge clipping on all viewports.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Auto-Pause/Resume Orbit User Prompt**:
+  - "when we go to a person detial view the orbit shoudl stop isnce it keeps rotating and the person in focus is lost. i tink that whenever we go into person detals, orbit should stop. and automaticaly resume when the detail view is exited"
+- **Auto-Pause/Resume Orbit Actions & Deliverables**:
+  - **Automatic Orbit Motion Pause on Detail View**: Added `wasOrbitingBeforeDetailRef` and a reactive `useEffect` in `App.jsx`. Whenever a guest node is selected (`selectedNode`), if celestial orbit is active, orbit rotation automatically pauses so the selected person remains perfectly stationary in focus.
+  - **Automatic Orbit Motion Resume on Exit**: When the guest detail drawer is closed (`setSelectedNode(null)`), if orbit was active before opening details, celestial orbit rotation automatically resumes spinning!
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
