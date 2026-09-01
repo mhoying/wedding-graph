@@ -385,3 +385,10 @@
   - **Un-Cutoff Core Anchors**: Essential anchors (`Logo & Title`, `Search Box`, `Map Controls` drawer button, `📋 Directory List` toggle, `Light/Dark` mode toggle) stay 100% visible and un-cutoff. Users can access all full controls anytime inside the **Map Controls Sheet Drawer**.
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Reduced Couple Edge Weight & Subtle Rose Tone User Prompt**:
+  - "also can you reduce the weight of the couple edges and maybe make them less of a bring magenta"
+- **Reduced Couple Edge Weight & Subtle Rose Tone Actions & Deliverables**:
+  - **Reduced Couple Edge Weight**: Reduced couple edge line width from `3.0` down to `1.4` (matching clean standard link weight `1.2`) in `linkWidth` in `ForceCanvas.jsx`.
+  - **Soft Rose/Slate Tone**: Replaced harsh bright magenta (`#ec4899` / `#f472b6`) with a soft, subtle rose tone (`rgba(244, 143, 177, 0.45)` dark mode / `rgba(219, 39, 119, 0.45)` light mode) in `linkColor` in `ForceCanvas.jsx`.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
