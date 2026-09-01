@@ -324,3 +324,11 @@
   - **Eliminated 90-Degree Tangential Skew**: Spouses (e.g. `Angela Tsung` with `Jason Tsung`, `Jean McMillan` with `Jason McMillan`, `Mary Wetzel` with `Tom Crain`) now sit at $\theta_S = \theta_P$ (0° angular deviation), positioned directly behind their partner along the radial line radiating 100% perpendicularly outward from center `(0, 0)`.
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Cross-Cluster Link Repulsion & Pure Radial Velocity Alignment User Prompt**:
+  - "ask the PMs and swe and the accuracy agent to look at this again as i'm still seeing a lot of overlaps of clusers and some edges of non cluster linkages entirely croossin other clusters rathe rhtan radiating outwardform tcenter"
+- **Cross-Cluster Link Repulsion & Pure Radial Velocity Alignment Actions & Deliverables**:
+  - **Implemented Strict Cluster Collision Hull Repulsion**: Added Step 3 in `createClusterSeparationForce` in `ForceCanvas.jsx` to dynamically compute centroid $(\bar{x}, \bar{y})$ and radius $R_{\text{hull}}$ for every active cohort cluster hull, repelling foreign nodes/links outside foreign cohort hull bounding circles (`pushMag` force).
+  - **Dynamic Link Distance for Unclustered Links**: Updated `d3Force('link')` to treat both `isCrossCohort` and `isUnclustered` non-couple links with long link distance ($d_{\text{cross}} = \max(450 \cdot \text{edgeLengthMultiplier}, \text{computedDist})$) and gentle spring strength (`0.05`), allowing links to bend outward around cohort hulls rather than dragging nodes across cohort boundaries.
+  - **Pure Radial Velocity Direction Alignment**: Added radial vector projection in `createConcentricHopRadialForce`, aligning velocity vectors directly along unit radial ray $\hat{r} = \frac{(x, y)}{\sqrt{x^2+y^2}}$ and damping tangential velocity by 85%.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
