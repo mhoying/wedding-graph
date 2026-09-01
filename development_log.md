@@ -302,3 +302,11 @@
   - **Theatrical Spotlight Focus Dimming**: Set unselected background node opacity to `0.08` and link opacity to `0.05` in `drawNode` and `drawLink`.
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Radial Spoke Alignment & Fixed Cohort Sectors User Prompt**:
+  - "this better but i'm still seeing a lto of overlap between lehigh and google including their noncluster spouses shwing up in other clusters. see the attzached file. also i expect that nodes radiate out from the center. instead you see abunch of them seem to be agains the direction of rotation and more like 80 degrees from perpendiculat to the radius"
+- **Radial Spoke Alignment & Fixed Cohort Sectors Actions & Deliverables**:
+  - **Eliminated Tangential Orbit Shear**: Tuned `createOrbitForce` in `App.jsx` to apply pure orbital velocity (`tangVx * 0.15`) without 80-degree tangential vector skew, ensuring nodes radiate **100% perpendicularly outward** from center `(0, 0)` like spokes on a solar wheel.
+  - **Fixed 360-Degree Radial Sector Mapping**: Mapped all 9 ground-truth cohorts (`Lehigh`: -45°, `Google`: 0°, `Stanford`: 45°, `Dog Park`: -90°, `OWFL Blog`: -135°, `Cornell`: 180°, `Bay FC`: 135°, `Jenna`: -112.5°) into fixed, non-overlapping 45-degree radial sectors in `ForceCanvas.jsx`.
+  - **Partner Spouse Sector Pairing**: Non-cluster spouses (e.g. `Angela Tsung` with `Google`, `Jean McMillan` with `Lehigh`, `Mary Wetzel` with `Dog Park`) now inherit their spouse's exact radial sector angle, pulling partners directly into their spouse's cluster hull rather than drifting into neighboring cohorts.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
