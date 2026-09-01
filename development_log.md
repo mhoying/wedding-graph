@@ -370,3 +370,10 @@
   - **Interactive Clickable Chips**: Renders a **Direct Connections (N)** section with color-coded cohort pill badges for every neighbor. Clicking any chip immediately shifts focus to inspect that connected neighbor node!
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **FlyToNode Visual Camera Centering for Person Chips User Prompt**:
+  - "antigravity froze. did you complete the last opeatoins? also when you click on a person chip from the perosn detiall, it shoudl go to that person (visually centering thier node"
+- **FlyToNode Visual Camera Centering for Person Chips Actions & Deliverables**:
+  - **Operations Status Confirmation**: Confirmed all previous operations (100% straight lines, Krista Bay FC link, spouse outer hull positioning, ultra-short couple edge distance, closest cohort repulsion for outer Hop 2+ nodes like Clyde & Jesse, and Jenna central repulsion) were 100% completed, built, tested, and deployed live to `https://hoyingwink.com`.
+  - **Implemented Camera Centering (`flyToNode`) on Person Chip Click**: Updated `onSelectNode` in `App.jsx` to call `flyToNode(node)`. Now when clicking any direct connection chip in `GuestProfileDrawer.jsx`, the 2D canvas camera smoothly animates and visually centers directly on that person's node!
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
