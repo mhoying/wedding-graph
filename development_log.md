@@ -310,3 +310,10 @@
   - **Partner Spouse Sector Pairing**: Non-cluster spouses (e.g. `Angela Tsung` with `Google`, `Jean McMillan` with `Lehigh`, `Mary Wetzel` with `Dog Park`) now inherit their spouse's exact radial sector angle, pulling partners directly into their spouse's cluster hull rather than drifting into neighboring cohorts.
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Topological Cohort Ordering & Proportional Wedge Allocation User Prompt**:
+  - "so.. as the clusters are are of differnt sizees, ais putting them equadistant around really make sense? also the jenna cluster is lined to the dog park cluster so putting htemat diffentangles seems a bit odd?"
+- **Topological Cohort Ordering & Proportional Wedge Allocation Actions & Deliverables**:
+  - **Node-Count Proportional Sector Wedges**: Dynamically allocate angular sector wedge widths proportional to node count (`(count / totalClusterNodes) * 360°`). `Dog Park` (11 nodes) gets a spacious ~60° wedge, while `Jenna` (3 nodes) gets a compact ~20° wedge in `ForceCanvas.jsx`.
+  - **Topological Adjacency Sequence**: Ordered cohorts along 360° based on actual inter-cluster link density (`Dog Park` ➔ `Jenna` ➔ `OWFL Blog` ➔ `Cornell` ➔ `Bay FC` ➔ `Stanford` ➔ `Google` ➔ `Lehigh`). `Jenna` now sits directly adjacent to `Dog Park`, eliminating awkward cross-sector link crossings!
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
