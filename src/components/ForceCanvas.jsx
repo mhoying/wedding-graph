@@ -307,6 +307,74 @@ function createUntangleEdgesForce() {
   return force;
 }
 
+// Custom D3 Force: Ensures spouse / partner nodes are pinned directly along the RADIAL RAY passing from center (0,0) through their primary partner!
+// Eliminates 90-degree sideways tangential skew for spouse nodes!
+function createSpouseRadialRayForce(linksList) {
+  let nodesList = [];
+
+  const force = (alpha) => {
+    if (!linksList || linksList.length === 0 || !nodesList || nodesList.length === 0) return;
+
+    const pullStrength = alpha * 1.8;
+
+    linksList.forEach(l => {
+      if (!l) return;
+      const isPartnerLink = l.type === 'COUPLE' || l.type === 'MARRIED' || l.type === 'FAMILY' ||
+                            ['Family', 'Spouse', 'Partner', 'Married', 'Couple'].includes(l.relationship);
+
+      if (!isPartnerLink) return;
+
+      const sObj = typeof l.source === 'object' ? l.source : nodesList.find(n => n && n.id === l.source);
+      const tObj = typeof l.target === 'object' ? l.target : nodesList.find(n => n && n.id === l.target);
+      if (!sObj || !tObj) return;
+
+      let primary = null;
+      let spouse = null;
+
+      if (sObj.cohort && sObj.cohort !== 'Other' && sObj.cohort !== 'The Couple' && (!tObj.cohort || tObj.cohort === 'Other')) {
+        primary = sObj;
+        spouse = tObj;
+      } else if (tObj.cohort && tObj.cohort !== 'Other' && tObj.cohort !== 'The Couple' && (!sObj.cohort || sObj.cohort === 'Other')) {
+        primary = tObj;
+        spouse = sObj;
+      } else if (sObj.cohort === 'The Couple' || tObj.cohort === 'The Couple') {
+        return;
+      } else {
+        const rS = Math.hypot(sObj.x || 0, sObj.y || 0);
+        const rT = Math.hypot(tObj.x || 0, tObj.y || 0);
+        if (rS <= rT) {
+          primary = sObj; spouse = tObj;
+        } else {
+          primary = tObj; spouse = sObj;
+        }
+      }
+
+      if (!primary || !spouse || primary.x === undefined || spouse.x === undefined) return;
+
+      const px = primary.x;
+      const py = primary.y;
+      const pLen = Math.hypot(px, py);
+      if (pLen < 10) return;
+
+      const rx = px / pLen;
+      const ry = py / pLen;
+
+      const targetSpouseDist = pLen + 65;
+      const targetSx = rx * targetSpouseDist;
+      const targetSy = ry * targetSpouseDist;
+
+      spouse.vx += (targetSx - spouse.x) * pullStrength;
+      spouse.vy += (targetSy - spouse.y) * pullStrength;
+    });
+  };
+
+  force.initialize = (n) => {
+    nodesList = n;
+  };
+
+  return force;
+}
+
 // Helper to build partner cohort inheritance map so spouses/partners inherit their primary partner's cohort for physics forces!
 function getPartnerCohortMap(nodesList, linksList) {
   const partnerMap = new Map();
@@ -638,6 +706,8 @@ export default function ForceCanvas({
       fg.d3Force('radialHop', hopForce);
 
       fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances, links));
+
+      fg.d3Force('spouseRadialRay', createSpouseRadialRayForce(links));
 
       const untangleForce = createUntangleEdgesForce();
       untangleForce.updateLinks(links);
