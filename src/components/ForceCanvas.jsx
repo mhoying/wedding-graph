@@ -195,6 +195,13 @@ function createConcentricHopRadialForce(edgeLengthMultiplier, clusterMode) {
         node.vy -= unitY * delta * alpha * 0.45;
       }
 
+      // 3. Pure Radial Force Direction Alignment: Align velocity vectors along radial ray vector r = (x, y) / sqrt(x^2 + y^2)
+      const vRadial = node.vx * unitX + node.vy * unitY;
+      const vTangentialX = node.vx - vRadial * unitX;
+      const vTangentialY = node.vy - vRadial * unitY;
+      node.vx = vRadial * unitX + 0.15 * vTangentialX;
+      node.vy = vRadial * unitY + 0.15 * vTangentialY;
+
       // Smooth velocity damping for liquid motion
       node.vx *= 0.92;
       node.vy *= 0.92;
@@ -458,7 +465,6 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
     // Group nodes by cluster key
     const clusters = {};
     nodesList.forEach(node => {
-      if (node.type === 'CONTEXT_HUB') return;
       let key = 'Other';
       if (clusterMode === 'cohort') {
         key = (node.cohort && node.cohort !== 'Other') ? node.cohort : (partnerCohortMap.get(node.id) || 'Other');
@@ -483,7 +489,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
     // 1. Pure radial attraction toward dedicated sector angles (nodes radiate 100% perpendicularly from center!)
     const pullStrength = alpha * 0.60;
     nodesList.forEach((node) => {
-      if (node.type === 'CONTEXT_HUB' || node.id === 'matt' || node.id === 'maureen') return;
+      if (node.id === 'matt' || node.id === 'maureen') return;
 
       let key = 'Other';
       if (clusterMode === 'cohort') {
@@ -496,7 +502,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
 
       const focusAngle = fociAngles[key];
       if (focusAngle !== null && focusAngle !== undefined) {
-        const nodeHops = Math.max(1, (hopDistances ? hopDistances.get(node.id) : 2) ?? 2);
+        // CONTEXT_HUB place hubs sit at Hop 1 (inner anchor of radial sector)
+        const nodeHops = node.type === 'CONTEXT_HUB' ? 1 : Math.max(1, (hopDistances ? hopDistances.get(node.id) : 2) ?? 2);
         const hopRadius = baseOffset + nodeHops * baseStep;
 
         const targetFocusX = Math.cos(focusAngle) * hopRadius;
@@ -515,7 +522,6 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
       for (let j = i + 1; j < nodesList.length; j++) {
         const n1 = nodesList[i];
         const n2 = nodesList[j];
-        if (n1.type === 'CONTEXT_HUB' || n2.type === 'CONTEXT_HUB') continue;
 
         let key1 = clusterMode === 'cohort' ? ((n1.cohort && n1.cohort !== 'Other') ? n1.cohort : partnerCohortMap.get(n1.id) || 'Other') : n1.currentlyLivesIn;
         let key2 = clusterMode === 'cohort' ? ((n2.cohort && n2.cohort !== 'Other') ? n2.cohort : partnerCohortMap.get(n2.id) || 'Other') : n2.currentlyLivesIn;
@@ -540,6 +546,59 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
         }
       }
     }
+
+    // 3. Strict Cluster Collision Hull Repulsion: Push non-member nodes outside of foreign cohort hull bounding circles!
+    const clusterCentroids = {};
+    Object.entries(clusters).forEach(([key, memberNodes]) => {
+      if (key === 'Other' || memberNodes.length === 0) return;
+      let sumX = 0, sumY = 0, count = 0;
+      memberNodes.forEach(m => {
+        if (m.x !== undefined && m.y !== undefined) {
+          sumX += m.x;
+          sumY += m.y;
+          count++;
+        }
+      });
+      if (count > 0) {
+        const cx = sumX / count;
+        const cy = sumY / count;
+        let maxR = 0;
+        memberNodes.forEach(m => {
+          if (m.x !== undefined && m.y !== undefined) {
+            const dist = Math.hypot(m.x - cx, m.y - cy);
+            if (dist > maxR) maxR = dist;
+          }
+        });
+        clusterCentroids[key] = {
+          cx,
+          cy,
+          radius: maxR + 65 * edgeLengthMultiplier
+        };
+      }
+    });
+
+    const hullRepulsionStrength = alpha * 3.5;
+    nodesList.forEach(node => {
+      if (node.id === 'matt' || node.id === 'maureen' || node.x === undefined) return;
+      let nodeKey = 'Other';
+      if (clusterMode === 'cohort') {
+        nodeKey = (node.cohort && node.cohort !== 'Other') ? node.cohort : (partnerCohortMap.get(node.id) || 'Other');
+      } else if (clusterMode === 'location' || clusterMode === 'currentLocation') nodeKey = node.currentlyLivesIn || 'Other';
+      else if (clusterMode === 'originalLocation') nodeKey = node.originallyFrom || 'Other';
+      else if (clusterMode === 'interest') nodeKey = (node.hobbies && node.hobbies[0]) ? node.hobbies[0] : 'Other';
+
+      Object.entries(clusterCentroids).forEach(([cKey, hull]) => {
+        if (cKey === nodeKey) return;
+        const dx = node.x - hull.cx;
+        const dy = node.y - hull.cy;
+        const dist = Math.hypot(dx, dy) || 1;
+        if (dist < hull.radius) {
+          const pushMag = Math.min(((hull.radius - dist) / dist) * hullRepulsionStrength * 2.0, 8.0);
+          node.vx += (dx / dist) * pushMag;
+          node.vy += (dy / dist) * pushMag;
+        }
+      });
+    });
   };
 
   force.initialize = (n) => {
@@ -642,14 +701,15 @@ export default function ForceCanvas({
             cohortMultiplier = 0.2; // Extremely close edge distance for couples and families!
           } else if (isSameCohort) {
             cohortMultiplier = 0.75;
-          } else if (isCrossCohort) {
-            cohortMultiplier = 3.5; // Long cross-cohort distance so separate cohorts remain distinct!
+          } else if (isCrossCohort || isUnclustered) {
+            cohortMultiplier = 3.5; // Long cross-cohort/unclustered distance (d_cross ~ 450px) so edges bend outward around cohort hulls!
           } else {
             cohortMultiplier = 1.2; // Comfortable distance for unclustered partners/guests!
           }
 
           const baseSum = sRadius + tRadius + 10 * nodeScaleMultiplier;
-          return baseSum * cohortMultiplier * edgeLengthMultiplier;
+          const computedDist = baseSum * cohortMultiplier * edgeLengthMultiplier;
+          return (isCrossCohort || isUnclustered) ? Math.max(450 * edgeLengthMultiplier, computedDist) : computedDist;
         })
         .strength(l => {
           const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
@@ -675,10 +735,11 @@ export default function ForceCanvas({
           const sCohort = sObj && sObj.cohort;
           const tCohort = tObj && tObj.cohort;
           const isCrossCohort = sCohort && tCohort && sCohort !== 'Other' && tCohort !== 'Other' && sCohort !== tCohort;
+          const isUnclustered = (sCohort === 'Other' || tCohort === 'Other') && !isCoupleOrFamilyLink;
 
           if (isCoupleOrFamilyLink) return 1.0;
           if (isSameCohort) return 0.7;
-          if (isCrossCohort) return 0.05; // Gentle spring tension so cross-cohort links do NOT drag cohorts into overlapping!
+          if (isCrossCohort || isUnclustered) return 0.05; // Gentle spring tension so cross-cohort and unclustered links do NOT drag nodes across cohort boundaries!
           return 0.45; // Solid link strength for unclustered guests so they stay right next to their friends!
         });
 
