@@ -249,3 +249,10 @@
   4. **Heavy Direct Connection Penalty (-120 pts)**: Applied a -120 pt penalty to direct graph neighbors in `App.jsx`, ensuring unfamiliar 2nd/3rd-degree acquaintances with shared interests always rank at the top of recommendations.
   5. **Location Prompt Accuracy Fix**: Eliminated unshared location fallbacks in `App.jsx` and added clean Side affinity (`[ 🥂 Matt Side ]` / `[ 🥂 Maureen Side ]`) prompts in `CocktailMatchmakerModal.jsx`, ensuring guests only see location prompts for locations they actually share.
   6. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+## [2026-08-31] Non-Maximized Laptop Responsive Top Bar & Floating Map Controls FAB
+- **User Prompts**:
+  1. "so when i opend this up on my work computer (laptop running chrome os with chrome browser) the top bar navigation still ran off the side of the screen. when the window was not maximized, the controlls didn't wrap and ht emp controll didnt show at the bottom so you couldnt control most of it"
+- **Actions & Deliverables**:
+  1. **Floating Map Controls FAB Availability**: Updated `.mobile-drawer-toggle-fab` media query rules in `index.css` from `@media (max-width: 768px)` to `@media (max-width: 1200px)`, ensuring the floating **"🎛️ Map Controls"** FAB button is 100% visible on non-maximized Chrome OS/laptop screens whenever inline controls condense.
+  2. **Responsive Top Bar Wrapping**: Added `flex-wrap: wrap`, custom scrollbar, and flexible layout padding to `.top-bar` and `.search-controls-area` in `index.css`, preventing the header bar from overflowing or clipping off the side of narrower screens.
+  3. **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
