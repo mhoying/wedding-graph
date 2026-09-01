@@ -377,3 +377,11 @@
   - **Implemented Camera Centering (`flyToNode`) on Person Chip Click**: Updated `onSelectNode` in `App.jsx` to call `flyToNode(node)`. Now when clicking any direct connection chip in `GuestProfileDrawer.jsx`, the 2D canvas camera smoothly animates and visually centers directly on that person's node!
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Responsive Top Header Control Omission (<1280px / Half Screen) User Prompt**:
+  - "/goal the controls are still being cutoff in the top nav bar on my browser when it is at half my screen widht. rather than cut them off, i'd rathe rhave them ommited untli hte browser window is wide enough to display them. the user can always get to the full set of controls in the map controls drawer"
+- **Responsive Top Header Control Omission (<1280px / Half Screen) Actions & Deliverables**:
+  - **Implemented Clean Control Omission Hierarchy**: Added `.hide-on-constrained` CSS media query rules in `index.css` for constrained/half-screen display widths (`max-width: 1280px`).
+  - **Omitted Secondary Controls on Half-Screen**: Secondary controls (`Path Finder`, `Matchmaker`, `Clusters` dropdown, `logo-subtitle`, active filter chips) are cleanly omitted from the top header bar when window width is constrained, preventing horizontal cutoff or spill-over.
+  - **Un-Cutoff Core Anchors**: Essential anchors (`Logo & Title`, `Search Box`, `Map Controls` drawer button, `📋 Directory List` toggle, `Light/Dark` mode toggle) stay 100% visible and un-cutoff. Users can access all full controls anytime inside the **Map Controls Sheet Drawer**.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
