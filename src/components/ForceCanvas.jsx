@@ -515,6 +515,18 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
       }
     });
 
+    // Enforce Minimum Center Radius (260px) Repulsion for ALL cohort nodes (e.g. Jenna, Dog Park, Cornell, etc.)
+    const minCenterRadius = 260 * edgeLengthMultiplier;
+    nodesList.forEach(node => {
+      if (node.id === 'matt' || node.id === 'maureen' || node.x === undefined) return;
+      const r = Math.hypot(node.x, node.y) || 1;
+      if (r < minCenterRadius) {
+        const pushMag = Math.min(((minCenterRadius - r) / r) * alpha * 4.5, 8.0);
+        node.vx += (node.x / r) * pushMag;
+        node.vy += (node.y / r) * pushMag;
+      }
+    });
+
     // 2. Powerful inter-cluster repulsion between different true cohorts to prevent overlapping clouds!
     const minDistance = Math.min(520, 360 + numClusters * 18) * edgeLengthMultiplier;
     const repulsionStrength = alpha * 3.0;
@@ -600,26 +612,41 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
       });
     });
 
-    // 4. Dual Repulsion Force for 'Other' Nodes: Repel from center (0,0) and partner's cohort centroid!
+    // 4. Dual Repulsion Force for ALL 'Other' Nodes (Hop 1, Hop 2+ outer chains): Repel from center (0,0) AND closest cohort centroid!
     const otherRepulsionStrength = alpha * 4.0;
     nodesList.forEach(node => {
       if (node.id === 'matt' || node.id === 'maureen' || node.x === undefined) return;
       if (!node.cohort || node.cohort === 'Other') {
         // Force 1: Outward Repulsion from Central Couple Anchor (0,0)
         const distFromCenter = Math.hypot(node.x, node.y) || 1;
-        const pushCenterMag = Math.min((180 * edgeLengthMultiplier / distFromCenter) * otherRepulsionStrength, 6.0);
+        const pushCenterMag = Math.min((220 * edgeLengthMultiplier / distFromCenter) * otherRepulsionStrength, 7.0);
         node.vx += (node.x / distFromCenter) * pushCenterMag;
         node.vy += (node.y / distFromCenter) * pushCenterMag;
 
-        // Force 2: Outward Repulsion from Partner's Cohort Centroid
+        // Force 2: Outward Repulsion from Closest Cohort Centroid (Senses partner's cohort OR nearest cohort hull for Hop 2+ nodes)
+        let targetHull = null;
         const partnerCohort = partnerCohortMap.get(node.id);
         if (partnerCohort && clusterCentroids[partnerCohort]) {
-          const hull = clusterCentroids[partnerCohort];
-          const dx = node.x - hull.cx;
-          const dy = node.y - hull.cy;
+          targetHull = clusterCentroids[partnerCohort];
+        } else {
+          // Find closest cohort hull dynamically for Hop 2+ nodes like Jesse Lindenberger-Schutz!
+          let minDist = Infinity;
+          Object.values(clusterCentroids).forEach(hull => {
+            const d = Math.hypot(node.x - hull.cx, node.y - hull.cy);
+            if (d < minDist) {
+              minDist = d;
+              targetHull = hull;
+            }
+          });
+        }
+
+        if (targetHull) {
+          const dx = node.x - targetHull.cx;
+          const dy = node.y - targetHull.cy;
           const distFromHull = Math.hypot(dx, dy) || 1;
-          if (distFromHull < hull.radius + 50) {
-            const pushHullMag = Math.min(((hull.radius + 50 - distFromHull) / distFromHull) * otherRepulsionStrength * 2.5, 9.0);
+          const targetRadius = targetHull.radius + 80 * edgeLengthMultiplier;
+          if (distFromHull < targetRadius) {
+            const pushHullMag = Math.min(((targetRadius - distFromHull) / distFromHull) * otherRepulsionStrength * 3.0, 10.0);
             node.vx += (dx / distFromHull) * pushHullMag;
             node.vy += (dy / distFromHull) * pushHullMag;
           }
