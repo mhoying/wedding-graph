@@ -292,3 +292,13 @@
   - **Automatic Orbit Motion Pause on Detail View**: Added `wasOrbitingBeforeDetailRef` and a reactive `useEffect` in `App.jsx`. Whenever a guest node is selected (`selectedNode`), if celestial orbit is active, orbit rotation automatically pauses so the selected person remains perfectly stationary in focus.
   - **Automatic Orbit Motion Resume on Exit**: When the guest detail drawer is closed (`setSelectedNode(null)`), if orbit was active before opening details, celestial orbit rotation automatically resumes spinning!
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Audited 2D Cohort Separation User Prompt**:
+  - "it looks liek you are hallucinating cohorts and because of hte hallucination i dont trus tanything ou say. re do the 3 iterations of debate... bring in a software engineer as a third party to confirm viabilty... test thsi after you implement to make sure there are now erros"
+- **Audited 2D Cohort Separation Actions & Deliverables**:
+  - **Ground-Truth Dataset Extraction**: Extracted exact ground-truth cohorts (`The Couple`: 3, `Dog Park`: 11, `Google`: 7, `Cornell`: 7, `OWFL Blog`: 6, `Bay FC`: 4, `Lehigh`: 4, `Stanford`: 4, `Jenna`: 3, `Other`: 29) from `src/data/sampleData.js`. Total 78 nodes.
+  - **8-Round 3-Agent Sprint Debate & Certification**: Conducted an 8-round debate between PM 1 (Visual Delight), PM 2 (Performance), and the SWE Implementation Engineer, audited by the Fact-Checker Auditor Agent.
+  - **Dynamic 2D Physics Separation**: Upgraded `minDistance` in `ForceCanvas.jsx:382` to `Math.min(460, 340 + numClusters * 15) * edgeLengthMultiplier`, expanding inter-cluster 2D repulsion without kinetic jitter.
+  - **Partner Cohort Inheritance**: Unassigned partners/spouses in **Other (29)** inherit their partner's primary cohort focus angle in `createClusterSeparationForce`, preventing partners from drifting into adjacent clusters.
+  - **Theatrical Spotlight Focus Dimming**: Set unselected background node opacity to `0.08` and link opacity to `0.05` in `drawNode` and `drawLink`.
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
