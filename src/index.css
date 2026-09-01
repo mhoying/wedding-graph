@@ -90,8 +90,13 @@ body {
   align-items: center;
   gap: 8px;
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
   white-space: nowrap;
+}
+
+.header-controls-row::-webkit-scrollbar {
+  display: none;
 }
 
 .logo-area-tall, .header-controls-grid, .top-bar button, .top-bar select, .top-bar input, .top-bar div {

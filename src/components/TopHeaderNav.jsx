@@ -164,14 +164,14 @@ export default function TopHeaderNav({
           )}
         </div>
 
-        {/* ROW 2: Essential Map & Discovery Tools (Streamlined for zero scroll & 100% fit) */}
+        {/* ROW 2: Essential Map & Discovery Tools (Compact & 100% Fit) */}
         <div className="header-controls-row bottom-row">
           {/* Map Controls Sheet Trigger Button */}
           <button 
             onClick={onOpenMapControls}
             className="glass-panel btn-icon"
             title="Open Full Map Controls Sheet"
-            style={{ height: 34, padding: '0 10px', gap: 5, fontSize: 11, fontWeight: 800, color: '#f8fafc', background: 'rgba(2, 132, 199, 0.25)', border: '1px solid rgba(56, 189, 248, 0.5)', flexShrink: 0 }}
+            style={{ height: 32, padding: '0 8px', gap: 4, fontSize: 11, fontWeight: 800, color: '#f8fafc', background: 'rgba(2, 132, 199, 0.25)', border: '1px solid rgba(56, 189, 248, 0.5)', flexShrink: 0 }}
           >
             <SlidersHorizontal style={{ width: 13, height: 13, color: '#38bdf8' }} />
             <span>Map Controls</span>
@@ -182,7 +182,7 @@ export default function TopHeaderNav({
             onClick={() => setIsPathMode(!isPathMode)}
             className={`glass-panel btn-icon ${isPathMode ? 'active' : ''}`}
             title="Calculate Social Distance Path"
-            style={{ height: 34, padding: '0 10px', gap: 5, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
+            style={{ height: 32, padding: '0 8px', gap: 4, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
           >
             <Compass style={{ width: 13, height: 13 }} />
             <span>Path Finder</span>
@@ -194,9 +194,9 @@ export default function TopHeaderNav({
             className="glass-panel btn-icon matchmaker-header-btn"
             title="Find Guest Match Recommendations"
             style={{ 
-              height: 34, 
-              padding: '0 10px', 
-              gap: 5, 
+              height: 32, 
+              padding: '0 8px', 
+              gap: 4, 
               fontSize: 11, 
               fontWeight: 800, 
               color: '#34d399', 
@@ -210,7 +210,7 @@ export default function TopHeaderNav({
           </button>
 
           {/* Cluster Overlays Dropdown */}
-          <div className="glass-panel color-mode-bar" style={{ display: 'flex', alignItems: 'center', height: 34, padding: '0 8px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 10, flexShrink: 0 }}>
+          <div className="glass-panel color-mode-bar" style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 6px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 8, flexShrink: 0 }}>
             <Layers style={{ width: 13, height: 13, color: '#ec4899', marginRight: 4 }} />
             <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Clusters:</span>
             <select 
@@ -226,7 +226,7 @@ export default function TopHeaderNav({
                   setColorMode('interests');
                 }
               }}
-              style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 6, fontSize: 11, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
+              style={{ background: '#0f172a', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '2px 4px', borderRadius: 6, fontSize: 11, fontWeight: 700, outline: 'none', cursor: 'pointer' }}
             >
               <option value="cohort">Cohorts</option>
               <option value="current_location">Current Location</option>
