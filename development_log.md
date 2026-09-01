@@ -340,3 +340,12 @@
   - **Curved Bezier Cross-Cohort Links (`linkCurvature = 0.35`)**: Added `linkCurvature` prop to `ForceGraph2D`. Cross-cohort edges (like `Romana` in Cornell to `Nur-E` in Dog Park) now curve outward in a smooth Bezier arc around foreign cohort hulls rather than cutting straight across at 90 degrees.
   - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Straight Lines, Krista Bay FC Link, Spouse Outer Hull & Ultra-Short Couple Distance User Prompt**:
+  - "the smooth baziers are not making this any better, i'd prefer that they are straight lines. also krista shoudl be connecte to hte bay fc tailgate node. ALso the spouses that are not par tof hte ohort should be outside of the cluster when possible... also, we'd agreed that couple nodes shoudl have a shorter edge lenght than other non-couple links, but it doenst seem to be the way it is currently impmentented"
+- **Straight Lines, Krista Bay FC Link, Spouse Outer Hull & Ultra-Short Couple Distance Actions & Deliverables**:
+  - **100% Straight Lines**: Set `linkCurvature={0}` on `ForceGraph2D` in `ForceCanvas.jsx`, forcing all links to render as clean, crisp straight lines.
+  - **Connected Krista Kobeski to Bay FC Tailgate**: Added `{"source": "krista_kobeski", "target": "bay_fc", "relationship": "Connected"}` to `SAMPLE_LINKS` in `src/data/sampleData.js`.
+  - **Positioned Non-Cohort Spouses OUTSIDE Hulls**: Updated `createSpouseRadialRayForce` (`targetSpouseDist = pLen + 130px`) and `drawBackgroundHulls` so translucent hull bubbles tightly wrap ONLY true cohort members, anchoring non-cohort spouses (`Other`) directly outside the cluster boundary along the radial ray!
+  - **Ultra-Short Couple Edge Distance ($\approx 35\text{px}$)**: Enhanced `isCoupleOrFamilyLink` matching logic to detect all spouses/partners (including `partnerCohortMap` pairs) and set `cohortMultiplier = 0.15` ($\approx 35\text{px}$ rest distance, `strength = 1.0`), keeping all couples pinned side-by-side!
+  - **Automated JSDOM Verification**: Verified clean execution with zero runtime errors via `test_bundle.cjs`.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
