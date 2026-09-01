@@ -275,3 +275,9 @@
   - **Balanced 2-Row Controls on Half-Screen**: Removed restrictive `.desktop-only-inline` hiders from Row 2 tools in `TopHeaderNav.jsx`. Map Controls, Photos, Orbit, Path Finder, Matchmaker, Clusters, and Focus now remain populated on Row 2 on half-screen viewports.
   - **Eliminated Search Box Overlap**: Constrained `.search-box` max-width and min-width rules in `index.css` (`max-width: 180px; min-width: 110px`), ensuring the Directory List button and Theme toggle align cleanly without overlapping the search input.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **Streamlined 2-Row Header User Prompt**:
+  - "searhc box is still over lapping with direcotry list (infact even more htan before, and now the seocond line exceeds the widht of the top nav bar. it only gets to half of the cohorts drowpdown and nothign beyond that is visible. i dont htink we nee dall the controls, but matchmaker and pathfinder and the grouping drop down woudl be good if they fit, but no matter what, it shoudlnt requere a scroll"
+- **Streamlined 2-Row Header Actions & Deliverables**:
+  - **Streamlined 4-Tool Row 2 (Zero Scrollbar Guaranteed)**: Refactored Row 2 in `TopHeaderNav.jsx` to hold strictly the 4 core essential tools: `[ 🎛️ Map Controls ]` | `[ 🧭 Path Finder ]` | `[ 🪄 Matchmaker ]` | `[ 🎨 Clusters Dropdown ]`. Removed redundant secondary toggles (all 100% accessible via Map Controls sheet), reducing Row 2 width to ~420px for perfect zero-scroll fitting.
+  - **Fixed Search Box Input Flex Sizing**: Added `min-width: 0` to `.search-box input` and set `.search-box` `flex: 0 1 auto; max-width: 200px; min-width: 100px;` in `index.css`, preventing search input overflow and eliminating all overlap with the Directory List button.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
