@@ -596,7 +596,7 @@ export default function App() {
 
     const force = (alpha) => {
       if (!enabled) return;
-      const omega = 0.006 * speedMult;
+      const omega = 0.003 * speedMult;
       nodes.forEach(node => {
         if (!node || node.id === 'maureen' || node.id === 'matt' || node.type === 'CONTEXT_HUB') return;
         const x = node.x || 0;
@@ -611,8 +611,9 @@ export default function App() {
           const tangVx = targetX - x;
           const tangVy = targetY - y;
 
-          node.vx += (tangVx * 1.5 - node.vx) * 0.35;
-          node.vy += (tangVy * 1.5 - node.vy) * 0.35;
+          // Pure smooth orbital velocity without tangential shear
+          node.vx += tangVx * 0.15;
+          node.vy += tangVy * 0.15;
         }
       });
     };

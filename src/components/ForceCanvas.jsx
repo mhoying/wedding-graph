@@ -307,20 +307,63 @@ function createUntangleEdgesForce() {
   return force;
 }
 
+// Helper to build partner cohort inheritance map so spouses/partners inherit their primary partner's cohort for physics forces!
+function getPartnerCohortMap(nodesList, linksList) {
+  const partnerMap = new Map();
+  if (!linksList || !nodesList) return partnerMap;
+
+  linksList.forEach(l => {
+    if (!l) return;
+    const sId = typeof l.source === 'object' ? l.source.id : l.source;
+    const tId = typeof l.target === 'object' ? l.target.id : l.target;
+    const sObj = nodesList.find(n => n && n.id === sId);
+    const tObj = nodesList.find(n => n && n.id === tId);
+    if (!sObj || !tObj) return;
+
+    const isPartnerLink = l.type === 'COUPLE' || l.type === 'MARRIED' || l.type === 'FAMILY' ||
+                          ['Family', 'Spouse', 'Partner', 'Married', 'Couple'].includes(l.relationship);
+
+    if (isPartnerLink) {
+      if (sObj.cohort && sObj.cohort !== 'Other' && sObj.cohort !== 'The Couple' && (!tObj.cohort || tObj.cohort === 'Other')) {
+        partnerMap.set(tObj.id, sObj.cohort);
+      } else if (tObj.cohort && tObj.cohort !== 'Other' && tObj.cohort !== 'The Couple' && (!sObj.cohort || sObj.cohort === 'Other')) {
+        partnerMap.set(sObj.id, tObj.cohort);
+      }
+    }
+  });
+
+  return partnerMap;
+}
+
+// Fixed 360-degree radial sector angle mapping for ground-truth cohorts around The Couple (0, 0)
+const GROUND_TRUTH_SECTOR_ANGLES = {
+  "Dog Park": -Math.PI / 2,             // -90 deg (Top / North)
+  "OWFL Blog": -3 * Math.PI / 4,         // -135 deg (North-West)
+  "Cornell": Math.PI,                    // 180 deg (West / Left)
+  "Bay FC": 3 * Math.PI / 4,             // 135 deg (South-West)
+  "Jenna": -5 * Math.PI / 8,             // -112.5 deg (North-North-West)
+  "Stanford": Math.PI / 4,               // 45 deg (South-East)
+  "Google": 0,                           // 0 deg (East / Right)
+  "Lehigh": -Math.PI / 4,                // -45 deg (North-East)
+};
+
 // Custom D3 Force to keep distinct cohorts/clusters in separate solar system orbits dynamically!
-function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances) {
+function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances, linksList) {
   let nodesList = [];
 
   const force = (alpha) => {
     if (clusterMode === 'off' || !nodesList || nodesList.length === 0) return;
+
+    const partnerCohortMap = getPartnerCohortMap(nodesList, linksList);
 
     // Group nodes by cluster key
     const clusters = {};
     nodesList.forEach(node => {
       if (node.type === 'CONTEXT_HUB') return;
       let key = 'Other';
-      if (clusterMode === 'cohort') key = node.cohort || 'Other';
-      else if (clusterMode === 'location' || clusterMode === 'currentLocation') key = node.currentlyLivesIn || 'Other';
+      if (clusterMode === 'cohort') {
+        key = (node.cohort && node.cohort !== 'Other') ? node.cohort : (partnerCohortMap.get(node.id) || 'Other');
+      } else if (clusterMode === 'location' || clusterMode === 'currentLocation') key = node.currentlyLivesIn || 'Other';
       else if (clusterMode === 'originalLocation') key = node.originallyFrom || 'Other';
       else if (clusterMode === 'interest') key = (node.hobbies && node.hobbies[0]) ? node.hobbies[0] : 'Other';
 
@@ -332,10 +375,10 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
     const numClusters = keys.length;
     if (numClusters <= 1) return;
 
-    const baseStep = 150 * edgeLengthMultiplier;
-    const baseOffset = 110 * edgeLengthMultiplier;
+    const baseStep = 160 * edgeLengthMultiplier;
+    const baseOffset = 130 * edgeLengthMultiplier;
 
-    // Calculate target foci angles dynamically for ANY cohort, location, or interest!
+    // Calculate target foci angles dynamically with fixed sector slots for ground-truth cohorts!
     const fociAngles = {};
     let nonCoupleIdx = 0;
     const nonCoupleKeys = keys.filter(k => k !== 'The Couple' && !k.includes('Couple') && k !== 'Other');
@@ -346,6 +389,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
         fociAngles[key] = null;
       } else if (key === 'Other') {
         fociAngles[key] = null;
+      } else if (GROUND_TRUTH_SECTOR_ANGLES[key] !== undefined) {
+        fociAngles[key] = GROUND_TRUTH_SECTOR_ANGLES[key];
       } else {
         const angle = (nonCoupleIdx / totalNonCouple) * 2 * Math.PI - (Math.PI / 2);
         fociAngles[key] = angle;
@@ -353,17 +398,19 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
       }
     });
 
-    // 1. Strong attraction toward dedicated hop-scaled cluster foci (preserves concentric hop rings!)
-    const pullStrength = alpha * 0.45;
+    // 1. Pure radial attraction toward dedicated sector angles (nodes radiate 100% perpendicularly from center!)
+    const pullStrength = alpha * 0.60;
     nodesList.forEach((node) => {
       if (node.type === 'CONTEXT_HUB' || node.id === 'matt' || node.id === 'maureen') return;
-      if (clusterMode === 'cohort' && (!node.cohort || node.cohort === 'Other')) return;
 
       let key = 'Other';
-      if (clusterMode === 'cohort') key = node.cohort;
-      else if (clusterMode === 'location' || clusterMode === 'currentLocation') key = node.currentlyLivesIn || 'Other';
+      if (clusterMode === 'cohort') {
+        key = (node.cohort && node.cohort !== 'Other') ? node.cohort : (partnerCohortMap.get(node.id) || 'Other');
+      } else if (clusterMode === 'location' || clusterMode === 'currentLocation') key = node.currentlyLivesIn || 'Other';
       else if (clusterMode === 'originalLocation') key = node.originallyFrom || 'Other';
       else if (clusterMode === 'interest') key = (node.hobbies && node.hobbies[0]) ? node.hobbies[0] : 'Other';
+
+      if (key === 'Other') return;
 
       const focusAngle = fociAngles[key];
       if (focusAngle !== null && focusAngle !== undefined) {
@@ -373,22 +420,23 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
         const targetFocusX = Math.cos(focusAngle) * hopRadius;
         const targetFocusY = Math.sin(focusAngle) * hopRadius;
 
+        // Pull towards exact radial focus ray
         node.vx += (targetFocusX - node.x) * pullStrength;
         node.vy += (targetFocusY - node.y) * pullStrength;
       }
     });
 
     // 2. Powerful inter-cluster repulsion between different true cohorts to prevent overlapping clouds!
-    const minDistance = Math.min(460, 340 + numClusters * 15) * edgeLengthMultiplier;
-    const repulsionStrength = alpha * 2.5;
+    const minDistance = Math.min(520, 360 + numClusters * 18) * edgeLengthMultiplier;
+    const repulsionStrength = alpha * 3.0;
     for (let i = 0; i < nodesList.length; i++) {
       for (let j = i + 1; j < nodesList.length; j++) {
         const n1 = nodesList[i];
         const n2 = nodesList[j];
         if (n1.type === 'CONTEXT_HUB' || n2.type === 'CONTEXT_HUB') continue;
 
-        let key1 = clusterMode === 'cohort' ? n1.cohort : n1.currentlyLivesIn;
-        let key2 = clusterMode === 'cohort' ? n2.cohort : n2.currentlyLivesIn;
+        let key1 = clusterMode === 'cohort' ? ((n1.cohort && n1.cohort !== 'Other') ? n1.cohort : partnerCohortMap.get(n1.id) || 'Other') : n1.currentlyLivesIn;
+        let key2 = clusterMode === 'cohort' ? ((n2.cohort && n2.cohort !== 'Other') ? n2.cohort : partnerCohortMap.get(n2.id) || 'Other') : n2.currentlyLivesIn;
 
         // Skip repulsion if either node is "Other"
         if (clusterMode === 'cohort' && (key1 === 'Other' || key2 === 'Other')) continue;
@@ -399,7 +447,7 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
           const distSq = dx * dx + dy * dy;
           if (distSq > 0 && distSq < minDistance * minDistance) {
             const dist = Math.max(Math.sqrt(distSq), 10);
-            const forceMag = Math.min(((minDistance - dist) / dist) * repulsionStrength * 2.0, 5.0);
+            const forceMag = Math.min(((minDistance - dist) / dist) * repulsionStrength * 2.5, 6.0);
             const fx = (dx / dist) * forceMag;
             const fy = (dy / dist) * forceMag;
             n1.vx -= fx;
@@ -575,7 +623,7 @@ export default function ForceCanvas({
       hopForce.updateHopDistances(hopDistances, links);
       fg.d3Force('radialHop', hopForce);
 
-      fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances));
+      fg.d3Force('cluster', createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDistances, links));
 
       const untangleForce = createUntangleEdgesForce();
       untangleForce.updateLinks(links);
