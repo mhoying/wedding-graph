@@ -261,3 +261,11 @@
 - **Follow-up Actions & Deliverables**:
   - **Always-Accessible Matchmaker Header Button**: Refactored the Matchmaker button in `TopHeaderNav.jsx` and `index.css` (`.matchmaker-header-btn` & `.matchmaker-btn-text`). It renders as `[ 🪄 Matchmaker ]` on wide screens and automatically collapses into a compact `[ 🪄 ]` icon button on narrow/mobile viewports (<960px), keeping it permanently accessible right in the top header bar without taking up excessive width.
   - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
+- **2-Row Header Layout User Prompt**:
+  - "i'd prefer to have the Brand to take up both rows on the left side and then the controls divided betwe en two rows . waht do you think"
+- **2-Row Header Layout Actions & Deliverables**:
+  - **Tall Left Brand Block & 2-Row Controls Grid**: Refactored `TopHeaderNav.jsx` and `index.css` to create a dedicated tall Brand block (`.logo-area-tall`) spanning the full height on the left, paired with a 2-row controls grid (`.header-controls-grid`) on the right:
+    - **Row 1 (Search & View Actions Bar)**: Search Input Box + Active Filter Chips + Directory List Button + Theme Toggle + Host Spreadsheet & Host Queue.
+    - **Row 2 (Interactive Visualizer Toolbar Ribbon)**: Map Controls Sheet Button + Tune Sliders Popover + Photos Toggle + Orbit Toggle + Path Finder + Matchmaker + Clusters Dropdown + Focus Dropdown + Color Mode Dropdown.
+  - **Zero Horizontal Scrollbar**: Eliminates horizontal scrollbar clipping on Linux Zen Browser, Firefox, Chrome, and all laptop screens.
+  - **Deployed Live**: Published updated build live to `https://hoyingwink.com` and `https://mhoying.github.io/wedding-graph/`.
