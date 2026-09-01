@@ -118,6 +118,7 @@ export default function App() {
   const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(1.3);
   const [isOrbiting, setIsOrbiting] = useState(true);
   const [orbitSpeed, setOrbitSpeed] = useState(0.3);
+  const wasOrbitingBeforeDetailRef = useRef(false);
 
   // Security & Event Access Gate State
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -690,6 +691,21 @@ export default function App() {
       }
     });
   }, [nodes]);
+
+  // Auto-pause orbit when opening guest profile detail view, and auto-resume on exit
+  useEffect(() => {
+    if (selectedNode) {
+      if (isOrbiting) {
+        wasOrbitingBeforeDetailRef.current = true;
+        setIsOrbiting(false);
+      }
+    } else {
+      if (wasOrbitingBeforeDetailRef.current) {
+        wasOrbitingBeforeDetailRef.current = false;
+        setIsOrbiting(true);
+      }
+    }
+  }, [selectedNode]);
 
   // Sync Selected Node Edit Form Fields
   useEffect(() => {
