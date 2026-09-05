@@ -1,3 +1,10 @@
+## [2026-09-05] Zero-Moderation Auto-Approve Workflow & Bi-Daily Automated Audit
+- **User Request**: "can we use this solutiion to have guest submitted changes automatically approve dwithout moderation" / "i also want to run an automatic audit every two days that confirms that all submitted changes are saved and perissted in all appropraite files"
+- **Actions**:
+  1. **Instant Zero-Moderation Auto-Approve (`process_proposal.yml` & `process_proposal.js`)**: Created GitHub Action workflow that fires instantly on issue creation, updates `sampleData.js` and `guests_template.csv` using Node, auto-closes the issue with a comment, commits to `main`, and triggers live deployment.
+  2. **Bi-Daily Automated Audit Cron (`scheduled_audit.yml` & `audit_all_issues.js`)**: Built a scheduled GitHub Action cron job (`0 0 */2 * *`) that cross-references all closed proposal issues against database and CSV files every 2 days, auto-corrects any detected discrepancies, commits fixes, and redeploys.
+  3. **UI Enhancements (`SuggestEditModal.jsx`)**: Updated modal copy informing guests that updates will automatically appear live within 1–2 minutes.
+  4. **Build & Live Deployment**: Verified zero-error Vite build and deployed live to [hoyingwink.com](https://hoyingwink.com).
 
 ## [2026-09-05] Complete Guest Proposal Audit & Durable Data Persistence
 - **User Prompt**: "can you make sure that all the submitted updates by guests taht i approved were processed and are stored durably in the database including the csv and all generate dpages" / "are you goign gto go thorugh all closed issues and confirm there is nothign missing first"
