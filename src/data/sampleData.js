@@ -80,9 +80,9 @@ export const SAMPLE_NODES = [
       "RPI Medal"
     ],
     "__indexColor": "#ec0001",
-    "fx": 36,
+    "fx": 110,
     "fy": 0,
-    "x": 36,
+    "x": 110,
     "y": 0,
     "index": 0,
     "vx": 0,
@@ -110,9 +110,9 @@ export const SAMPLE_NODES = [
       "RPI Medal"
     ],
     "__indexColor": "#d80002",
-    "fx": -36,
+    "fx": -110,
     "fy": 0,
-    "x": -36,
+    "x": -110,
     "y": 0,
     "index": 1,
     "vx": 0,
@@ -136,10 +136,10 @@ export const SAMPLE_NODES = [
     ],
     "__indexColor": "#c40003",
     "index": 2,
-    "x": 593.0716060275802,
-    "y": 482.97125693893366,
-    "vx": -0.18490319873993757,
-    "vy": 0.22558345889271875
+    "x": 953.8709242359424,
+    "y": -845.6729242835733,
+    "vx": -0.12816360228111312,
+    "vy": 0.26854074499486896
   },
   {
     "id": "dog_park",
@@ -156,10 +156,10 @@ export const SAMPLE_NODES = [
     ],
     "__indexColor": "#b00004",
     "index": 3,
-    "x": 98.44970978742067,
-    "y": 290.6424065125278,
-    "vx": -0.11017426908245503,
-    "vy": 0.03842747259196206
+    "x": 415.31917722415267,
+    "y": -196.75810607600704,
+    "vx": -0.1842485215587835,
+    "vy": 0.2190724391785533
   },
   {
     "id": "owfl_blog",
@@ -176,10 +176,10 @@ export const SAMPLE_NODES = [
     ],
     "__indexColor": "#9c0005",
     "index": 4,
-    "x": 260.0,
-    "y": -120.0,
-    "vx": 0,
-    "vy": 0
+    "x": 555.6839197142945,
+    "y": 274.8326251852298,
+    "vx": 0.01820943712020816,
+    "vy": -0.05786406075654543
   },
   {
     "id": "bay_fc",
@@ -197,10 +197,10 @@ export const SAMPLE_NODES = [
     ],
     "__indexColor": "#880006",
     "index": 5,
-    "x": -260.0,
-    "y": -120.0,
-    "vx": 0,
-    "vy": 0
+    "x": 24.742172912484072,
+    "y": -519.2865420296228,
+    "vx": 0.26825852741471967,
+    "vy": 0.03736838763933361
   },
   {
     "id": "honk",
@@ -215,10 +215,10 @@ export const SAMPLE_NODES = [
     "hobbies": [],
     "__indexColor": "#740007",
     "index": 6,
-    "x": 94.72831140469354,
-    "y": -192.39749213811777,
-    "vx": 0.07447714538215443,
-    "vy": -0.01463456324641466
+    "x": 529.9846362301925,
+    "y": 1.0934140693937378,
+    "vx": 0.17823998348448278,
+    "vy": -0.013617075003784751
   },
   {
     "id": "allison_williams",
@@ -234,7 +234,13 @@ export const SAMPLE_NODES = [
       "Lehigh",
       "Food",
       "Gardening"
-    ]
+    ],
+    "__indexColor": "#600008",
+    "x": -85.30839736326749,
+    "y": -271.72863664996646,
+    "vx": -0.1080512079795056,
+    "vy": -0.14181608060037734,
+    "index": 7
   },
   {
     "id": "jim_merizio",
@@ -249,7 +255,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Beer",
       "Knicks"
-    ]
+    ],
+    "__indexColor": "#4c0009",
+    "x": -231.0165375281375,
+    "y": -544.0142262511255,
+    "vx": 0.2664337977863217,
+    "vy": -0.3177963520931879,
+    "index": 8
   },
   {
     "id": "andy_schmitt",
@@ -265,7 +277,13 @@ export const SAMPLE_NODES = [
       "Beer",
       "Cocktails",
       "Hiking"
-    ]
+    ],
+    "__indexColor": "#38000a",
+    "x": -798.7733756700673,
+    "y": 7.868082184729715,
+    "vx": -0.01635882371674555,
+    "vy": -0.021398603503122532,
+    "index": 9
   },
   {
     "id": "anne_sweeney",
@@ -280,7 +298,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dogs",
       "Kids"
-    ]
+    ],
+    "__indexColor": "#24000b",
+    "x": -399.0034373700851,
+    "y": 339.63016498109005,
+    "vx": 0.0239040484065084,
+    "vy": -0.07081292137133172,
+    "index": 10
   },
   {
     "id": "jon_hoy",
@@ -297,7 +321,13 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs",
       "Kids"
-    ]
+    ],
+    "__indexColor": "#10000c",
+    "x": -467.0853281085908,
+    "y": 585.0344159979238,
+    "vx": 0.005876820990039087,
+    "vy": -0.0691968832354366,
+    "index": 11
   },
   {
     "id": "ashley_prichard",
@@ -313,7 +343,13 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Soccer",
       "Lehigh"
-    ]
+    ],
+    "__indexColor": "#fc000d",
+    "x": -0.16517968689584722,
+    "y": -1056.7336495296747,
+    "vx": 0.28302202817426464,
+    "vy": 0.181386304019939,
+    "index": 12
   },
   {
     "id": "roopak_kandasamy",
@@ -328,7 +364,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Bay FC",
       "Soccer"
-    ]
+    ],
+    "__indexColor": "#e8000e",
+    "x": -37.19793591336064,
+    "y": -786.2146018414654,
+    "vx": -0.045380081858104195,
+    "vy": 0.1337349654132399,
+    "index": 13
   },
   {
     "id": "becky_spohr",
@@ -343,7 +385,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Dogs",
       "Tennis"
-    ]
+    ],
+    "__indexColor": "#d4000f",
+    "x": 474.42891602836426,
+    "y": -647.7976043884898,
+    "vx": 0.007804640503336421,
+    "vy": 0.1981676979706353,
+    "index": 14
   },
   {
     "id": "brian_kim",
@@ -360,7 +408,13 @@ export const SAMPLE_NODES = [
       "Ska",
       "Music",
       "Tae Kwon Do"
-    ]
+    ],
+    "__indexColor": "#c00010",
+    "x": 119.21674811457463,
+    "y": 241.77008043873434,
+    "vx": 0.05700919887155009,
+    "vy": -0.06482754463596953,
+    "index": 15
   },
   {
     "id": "michelle_preston",
@@ -377,7 +431,13 @@ export const SAMPLE_NODES = [
       "Wine"
     ],
     "state": "NYC",
-    "hometown": "Iowa"
+    "hometown": "Iowa",
+    "__indexColor": "#ac0011",
+    "x": 37.340437298886535,
+    "y": 489.0814279958168,
+    "vx": -0.00866899237262871,
+    "vy": -0.08612385858869202,
+    "index": 16
   },
   {
     "id": "chrissy_fiore",
@@ -393,7 +453,13 @@ export const SAMPLE_NODES = [
       "Cocktails",
       "Whiskey",
       "Dogs"
-    ]
+    ],
+    "__indexColor": "#980012",
+    "x": 694.7784368754216,
+    "y": 713.60448362699,
+    "vx": 0.03725431916264411,
+    "vy": -0.07162951841739774,
+    "index": 17
   },
   {
     "id": "greg_goetchius",
@@ -418,7 +484,13 @@ export const SAMPLE_NODES = [
       "Motorcycling"
     ],
     "state": "SF Bay Area",
-    "hometown": "New Jersey"
+    "hometown": "New Jersey",
+    "__indexColor": "#840013",
+    "x": 341.2080695355507,
+    "y": -941.7977531070333,
+    "vx": 0.11580525265516824,
+    "vy": -0.16345661308659878,
+    "index": 18
   },
   {
     "id": "lauren_sofia",
@@ -434,7 +506,13 @@ export const SAMPLE_NODES = [
       "Tennis",
       "Cycling",
       "Baking"
-    ]
+    ],
+    "__indexColor": "#700014",
+    "x": 495.61452778906096,
+    "y": -1148.6650382730943,
+    "vx": 0.06671133444819331,
+    "vy": -0.20413060579400258,
+    "index": 19
   },
   {
     "id": "jesse_lindenberger_schutz",
@@ -449,7 +527,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Art",
       "Gaming"
-    ]
+    ],
+    "__indexColor": "#5c0015",
+    "x": -301.0483878263224,
+    "y": 1062.075771568238,
+    "vx": -0.12704040201410227,
+    "vy": 0.07425043393258461,
+    "index": 20
   },
   {
     "id": "katie_conniff",
@@ -466,7 +550,13 @@ export const SAMPLE_NODES = [
       "Brains",
       "Darkness",
       "Cats"
-    ]
+    ],
+    "__indexColor": "#480016",
+    "x": 602.2799733973173,
+    "y": -860.6540217251899,
+    "vx": -0.0436279500085675,
+    "vy": 0.1670459485468819,
+    "index": 21
   },
   {
     "id": "ryan_podolak",
@@ -480,7 +570,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Wine"
-    ]
+    ],
+    "__indexColor": "#340017",
+    "x": 737.2433999690802,
+    "y": -1078.23232024571,
+    "vx": -0.03330137491771969,
+    "vy": 0.173234130444358,
+    "index": 22
   },
   {
     "id": "krista_kobeski",
@@ -497,7 +593,13 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Soccer",
       "Wrestling"
-    ]
+    ],
+    "__indexColor": "#200018",
+    "x": -197.3626522968772,
+    "y": -1237.820947301754,
+    "vx": 0.35457885044431503,
+    "vy": 0.1266176833147635,
+    "index": 23
   },
   {
     "id": "leanna_habana",
@@ -513,7 +615,13 @@ export const SAMPLE_NODES = [
       "Kids",
       "Dogs"
     ],
-    "state": "SF Bay Area"
+    "state": "SF Bay Area",
+    "__indexColor": "#0c0019",
+    "x": -494.3824690410594,
+    "y": 829.640061736646,
+    "vx": 0.029868396074989853,
+    "vy": -0.06879090919130683,
+    "index": 24
   },
   {
     "id": "liz_scott",
@@ -528,7 +636,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Travel",
       "Food"
-    ]
+    ],
+    "__indexColor": "#f8001a",
+    "x": 687.4275870410771,
+    "y": 462.9642123443804,
+    "vx": 0.11639903589455886,
+    "vy": -0.08655590499793248,
+    "index": 25
   },
   {
     "id": "marissa_lavelle",
@@ -544,7 +658,13 @@ export const SAMPLE_NODES = [
       "Music",
       "Art",
       "Travel"
-    ]
+    ],
+    "__indexColor": "#e4001b",
+    "x": -135.74370991400642,
+    "y": 274.3213736464962,
+    "vx": 0.03725262803086735,
+    "vy": -0.1190524157699822,
+    "index": 26
   },
   {
     "id": "missy_ruminski",
@@ -556,7 +676,13 @@ export const SAMPLE_NODES = [
     "originallyFrom": "Upstate NY",
     "currentlyLivesIn": "Chicago",
     "familyStatus": "Single",
-    "hobbies": []
+    "hobbies": [],
+    "__indexColor": "#d0001c",
+    "x": 352.14894811602,
+    "y": 142.23022815380142,
+    "vx": 0.04865142241212667,
+    "vy": -0.17019460809885717,
+    "index": 27
   },
   {
     "id": "nichole_remmert",
@@ -572,7 +698,13 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs",
       "Food"
-    ]
+    ],
+    "__indexColor": "#bc001d",
+    "x": 892.9094704067236,
+    "y": 309.330198592558,
+    "vx": 0.18909072852962278,
+    "vy": -0.008115620649536715,
+    "index": 28
   },
   {
     "id": "nishat_shaikh",
@@ -587,7 +719,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Knitting",
       "Aquaria"
-    ]
+    ],
+    "__indexColor": "#a8001e",
+    "x": 310.04144307928783,
+    "y": 399.46120886015666,
+    "vx": 0.14175888456440977,
+    "vy": -0.17253272545824028,
+    "index": 29
   },
   {
     "id": "romana_rajput",
@@ -602,7 +740,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Cocktails",
       "Travel"
-    ]
+    ],
+    "__indexColor": "#94001f",
+    "x": -897.7977022174365,
+    "y": -464.42629921291206,
+    "vx": 0.10301001096676911,
+    "vy": -0.18048005081763524,
+    "index": 30
   },
   {
     "id": "steve_nares",
@@ -617,7 +761,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Chargers",
       "Beer"
-    ]
+    ],
+    "__indexColor": "#800020",
+    "x": -1123.0502430538897,
+    "y": -575.4287121521346,
+    "vx": 0.05279070250885692,
+    "vy": -0.08010172305591863,
+    "index": 31
   },
   {
     "id": "poukhan_philavanh_anthony",
@@ -632,7 +782,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Kids",
       "Dogs"
-    ]
+    ],
+    "__indexColor": "#6c0021",
+    "x": 439.2454521927953,
+    "y": 873.8084025304712,
+    "vx": -0.016495304708723305,
+    "vy": -0.12245579534330377,
+    "index": 32
   },
   {
     "id": "ryan_anthony",
@@ -647,7 +803,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Whiskey",
       "Kids"
-    ]
+    ],
+    "__indexColor": "#580022",
+    "x": 244.05034316756428,
+    "y": 642.9920444188771,
+    "vx": 0.07392342396312938,
+    "vy": -0.20322048248659447,
+    "index": 33
   },
   {
     "id": "tracy_armstrong",
@@ -665,7 +827,13 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Gardening",
       "Baking"
-    ]
+    ],
+    "__indexColor": "#440023",
+    "x": 727.191378380139,
+    "y": -614.7519342509265,
+    "vx": 0.005713688868133279,
+    "vy": 0.40160254217699554,
+    "index": 34
   },
   {
     "id": "jenna_auer",
@@ -685,7 +853,13 @@ export const SAMPLE_NODES = [
       "Books",
       "Dance"
     ],
-    "state": "SF Bay Area"
+    "state": "SF Bay Area",
+    "__indexColor": "#300024",
+    "x": 1002.3278192531841,
+    "y": -537.9482908713256,
+    "vx": -0.21721896490572723,
+    "vy": 0.3139315884857784,
+    "index": 35
   },
   {
     "id": "tim_auer",
@@ -714,7 +888,13 @@ export const SAMPLE_NODES = [
       "Grateful Dead",
       "Bluegrass"
     ],
-    "state": "SF Bay Area"
+    "state": "SF Bay Area",
+    "__indexColor": "#1c0025",
+    "x": 175.2996371624715,
+    "y": -273.7538745871676,
+    "vx": -0.10612740016354395,
+    "vy": 0.09964961904657463,
+    "index": 36
   },
   {
     "id": "jonathan_bibayan",
@@ -728,7 +908,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#080026",
+    "x": 1215.0495009347562,
+    "y": 23.33144451055068,
+    "vx": 0.053935736790566846,
+    "vy": 0.12568836445066492,
+    "index": 37
   },
   {
     "id": "lindsay_mayott",
@@ -742,7 +928,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#f40027",
+    "x": 1487.0049513290608,
+    "y": 41.052937823555226,
+    "vx": 0.0539811094589719,
+    "vy": 0.1275958687013043,
+    "index": 38
   },
   {
     "id": "jeff_domanski",
@@ -756,7 +948,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#e00028",
+    "x": -651.7576309622395,
+    "y": 422.1527257513174,
+    "vx": 0.00587794066608763,
+    "vy": -0.04667815347744262,
+    "index": 39
   },
   {
     "id": "jill_domanski",
@@ -770,7 +968,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#cc0029",
+    "x": -897.4816611574468,
+    "y": 508.76483373895996,
+    "vx": 0.009187020741926078,
+    "vy": -0.038347475128759204,
+    "index": 40
   },
   {
     "id": "dave_festa",
@@ -784,7 +988,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#b8002a",
+    "x": -1258.065441482674,
+    "y": -6.300599237728354,
+    "vx": 0.07604976764274805,
+    "vy": -0.2757977769609336,
+    "index": 41
   },
   {
     "id": "erica_festa",
@@ -798,7 +1008,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#a4002b",
+    "x": -1031.5774814703068,
+    "y": 80.62962340436755,
+    "vx": -0.03153617556351631,
+    "vy": -0.010016359297749081,
+    "index": 42
   },
   {
     "id": "james_freedman",
@@ -815,7 +1031,13 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Bad Bunny",
       "RPI Medal"
-    ]
+    ],
+    "__indexColor": "#90002c",
+    "x": -859.314467952168,
+    "y": -724.3298270161666,
+    "vx": 0.12291890958403169,
+    "vy": -0.10522240283173498,
+    "index": 43
   },
   {
     "id": "nur_e_freedman",
@@ -835,7 +1057,13 @@ export const SAMPLE_NODES = [
       "Books",
       "Bad Bunny",
       "Wine"
-    ]
+    ],
+    "__indexColor": "#7c002d",
+    "x": -568.2462444581323,
+    "y": -834.0087501178427,
+    "vx": -0.08267964754357075,
+    "vy": -0.1596526476499858,
+    "index": 44
   },
   {
     "id": "angela_govig",
@@ -848,8 +1076,19 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
-      "Kids"
-    ]
+      "Kids",
+      "49ers",
+      "Music",
+      "Books",
+      "Embroidery"
+    ],
+    "__indexColor": "#68002e",
+    "x": -678.9797229317716,
+    "y": -299.1979548722635,
+    "vx": 0.3243526322361128,
+    "vy": -0.15047124023031191,
+    "index": 45,
+    "state": "SF Bay Area"
   },
   {
     "id": "jason_govig",
@@ -867,7 +1106,13 @@ export const SAMPLE_NODES = [
       "Band",
       "Kids",
       "Outdoors"
-    ]
+    ],
+    "__indexColor": "#54002f",
+    "x": -567.9286839186132,
+    "y": -79.91187311216692,
+    "vx": -0.046797984055613896,
+    "vy": -0.003966784118963437,
+    "index": 46
   },
   {
     "id": "janaki_lahorani",
@@ -883,7 +1128,13 @@ export const SAMPLE_NODES = [
       "Kids",
       "Cooking",
       "Hiking"
-    ]
+    ],
+    "__indexColor": "#400030",
+    "x": -1167.8003151827136,
+    "y": -247.59920614322795,
+    "vx": 0.3066839150256572,
+    "vy": -0.18874890399486247,
+    "index": 47
   },
   {
     "id": "jason_mcmullan",
@@ -898,7 +1149,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Kids",
       "Lehigh"
-    ]
+    ],
+    "__indexColor": "#2c0031",
+    "x": -653.1173783439809,
+    "y": -556.7646122578917,
+    "vx": 0.1188273769299273,
+    "vy": -0.07840484151335089,
+    "index": 48
   },
   {
     "id": "jessi_mcmullan",
@@ -914,7 +1171,13 @@ export const SAMPLE_NODES = [
       "Kids",
       "Lehigh",
       "Books"
-    ]
+    ],
+    "__indexColor": "#180032",
+    "x": -442.4456246119483,
+    "y": -403.30318641767474,
+    "vx": 0.2794361649930231,
+    "vy": -0.26534815299938924,
+    "index": 49
   },
   {
     "id": "alex_murillo",
@@ -931,7 +1194,13 @@ export const SAMPLE_NODES = [
       "Beer",
       "Gardening",
       "Kids"
-    ]
+    ],
+    "__indexColor": "#040033",
+    "x": 566.8925115799186,
+    "y": -408.60210380975946,
+    "vx": -0.1503521831939277,
+    "vy": 0.279076427498205,
+    "index": 50
   },
   {
     "id": "leslie_davidsson",
@@ -948,7 +1217,13 @@ export const SAMPLE_NODES = [
       "Pottery",
       "Design",
       "Spa days"
-    ]
+    ],
+    "__indexColor": "#f00034",
+    "x": 222.90091456096292,
+    "y": -703.2218997039375,
+    "vx": 0.07287325263768567,
+    "vy": -0.1861425376869004,
+    "index": 51
   },
   {
     "id": "jess_phan",
@@ -963,7 +1238,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Kids",
       "Cycling"
-    ]
+    ],
+    "__indexColor": "#dc0035",
+    "x": -298.1976602827892,
+    "y": -780.5281516820776,
+    "vx": -0.0595532540559782,
+    "vy": -0.2377825018975654,
+    "index": 52
   },
   {
     "id": "mark_macdonald",
@@ -978,7 +1259,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Kids",
       "Cycling"
-    ]
+    ],
+    "__indexColor": "#c80036",
+    "x": -349.68817038094403,
+    "y": -1029.45219161667,
+    "vx": -0.1505506356256325,
+    "vy": -0.21677467483840282,
+    "index": 53
   },
   {
     "id": "katie_richter",
@@ -992,7 +1279,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#b40037",
+    "x": 1102.7710671677412,
+    "y": 733.6865585399308,
+    "vx": -0.031086040517297745,
+    "vy": 0.12565144900414732,
+    "index": 54
   },
   {
     "id": "paul_richter",
@@ -1011,7 +1304,13 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Wine"
     ],
-    "state": "DC"
+    "state": "DC",
+    "__indexColor": "#a00038",
+    "x": 906.2420209198037,
+    "y": 569.9095543741196,
+    "vx": 0.08020074715993351,
+    "vy": -0.008746299932115245,
+    "index": 55
   },
   {
     "id": "lauren_schmied",
@@ -1026,7 +1325,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Kids",
       "Embroidery"
-    ]
+    ],
+    "__indexColor": "#8c0039",
+    "x": -78.1132954803332,
+    "y": 758.3534366695523,
+    "vx": -0.2403426849893671,
+    "vy": 0.1533212207809543,
+    "index": 56
   },
   {
     "id": "tina_silva",
@@ -1042,7 +1347,13 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Kids",
       "Rockets"
-    ]
+    ],
+    "__indexColor": "#78003a",
+    "x": 325.9459982507092,
+    "y": -460.24370270717,
+    "vx": -0.12838166784837546,
+    "vy": 0.0847519031246575,
+    "index": 57
   },
   {
     "id": "george_sun",
@@ -1056,7 +1367,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#64003b",
+    "x": 147.72160804912846,
+    "y": 864.6947243364198,
+    "vx": -0.028181517497830932,
+    "vy": -0.2633960657455924,
+    "index": 58
   },
   {
     "id": "sohyun_sun",
@@ -1070,7 +1387,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#50003c",
+    "x": 240.39452601353108,
+    "y": 1089.922377046238,
+    "vx": -0.1315185346844607,
+    "vy": -0.22011703764776375,
+    "index": 59
   },
   {
     "id": "chuck_tempest",
@@ -1085,7 +1408,13 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Kids",
       "Rugby"
-    ]
+    ],
+    "__indexColor": "#3c003d",
+    "x": -226.08377791505302,
+    "y": 540.2114771000104,
+    "vx": 0.005736745162986409,
+    "vy": -0.03520166721155019,
+    "index": 60
   },
   {
     "id": "clyde_tsai",
@@ -1099,7 +1428,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#28003e",
+    "x": 482.52305484109706,
+    "y": 584.2484450129309,
+    "vx": 0.09088764874054191,
+    "vy": -0.11307944536657043,
+    "index": 61
   },
   {
     "id": "ivan_vojvodic",
@@ -1117,7 +1452,13 @@ export const SAMPLE_NODES = [
       "Woodworking",
       "Cars"
     ],
-    "state": "SF Bay Area"
+    "state": "SF Bay Area",
+    "__indexColor": "#14003f",
+    "x": -608.7607673455435,
+    "y": 170.69289329681294,
+    "vx": -0.00003817112268841572,
+    "vy": -0.058284482536618214,
+    "index": 62
   },
   {
     "id": "becca_winslow",
@@ -1131,7 +1472,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#000040",
+    "x": 951.8840275511428,
+    "y": -16.335450135635153,
+    "vx": 0.08048533538465752,
+    "vy": -0.052546619452113696,
+    "index": 63
   },
   {
     "id": "mary_mitchell",
@@ -1147,7 +1494,13 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Dogs",
       "Bad Bunny"
-    ]
+    ],
+    "__indexColor": "#ec0041",
+    "x": 681.7633449704852,
+    "y": -174.03865673421183,
+    "vx": -0.17762289855850225,
+    "vy": 0.3993394789428033,
+    "index": 64
   },
   {
     "id": "tim_coble",
@@ -1164,7 +1517,13 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Gaming",
       "Ska"
-    ]
+    ],
+    "__indexColor": "#d80042",
+    "x": 823.2598429361572,
+    "y": -376.6031943436506,
+    "vx": -0.09233500011508498,
+    "vy": 0.45324242120062763,
+    "index": 65
   },
   {
     "id": "yannick_carer",
@@ -1181,7 +1540,13 @@ export const SAMPLE_NODES = [
       "Kids",
       "Cycling",
       "Photography"
-    ]
+    ],
+    "__indexColor": "#c40043",
+    "x": -331.61665345271257,
+    "y": -171.5912721113692,
+    "vx": -0.08846539442463065,
+    "vy": -0.09167889757672,
+    "index": 66
   },
   {
     "id": "chuchu_zhang",
@@ -1193,7 +1558,13 @@ export const SAMPLE_NODES = [
     "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Single",
-    "hobbies": []
+    "hobbies": [],
+    "__indexColor": "#b00044",
+    "x": -373.651927156485,
+    "y": 81.73664941565293,
+    "vx": 0.0075251949206088615,
+    "vy": -0.0786304203197494,
+    "index": 67
   },
   {
     "id": "emy_habana",
@@ -1205,7 +1576,13 @@ export const SAMPLE_NODES = [
     "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
-    "hobbies": []
+    "hobbies": [],
+    "__indexColor": "#9c0045",
+    "x": -664.3694500694128,
+    "y": 1013.7612813153933,
+    "vx": -0.03214286212778243,
+    "vy": -0.12942658553136663,
+    "index": 68
   },
   {
     "id": "kathryn_potts",
@@ -1223,7 +1600,13 @@ export const SAMPLE_NODES = [
       "cheese"
     ],
     "state": "Amherst, MA",
-    "hometown": "Ohio"
+    "hometown": "Ohio",
+    "__indexColor": "#880046",
+    "x": -697.6401701516545,
+    "y": 672.5180948944214,
+    "vx": 0.021149306367565266,
+    "vy": -0.055798024700339705,
+    "index": 69
   },
   {
     "id": "joe_wernet",
@@ -1241,7 +1624,13 @@ export const SAMPLE_NODES = [
       "Beer"
     ],
     "state": "Amherst, MA",
-    "hometown": "Ohio"
+    "hometown": "Ohio",
+    "__indexColor": "#740047",
+    "x": -855.6937278973113,
+    "y": 867.179595504353,
+    "vx": -0.048306530450672625,
+    "vy": -0.11044173222944353,
+    "index": 70
   },
   {
     "id": "mira_vojvodic",
@@ -1255,7 +1644,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#600048",
+    "x": -850.9345049743423,
+    "y": 255.84092599056075,
+    "vx": -0.0013556551153100724,
+    "vy": -0.041639007401285795,
+    "index": 71
   },
   {
     "id": "nadia_shaikh",
@@ -1267,7 +1662,13 @@ export const SAMPLE_NODES = [
     "originallyFrom": "",
     "currentlyLivesIn": "",
     "familyStatus": "Couple / Group",
-    "hobbies": []
+    "hobbies": [],
+    "__indexColor": "#4c0049",
+    "x": 723.2278950127294,
+    "y": 107.57313046173704,
+    "vx": 0.1410761739981178,
+    "vy": 0.03493070542509306,
+    "index": 72
   },
   {
     "id": "sumeet_lahorani",
@@ -1281,7 +1682,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids"
-    ]
+    ],
+    "__indexColor": "#38004a",
+    "x": -1434.0428929085253,
+    "y": -204.377524304388,
+    "vx": 0.35533321145516455,
+    "vy": 0.09013285065645806,
+    "index": 73
   },
   {
     "id": "victoria_shi",
@@ -1293,7 +1700,13 @@ export const SAMPLE_NODES = [
     "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
-    "hobbies": []
+    "hobbies": [],
+    "__indexColor": "#24004b",
+    "x": -911.4110413787479,
+    "y": -208.53186299921316,
+    "vx": 0.30909288280176306,
+    "vy": -0.18194521428173496,
+    "index": 74
   },
   {
     "id": "will_short",
@@ -1305,7 +1718,13 @@ export const SAMPLE_NODES = [
     "originallyFrom": "",
     "currentlyLivesIn": "",
     "familyStatus": "Couple / Group",
-    "hobbies": []
+    "hobbies": [],
+    "__indexColor": "#10004c",
+    "x": 890.7724676594869,
+    "y": 867.8307287033861,
+    "vx": -0.07443275077932376,
+    "vy": 0.06823097738591329,
+    "index": 75
   },
   {
     "id": "toyo_tsujino",
@@ -1321,7 +1740,13 @@ export const SAMPLE_NODES = [
       "Chargers",
       "Dogs",
       "Swimming"
-    ]
+    ],
+    "__indexColor": "#fc004d",
+    "x": -4.423316829278939,
+    "y": 1058.3188503570923,
+    "vx": -0.12070579072104352,
+    "vy": -0.33548260693310084,
+    "index": 76
   },
   {
     "id": "danielle_sullivan",
@@ -1335,7 +1760,13 @@ export const SAMPLE_NODES = [
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Dogs"
-    ]
+    ],
+    "__indexColor": "#e8004e",
+    "x": 50.81723819498134,
+    "y": 1322.170140692382,
+    "vx": -0.05607834309861666,
+    "vy": -0.3508919765616145,
+    "index": 77
   }
 ];
 
