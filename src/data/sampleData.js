@@ -1062,7 +1062,8 @@ export const SAMPLE_NODES = [
       "Lehigh",
       "Books",
       "Bad Bunny",
-      "Wine"
+      "Wine",
+      "Cooking"
     ],
     "__indexColor": "#7c002d",
     "x": -568.2462444581323,
@@ -1775,7 +1776,7 @@ export const SAMPLE_NODES = [
     "vy": -0.3508919765616145,
     "index": 77
   }
-];
+]];
 
 export const SAMPLE_LINKS = [
   {
