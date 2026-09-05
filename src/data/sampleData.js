@@ -77,7 +77,9 @@ export const SAMPLE_NODES = [
       "Music",
       "Photography",
       "Outdoors",
-      "RPI Medal"
+      "RPI Medal",
+      "Gaming",
+      "Aquaria"
     ],
     "__indexColor": "#ec0001",
     "fx": 110,
@@ -107,7 +109,8 @@ export const SAMPLE_NODES = [
       "Bay FC",
       "Lehigh",
       "Wine",
-      "RPI Medal"
+      "RPI Medal",
+      "Books"
     ],
     "__indexColor": "#d80002",
     "fx": -110,
@@ -584,7 +587,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Maureen",
     "cohort": "Bay FC",
-    "relationship": "Krista Kobeski",
+    "relationship": "Krista Kobeski & Guest",
     "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
@@ -1030,7 +1033,10 @@ export const SAMPLE_NODES = [
       "Kids",
       "Bay FC",
       "Bad Bunny",
-      "RPI Medal"
+      "RPI Medal",
+      "Hiking",
+      "Rock Climbing",
+      "Cooking"
     ],
     "__indexColor": "#90002c",
     "x": -859.314467952168,
@@ -1072,7 +1078,7 @@ export const SAMPLE_NODES = [
     "side": "Matt",
     "cohort": "Other",
     "relationship": "The Govig Family",
-    "originallyFrom": "",
+    "originallyFrom": "Illinois",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
     "hobbies": [
@@ -1193,7 +1199,8 @@ export const SAMPLE_NODES = [
       "Whiskey",
       "Beer",
       "Gardening",
-      "Kids"
+      "Kids",
+      "Chargers"
     ],
     "__indexColor": "#040033",
     "x": 566.8925115799186,
@@ -1531,7 +1538,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Matt",
     "cohort": "Google",
-    "relationship": "Yannick Carer",
+    "relationship": "Yannick Carer & Guest",
     "originallyFrom": "",
     "currentlyLivesIn": "Zurich",
     "familyStatus": "Family",
