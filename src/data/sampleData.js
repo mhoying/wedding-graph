@@ -1776,7 +1776,7 @@ export const SAMPLE_NODES = [
     "vy": -0.3508919765616145,
     "index": 77
   }
-]];
+];
 
 export const SAMPLE_LINKS = [
   {

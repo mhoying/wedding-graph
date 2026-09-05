@@ -85,7 +85,7 @@ function generateSampleDataJs(nodes) {
   const jsonNodesStr = JSON.stringify(nodes, null, 2);
 
   const nodesStartMarker = 'export const SAMPLE_NODES = [';
-  const nodesEndMarker = '];\n\nexport const SAMPLE_LINKS = [';
+  const nodesEndMarker = 'export const SAMPLE_LINKS = [';
 
   const startIndex = sampleDataContent.indexOf(nodesStartMarker);
   const endIndex = sampleDataContent.indexOf(nodesEndMarker);
@@ -97,7 +97,7 @@ function generateSampleDataJs(nodes) {
   const prefix = sampleDataContent.substring(0, startIndex + 'export const SAMPLE_NODES = '.length);
   const suffix = sampleDataContent.substring(endIndex);
 
-  return prefix + jsonNodesStr + suffix;
+  return prefix + jsonNodesStr + ';\n\n' + suffix;
 }
 
 function generateGuestsCsv(nodes) {
