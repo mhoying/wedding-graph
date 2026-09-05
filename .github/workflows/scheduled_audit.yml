@@ -1,0 +1,35 @@
+name: Bi-Daily Automated Data Parity Audit
+
+on:
+  schedule:
+    # Run every 2 days at midnight UTC (00:00)
+    - cron: '0 0 */2 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  audit-and-self-heal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Run Data Parity Audit Script
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/audit_all_issues.js
+
+      - name: Commit & Push Self-Healed Discrepancies
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automated Bi-Daily Audit: Self-heal guest data parity [skip ci]"
+          file_pattern: "src/data/sampleData.js public/guests_template.csv"

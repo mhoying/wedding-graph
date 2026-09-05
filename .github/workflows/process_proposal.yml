@@ -1,0 +1,57 @@
+name: Instant Zero-Moderation Auto-Approve Guest Edit
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  auto-process:
+    if: contains(github.event.issue.labels.*.name, 'guest-edit-proposal')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Process Proposal & Update Database
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: node scripts/process_proposal.js
+
+      - name: Comment on Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '✅ **Auto-Approved**: Your guest profile edit has been automatically processed, saved to the database, and deployed live to [hoyingwink.com](https://hoyingwink.com)!'
+            });
+
+      - name: Close Approved Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed'
+            });
+
+      - name: Commit & Push Updated Dataset
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-approve guest proposal #${{ github.event.issue.number }} [skip ci]"
+          file_pattern: "src/data/sampleData.js public/guests_template.csv"

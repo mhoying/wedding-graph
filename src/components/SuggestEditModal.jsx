@@ -23,15 +23,15 @@ export default function SuggestEditModal({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700, fontSize: 16 }}>
             <Edit3 style={{ width: 16, height: 16, color: '#38bdf8' }} />
-            <span>Suggest Profile Edit for Hosts</span>
+            <span>Edit Guest Profile</span>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
             <X style={{ width: 18, height: 18 }} />
           </button>
         </div>
 
-        <p style={{ fontSize: 12, color: '#94a3b8', marginBottom: 16 }}>
-          Maureen & Matt will review your suggestion in the Host Queue!
+        <p style={{ fontSize: 12, color: '#38bdf8', marginBottom: 16 }}>
+          ✨ Updates submitted here are automatically saved to the database and deployed live within 1–2 minutes!
         </p>
 
         <div style={{ marginBottom: 12 }}>
