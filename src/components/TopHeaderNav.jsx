@@ -33,6 +33,7 @@ export default function TopHeaderNav({
   selectedClusterFocus = '',
   setSelectedClusterFocus = () => {},
   availableClusters = [],
+  onOpenLeaderboard = () => {},
   onOpenMapControls = () => {},
   isListView = false,
   setIsListView = () => {}
