@@ -153,6 +153,7 @@ export default function App() {
 
   // Modals & Drawers
   const [isMobileControlsOpen, setIsMobileControlsOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMatchmakerOpen, setIsMatchmakerOpen] = useState(false);
   const [myGuestId, setMyGuestId] = useState('');
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
@@ -1186,6 +1187,8 @@ export default function App() {
         isListView={isListView}
         setIsListView={setIsListView}
         isMobileViewport={isMobileViewport}
+        isMobileSearchOpen={isMobileSearchOpen}
+        setIsMobileSearchOpen={setIsMobileSearchOpen}
       />
 
       {/* Dedicated Host Admin Floating Control Panel */}
@@ -1473,6 +1476,7 @@ export default function App() {
       {/* Mobile-First Illustrative Quick Dock (Rendered on Mobile Viewports < 768px when no drawer open) */}
       {isMobileViewport && !selectedNode && (
         <MobileQuickDock 
+          onOpenSearch={() => setIsMobileSearchOpen(true)}
           onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
           onOpenDirectory={() => setIsListView(!isListView)}
           onOpenMatchmaker={() => setIsMatchmakerOpen(true)}

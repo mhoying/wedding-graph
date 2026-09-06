@@ -1,11 +1,12 @@
 import React from 'react';
-import { Trophy, ClipboardList, Wand2, SlidersHorizontal, Sun, Moon } from 'lucide-react';
+import { Trophy, ClipboardList, Wand2, SlidersHorizontal, Sun, Moon, Search } from 'lucide-react';
 
 export default function MobileQuickDock({
   onOpenLeaderboard,
   onOpenDirectory,
   onOpenMatchmaker,
   onOpenMapControls,
+  onOpenSearch,
   isListView,
   honkCount = 0,
   isLightMode,
@@ -17,22 +18,55 @@ export default function MobileQuickDock({
       aria-label="Mobile Navigation Quick Dock"
       style={{
         position: 'fixed',
-        bottom: 20,
+        bottom: 16,
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 9000,
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
-        padding: '8px 16px',
-        background: 'rgba(15, 23, 42, 0.92)',
+        gap: 6,
+        padding: '6px 12px',
+        background: 'rgba(15, 23, 42, 0.94)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: '1px solid rgba(56, 189, 248, 0.35)',
         borderRadius: 9999,
-        boxShadow: '0 12px 36px rgba(0, 0, 0, 0.65)'
+        boxShadow: '0 12px 36px rgba(0, 0, 0, 0.65)',
+        maxWidth: 'calc(100vw - 16px)'
       }}
     >
+      {/* 🔍 Search Button */}
+      <button
+        onClick={onOpenSearch}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 2,
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 0,
+          color: '#f8fafc'
+        }}
+        title="Search Guests & Cohorts"
+      >
+        <div style={{
+          width: 38,
+          height: 38,
+          borderRadius: '50%',
+          background: 'rgba(56, 189, 248, 0.2)',
+          border: '1px solid rgba(56, 189, 248, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 0 10px rgba(56, 189, 248, 0.3)'
+        }}>
+          <Search style={{ width: 18, height: 18, color: '#38bdf8' }} />
+        </div>
+        <span style={{ fontSize: 9, fontWeight: 800, color: '#38bdf8', letterSpacing: 0.1 }}>Search</span>
+      </button>
+
       {/* 🏆 Grand Gaggle Championship Button */}
       <button
         onClick={onOpenLeaderboard}
@@ -40,7 +74,7 @@ export default function MobileQuickDock({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 3,
+          gap: 2,
           background: 'none',
           border: 'none',
           cursor: 'pointer',
@@ -50,8 +84,8 @@ export default function MobileQuickDock({
         title="Open Championship Leaderboard"
       >
         <div style={{
-          width: 44,
-          height: 44,
+          width: 38,
+          height: 38,
           borderRadius: '50%',
           background: 'rgba(245, 158, 11, 0.2)',
           border: '1px solid rgba(245, 158, 11, 0.5)',
@@ -59,12 +93,12 @@ export default function MobileQuickDock({
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          boxShadow: '0 0 12px rgba(245, 158, 11, 0.3)'
+          boxShadow: '0 0 10px rgba(245, 158, 11, 0.3)'
         }}>
-          <span style={{ fontSize: 18 }}>🪿</span>
-          <Trophy style={{ width: 14, height: 14, color: '#fbbf24', position: 'absolute', bottom: -2, right: -2 }} />
+          <span style={{ fontSize: 16 }}>🪿</span>
+          <Trophy style={{ width: 12, height: 12, color: '#fbbf24', position: 'absolute', bottom: -2, right: -2 }} />
         </div>
-        <span style={{ fontSize: 10, fontWeight: 800, color: '#fbbf24', letterSpacing: 0.2 }}>Mingling</span>
+        <span style={{ fontSize: 9, fontWeight: 800, color: '#fbbf24', letterSpacing: 0.1 }}>Mingling</span>
       </button>
 
       {/* 📋 Guest Directory List Toggle Button */}

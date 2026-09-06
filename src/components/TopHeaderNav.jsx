@@ -37,15 +37,20 @@ export default function TopHeaderNav({
   onOpenMapControls = () => {},
   isListView = false,
   setIsListView = () => {},
-  isMobileViewport = false
+  isMobileViewport = false,
+  isMobileSearchOpen: externalIsMobileSearchOpen,
+  setIsMobileSearchOpen: setExternalIsMobileSearchOpen
 }) {
   const [isTunePopoverOpen, setIsTunePopoverOpen] = useState(false);
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [internalIsMobileSearchOpen, setInternalIsMobileSearchOpen] = useState(false);
+
+  const isSearchModalOpen = externalIsMobileSearchOpen !== undefined ? externalIsMobileSearchOpen : internalIsMobileSearchOpen;
+  const setSearchModalOpen = setExternalIsMobileSearchOpen || setInternalIsMobileSearchOpen;
 
   return (
     <header className="glass-panel top-bar no-print">
       {/* Mobile Search Overlay Modal */}
-      {isMobileSearchOpen && (
+      {isSearchModalOpen && (
         <div 
           style={{
             position: 'fixed',
@@ -82,7 +87,7 @@ export default function TopHeaderNav({
               )}
             </div>
             <button 
-              onClick={() => setIsMobileSearchOpen(false)}
+              onClick={() => setSearchModalOpen(false)}
               style={{ padding: '10px 14px', borderRadius: 12, background: 'rgba(255, 255, 255, 0.1)', color: '#fff', border: 'none', fontWeight: 700, fontSize: 13 }}
             >
               Done
@@ -95,7 +100,7 @@ export default function TopHeaderNav({
 
           {searchQuery && (
             <button 
-              onClick={() => { setSearchQuery(''); setIsMobileSearchOpen(false); }}
+              onClick={() => { setSearchQuery(''); setSearchModalOpen(false); }}
               style={{ padding: 10, background: 'rgba(244, 63, 94, 0.15)', color: '#fda4af', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: 10, fontSize: 12, fontWeight: 700 }}
             >
               Clear Search Filter
@@ -118,16 +123,7 @@ export default function TopHeaderNav({
         {/* ROW 1: Search & View Actions Bar */}
         <div className="header-controls-row top-row">
           {/* Mobile vs Desktop Search Box */}
-          {isMobileViewport ? (
-            <button 
-              className="glass-panel btn-icon"
-              onClick={() => setIsMobileSearchOpen(true)}
-              title="Search Guests & Cohorts"
-              style={{ width: 44, height: 44, padding: 0, justifyContent: 'center', flexShrink: 0, border: searchQuery ? '1px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.2)', background: searchQuery ? 'rgba(56, 189, 248, 0.2)' : 'rgba(30, 41, 59, 0.7)' }}
-            >
-              <Search style={{ width: 18, height: 18, color: searchQuery ? '#38bdf8' : '#94a3b8' }} />
-            </button>
-          ) : (
+          {isMobileViewport ? null : (
             <div className="search-box">
               <Search style={{ width: 14, height: 14, color: '#94a3b8' }} />
               <input 
@@ -182,7 +178,7 @@ export default function TopHeaderNav({
           {/* Light / Dark Mode Toggle Button */}
           <button 
             onClick={() => setIsLightMode(!isLightMode)} 
-            className="glass-panel btn-icon"
+            className="glass-panel btn-icon hide-on-constrained"
             title="Toggle Light/Dark Theme"
             style={{ width: 34, height: 34, padding: 0, justifyContent: 'center', flexShrink: 0 }}
           >
