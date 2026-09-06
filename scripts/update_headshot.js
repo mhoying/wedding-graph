@@ -136,6 +136,15 @@ async function main() {
   fs.writeFileSync(outHeadshotPath, buffer);
   console.log(`✅ Rendered 400x400 headshot JPEG to: ${outHeadshotPath}`);
 
+  // 3b. Automated Permanent Archiving into media_backups/master_archive/
+  const archiveRawDir = path.join(ROOT_DIR, "media_backups", "master_archive", "raw_sources");
+  const archiveHeadshotDir = path.join(ROOT_DIR, "media_backups", "master_archive", "public_headshots");
+  fs.mkdirSync(archiveRawDir, { recursive: true });
+  fs.mkdirSync(archiveHeadshotDir, { recursive: true });
+  fs.copyFileSync(rawDest, path.join(archiveRawDir, `${params.guest}__orig_media.jpg`));
+  fs.copyFileSync(outHeadshotPath, path.join(archiveHeadshotDir, `${params.guest}.jpg`));
+  console.log(`🛡️ Safely archived copy to media_backups/master_archive/`);
+
   // 4. Update headshots_manifest.json
   let manifest = { calibration_defaults: { output_resolution: 400, target_face_scale: 0.65 }, guests: {} };
   if (fs.existsSync(MANIFEST_PATH)) {
@@ -177,7 +186,7 @@ async function main() {
   if (params.deploy) {
     console.log("\n🚀 Triggering Vite build & live deployment via Node.js...");
     execSync('npx vite build', { cwd: ROOT_DIR, stdio: 'inherit' });
-    execSync('git add headshots_manifest.json raw_sources public/headshots src/data/sampleData.js scripts/update_headshot.js package.json', { cwd: ROOT_DIR, stdio: 'inherit' });
+    execSync('git add headshots_manifest.json raw_sources public/headshots media_backups src/data/sampleData.js scripts/update_headshot.js package.json', { cwd: ROOT_DIR, stdio: 'inherit' });
     execSync(`git commit -m "fix(headshot): update ${params.guest} headshot via Node.js CLI"`, { cwd: ROOT_DIR, stdio: 'inherit' });
     execSync('npx gh-pages -d dist', { cwd: ROOT_DIR, stdio: 'inherit' });
     console.log(`\n🎉 DONE! Live site updated at https://hoyingwink.com without python3 calls!`);
