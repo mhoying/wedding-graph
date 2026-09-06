@@ -315,6 +315,15 @@
       "face_h_pct": 0.7,
       "crop_size_px": 474,
       "face_selection": "node_canvas_calibrated"
+    },
+    "cole_armstrong": {
+      "raw_source": "raw_sources/cole_armstrong__orig_media.jpg",
+      "cx_pct": 0.585,
+      "cy_pct": 0.58,
+      "face_h_px": 220,
+      "face_h_pct": 0.2865,
+      "crop_size_px": 372,
+      "face_selection": "node_canvas_calibrated"
     }
   }
 }
