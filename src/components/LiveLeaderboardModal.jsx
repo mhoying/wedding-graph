@@ -45,20 +45,35 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
   };
 
   return (
-    <div className="fixed inset-0 z-[99990] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/90 backdrop-blur-lg" style={{ pointerEvents: 'auto' }}>
-      <div className="modal-card bg-slate-900 border border-amber-500/30 rounded-t-2xl sm:rounded-2xl max-w-2xl w-full p-4 sm:p-6 text-slate-100 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]" style={{ pointerEvents: 'auto', background: '#0f172a' }}>
+    <div className="modal-backdrop no-print">
+      <div 
+        className="glass-panel modal-card"
+        style={{
+          maxWidth: 640,
+          width: '94vw',
+          maxHeight: '85vh',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: 20,
+          borderRadius: 24,
+          background: '#0f172a',
+          border: '1px solid rgba(245, 158, 11, 0.4)',
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.85)',
+          overflow: 'hidden'
+        }}
+      >
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2.5">
             <span className="text-2xl sm:text-3xl">🪿</span>
             <div>
-              <h2 className="text-base sm:text-xl font-bold text-amber-400">Grand Gaggle Leaderboard</h2>
-              <p className="text-[11px] sm:text-xs text-slate-400">Playing As: <span className="text-amber-300 font-semibold">{activePlayer}</span></p>
+              <h2 className="text-base sm:text-xl font-bold text-amber-400" style={{ margin: 0 }}>Grand Gaggle Leaderboard</h2>
+              <p className="text-[11px] sm:text-xs text-slate-400" style={{ margin: 0 }}>Playing As: <span className="text-amber-300 font-semibold">{activePlayer}</span></p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 text-lg touch-manipulation"
+            style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#94a3b8', padding: '6px 12px', borderRadius: 9999, cursor: 'pointer', fontSize: 12, fontWeight: 700 }}
           >
             ✕
           </button>
