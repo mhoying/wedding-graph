@@ -98,16 +98,19 @@ export default function GuestProfileDrawer({
   return (
     <div className="glass-panel metadata-drawer no-print">
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <span 
-            className="drawer-badge"
-            style={{ backgroundColor: nodeColor }}
-          >
-            {selectedNode.type === 'CONTEXT_HUB' ? '📍 Place Hub' : (selectedNode.type === 'NON_ATTENDING' ? '👻 Not Attending' : `${selectedNode.cohort} • ${selectedNode.side} Side`)}
-          </span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+          <div style={{ flex: 1, paddingRight: 8 }}>
+            <span 
+              className="drawer-badge"
+              style={{ backgroundColor: nodeColor, display: 'inline-block', maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.3 }}
+            >
+              {selectedNode.type === 'CONTEXT_HUB' ? '📍 Place Hub' : (selectedNode.type === 'NON_ATTENDING' ? '👻 Not Attending' : `${selectedNode.cohort} • ${selectedNode.side} Side`)}
+            </span>
+          </div>
           <button 
             onClick={onClose}
-            style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
+            style={{ background: 'rgba(255, 255, 255, 0.08)', border: 'none', color: '#cbd5e1', cursor: 'pointer', minWidth: 44, minHeight: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+            aria-label="Close Profile Drawer"
           >
             <X style={{ width: 20, height: 20 }} />
           </button>

@@ -120,7 +120,8 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
           </div>
           <button
             onClick={onClose}
-            style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#94a3b8', width: 30, height: 30, borderRadius: '50%', cursor: 'pointer', fontSize: 14, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#cbd5e1', width: 44, height: 44, borderRadius: '50%', cursor: 'pointer', fontSize: 16, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            aria-label="Close Leaderboard Modal"
           >
             ✕
           </button>

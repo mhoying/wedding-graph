@@ -67,9 +67,10 @@ export default function MobileControlsSheet({
             <button 
               type="button"
               onClick={onClose}
-              style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#cbd5e1', cursor: 'pointer', minWidth: 44, minHeight: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              aria-label="Close Map Controls"
             >
-              <X style={{ width: 16, height: 16 }} />
+              <X style={{ width: 18, height: 18 }} />
             </button>
           </div>
         </div>
