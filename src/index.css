@@ -560,9 +560,12 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 9500;
-  touch-action: manipulation;
+  touch-action: none;
+  pointer-events: auto;
 }
 
 .mobile-controls-sheet {
@@ -583,6 +586,7 @@ body {
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
   animation: slideUp 0.25s ease-out;
   touch-action: pan-y;
+  overscroll-behavior: contain;
   pointer-events: auto;
 }
 
