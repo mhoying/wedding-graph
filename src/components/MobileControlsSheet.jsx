@@ -1,5 +1,6 @@
 import React from 'react';
 import { SlidersHorizontal, X, Camera, Sun, Moon, Layers, Palette, Compass, Wand2, Edit3, Copy } from 'lucide-react';
+import DynamicColorLegend from './DynamicColorLegend';
 
 export default function MobileControlsSheet({
   isOpen,
@@ -31,7 +32,9 @@ export default function MobileControlsSheet({
   setSelectedClusterFocus = () => {},
   availableClusters = [],
   isListView = false,
-  setIsListView = () => {}
+  setIsListView = () => {},
+  filteredNodes = [],
+  getNodeColor
 }) {
   if (!isOpen) return null;
 
@@ -233,6 +236,15 @@ export default function MobileControlsSheet({
             <button onClick={() => setColorMode('locations')} className={`btn-mode ${colorMode === 'locations' || colorMode === 'state' ? 'active' : ''}`} style={{ flex: 1, padding: 6, fontSize: 11 }}>Location</button>
           </div>
         </div>
+
+        {/* Dynamic Embedded Legend in Sheet */}
+        <DynamicColorLegend 
+          inSheet={true}
+          colorMode={colorMode}
+          filteredNodes={filteredNodes}
+          getNodeColor={getNodeColor}
+          isLightMode={isLightMode}
+        />
 
         {/* Action Tools Section */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>

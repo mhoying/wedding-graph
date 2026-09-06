@@ -1431,6 +1431,8 @@ export default function App() {
             setIsListView={setIsListView}
             isLightMode={isLightMode}
             setIsLightMode={setIsLightMode}
+            filteredNodes={filteredNodes}
+            getNodeColor={getNodeColor}
           />
         </>
       )}

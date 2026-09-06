@@ -9,7 +9,8 @@ export default function DynamicColorLegend({
   isMobileViewport = false,
   isLightMode = false,
   selectedNode = null,
-  isMobileControlsOpen = false
+  isMobileControlsOpen = false,
+  inSheet = false
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -70,9 +71,10 @@ export default function DynamicColorLegend({
     return Array.from(itemMap.entries()).map(([label, color]) => ({ label, color }));
   }, [colorMode, filteredNodes, getNodeColor]);
 
-  // Hide completely when Map Controls Sheet is open OR on mobile when profile drawer is open!
-  if (isMobileControlsOpen) return null;
-  if (isMobileViewport && selectedNode) return null;
+  // On mobile viewports, fixed floating legend is disabled (it is accessible inside Mobile Controls Sheet instead)
+  if (isMobileViewport && !inSheet) return null;
+  if (isMobileControlsOpen && !inSheet) return null;
+  if (isMobileViewport && selectedNode && !inSheet) return null;
   if (legendItems.length === 0) return null;
 
   const modeTitle = colorMode === 'side' ? 'Side Colors' :
@@ -80,6 +82,37 @@ export default function DynamicColorLegend({
                     colorMode === 'original_location' ? 'Hometowns' :
                     colorMode === 'locations' ? 'Locations' :
                     colorMode === 'interests' ? 'Interests' : 'Cohorts';
+
+  if (inSheet) {
+    return (
+      <div style={{ marginTop: 10, background: 'rgba(30, 41, 59, 0.6)', border: '1px solid rgba(56, 189, 248, 0.3)', borderRadius: 12, overflow: 'hidden' }}>
+        <div 
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', cursor: 'pointer', background: 'rgba(15, 23, 42, 0.4)' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <Palette style={{ width: 14, height: 14, color: '#38bdf8' }} />
+            <span style={{ fontSize: 11, fontWeight: 800, color: '#f8fafc' }}>
+              Color Legend ({modeTitle})
+            </span>
+          </div>
+          <button style={{ background: 'none', border: 'none', color: '#94a3b8', padding: 0 }}>
+            {isCollapsed ? <ChevronUp style={{ width: 14, height: 14 }} /> : <ChevronDown style={{ width: 14, height: 14 }} />}
+          </button>
+        </div>
+        {!isCollapsed && (
+          <div style={{ padding: '8px 12px', display: 'flex', flexWrap: 'wrap', gap: '6px 12px', maxHeight: '120px', overflowY: 'auto' }}>
+            {legendItems.map(({ label, color }) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 600, color: '#cbd5e1' }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: color, boxShadow: `0 0 6px ${color}80`, flexShrink: 0 }} />
+                <span style={{ whiteSpace: 'nowrap' }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div 
