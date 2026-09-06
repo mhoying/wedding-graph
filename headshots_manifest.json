@@ -179,6 +179,13 @@
       "cy_pct": 0.417,
       "crop_size_pct": 0.45,
       "face_selection": "left_person_glasses_drink"
+    },
+    "poukhan_philavanh_anthony": {
+      "raw_source": "raw_sources/poukhan_philavanh_anthony__orig_media__1788716292.jpg",
+      "cx_pct": 0.535,
+      "cy_pct": 0.4,
+      "crop_size_pct": 0.45,
+      "face_selection": "smiling_woman_right_hugging"
     }
   }
 }
