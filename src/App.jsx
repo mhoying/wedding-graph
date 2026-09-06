@@ -386,6 +386,19 @@ export default function App() {
 
   const [isListView, setIsListView] = useState(false);
 
+  // Expose window test helpers for automated E2E verification
+  useEffect(() => {
+    window.__selectNodeForTesting = (nodeName) => {
+      const found = nodes.find(n => n && n.name && n.name.toLowerCase().includes(nodeName.toLowerCase()));
+      if (found) setSelectedNode(found);
+      return found;
+    };
+    window.__setActivePlayerForTesting = (name) => {
+      setActivePlayer(name);
+      setActivePlayerState(name);
+    };
+  }, [nodes]);
+
   // Camera & Node Drag Handlers (Uses centerAt + 1.35x Zoom for Single Node to take up exactly ~1/5th of viewport width!)
   const flyToNode = useCallback((targetNodeOrNodes) => {
     const nodeArray = Array.isArray(targetNodeOrNodes) ? targetNodeOrNodes.filter(Boolean) : [targetNodeOrNodes].filter(Boolean);

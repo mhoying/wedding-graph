@@ -84,8 +84,9 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
   );
 
   let updatedEncounters = store.encounters;
+  let encounterToSync = null;
   if (!exists) {
-    const newEncounter = {
+    encounterToSync = {
       id: `honk_${timestamp}_${Math.random().toString(36).substr(2, 5)}`,
       actor: actorName,
       target: targetGuest.name,
@@ -93,7 +94,7 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
       targetCity: extractCityState(targetGuest.location || targetGuest.city),
       timestamp
     };
-    updatedEncounters = [newEncounter, ...store.encounters];
+    updatedEncounters = [encounterToSync, ...store.encounters];
   }
 
   const updatedStore = {
@@ -104,9 +105,33 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
   saveGaggleData(updatedStore);
 
   // Cross-Device Remote Sync via GitHub API Issue Submission
-  syncEncounterToGithub(newEncounter || { actor: actorName, target: targetGuest.name, targetCohort: targetGuest.cohort });
+  if (encounterToSync) {
+    syncEncounterToGithub(encounterToSync);
+  }
 
   return updatedStore;
+
+  return updatedStore;
+}
+
+// Push encounter to remote GitHub Issues endpoint for cross-device sharing
+export async function syncEncounterToGithub(encounter) {
+  try {
+    const payload = {
+      title: `🪿 Honk: ${encounter.actor} met ${encounter.target}`,
+      body: `[HONK_ENCOUNTER_v1]\nActor: ${encounter.actor}\nTarget: ${encounter.target}\nCohort: ${encounter.targetCohort || 'Other'}\nTimestamp: ${Date.now()}`
+    };
+    await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('Remote sync fetch notice:', err);
+  }
 }
 
 // Fetch remote encounters from GitHub API / Issues to sync live across devices
