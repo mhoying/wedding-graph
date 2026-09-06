@@ -71,9 +71,7 @@ export default function DynamicColorLegend({
     return Array.from(itemMap.entries()).map(([label, color]) => ({ label, color }));
   }, [colorMode, filteredNodes, getNodeColor]);
 
-  // On mobile viewports, fixed floating legend is disabled (it is accessible inside Mobile Controls Sheet instead)
-  if (isMobileViewport && !inSheet) return null;
-  if (isMobileControlsOpen && !inSheet) return null;
+  // Hide floating legend ONLY when profile drawer is open on mobile
   if (isMobileViewport && selectedNode && !inSheet) return null;
   if (legendItems.length === 0) return null;
 
