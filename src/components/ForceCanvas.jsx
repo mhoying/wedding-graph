@@ -1277,7 +1277,7 @@ export default function ForceCanvas({
     if (isHovered || isPathNode) {
       ctx.fillStyle = groupColor;
     } else if (isNonAttending) {
-      ctx.fillStyle = isLightMode ? 'rgba(239, 68, 68, 0.12)' : 'rgba(239, 68, 68, 0.25)';
+      ctx.fillStyle = isLightMode ? hexToRgba(groupColor, 0.15) : hexToRgba(groupColor, 0.25);
     } else if (isHub) {
       ctx.fillStyle = isLightMode ? '#e2e8f0' : 'rgba(51, 65, 85, 0.85)';
     } else if (isLightMode) {
@@ -1287,17 +1287,17 @@ export default function ForceCanvas({
     }
     ctx.fill();
 
-    ctx.lineWidth = (isHovered || isPathNode ? 2.8 : (isNonAttending ? 2.5 : 1.5)) / globalScale;
+    ctx.lineWidth = (isHovered || isPathNode ? 2.8 : (isNonAttending ? 2.2 : 1.5)) / globalScale;
     if (isHovered || isPathNode) {
       ctx.strokeStyle = '#ffffff';
     } else if (isNonAttending) {
-      ctx.strokeStyle = '#f87171'; // Soft Crimson Red Dashed Border
+      ctx.strokeStyle = groupColor;
     } else {
       ctx.strokeStyle = hexToRgba(groupColor, 0.7);
     }
     
     if (isNonAttending) {
-      ctx.setLineDash([8 / globalScale, 5 / globalScale]);
+      ctx.setLineDash([6 / globalScale, 4 / globalScale]);
     } else {
       ctx.setLineDash([]);
     }
