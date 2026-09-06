@@ -40,44 +40,54 @@ def process_headshots():
         img = Image.open(raw_source_path).convert('RGB')
         w, h = img.size
 
-        # STRICT TEST: Verify raw master is not a 1:1 400x400 thumbnail copy (unless specifically flagged as solo_square)
-        if w == 400 and h == 400 and entry.get('crop_size_pct', 1.0) < 1.0:
+        # STRICT TEST: Verify raw master is not a 1:1 400x400 thumbnail copy (unless specifically flagged as allow_subcrop)
+        if w == 400 and h == 400 and entry.get('crop_size_pct', 1.0) < 1.0 and not entry.get('allow_subcrop', False):
             raise ValueError(f"🚨 THUMBNAIL DETECTED: {guest_id} master source '{raw_source_path}' is a 400x400 pre-cropped thumbnail! Must use uncropped original high-res photo.")
 
         # Fetch normalized centroid coordinates (0.0 - 1.0)
         cx_pct = entry.get('cx_pct', 0.5)
         cy_pct = entry.get('cy_pct', 0.5)
-        crop_size_pct = entry.get('crop_size_pct', 0.6)
 
         cx = int(cx_pct * w)
         cy = int(cy_pct * h)
 
-        # Calculate square crop size based on smallest dimension or crop_size_pct
-        crop_size = int(min(w, h) * crop_size_pct)
+        # Arc-Safe Face Scale: If face_h_pct is provided, crop_size is calculated as face_height / 0.59
+        if 'face_h_pct' in entry:
+            face_h = entry['face_h_pct'] * h
+            crop_size = int(face_h / 0.59)
+        elif 'face_h_px' in entry:
+            crop_size = int(entry['face_h_px'] / 0.59)
+        else:
+            crop_size = int(min(w, h) * entry.get('crop_size_pct', 0.6))
+
         half_size = crop_size // 2
 
-        # Compute crop box coordinates
-        left = cx - half_size
-        top = cy - half_size
-        right = cx + half_size
-        bottom = cy + half_size
+        # Target crop box in raw image coordinates
+        L = cx - half_size
+        T = cy - half_size
+        R = cx + half_size
+        B = cy + half_size
 
-        # Clamp boundaries safely within image frame to prevent aspect ratio distortion
-        if left < 0:
-            right = min(w, right - left)
-            left = 0
-        if top < 0:
-            bottom = min(h, bottom - top)
-            top = 0
-        if right > w:
-            left = max(0, left - (right - w))
-            right = w
-        if bottom > h:
-            top = max(0, top - (bottom - h))
-            bottom = h
+        # Calculate zero-shift padding requirements to keep (cx, cy) at exact (50%, 50%) center
+        pad_left = max(0, -L)
+        pad_top = max(0, -T)
+        pad_right = max(0, R - w)
+        pad_bottom = max(0, B - h)
 
-        # Perform 1:1 square crop from immutable master
-        crop_img = img.crop((left, top, right, bottom))
+        # Apply dynamic zero-shift padding if crop extends beyond photo boundaries
+        from PIL import ImageOps
+        if pad_left > 0 or pad_top > 0 or pad_right > 0 or pad_bottom > 0:
+            padded_img = ImageOps.expand(img, border=(pad_left, pad_top, pad_right, pad_bottom), fill=(240, 240, 240))
+        else:
+            padded_img = img
+
+        # Crop from padded image so centroid remains strictly at (50%, 50%) center
+        crop_L = L + pad_left
+        crop_T = T + pad_top
+        crop_R = R + pad_left
+        crop_B = B + pad_top
+
+        crop_img = padded_img.crop((crop_L, crop_T, crop_R, crop_B))
 
         # Single-pass resize directly to target_res (400x400) using Lanczos filter
         final_img = crop_img.resize((target_res, target_res), Image.Resampling.LANCZOS)

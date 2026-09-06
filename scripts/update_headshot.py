@@ -22,9 +22,11 @@ MANIFEST_PATH = "headshots_manifest.json"
 SAMPLE_DATA_PATH = "src/data/sampleData.js"
 
 def get_latest_uploaded_image():
-    """Finds the most recently created image in the agent's brain upload directory."""
+    """Finds the most recently created raw original image in the agent's brain upload directory (ignoring system thumbnails/scratch)."""
     candidates = []
     for root, _, files in os.walk(BRAIN_DIR):
+        if 'scratch' in root or '.tempmediaStorage' in root:
+            continue
         for f in files:
             if f.endswith('.png') or f.endswith('.jpg') or f.endswith('.jpeg'):
                 path = os.path.join(root, f)

@@ -122,7 +122,7 @@ export default function GuestProfileDrawer({
           <div style={{ position: 'relative', width: 68, height: 68, flexShrink: 0 }}>
             {selectedNode.image ? (
               <img 
-                src={selectedNode.image} 
+                src={selectedNode.image.startsWith('data:') ? selectedNode.image : `${selectedNode.image.split('?')[0]}?v=${Date.now()}`} 
                 alt={selectedNode.name} 
                 style={{ width: 68, height: 68, borderRadius: '50%', objectFit: 'cover', border: `3px solid ${nodeColor}` }} 
               />

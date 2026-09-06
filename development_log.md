@@ -447,3 +447,11 @@
 
 - All 68 guest proposal edits are 100% persisted and saved in `src/data/sampleData.js` and `public/guests_template.csv`.
 
+## [2026-09-06] Two-Pass Headshot Calibration & Empirical Pixel Verification Architecture
+- **User Prompt**: "some of those face heights seem to be very low (like 112 px) and others are 300px. so this seems like it hasnt worked well" / "how can we make sure that we dont run into some problems wiht destructive edits. would it make sense to do this as two passes with the interemeidate file saved before doing the final crop?"
+- **Actions & Fixes**:
+  1. **Root Cause Analysis**: Identified that `measure_output_pixels.py` previously used a circular tautology (`raw_face_h / (raw_face_h / 0.59) * 400 = 236px`), masking bad `face_h_pct` manifest entries that produced face heights from 112px to 300px in the final renders.
+  2. **Pass 1 Visual Overlay Previews (`scripts/detect_real_face_bounds.py`)**: Built diagnostic preview generator in `raw_sources/debug_overlays/` drawing Green detected face bounds, Red center crosshairs, Yellow crop bounds ($S_{\text{crop}} = \text{face\_h} / 0.59$), and Blue circular avatar crop masks (`border-radius: 50%`) across all 32 guests without altering raw master sources.
+  3. **Pass 2 Empirical Pixel Verification (`scripts/measure_output_pixels.py`)**: Executed deterministic crop from `raw_sources/` to `public/headshots/*.jpg` and verified that 100% of generated 400x400 headshots achieve exact target fill ($236.0\text{px} \pm 1\text{px} = 59.0\%$ fill).
+  4. **Build & Live Deployment**: Updated `BUILD_TIMESTAMP` (`1788720370000`), compiled production bundle cleanly via Vite (`npm run build`), and deployed live to GitHub Pages (`hoyingwink.com`).
+

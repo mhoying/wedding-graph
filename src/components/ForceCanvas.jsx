@@ -706,18 +706,22 @@ export default function ForceCanvas({
   const [isHoverFrozen, setIsHoverFrozen] = useState(false);
   const activeOrbiting = Boolean(isOrbiting);
 
-  // Preload node headshots into cache for seamless rendering
+  // Preload node headshots into cache for seamless rendering with cache-busting
   useEffect(() => {
     if (showHeadshots && nodes && nodes.length > 0) {
       nodes.forEach(node => {
-        if (node.image && !imageCacheRef.current[node.image]) {
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
+        if (node.image) {
           const cacheBuster = BUILD_TIMESTAMP || Date.now();
           const cleanUrl = node.image.split('?')[0];
-          img.src = node.image.startsWith('data:') ? node.image : `${cleanUrl}?v=${cacheBuster}`;
+          const fullSrc = node.image.startsWith('data:') ? node.image : `${cleanUrl}?v=${cacheBuster}`;
+          
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.src = fullSrc;
           img.onload = () => {
-            if (imageCacheRef.current) imageCacheRef.current[node.image] = img;
+            if (imageCacheRef.current) {
+              imageCacheRef.current[node.image] = img;
+            }
           };
         }
       });
