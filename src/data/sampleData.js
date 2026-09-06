@@ -707,6 +707,7 @@ export const SAMPLE_NODES = [
   {
     "id": "nichole_remmert",
     "name": "Nichole Remmert",
+    "image": "headshots/nichole_remmert.jpg",
     "type": "GUEST",
     "side": "Joint",
     "cohort": "OWFL Blog",
