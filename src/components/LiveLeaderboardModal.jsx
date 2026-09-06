@@ -126,9 +126,9 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div style={{ padding: '8px 14px', background: 'rgba(2, 6, 23, 0.6)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2 }} className="no-scrollbar">
+        {/* Category Navigation Bar (Responsive Wrap Grid) */}
+        <div style={{ padding: '8px 12px', background: 'rgba(2, 6, 23, 0.7)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
             {tabs.map(t => {
               const isActive = activeTab === t.id;
               return (
@@ -136,17 +136,21 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                   key={t.id}
                   onClick={() => { setActiveTab(t.id); setExpandedPlayer(null); }}
                   style={{
-                    padding: '6px 12px',
+                    flex: '1 1 auto',
+                    minWidth: 110,
+                    maxWidth: 160,
+                    padding: '6px 10px',
                     borderRadius: 8,
                     fontSize: 11,
                     fontWeight: 700,
                     whiteSpace: 'nowrap',
-                    border: 'none',
+                    border: isActive ? '1px solid rgba(245, 158, 11, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                     background: isActive ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : 'rgba(30, 41, 59, 0.7)',
-                    color: isActive ? '#0f172a' : '#94a3b8',
-                    boxShadow: isActive ? '0 2px 8px rgba(245, 158, 11, 0.3)' : 'none'
+                    color: isActive ? '#0f172a' : '#cbd5e1',
+                    textAlign: 'center',
+                    boxShadow: isActive ? '0 2px 10px rgba(245, 158, 11, 0.35)' : 'none'
                   }}
                 >
                   {t.label}
