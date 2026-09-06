@@ -160,28 +160,26 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
           </div>
         </div>
 
-        {/* High-Density Single-Line Goal & Rule Toggle Bar */}
-        <div style={{ padding: '8px 16px', background: 'rgba(15, 23, 42, 0.8)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', fontSize: 11, flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
-              <span style={{ padding: '2px 6px', borderRadius: 4, fontSize: 9, fontWeight: 900, textTransform: 'uppercase', tracking: '0.05em', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)', flexShrink: 0 }}>
-                {currentTabObj.title}
-              </span>
-              <span style={{ color: '#cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 11 }}>
-                {currentTabObj.goal}
-              </span>
-            </div>
+        {/* High-Density Dedicated Mode & Goal Sub-Banner */}
+        <div style={{ padding: '8px 16px', background: 'rgba(15, 23, 42, 0.85)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', fontSize: 11, flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
+            <span style={{ padding: '2px 8px', borderRadius: 6, fontSize: 10, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.04em', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+              🎯 {currentTabObj.title}
+            </span>
             <button
               onClick={() => setShowGoalRules(!showGoalRules)}
               style={{ background: 'none', border: 'none', color: '#f59e0b', fontSize: 11, fontWeight: 700, cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}
             >
-              <span>{showGoalRules ? 'Hide Rules' : 'Rules'}</span>
+              <span>{showGoalRules ? 'Hide Strategy' : 'Strategy & Rules'}</span>
               <span style={{ fontSize: 9 }}>{showGoalRules ? '▲' : '▼'}</span>
             </button>
           </div>
+          <div style={{ color: '#94a3b8', fontSize: 11, fontWeight: 500, lineHeight: 1.35 }}>
+            {currentTabObj.goal}
+          </div>
           
           {showGoalRules && (
-            <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(255, 255, 255, 0.06)', color: '#94a3b8', fontSize: 11, whiteSpace: 'normal', wordBreak: 'break-word' }}>
+            <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(255, 255, 255, 0.06)', color: '#cbd5e1', fontSize: 11, whiteSpace: 'normal', wordBreak: 'break-word' }}>
               <strong style={{ color: '#f59e0b' }}>How to Win:</strong> {currentTabObj.howToWin}
             </div>
           )}
