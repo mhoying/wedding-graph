@@ -179,23 +179,37 @@ export default function GuestProfileDrawer({
               {/* HONK AT GUEST ENCOUNTER BUTTON OR ALREADY HONKED BADGE */}
               {(() => {
                 const encounters = (gaggleStore && gaggleStore.encounters) ? gaggleStore.encounters : [];
-                const actName = String(activePlayer || '').toLowerCase().trim();
-                const tgtName = String(selectedNode.name || '').toLowerCase().trim();
+                const actName = String(activePlayer || '').toLowerCase().replace(/["']/g, '').trim();
+                const tgtName = String(selectedNode.name || '').toLowerCase().replace(/["']/g, '').trim();
 
                 const alreadyHonked = encounters.some(e => {
-                  const eAct = String(e.actor || '').toLowerCase().trim();
-                  const eTgt = String(e.target || '').toLowerCase().trim();
+                  const eAct = String(e.actor || '').toLowerCase().replace(/["']/g, '').trim();
+                  const eTgt = String(e.target || '').toLowerCase().replace(/["']/g, '').trim();
 
-                  const actMatches = eAct === actName || (actName && (eAct.includes(actName) || actName.includes(eAct)));
-                  const tgtMatches = eTgt === tgtName || (tgtName && (eTgt.includes(tgtName) || tgtName.includes(eTgt)));
+                  if (!eAct || !eTgt || !actName || !tgtName) return false;
+
+                  // Token-based matching (matches first name, last name, or full name)
+                  const actTokens = actName.split(/\s+/);
+                  const eActTokens = eAct.split(/\s+/);
+                  const actMatches = actName === eAct || 
+                                     actName.includes(eAct) || 
+                                     eAct.includes(actName) || 
+                                     actTokens.some(t => t.length >= 3 && eActTokens.includes(t));
+
+                  const tgtTokens = tgtName.split(/\s+/);
+                  const eTgtTokens = eTgt.split(/\s+/);
+                  const tgtMatches = tgtName === eTgt || 
+                                     tgtName.includes(eTgt) || 
+                                     eTgt.includes(tgtName) || 
+                                     tgtTokens.some(t => t.length >= 3 && eTgtTokens.includes(t));
 
                   return actMatches && tgtMatches;
                 });
 
                 if (alreadyHonked) {
                   return (
-                    <div style={{ marginTop: 14, marginBottom: 8, padding: '10px 14px', borderRadius: 12, background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.4)', color: '#34d399', fontSize: 12, fontWeight: 800, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                      <span style={{ fontSize: 16 }}>✅</span>
+                    <div style={{ marginTop: 14, marginBottom: 8, padding: '12px 14px', borderRadius: 12, background: 'rgba(16, 185, 129, 0.2)', border: '1.5px solid #34d399', color: '#34d399', fontSize: 13, fontWeight: 800, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, boxShadow: '0 0 15px rgba(52, 211, 153, 0.25)' }}>
+                      <span style={{ fontSize: 18 }}>✅</span>
                       <span>Encounter Logged! You've honked with {selectedNode.name}</span>
                     </div>
                   );

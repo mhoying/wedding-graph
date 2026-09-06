@@ -229,15 +229,28 @@ export default function App() {
       setGaggleStore({ ...updated });
 
       // 3. Confirm encounter is verified in local store before updating drawer UI badge
-      const actName = String(playerToUse || '').toLowerCase().trim();
-      const tgtName = String(targetGuest.name || '').toLowerCase().trim();
+      const actName = String(playerToUse || '').toLowerCase().replace(/["']/g, '').trim();
+      const tgtName = String(targetGuest.name || '').toLowerCase().replace(/["']/g, '').trim();
 
       const isConfirmed = (updated.encounters || []).some(e => {
-        const eAct = String(e.actor || '').toLowerCase().trim();
-        const eTgt = String(e.target || '').toLowerCase().trim();
+        const eAct = String(e.actor || '').toLowerCase().replace(/["']/g, '').trim();
+        const eTgt = String(e.target || '').toLowerCase().replace(/["']/g, '').trim();
 
-        const actMatches = eAct === actName || (actName && (eAct.includes(actName) || actName.includes(eAct)));
-        const tgtMatches = eTgt === tgtName || (tgtName && (eTgt.includes(tgtName) || tgtName.includes(eTgt)));
+        if (!eAct || !eTgt || !actName || !tgtName) return false;
+
+        const actTokens = actName.split(/\s+/);
+        const eActTokens = eAct.split(/\s+/);
+        const actMatches = actName === eAct || 
+                           actName.includes(eAct) || 
+                           eAct.includes(actName) || 
+                           actTokens.some(t => t.length >= 3 && eActTokens.includes(t));
+
+        const tgtTokens = tgtName.split(/\s+/);
+        const eTgtTokens = eTgt.split(/\s+/);
+        const tgtMatches = tgtName === eTgt || 
+                           tgtName.includes(eTgt) || 
+                           eTgt.includes(tgtName) || 
+                           tgtTokens.some(t => t.length >= 3 && eTgtTokens.includes(t));
 
         return actMatches && tgtMatches;
       });
