@@ -207,6 +207,13 @@
       "cy_pct": 0.32,
       "crop_size_pct": 0.45,
       "face_selection": "user_calibrated"
+    },
+    "katie_richter": {
+      "raw_source": "raw_sources/katie_richter__orig_media__1788718115.jpg",
+      "cx_pct": 0.265,
+      "cy_pct": 0.5,
+      "crop_size_pct": 0.4,
+      "face_selection": "user_calibrated"
     }
   }
 }
