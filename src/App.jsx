@@ -348,6 +348,15 @@ export default function App() {
       setIsAdmin(true);
     }
     const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedNode(null);
+        setIsLeaderboardOpen(false);
+        setIsMatchmakerOpen(false);
+        setIsListView(false);
+        setIsMobileControlsOpen(false);
+        setIsSpreadsheetOpen(false);
+        setIsFeedbackQueueOpen(false);
+      }
       if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
         e.preventDefault();
         setPasscodePromptOpen(true);
