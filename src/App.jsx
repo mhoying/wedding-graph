@@ -366,6 +366,19 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Initial Mobile Camera Setup: Center on "THE COUPLE" (0, 0) at 1.4x zoom on mobile viewports
+  useEffect(() => {
+    if (isMobileViewport && fgRef.current) {
+      const timer = setTimeout(() => {
+        if (fgRef.current && typeof fgRef.current.zoom === 'function' && typeof fgRef.current.centerAt === 'function') {
+          fgRef.current.centerAt(0, 0, 800);
+          fgRef.current.zoom(1.4, 800);
+        }
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [isMobileViewport]);
+
   // Magic Link Auto-Targeting Effect (?guest=id or ?name=Name or ?id=node_id)
   useEffect(() => {
     if (typeof window === 'undefined') return;
