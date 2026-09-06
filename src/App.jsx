@@ -27,7 +27,9 @@ import {
   setActivePlayer,
   logHonkEncounter,
   calculateGooseLeaderboards,
-  fetchRemoteEncounters
+  fetchRemoteEncounters,
+  flushUnsyncedEncounters,
+  normalizeName
 } from './utils/gaggleStore';
 import HostSpreadsheetEditorModal from './components/HostSpreadsheetEditorModal';
 import DynamicColorLegend from './components/DynamicColorLegend';
@@ -184,18 +186,18 @@ export default function App() {
     );
   }, [gaggleStore, nodes]);
 
-  // Poll remote encounters from GitHub API to keep all cross-device leaderboards live
-  useEffect(() => {
-    const syncRemote = async () => {
-      const updated = await fetchRemoteEncounters();
-      if (updated) {
-        setGaggleStore({ ...updated });
-      }
-    };
-    syncRemote();
-    const interval = setInterval(syncRemote, 10000);
-    return () => clearInterval(interval);
+  // On-demand remote encounter sync when opening leaderboard
+  const syncRemoteEncounters = useCallback(async () => {
+    const updated = await fetchRemoteEncounters();
+    if (updated) {
+      setGaggleStore({ ...updated });
+    }
   }, []);
+
+  const handleOpenLeaderboard = () => {
+    setIsLeaderboardOpen(true);
+    syncRemoteEncounters();
+  };
 
   // Player Identity Selector Modal State
   const [isPlayerSelectOpen, setIsPlayerSelectOpen] = useState(false);
@@ -228,31 +230,13 @@ export default function App() {
       // 2. Update store state with fresh object reference to force re-render
       setGaggleStore({ ...updated });
 
-      // 3. Confirm encounter is verified in local store before updating drawer UI badge
-      const actName = String(playerToUse || '').toLowerCase().replace(/["']/g, '').trim();
-      const tgtName = String(targetGuest.name || '').toLowerCase().replace(/["']/g, '').trim();
+      // 3. Confirm encounter is verified in local store using exact normalizeName matching
+      const normActive = normalizeName(playerToUse);
+      const normTarget = normalizeName(targetGuest.name);
 
       const isConfirmed = (updated.encounters || []).some(e => {
-        const eAct = String(e.actor || '').toLowerCase().replace(/["']/g, '').trim();
-        const eTgt = String(e.target || '').toLowerCase().replace(/["']/g, '').trim();
-
-        if (!eAct || !eTgt || !actName || !tgtName) return false;
-
-        const actTokens = actName.split(/\s+/);
-        const eActTokens = eAct.split(/\s+/);
-        const actMatches = actName === eAct || 
-                           actName.includes(eAct) || 
-                           eAct.includes(actName) || 
-                           actTokens.some(t => t.length >= 3 && eActTokens.includes(t));
-
-        const tgtTokens = tgtName.split(/\s+/);
-        const eTgtTokens = eTgt.split(/\s+/);
-        const tgtMatches = tgtName === eTgt || 
-                           tgtName.includes(eTgt) || 
-                           eTgt.includes(tgtName) || 
-                           tgtTokens.some(t => t.length >= 3 && eTgtTokens.includes(t));
-
-        return actMatches && tgtMatches;
+        if (!e.actor || !e.target || !normActive || !normTarget) return false;
+        return normalizeName(e.actor) === normActive && normalizeName(e.target) === normTarget;
       });
 
       if (isConfirmed) {
@@ -1259,7 +1243,7 @@ export default function App() {
         selectedClusterFocus={selectedClusterFocus}
         setSelectedClusterFocus={setSelectedClusterFocus}
         availableClusters={availableClusters}
-        onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
+        onOpenLeaderboard={handleOpenLeaderboard}
         onOpenMapControls={() => setIsMobileControlsOpen(true)}
         isListView={isListView}
         setIsListView={setIsListView}
@@ -1556,7 +1540,7 @@ export default function App() {
       {isMobileViewport && !selectedNode && (
         <MobileQuickDock 
           onOpenSearch={() => setIsMobileSearchOpen(true)}
-          onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
+          onOpenLeaderboard={handleOpenLeaderboard}
           onOpenDirectory={() => setIsListView(!isListView)}
           onOpenMatchmaker={() => setIsMatchmakerOpen(true)}
           onOpenMapControls={() => setIsMobileControlsOpen(true)}

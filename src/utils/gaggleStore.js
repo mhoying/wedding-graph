@@ -65,6 +65,25 @@ export function setActivePlayer(name) {
   }
 }
 
+const OUTBOX_KEY = 'wedding_graph_unsynced_encounters_v100';
+
+export function getUnsyncedEncounters() {
+  try {
+    const raw = localStorage.getItem(OUTBOX_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (err) {
+    return [];
+  }
+}
+
+export function saveUnsyncedEncounters(list) {
+  try {
+    localStorage.setItem(OUTBOX_KEY, JSON.stringify(list));
+  } catch (err) {
+    console.warn('Error saving unsynced encounters:', err);
+  }
+}
+
 // Log a Honk encounter
 export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
   if (!actorName || !targetGuest) return null;
@@ -79,8 +98,8 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
 
   // Check if encounter already logged to prevent duplicates
   const exists = store.encounters.some(
-    e => String(e.actor || '').toLowerCase().trim() === String(actorName || '').toLowerCase().trim() &&
-         String(e.target || '').toLowerCase().trim() === String(targetGuest.name || '').toLowerCase().trim()
+    e => normalizeName(e.actor) === normalizeName(actorName) &&
+         normalizeName(e.target) === normalizeName(targetGuest.name)
   );
 
   let updatedEncounters = store.encounters;
@@ -95,6 +114,10 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
       timestamp
     };
     updatedEncounters = [encounterToSync, ...store.encounters];
+    
+    // Add to local Outbox queue for reliable resubmission
+    const outbox = getUnsyncedEncounters();
+    saveUnsyncedEncounters([encounterToSync, ...outbox]);
   }
 
   const updatedStore = {
@@ -104,14 +127,26 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
 
   saveGaggleData(updatedStore);
 
-  // Cross-Device Remote Sync via GitHub API Issue Submission
-  if (encounterToSync) {
-    syncEncounterToGithub(encounterToSync);
+  // Background flush of outbox queue
+  flushUnsyncedEncounters();
+
+  return updatedStore;
+}
+
+// Flush local outbox queue to remote GitHub endpoint
+export async function flushUnsyncedEncounters() {
+  const outbox = getUnsyncedEncounters();
+  if (!outbox || outbox.length === 0) return;
+
+  const remaining = [];
+  for (const encounter of outbox) {
+    const success = await syncEncounterToGithub(encounter);
+    if (!success) {
+      remaining.push(encounter);
+    }
   }
 
-  return updatedStore;
-
-  return updatedStore;
+  saveUnsyncedEncounters(remaining);
 }
 
 // Push encounter to remote GitHub Issues endpoint for cross-device sharing
@@ -121,7 +156,7 @@ export async function syncEncounterToGithub(encounter) {
       title: `🪿 Honk: ${encounter.actor} met ${encounter.target}`,
       body: `[HONK_ENCOUNTER_v1]\nActor: ${encounter.actor}\nTarget: ${encounter.target}\nCohort: ${encounter.targetCohort || 'Other'}\nTimestamp: ${Date.now()}`
     };
-    await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues', {
+    const res = await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues', {
       method: 'POST',
       headers: {
         'Accept': 'application/vnd.github.v3+json',
@@ -129,16 +164,26 @@ export async function syncEncounterToGithub(encounter) {
       },
       body: JSON.stringify(payload)
     });
+    return res.ok || res.status === 201;
   } catch (err) {
-    console.warn('Remote sync fetch notice:', err);
+    console.warn('Remote sync fetch notice (will retry via Outbox queue):', err);
+    return false;
   }
 }
 
 // Fetch remote encounters from GitHub API / Issues to sync live across devices
 export async function fetchRemoteEncounters() {
+  // First retry flushing any pending local outbox items
+  await flushUnsyncedEncounters();
+
   try {
     const res = await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues?state=all&per_page=100');
-    if (!res.ok) return null;
+    if (!res.ok) {
+      if (res.status === 403) {
+        console.info('GitHub API rate limit reached (60/hr IP limit). Utilizing local store seamlessly.');
+      }
+      return null;
+    }
     const issues = await res.json();
 
     const remoteEncounters = [];
@@ -163,16 +208,16 @@ export async function fetchRemoteEncounters() {
 
     if (remoteEncounters.length > 0) {
       const store = getStoredGaggleData();
-      const existingIds = new Set(store.encounters.map(e => `${String(e.actor).toLowerCase().trim()}_${String(e.target).toLowerCase().trim()}`));
+      const existingKeys = new Set(store.encounters.map(e => `${normalizeName(e.actor)}_${normalizeName(e.target)}`));
       
       let hasNew = false;
       const merged = [...store.encounters];
 
       remoteEncounters.forEach(re => {
-        const key = `${String(re.actor).toLowerCase().trim()}_${String(re.target).toLowerCase().trim()}`;
-        if (!existingIds.has(key)) {
+        const key = `${normalizeName(re.actor)}_${normalizeName(re.target)}`;
+        if (!existingKeys.has(key)) {
           merged.push(re);
-          existingIds.add(key);
+          existingKeys.add(key);
           hasNew = true;
         }
       });
@@ -187,6 +232,17 @@ export async function fetchRemoteEncounters() {
     console.warn('Remote encounters sync notice:', err);
   }
   return null;
+}
+
+// Canonical Name Normalizer to prevent false-positives between family members
+export function normalizeName(nameStr) {
+  if (!nameStr) return '';
+  let str = String(nameStr).toLowerCase().replace(/["']/g, '').trim();
+  // Strip common nick names / quotes and resolve aliases
+  if (str.includes('j-bibbs') || str.includes('jonathan bibayan')) {
+    return 'jonathan bibayan';
+  }
+  return str;
 }
 
 // Extract City/State from raw location string

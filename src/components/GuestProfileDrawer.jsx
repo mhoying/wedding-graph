@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Edit3, Ghost, Landmark, Home, MapPin, Users, Sparkles } from 'lucide-react';
+import { normalizeName } from '../utils/gaggleStore';
 
 export default function GuestProfileDrawer({
   selectedNode,
@@ -179,31 +180,12 @@ export default function GuestProfileDrawer({
               {/* HONK AT GUEST ENCOUNTER BUTTON OR ALREADY HONKED BADGE */}
               {(() => {
                 const encounters = (gaggleStore && gaggleStore.encounters) ? gaggleStore.encounters : [];
-                const actName = String(activePlayer || '').toLowerCase().replace(/["']/g, '').trim();
-                const tgtName = String(selectedNode.name || '').toLowerCase().replace(/["']/g, '').trim();
+                const normActive = normalizeName(activePlayer);
+                const normTarget = normalizeName(selectedNode.name);
 
                 const alreadyHonked = encounters.some(e => {
-                  const eAct = String(e.actor || '').toLowerCase().replace(/["']/g, '').trim();
-                  const eTgt = String(e.target || '').toLowerCase().replace(/["']/g, '').trim();
-
-                  if (!eAct || !eTgt || !actName || !tgtName) return false;
-
-                  // Token-based matching (matches first name, last name, or full name)
-                  const actTokens = actName.split(/\s+/);
-                  const eActTokens = eAct.split(/\s+/);
-                  const actMatches = actName === eAct || 
-                                     actName.includes(eAct) || 
-                                     eAct.includes(actName) || 
-                                     actTokens.some(t => t.length >= 3 && eActTokens.includes(t));
-
-                  const tgtTokens = tgtName.split(/\s+/);
-                  const eTgtTokens = eTgt.split(/\s+/);
-                  const tgtMatches = tgtName === eTgt || 
-                                     tgtName.includes(eTgt) || 
-                                     eTgt.includes(tgtName) || 
-                                     tgtTokens.some(t => t.length >= 3 && eTgtTokens.includes(t));
-
-                  return actMatches && tgtMatches;
+                  if (!e.actor || !e.target || !normActive || !normTarget) return false;
+                  return normalizeName(e.actor) === normActive && normalizeName(e.target) === normTarget;
                 });
 
                 if (alreadyHonked) {
