@@ -342,6 +342,7 @@ export const SAMPLE_NODES = [
   {
     "id": "ashley_prichard",
     "name": "Ashley Prichard",
+    "image": "headshots/ashley_prichard.jpg",
     "type": "GUEST",
     "side": "Maureen",
     "cohort": "Bay FC",
