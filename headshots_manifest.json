@@ -186,6 +186,13 @@
       "cy_pct": 0.4,
       "crop_size_pct": 0.45,
       "face_selection": "smiling_woman_right_hugging"
+    },
+    "clyde_tsai": {
+      "raw_source": "raw_sources/clyde_tsai__orig_media__1788716815.jpg",
+      "cx_pct": 0.74,
+      "cy_pct": 0.61,
+      "crop_size_pct": 0.4,
+      "face_selection": "smiling_man_right_white_vneck_hiking"
     }
   }
 }

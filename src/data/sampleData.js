@@ -1,5 +1,5 @@
 // Real Wedding Guest List Data - Auto-updated via Host Admin Suite
-export const BUILD_TIMESTAMP = 1788716789370;
+export const BUILD_TIMESTAMP = 1788716823966;
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
   "Cornell": "#ef4444",
@@ -1459,6 +1459,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "clyde_tsai",
+    "image": "headshots/clyde_tsai.jpg",
     "name": "Clyde Tsai",
     "type": "GUEST",
     "side": "Matt",
