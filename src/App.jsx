@@ -219,8 +219,9 @@ export default function App() {
       setCopyToast(`🪿 HONK! Encounter logged with ${targetGuest.name}! +1 Flock!${rankMsg}`);
       setTimeout(() => setCopyToast(''), 5000);
 
-      // Auto-close detail view window on honk as requested
-      setSelectedNode(null);
+      // Keep detail view drawer open so guest sees the green Encounter Logged confirmation badge immediately!
+      // Update selectedNode state to trigger re-render of drawer badge
+      setSelectedNode({ ...targetGuest });
     }
   };
 
