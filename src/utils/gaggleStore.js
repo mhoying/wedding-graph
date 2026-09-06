@@ -109,24 +109,59 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
   return updatedStore;
 }
 
-// Push encounter to remote GitHub Issues endpoint for cross-device sharing
-export async function syncEncounterToGithub(encounter) {
+// Fetch remote encounters from GitHub API / Issues to sync live across devices
+export async function fetchRemoteEncounters() {
   try {
-    const payload = {
-      title: `🪿 Honk: ${encounter.actor} met ${encounter.target}`,
-      body: `[HONK_ENCOUNTER_v1]\nActor: ${encounter.actor}\nTarget: ${encounter.target}\nCohort: ${encounter.targetCohort || 'Other'}\nTimestamp: ${Date.now()}`
-    };
-    await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
+    const res = await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues?state=all&per_page=100');
+    if (!res.ok) return null;
+    const issues = await res.json();
+
+    const remoteEncounters = [];
+    (issues || []).forEach(issue => {
+      if (issue.body && issue.body.includes('[HONK_ENCOUNTER_v1]')) {
+        const actorMatch = issue.body.match(/Actor:\s*(.+)/);
+        const targetMatch = issue.body.match(/Target:\s*(.+)/);
+        const cohortMatch = issue.body.match(/Cohort:\s*(.+)/);
+        const tsMatch = issue.body.match(/Timestamp:\s*(\d+)/);
+
+        if (actorMatch && targetMatch) {
+          remoteEncounters.push({
+            id: `remote_${issue.id}`,
+            actor: actorMatch[1].trim(),
+            target: targetMatch[1].trim(),
+            targetCohort: cohortMatch ? cohortMatch[1].trim() : 'Other',
+            timestamp: tsMatch ? parseInt(tsMatch[1], 10) : Date.now()
+          });
+        }
+      }
     });
+
+    if (remoteEncounters.length > 0) {
+      const store = getStoredGaggleData();
+      const existingIds = new Set(store.encounters.map(e => `${String(e.actor).toLowerCase().trim()}_${String(e.target).toLowerCase().trim()}`));
+      
+      let hasNew = false;
+      const merged = [...store.encounters];
+
+      remoteEncounters.forEach(re => {
+        const key = `${String(re.actor).toLowerCase().trim()}_${String(re.target).toLowerCase().trim()}`;
+        if (!existingIds.has(key)) {
+          merged.push(re);
+          existingIds.add(key);
+          hasNew = true;
+        }
+      });
+
+      if (hasNew) {
+        const updated = { ...store, encounters: merged };
+        saveGaggleData(updated);
+        return updated;
+      }
+    }
   } catch (err) {
-    console.warn('Remote sync fetch notice:', err);
+    console.warn('Remote encounters sync notice:', err);
   }
+  return null;
 }
 
 // Extract City/State from raw location string

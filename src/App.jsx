@@ -26,7 +26,8 @@ import {
   getActivePlayer,
   setActivePlayer,
   logHonkEncounter,
-  calculateGooseLeaderboards
+  calculateGooseLeaderboards,
+  fetchRemoteEncounters
 } from './utils/gaggleStore';
 import HostSpreadsheetEditorModal from './components/HostSpreadsheetEditorModal';
 import DynamicColorLegend from './components/DynamicColorLegend';
@@ -182,6 +183,19 @@ export default function App() {
       nodes.filter(n => n && n.type === 'GUEST')
     );
   }, [gaggleStore, nodes]);
+
+  // Poll remote encounters from GitHub API to keep all cross-device leaderboards live
+  useEffect(() => {
+    const syncRemote = async () => {
+      const updated = await fetchRemoteEncounters();
+      if (updated) {
+        setGaggleStore({ ...updated });
+      }
+    };
+    syncRemote();
+    const interval = setInterval(syncRemote, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Player Identity Selector Modal State
   const [isPlayerSelectOpen, setIsPlayerSelectOpen] = useState(false);
