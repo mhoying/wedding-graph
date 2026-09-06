@@ -201,10 +201,10 @@
     "romana_rajput": {
       "raw_source": "raw_sources/romana_rajput__orig_media__1788716129.jpg",
       "cx_pct": 0.585,
-      "cy_pct": 0.52,
-      "face_h_px": 205,
-      "face_h_pct": 0.2669,
-      "crop_size_px": 347,
+      "cy_pct": 0.46,
+      "face_h_px": 145,
+      "face_h_pct": 0.1888,
+      "crop_size_px": 245,
       "face_selection": "raw_pixel_calibrated"
     },
     "ryan_anthony": {
@@ -217,12 +217,12 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "steve_nares": {
-      "raw_source": "raw_sources/steve_nares__orig_media__1788717497.jpg",
-      "cx_pct": 0.585,
+      "raw_source": "raw_sources/steve_nares__orig_media__1788683169013.jpg",
+      "cx_pct": 0.5,
       "cy_pct": 0.45,
-      "face_h_px": 200,
-      "face_h_pct": 0.3472,
-      "crop_size_px": 338,
+      "face_h_px": 160,
+      "face_h_pct": 0.2778,
+      "crop_size_px": 271,
       "face_selection": "raw_pixel_calibrated"
     },
     "toyo_tsujino": {

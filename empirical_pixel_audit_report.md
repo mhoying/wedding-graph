@@ -25,9 +25,9 @@
 | `nur_e_freedman` | 576x1024 | 203px | 344px | **236.0px** | **59.0%** | PASSED ✅ |
 | `nichole_remmert` | 1024x576 | 158px | 267px | **236.7px** | **59.2%** | PASSED ✅ |
 | `roopak_kandasamy` | 771x1024 | 135px | 228px | **236.8px** | **59.2%** | PASSED ✅ |
-| `romana_rajput` | 1024x768 | 205px | 347px | **236.3px** | **59.1%** | PASSED ✅ |
+| `romana_rajput` | 1024x768 | 145px | 245px | **236.7px** | **59.2%** | PASSED ✅ |
 | `ryan_anthony` | 768x1024 | 203px | 344px | **236.0px** | **59.0%** | PASSED ✅ |
-| `steve_nares` | 1024x576 | 200px | 338px | **236.7px** | **59.2%** | PASSED ✅ |
+| `steve_nares` | 1024x576 | 160px | 271px | **236.2px** | **59.0%** | PASSED ✅ |
 | `toyo_tsujino` | 612x816 | 358px | 606px | **236.3px** | **59.1%** | PASSED ✅ |
 | `poukhan_philavanh_anthony` | 1024x768 | 200px | 338px | **236.7px** | **59.2%** | PASSED ✅ |
 | `clyde_tsai` | 1024x768 | 200px | 338px | **236.7px** | **59.2%** | PASSED ✅ |
