@@ -110,8 +110,8 @@ async function main() {
   const cxPx = params.cx * w;
   const cyPx = params.cy * h;
 
-  // Formula: crop_size = int(face_h / 0.59) -> Output rendered face height = 236px (59.0% fill in 400x400)
-  const cropSize = Math.floor(params.face_h / 0.59);
+  // Formula: crop_size = int(face_h / 0.60) -> Output rendered face height = 240px (60.0% fill in 400x400)
+  const cropSize = Math.floor(params.face_h / 0.60);
   const halfCrop = Math.floor(cropSize / 2);
 
   const cropL = Math.round(cxPx - halfCrop);
@@ -146,7 +146,7 @@ async function main() {
   console.log(`🛡️ Safely archived copy to media_backups/master_archive/`);
 
   // 4. Update headshots_manifest.json
-  let manifest = { calibration_defaults: { output_resolution: 400, target_face_scale: 0.65 }, guests: {} };
+  let manifest = { calibration_defaults: { output_resolution: 400, target_face_scale: 0.60, output_face_px: 240, face_center_midpoint: [200, 200] }, guests: {} };
   if (fs.existsSync(MANIFEST_PATH)) {
     manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
   }
@@ -158,8 +158,9 @@ async function main() {
     master_archive_headshot: `media_backups/master_archive/public_headshots/${params.guest}.jpg`,
     cx_pct: params.cx,
     cy_pct: params.cy,
-    face_h_px: params.face_h,
-    face_h_pct: Number((params.face_h / h).toFixed(4)),
+    target_face_scale: 0.60,
+    output_face_px: 240,
+    face_center_midpoint: [200, 200],
     crop_size_px: cropSize,
     face_selection: "node_canvas_calibrated"
   };
