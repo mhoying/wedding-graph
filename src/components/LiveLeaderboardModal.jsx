@@ -248,27 +248,27 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                     {/* Col 3: Primary Tab Metric Badge */}
                     <div style={{ flexShrink: 0, textAlign: 'right' }}>
                       {activeTab === 'masterGaggle' && (
-                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', color: '#f59e0b', fontWeight: 800, fontSize: 11 }}>
+                        <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', color: '#f59e0b', fontWeight: 800, fontSize: 10, whiteSpace: 'nowrap' }}>
                           {player.cohortsMet.size} Flocks
                         </span>
                       )}
                       {activeTab === 'honkSpecialist' && (
-                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontWeight: 800, fontSize: 11 }}>
+                        <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontWeight: 800, fontSize: 10, whiteSpace: 'nowrap' }}>
                           {player.questsCompleted.size} Quests
                         </span>
                       )}
                       {activeTab === 'migrationSprint' && (
-                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(56, 189, 248, 0.15)', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#38bdf8', fontWeight: 800, fontSize: 11, fontFamily: 'monospace' }}>
+                        <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(56, 189, 248, 0.15)', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#38bdf8', fontWeight: 800, fontSize: 10, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                           {formatSprintTime(player.sprintTimeMs)}
                         </span>
                       )}
                       {activeTab === 'globalGoose' && (
-                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(168, 85, 247, 0.15)', border: '1px solid rgba(168, 85, 247, 0.3)', color: '#c084fc', fontWeight: 800, fontSize: 11 }}>
+                        <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(168, 85, 247, 0.15)', border: '1px solid rgba(168, 85, 247, 0.3)', color: '#c084fc', fontWeight: 800, fontSize: 10, whiteSpace: 'nowrap' }}>
                           {player.citiesMet.size} Origins
                         </span>
                       )}
                       {activeTab === 'soulGander' && (
-                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(244, 63, 94, 0.15)', border: '1px solid rgba(244, 63, 94, 0.3)', color: '#fb7185', fontWeight: 800, fontSize: 11 }}>
+                        <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(244, 63, 94, 0.15)', border: '1px solid rgba(244, 63, 94, 0.3)', color: '#fb7185', fontWeight: 800, fontSize: 10, whiteSpace: 'nowrap' }}>
                           {player.honkCount * 10} pts
                         </span>
                       )}
