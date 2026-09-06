@@ -749,3 +749,19 @@ body {
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
   pointer-events: auto;
 }
+
+/* Custom Translucent Dark Webkit Scrollbar Styling (Recommendation 5) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.5);
+}
