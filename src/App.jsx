@@ -763,14 +763,18 @@ export default function App() {
     setSelectedNode({ ...targetNode });
 
     try {
-      localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(updated));
+      localStorage.setItem('wedding_graph_nodes_v95', JSON.stringify(updated));
     } catch (e) {}
+
+    const prevHobbies = Array.isArray(selectedNode.hobbies)
+      ? selectedNode.hobbies
+      : (typeof selectedNode.hobbies === 'string' ? selectedNode.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) : []);
 
     const changeSummary = [];
     if (editName && editName !== (selectedNode.name || '')) changeSummary.push(`Name: ${editName}`);
     if (editCurrentlyLivesIn && editCurrentlyLivesIn !== (selectedNode.currentlyLivesIn || '')) changeSummary.push(`Lives In: ${editCurrentlyLivesIn}`);
     if (editOriginallyFrom && editOriginallyFrom !== (selectedNode.originallyFrom || '')) changeSummary.push(`Originally From: ${editOriginallyFrom}`);
-    if (editHobbies.join(', ') !== (selectedNode.hobbies || []).join(', ')) changeSummary.push(`Hobbies: ${editHobbies.join(', ')}`);
+    if (cleanHobbies.join(', ') !== prevHobbies.join(', ')) changeSummary.push(`Hobbies: ${cleanHobbies.join(', ')}`);
     if (editCohort && editCohort !== (selectedNode.cohort || '')) changeSummary.push(`Group: ${editCohort}`);
     if (editRelationship && editRelationship !== (selectedNode.relationship || '')) changeSummary.push(`Relationship: ${editRelationship}`);
 
@@ -783,7 +787,7 @@ export default function App() {
       targetId: selectedNode.id,
       targetName: editName || selectedNode.name,
       category: 'Profile Edit Proposal',
-      proposedHobbies: editHobbies.join(', '),
+      proposedHobbies: cleanHobbies.join(', '),
       proposedLocation: editCurrentlyLivesIn,
       proposedCohort: editCohort,
       proposedSide: editSide,
