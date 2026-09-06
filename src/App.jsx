@@ -331,7 +331,11 @@ export default function App() {
       const target = nodeArray[0];
       if (target && target.x !== undefined && target.y !== undefined) {
         if (typeof fgRef.current.centerAt === 'function') {
-          fgRef.current.centerAt(target.x, target.y, 800);
+          // On desktop (width >= 768px), offset X target by +120px so node centers in visible left 65% canvas!
+          const isMobile = window.innerWidth < 768;
+          const targetX = isMobile ? target.x : target.x + 120;
+          const targetY = isMobile ? target.y - 80 : target.y;
+          fgRef.current.centerAt(targetX, targetY, 800);
         }
         if (typeof fgRef.current.zoom === 'function') {
           fgRef.current.zoom(1.35, 800);
