@@ -19,6 +19,7 @@ import BulkCsvImportModal from './components/BulkCsvImportModal';
 import AddConnectionModal from './components/AddConnectionModal';
 import HostReviewQueueModal from './components/HostReviewQueueModal';
 import LiveLeaderboardModal from './components/LiveLeaderboardModal';
+import MobileQuickDock from './components/MobileQuickDock';
 import {
   purgeLegacyStorage,
   getStoredGaggleData,
@@ -1420,6 +1421,18 @@ export default function App() {
         selectedNode={selectedNode}
         isMobileControlsOpen={isMobileControlsOpen}
       />
+
+      {/* Mobile-First Illustrative Quick Dock (Rendered on Mobile Viewports < 768px when no drawer open) */}
+      {isMobileViewport && !selectedNode && (
+        <MobileQuickDock 
+          onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
+          onOpenDirectory={() => setIsListView(!isListView)}
+          onOpenMatchmaker={() => setIsMatchmakerOpen(true)}
+          onOpenMapControls={() => setIsMobileControlsOpen(true)}
+          isListView={isListView}
+          honkCount={(gaggleStore.encounters || []).length}
+        />
+      )}
 
       {/* HTML5 2D Canvas Force Graph */}
       <ForceCanvas 

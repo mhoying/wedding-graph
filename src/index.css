@@ -503,16 +503,31 @@ body {
 /* RESPONSIVE MOBILE MEDIA QUERIES (<768px or tall aspect ratio) */
 @media screen and (max-width: 768px) {
   .top-bar {
-    top: 12px;
-    left: 12px;
-    right: 12px;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 6px 12px;
+    height: 52px;
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
   }
   
-  .search-box {
-    width: 100%;
+  .bottom-row {
+    display: none !important;
   }
 
-  .desktop-only-controls {
+  .logo-title {
+    font-size: 14px !important;
+  }
+
+  .search-box {
+    width: 130px !important;
+    max-width: 140px !important;
+  }
+
+  .desktop-only-controls,
+  .gaggle-header-btn,
+  .matchmaker-header-btn {
     display: none !important;
   }
 

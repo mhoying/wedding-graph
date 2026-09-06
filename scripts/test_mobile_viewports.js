@@ -33,9 +33,12 @@ import puppeteer from 'puppeteer';
       await new Promise(r => setTimeout(r, 1200));
     }
 
-    // Open Championship Leaderboard
-    const champBtn = await page.waitForSelector('.gaggle-header-btn');
-    await champBtn.click();
+    // Open Championship Leaderboard from Mobile Quick Dock
+    await page.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('button'));
+      const champBtn = btns.find(b => b.title && b.title.includes('Championship'));
+      if (champBtn) champBtn.click();
+    });
     await new Promise(r => setTimeout(r, 1200));
 
     const imgPath = `/home/mattie/.gemini/antigravity/brain/d1d82195-9679-4831-841e-6a1401965558/media__mobile_${dev.name.replace(/\s+/g, '_').toLowerCase()}.png`;
