@@ -186,6 +186,27 @@ export default function TopHeaderNav({
             <span>Path Finder</span>
           </button>
 
+          {/* Grand Gaggle Championship Quick Action Button */}
+          <button 
+            onClick={() => onOpenLeaderboard && onOpenLeaderboard()}
+            className="glass-panel btn-icon gaggle-header-btn"
+            title="Open The Grand Gaggle Mingling Championship"
+            style={{ 
+              height: 32, 
+              padding: '0 10px', 
+              gap: 6, 
+              fontSize: 11, 
+              fontWeight: 800, 
+              color: '#fbbf24', 
+              background: 'rgba(245, 158, 11, 0.2)',
+              border: '1px solid rgba(245, 158, 11, 0.5)',
+              flexShrink: 0 
+            }}
+          >
+            <span style={{ fontSize: 14 }}>🪿</span>
+            <span>Championship</span>
+          </button>
+
           {/* Matchmaker Button (Omitted when width is constrained) */}
           <button 
             onClick={() => setIsMatchmakerOpen(true)}

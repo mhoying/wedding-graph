@@ -170,6 +170,32 @@ export default function GuestProfileDrawer({
                 </div>
               )}
 
+              {/* HONK AT GUEST ENCOUNTER BUTTON */}
+              <div style={{ marginTop: 14, marginBottom: 8 }}>
+                <button
+                  onClick={() => onLogHonk && onLogHonk(selectedNode)}
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: 12,
+                    background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                    color: '#0f172a',
+                    border: 'none',
+                    fontWeight: 800,
+                    fontSize: 13,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    boxShadow: '0 4px 14px rgba(245, 158, 11, 0.35)'
+                  }}
+                >
+                  <span style={{ fontSize: 18 }}>🪿</span>
+                  <span>Honk at {selectedNode.name}! (+1 Encounter)</span>
+                </button>
+              </div>
+
               {/* DIRECTLY CONNECTED NEIGHBORS CHIPS SECTION */}
               {connectedNeighbors && connectedNeighbors.length > 0 && (
                 <div style={{ marginTop: 12 }}>

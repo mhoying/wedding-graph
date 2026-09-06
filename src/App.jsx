@@ -18,6 +18,15 @@ import HostAdminPanel from './components/HostAdminPanel';
 import BulkCsvImportModal from './components/BulkCsvImportModal';
 import AddConnectionModal from './components/AddConnectionModal';
 import HostReviewQueueModal from './components/HostReviewQueueModal';
+import LiveLeaderboardModal from './components/LiveLeaderboardModal';
+import {
+  purgeLegacyStorage,
+  getStoredGaggleData,
+  getActivePlayer,
+  setActivePlayer,
+  logHonkEncounter,
+  calculateGooseLeaderboards
+} from './utils/gaggleStore';
 import HostSpreadsheetEditorModal from './components/HostSpreadsheetEditorModal';
 import DynamicColorLegend from './components/DynamicColorLegend';
 
@@ -154,6 +163,32 @@ export default function App() {
   const [isAddConnectionOpen, setIsAddConnectionOpen] = useState(false);
   const [isSpreadsheetOpen, setIsSpreadsheetOpen] = useState(false);
   const [copyToast, setCopyToast] = useState('');
+
+  // Grand Gaggle Championship State
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [activePlayer, setActivePlayerState] = useState(() => getActivePlayer());
+  const [gaggleStore, setGaggleStore] = useState(() => {
+    purgeLegacyStorage();
+    return getStoredGaggleData();
+  });
+
+  const gaggleLeaderboards = React.useMemo(() => {
+    return calculateGooseLeaderboards(
+      gaggleStore.encounters,
+      gaggleStore.playerSprintStarts,
+      nodes.filter(n => n && n.type === 'GUEST')
+    );
+  }, [gaggleStore, nodes]);
+
+  const handleLogHonk = (targetGuest) => {
+    if (!targetGuest) return;
+    const updated = logHonkEncounter(activePlayer, targetGuest, nodes);
+    if (updated) {
+      setGaggleStore(updated);
+      setCopyToast(`🪿 HONK! Encounter logged with ${targetGuest.name}! +1 Flock`);
+      setTimeout(() => setCopyToast(''), 4000);
+    }
+  };
 
   const handleSaveSpreadsheetData = async (updatedGuestNodes) => {
     // Preserve non-guest anchor nodes
@@ -1102,6 +1137,7 @@ export default function App() {
         selectedClusterFocus={selectedClusterFocus}
         setSelectedClusterFocus={setSelectedClusterFocus}
         availableClusters={availableClusters}
+        onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
         onOpenMapControls={() => setIsMobileControlsOpen(true)}
         isListView={isListView}
         setIsListView={setIsListView}
@@ -1654,6 +1690,23 @@ export default function App() {
         setSelectedInterests={setSelectedInterests}
         colorMode={colorMode}
         getNodeColor={getNodeColor}
+        onLogHonk={handleLogHonk}
+      />
+
+      {/* The Grand Gaggle Championship Live Leaderboard Modal */}
+      <LiveLeaderboardModal 
+        isOpen={isLeaderboardOpen}
+        onClose={() => setIsLeaderboardOpen(false)}
+        gaggleData={gaggleLeaderboards}
+        allGuests={nodes.filter(n => n && n.type === 'GUEST')}
+        activePlayer={activePlayer}
+        onSelectGuest={(guestName) => {
+          const found = nodes.find(n => n && n.name === guestName);
+          if (found) {
+            flyToNode(found);
+            setSelectedNode(found);
+          }
+        }}
       />
 
       {/* Cocktail Matchmaker Modal */}
