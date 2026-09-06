@@ -197,13 +197,7 @@ export default function GuestProfileDrawer({
                   <div style={{ marginTop: 14, marginBottom: 8, position: 'relative', zIndex: 99999 }}>
                     <button
                       type="button"
-                      onTouchEnd={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (onLogHonk) onLogHonk(selectedNode);
-                      }}
                       onClick={(e) => {
-                        e.preventDefault();
                         e.stopPropagation();
                         if (onLogHonk) onLogHonk(selectedNode);
                       }}

@@ -1990,102 +1990,21 @@ export default function App() {
 
       {/* Player Identity Selection Modal (Strict Dropdown) */}
       {isPlayerSelectOpen && (
-        <div className="modal-backdrop no-print" onClick={() => setIsPlayerSelectOpen(false)}>
-          <div className="glass-panel modal-card" style={{ maxWidth: 420, width: '92vw' }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 20 }}>🪿</span>
-                <span style={{ fontWeight: 800, color: '#f59e0b', fontSize: 16 }}>Select Your Identity</span>
-              </div>
-              <button 
-                onClick={() => setIsPlayerSelectOpen(false)}
-                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
-              >
-                <X style={{ width: 18, height: 18 }} />
-              </button>
-            </div>
-
-            <p style={{ fontSize: 13, color: '#cbd5e1', marginBottom: 16, lineHeight: 1.5 }}>
-              Please select your name from the guest list to log your honk encounters and track your score on the Live Leaderboard:
-            </p>
-
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Guest Name:
-              </label>
-              <select
-                value={activePlayer !== 'Guest Goose' ? activePlayer : ''}
-                onChange={(e) => {
-                  const selectedName = e.target.value;
-                  if (selectedName) {
-                    setActivePlayer(selectedName);
-                    setActivePlayerState(selectedName);
-                  }
-                }}
-                style={{ 
-                  width: '100%', 
-                  padding: '12px 14px', 
-                  borderRadius: 12, 
-                  background: 'rgba(30, 41, 59, 0.95)', 
-                  color: '#ffffff', 
-                  border: '1px solid rgba(245, 158, 11, 0.4)', 
-                  outline: 'none',
-                  fontSize: 14,
-                  fontWeight: 600
-                }}
-              >
-                <option value="">-- Choose Your Name --</option>
-                {[...nodes]
-                  .filter(n => n && n.name && n.type === 'GUEST')
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map(n => (
-                    <option key={n.id} value={n.name}>{n.name}</option>
-                  ))}
-              </select>
-            </div>
-
-            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-              <button
-                onClick={() => setIsPlayerSelectOpen(false)}
-                style={{
-                  padding: '10px 16px',
-                  borderRadius: 10,
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  color: '#cbd5e1',
-                  border: 'none',
-                  fontWeight: 600,
-                  fontSize: 13,
-                  cursor: 'pointer'
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                disabled={!activePlayer || activePlayer === 'Guest Goose'}
-                onClick={() => {
-                  setIsPlayerSelectOpen(false);
-                  if (pendingHonkNode) {
-                    executeHonk(activePlayer, pendingHonkNode);
-                    setPendingHonkNode(null);
-                  }
-                }}
-                style={{
-                  padding: '10px 20px',
-                  borderRadius: 10,
-                  background: activePlayer && activePlayer !== 'Guest Goose' ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : 'rgba(245, 158, 11, 0.3)',
-                  color: activePlayer && activePlayer !== 'Guest Goose' ? '#0f172a' : '#94a3b8',
-                  border: 'none',
-                  fontWeight: 800,
-                  fontSize: 13,
-                  cursor: activePlayer && activePlayer !== 'Guest Goose' ? 'pointer' : 'not-allowed',
-                  boxShadow: activePlayer && activePlayer !== 'Guest Goose' ? '0 4px 14px rgba(245, 158, 11, 0.35)' : 'none'
-                }}
-              >
-                Confirm Identity & Honk 🪿
-              </button>
-            </div>
-          </div>
-        </div>
+        <PlayerSelectModal 
+          isOpen={isPlayerSelectOpen}
+          onClose={() => setIsPlayerSelectOpen(false)}
+          nodes={nodes}
+          activePlayer={activePlayer}
+          onConfirm={(selectedName) => {
+            setActivePlayer(selectedName);
+            setActivePlayerState(selectedName);
+            setIsPlayerSelectOpen(false);
+            if (pendingHonkNode) {
+              executeHonk(selectedName, pendingHonkNode);
+              setPendingHonkNode(null);
+            }
+          }}
+        />
       )}
 
       {/* Host Passcode Prompt Modal (Triggered via secret shortcut Ctrl+Shift+A) */}
@@ -2224,6 +2143,101 @@ export default function App() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function PlayerSelectModal({ isOpen, onClose, nodes, activePlayer, onConfirm }) {
+  const [selectedName, setSelectedName] = useState(() => activePlayer !== 'Guest Goose' ? activePlayer : '');
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-backdrop no-print" onClick={onClose}>
+      <div className="glass-panel modal-card" style={{ maxWidth: 420, width: '92vw' }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 20 }}>🪿</span>
+            <span style={{ fontWeight: 800, color: '#f59e0b', fontSize: 16 }}>Select Your Identity</span>
+          </div>
+          <button 
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+          >
+            <X style={{ width: 18, height: 18 }} />
+          </button>
+        </div>
+
+        <p style={{ fontSize: 13, color: '#cbd5e1', marginBottom: 16, lineHeight: 1.5 }}>
+          Please select your name from the guest list to log your honk encounters and track your score on the Live Leaderboard:
+        </p>
+
+        <div style={{ marginBottom: 20 }}>
+          <label style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Guest Name:
+          </label>
+          <select
+            value={selectedName}
+            onChange={(e) => setSelectedName(e.target.value)}
+            style={{ 
+              width: '100%', 
+              padding: '12px 14px', 
+              borderRadius: 12, 
+              background: 'rgba(30, 41, 59, 0.95)', 
+              color: '#ffffff', 
+              border: '1px solid rgba(245, 158, 11, 0.4)', 
+              outline: 'none',
+              fontSize: 14,
+              fontWeight: 600
+            }}
+          >
+            <option value="">-- Choose Your Name --</option>
+            {[...nodes]
+              .filter(n => n && n.name && n.type === 'GUEST')
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(n => (
+                <option key={n.id} value={n.name}>{n.name}</option>
+              ))}
+          </select>
+        </div>
+
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+          <button
+            onClick={onClose}
+            style={{
+              padding: '10px 16px',
+              borderRadius: 10,
+              background: 'rgba(255, 255, 255, 0.08)',
+              color: '#cbd5e1',
+              border: 'none',
+              fontWeight: 600,
+              fontSize: 13,
+              cursor: 'pointer'
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            disabled={!selectedName}
+            onClick={() => {
+              if (selectedName) onConfirm(selectedName);
+            }}
+            style={{
+              padding: '10px 20px',
+              borderRadius: 10,
+              background: selectedName ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : 'rgba(245, 158, 11, 0.3)',
+              color: selectedName ? '#0f172a' : '#94a3b8',
+              border: 'none',
+              fontWeight: 800,
+              fontSize: 13,
+              cursor: selectedName ? 'pointer' : 'not-allowed',
+              boxShadow: selectedName ? '0 4px 14px rgba(245, 158, 11, 0.35)' : 'none'
+            }}
+          >
+            Confirm Identity & Honk 🪿
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
