@@ -653,6 +653,11 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
           }
         }
       }
+
+      // Force 3: Top Inset Margin Boundary (Prevents top clusters like Dog Park/Bay FC from pushing under top header at Y < -320px)
+      if (node.y < -320) {
+        node.vy += ((-320 - node.y) * alpha * 0.12);
+      }
     });
   };
 
