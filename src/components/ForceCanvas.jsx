@@ -959,8 +959,20 @@ export default function ForceCanvas({
       if (target && target.x !== undefined && target.y !== undefined) {
         const isMobile = window.innerWidth < 768;
         const targetZoom = isMobile ? 3.2 : 4.2;
-        const targetX = isMobile ? target.x : target.x + 60;
-        const targetY = isMobile ? target.y + 110 : target.y;
+        let targetX = target.x;
+        let targetY = target.y;
+
+        if (isMobile) {
+          const headerBottom = 62;
+          const drawerHeight = Math.min(window.innerHeight * 0.48, 380);
+          const drawerTop = window.innerHeight - drawerHeight;
+          const desiredScreenY = headerBottom + (drawerTop - headerBottom) / 2;
+          const screenCenterY = window.innerHeight / 2;
+          const screenDeltaY = desiredScreenY - screenCenterY;
+          targetY = target.y - (screenDeltaY / targetZoom);
+        } else {
+          targetX = target.x + 50;
+        }
 
         if (typeof fgRef.current.zoom === 'function') {
           fgRef.current.zoom(targetZoom, 0);
