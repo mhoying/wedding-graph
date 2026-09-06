@@ -157,7 +157,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
         </div>
 
         {/* High-Density Single-Line Goal & Rule Toggle Bar */}
-        <div style={{ padding: '8px 16px', background: 'rgba(15, 23, 42, 0.8)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', fontSize: 11 }}>
+        <div style={{ padding: '8px 16px', background: 'rgba(15, 23, 42, 0.8)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', fontSize: 11, flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
               <span style={{ padding: '2px 6px', borderRadius: 4, fontSize: 9, fontWeight: 900, textTransform: 'uppercase', tracking: '0.05em', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)', flexShrink: 0 }}>
@@ -177,14 +177,14 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
           </div>
           
           {showGoalRules && (
-            <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(255, 255, 255, 0.06)', color: '#94a3b8', fontSize: 11 }}>
+            <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(255, 255, 255, 0.06)', color: '#94a3b8', fontSize: 11, whiteSpace: 'normal', wordBreak: 'break-word' }}>
               <strong style={{ color: '#f59e0b' }}>How to Win:</strong> {currentTabObj.howToWin}
             </div>
           )}
         </div>
 
         {/* High-Density Single-Row Leaderboard Table List */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: 12, display: 'flex', flexDirection: 'column', gap: 6, minHeight: 0 }}>
           {currentList.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 16px', color: '#64748b', fontSize: 12 }}>
               <span style={{ fontSize: 24, display: 'block', marginBottom: 6 }}>🪿</span>
@@ -203,7 +203,8 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                     background: isSelf ? 'rgba(245, 158, 11, 0.08)' : 'rgba(30, 41, 59, 0.4)',
                     border: isSelf ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid rgba(255, 255, 255, 0.05)',
                     transition: 'all 0.15s ease',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    flexShrink: 0
                   }}
                 >
                   {/* Single Compact Main Row (Height ~46px) */}
