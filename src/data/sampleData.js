@@ -1238,6 +1238,7 @@ export const SAMPLE_NODES = [
     "side": "Joint",
     "cohort": "Dog Park",
     "relationship": "The Murillo-Davisson Family",
+    "image": "headshots/leslie_davisson.jpg",
     "originallyFrom": "Stockton, CA",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Family",
