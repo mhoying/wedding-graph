@@ -112,11 +112,12 @@ body {
   display: flex;
   align-items: center;
   padding: 6px 12px;
-  width: 170px;
-  min-width: 100px;
-  max-width: 200px;
-  flex: 0 1 auto;
+  width: 220px;
+  min-width: 140px;
+  max-width: 280px;
+  flex: 1 1 auto;
   overflow: hidden;
+  transition: width 0.2s ease, max-width 0.2s ease;
 }
 
 .search-box input {
