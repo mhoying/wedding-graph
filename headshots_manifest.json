@@ -138,6 +138,13 @@
       "crop_size_pct": 0.58,
       "face_selection": "sole_person"
     },
+    "nichole_remmert": {
+      "raw_source": "raw_sources/nichole_remmert__orig_media__1788715326751.jpg",
+      "cx_pct": 0.675,
+      "cy_pct": 0.585,
+      "crop_size_pct": 0.44,
+      "face_selection": "right_woman_facing_camera"
+    },
     "roopak_kandasamy": {
       "raw_source": "raw_sources/roopak_kandasamy__orig_media__1788713903063.jpg",
       "cx_pct": 0.278,
