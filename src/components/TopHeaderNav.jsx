@@ -163,25 +163,25 @@ export default function TopHeaderNav({
           )}
         </div>
 
-        {/* ROW 2: Essential Map & Discovery Tools (Omitted on narrow/half-screen widths as user can use Map Controls Drawer) */}
-        <div className="header-controls-row bottom-row">
-          {/* Map Controls Sheet Trigger Button (ALWAYS VISIBLE) */}
+        {/* ROW 2: Essential Map & Discovery Tools */}
+        <div className="header-controls-row bottom-row" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {/* Map Controls Sheet Trigger Button */}
           <button 
             onClick={onOpenMapControls}
             className="glass-panel btn-icon"
             title="Open Full Map Controls Sheet"
-            style={{ height: 32, padding: '0 8px', gap: 4, fontSize: 11, fontWeight: 800, color: '#f8fafc', background: 'rgba(2, 132, 199, 0.25)', border: '1px solid rgba(56, 189, 248, 0.5)', flexShrink: 0 }}
+            style={{ height: 32, padding: '0 10px', gap: 6, fontSize: 11, fontWeight: 800, color: '#f8fafc', background: 'rgba(2, 132, 199, 0.25)', border: '1px solid rgba(56, 189, 248, 0.5)', flexShrink: 0 }}
           >
             <SlidersHorizontal style={{ width: 13, height: 13, color: '#38bdf8' }} />
             <span>Map Controls</span>
           </button>
 
-          {/* Path Finder Toggle (Omitted when width is constrained) */}
+          {/* Path Finder Toggle */}
           <button 
             onClick={() => setIsPathMode(!isPathMode)}
-            className={`glass-panel btn-icon hide-on-constrained ${isPathMode ? 'active' : ''}`}
+            className={`glass-panel btn-icon ${isPathMode ? 'active' : ''}`}
             title="Calculate Social Distance Path"
-            style={{ height: 32, padding: '0 8px', gap: 4, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
+            style={{ height: 32, padding: '0 10px', gap: 6, fontSize: 11, fontWeight: 700, color: isPathMode ? '#38bdf8' : '#cbd5e1', flexShrink: 0 }}
           >
             <Compass style={{ width: 13, height: 13 }} />
             <span>Path Finder</span>
@@ -208,15 +208,15 @@ export default function TopHeaderNav({
             <span>Championship</span>
           </button>
 
-          {/* Matchmaker Button (Omitted when width is constrained) */}
+          {/* Matchmaker Button */}
           <button 
             onClick={() => setIsMatchmakerOpen(true)}
-            className="glass-panel btn-icon matchmaker-header-btn hide-on-constrained"
+            className="glass-panel btn-icon matchmaker-header-btn"
             title="Find Guest Match Recommendations"
             style={{ 
               height: 32, 
-              padding: '0 8px', 
-              gap: 4, 
+              padding: '0 10px', 
+              gap: 6, 
               fontSize: 11, 
               fontWeight: 800, 
               color: '#34d399', 
