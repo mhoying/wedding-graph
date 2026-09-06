@@ -132,11 +132,11 @@
       "face_selection": "sole_person"
     },
     "nur_e_freedman": {
-      "raw_source": "raw_sources/nur_e_freedman__orig_media__1788681044646.jpg",
+      "raw_source": "raw_sources/nur_e_freedman__orig_media__1788681045.jpg",
       "cx_pct": 0.5,
       "cy_pct": 0.312,
       "crop_size_pct": 0.58,
-      "face_selection": "sole_person"
+      "face_selection": "nur_e_freedman_recropped"
     },
     "nichole_remmert": {
       "raw_source": "raw_sources/nichole_remmert__orig_media__1788715326751.jpg",
