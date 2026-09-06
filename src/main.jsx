@@ -15,6 +15,7 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     console.error("Uncaught React Error Boundary Caught:", error, errorInfo);
+    this.setState({ errorInfo });
   }
 
   handleReset = () => {
@@ -41,7 +42,7 @@ class ErrorBoundary extends Component {
           <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#ec4899', marginBottom: '12px' }}>
             Wedding Guest Universe
           </h2>
-          <p style={{ fontSize: '14px', color: '#94a3b8', maxWidth: '400px', marginBottom: '20px' }}>
+          <p style={{ fontSize: '14px', color: '#94a3b8', maxWidth: '600px', marginBottom: '20px' }}>
             An unexpected error occurred while rendering the interactive canvas layout.
           </p>
           <pre style={{
@@ -51,11 +52,15 @@ class ErrorBoundary extends Component {
             border: '1px solid rgba(239, 68, 68, 0.3)',
             padding: '12px',
             borderRadius: '10px',
-            maxWidth: '500px',
-            overflowX: 'auto',
+            maxWidth: '90vw',
+            maxHeight: '400px',
+            overflow: 'auto',
+            textAlign: 'left',
             marginBottom: '20px'
           }}>
-            {this.state.error?.toString() || 'Unknown Error'}
+            {this.state.error?.stack || this.state.error?.toString() || 'Unknown Error'}
+            {'\n\nComponent Stack:\n'}
+            {this.state.errorInfo?.componentStack || 'No Component Stack'}
           </pre>
           <button 
             onClick={this.handleReset}
