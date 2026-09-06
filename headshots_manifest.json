@@ -76,11 +76,11 @@
       "face_selection": "smiling_woman_peach_saree"
     },
     "jim_merizio": {
-      "raw_source": "raw_sources/jim_merizio__orig_media__1788683718.jpg",
-      "cx_pct": 0.667,
-      "cy_pct": 0.382,
-      "crop_size_pct": 0.65,
-      "face_selection": "jim_merizio_recropped"
+      "raw_source": "raw_sources/jim_merizio__orig_media__1788717433.jpg",
+      "cx_pct": 0.81,
+      "cy_pct": 0.28,
+      "crop_size_pct": 0.4,
+      "face_selection": "user_calibrated"
     },
     "krista_kobeski": {
       "raw_source": "raw_sources/krista_kobeski__orig_public.jpg",
