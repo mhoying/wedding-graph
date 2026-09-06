@@ -1479,6 +1479,8 @@ export default function App() {
           onOpenMapControls={() => setIsMobileControlsOpen(true)}
           isListView={isListView}
           honkCount={(gaggleStore.encounters || []).length}
+          isLightMode={isLightMode}
+          setIsLightMode={setIsLightMode}
         />
       )}
 

@@ -172,7 +172,7 @@ export default function TopHeaderNav({
           {/* List Directory / 3D Canvas Map Toggle Button */}
           <button 
             onClick={() => setIsListView(!isListView)} 
-            className={`glass-panel btn-icon ${isListView ? 'active' : ''}`}
+            className={`glass-panel btn-icon ${isListView ? 'active' : ''} hide-on-constrained`}
             title="Toggle Alphabetical Directory List vs 3D Map View"
             style={{ height: 34, padding: '0 10px', gap: 6, fontSize: 12, fontWeight: 800, color: isListView ? '#f43f5e' : '#38bdf8', background: isListView ? 'rgba(244, 63, 94, 0.2)' : 'rgba(56, 189, 248, 0.15)', border: isListView ? '1px solid #f43f5e' : '1px solid rgba(56, 189, 248, 0.4)', flexShrink: 0 }}
           >

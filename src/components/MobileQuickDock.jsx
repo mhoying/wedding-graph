@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, ClipboardList, Wand2, SlidersHorizontal } from 'lucide-react';
+import { Trophy, ClipboardList, Wand2, SlidersHorizontal, Sun, Moon } from 'lucide-react';
 
 export default function MobileQuickDock({
   onOpenLeaderboard,
@@ -7,7 +7,9 @@ export default function MobileQuickDock({
   onOpenMatchmaker,
   onOpenMapControls,
   isListView,
-  honkCount = 0
+  honkCount = 0,
+  isLightMode,
+  setIsLightMode
 }) {
   return (
     <nav 
@@ -160,6 +162,42 @@ export default function MobileQuickDock({
         </div>
         <span style={{ fontSize: 10, fontWeight: 800, color: '#34d399', letterSpacing: 0.2 }}>Controls</span>
       </button>
+
+      {/* 🌓 Light / Dark Theme Toggle Button */}
+      {setIsLightMode && (
+        <button
+          onClick={() => setIsLightMode(!isLightMode)}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 3,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            color: '#f8fafc'
+          }}
+          title="Toggle Light/Dark Theme"
+        >
+          <div style={{
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            background: isLightMode ? 'rgba(241, 245, 249, 0.9)' : 'rgba(30, 41, 59, 0.9)',
+            border: isLightMode ? '1px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 12px rgba(56, 189, 248, 0.3)'
+          }}>
+            {isLightMode ? <Moon style={{ width: 20, height: 20, color: '#0f172a' }} /> : <Sun style={{ width: 20, height: 20, color: '#38bdf8' }} />}
+          </div>
+          <span style={{ fontSize: 10, fontWeight: 800, color: isLightMode ? '#0f172a' : '#cbd5e1', letterSpacing: 0.2 }}>
+            {isLightMode ? 'Light' : 'Dark'}
+          </span>
+        </button>
+      )}
     </nav>
   );
 }
