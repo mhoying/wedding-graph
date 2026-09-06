@@ -27,11 +27,11 @@
       "face_selection": "smiling_woman_stadium"
     },
     "brian_kim": {
-      "raw_source": "raw_sources/brian_kim__orig_media__1788680580561.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.35,
-      "crop_size_pct": 0.6,
-      "face_selection": "sole_person"
+      "raw_source": "raw_sources/brian_kim__orig_media__1788716008.jpg",
+      "cx_pct": 0.8,
+      "cy_pct": 0.235,
+      "crop_size_pct": 0.35,
+      "face_selection": "right_man_glasses_black_jacket"
     },
     "chuck_tempest": {
       "raw_source": "raw_sources/chuck_tempest__orig_media__1788683453631.jpg",
