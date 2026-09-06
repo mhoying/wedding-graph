@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allGuests, activePlayer, onSelectGuest }) {
+export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allGuests, activePlayer, onSelectGuest, onUpdatePlayer }) {
   const [activeTab, setActiveTab] = useState('masterGaggle');
   const [expandedPlayer, setExpandedPlayer] = useState(null);
   const [showGoalRules, setShowGoalRules] = useState(false);
@@ -113,9 +113,29 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
             </div>
             <div>
               <h2 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#f8fafc' }}>Live Gaggle Leaderboard</h2>
-              <span style={{ fontSize: 11, color: '#94a3b8' }}>
-                Playing as <span style={{ color: '#f59e0b', fontWeight: 700 }}>{activePlayer}</span>
-              </span>
+              <div style={{ fontSize: 11, color: '#94a3b8', display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
+                <span>Playing as <span style={{ color: '#f59e0b', fontWeight: 700 }}>{activePlayer}</span></span>
+                <button
+                  onClick={() => {
+                    const newName = window.prompt('🪿 Enter your player name:', activePlayer !== 'Guest Goose' ? activePlayer : '');
+                    if (newName && newName.trim() && onUpdatePlayer) {
+                      onUpdatePlayer(newName.trim());
+                    }
+                  }}
+                  style={{
+                    background: 'rgba(245, 158, 11, 0.15)',
+                    border: '1px solid rgba(245, 158, 11, 0.3)',
+                    color: '#f59e0b',
+                    borderRadius: 6,
+                    padding: '1px 6px',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Change Name
+                </button>
+              </div>
             </div>
           </div>
           <button

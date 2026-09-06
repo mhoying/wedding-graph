@@ -186,17 +186,31 @@ export default function App() {
   const handleLogHonk = (targetGuest) => {
     if (!targetGuest) return;
 
+    let playerToUse = activePlayer;
+    if (!playerToUse || playerToUse === 'Guest Goose') {
+      const guestNames = nodes.filter(n => n && n.type === 'GUEST').map(n => n.name);
+      const promptText = `🪿 Who are you playing as?\n\nEnter your name (or pick from the guest list):`;
+      const enteredName = window.prompt(promptText, '');
+      if (!enteredName || !enteredName.trim()) {
+        return; // User canceled prompt
+      }
+
+      playerToUse = enteredName.trim();
+      setActivePlayer(playerToUse);
+      setActivePlayerState(playerToUse);
+    }
+
     // Calculate baseline rank before honk
     const beforeStats = calculateGooseLeaderboards(gaggleStore.encounters || [], gaggleStore.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
-    const beforeRank = (beforeStats.masterGaggleLeaderboard || []).findIndex(p => p.name === activePlayer) + 1;
+    const beforeRank = (beforeStats.masterGaggleLeaderboard || []).findIndex(p => p.name === playerToUse) + 1;
 
-    const updated = logHonkEncounter(activePlayer, targetGuest, nodes);
+    const updated = logHonkEncounter(playerToUse, targetGuest, nodes);
     if (updated) {
       setGaggleStore(updated);
 
       // Calculate new rank after honk
       const afterStats = calculateGooseLeaderboards(updated.encounters || [], updated.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
-      const afterRank = (afterStats.masterGaggleLeaderboard || []).findIndex(p => p.name === activePlayer) + 1;
+      const afterRank = (afterStats.masterGaggleLeaderboard || []).findIndex(p => p.name === playerToUse) + 1;
       const rankMsg = (beforeRank > 0 && afterRank < beforeRank) 
         ? ` 🎉 RANK UP! You moved up to #${afterRank}!` 
         : ` (Current Rank: #${afterRank || 1})`;
@@ -1773,6 +1787,10 @@ export default function App() {
         gaggleData={gaggleLeaderboards}
         allGuests={nodes.filter(n => n && n.type === 'GUEST')}
         activePlayer={activePlayer}
+        onUpdatePlayer={(name) => {
+          setActivePlayer(name);
+          setActivePlayerState(name);
+        }}
         onSelectGuest={(guestName) => {
           const found = nodes.find(n => n && n.name === guestName);
           if (found) {
