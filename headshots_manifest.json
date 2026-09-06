@@ -77,9 +77,9 @@
     },
     "jim_merizio": {
       "raw_source": "raw_sources/jim_merizio__orig_media__1788717433.jpg",
-      "cx_pct": 0.72,
+      "cx_pct": 0.74,
       "cy_pct": 0.3,
-      "crop_size_pct": 0.42,
+      "crop_size_pct": 0.4,
       "face_selection": "user_calibrated"
     },
     "krista_kobeski": {
