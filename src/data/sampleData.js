@@ -1061,6 +1061,7 @@ export const SAMPLE_NODES = [
     "id": "nur_e_freedman",
     "name": "Nur-e Rahman Freedman",
     "type": "GUEST",
+    "image": "/headshots/nur_e_freedman.jpg",
     "side": "Maureen",
     "cohort": "Lehigh",
     "relationship": "The Freedman Family",
