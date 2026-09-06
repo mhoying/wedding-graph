@@ -306,6 +306,15 @@
       "face_h_pct": 0.35,
       "crop_size_px": 237,
       "face_selection": "node_canvas_calibrated"
+    },
+    "katie_conniff": {
+      "raw_source": "raw_sources/katie_conniff__orig_media.jpg",
+      "cx_pct": 0.44,
+      "cy_pct": 0.41,
+      "face_h_px": 280,
+      "face_h_pct": 0.2734,
+      "crop_size_px": 474,
+      "face_selection": "node_canvas_calibrated"
     }
   }
 }
