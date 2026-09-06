@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Edit3, Ghost, Landmark, Home, MapPin, Users, Sparkles } from 'lucide-react';
+import { X, Edit3, Ghost, Landmark, Home, MapPin, Users, Sparkles, Camera, Upload } from 'lucide-react';
 import { normalizeName } from '../utils/gaggleStore';
 
 export default function GuestProfileDrawer({
@@ -36,7 +36,8 @@ export default function GuestProfileDrawer({
   getNodeColor,
   onLogHonk,
   gaggleStore,
-  activePlayer
+  activePlayer,
+  onPhotoUpload
 }) {
   const connectedNeighbors = React.useMemo(() => {
     if (!selectedNode || !links || !nodes) return [];
@@ -117,17 +118,86 @@ export default function GuestProfileDrawer({
           </button>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <h2 className="drawer-title" style={{ margin: 0 }}>{selectedNode.name}</h2>
-          {!isEditingDrawer && (
-            <button 
-              onClick={() => setIsEditingDrawer(true)}
-              className="btn-mode"
-              style={{ fontSize: 11, padding: '4px 10px', borderRadius: 9999, background: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', gap: 4 }}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
+          <div style={{ position: 'relative', width: 68, height: 68, flexShrink: 0 }}>
+            {selectedNode.image ? (
+              <img 
+                src={selectedNode.image} 
+                alt={selectedNode.name} 
+                style={{ width: 68, height: 68, borderRadius: '50%', objectFit: 'cover', border: `3px solid ${nodeColor}` }} 
+              />
+            ) : (
+              <div 
+                style={{ width: 68, height: 68, borderRadius: '50%', backgroundColor: nodeColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 800, color: '#fff', border: '3px solid rgba(255,255,255,0.2)' }}
+              >
+                {selectedNode.name ? selectedNode.name.split(' ').map(n => n[0]).slice(0, 2).join('') : '?'}
+              </div>
+            )}
+            <label 
+              style={{
+                position: 'absolute',
+                bottom: -2,
+                right: -2,
+                background: '#0284c7',
+                color: '#fff',
+                width: 26,
+                height: 26,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                border: '2px solid #0f172a'
+              }}
+              title="Upload custom headshot photo"
             >
-              <Edit3 style={{ width: 12, height: 12 }} /> Edit Profile
-            </button>
-          )}
+              <Camera style={{ width: 13, height: 13 }} />
+              <input 
+                type="file" 
+                accept="image/*" 
+                style={{ display: 'none' }} 
+                onChange={(e) => {
+                  const file = e.target.files && e.target.files[0];
+                  if (file && typeof onPhotoUpload === 'function') {
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                      const img = new Image();
+                      img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 400;
+                        canvas.height = 400;
+                        const ctx = canvas.getContext('2d');
+                        const minDim = Math.min(img.width, img.height);
+                        const sx = (img.width - minDim) / 2;
+                        const sy = (img.height - minDim) / 2;
+                        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, 400, 400);
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+                        onPhotoUpload(selectedNode.id, dataUrl);
+                      };
+                      img.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+            </label>
+          </div>
+
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 className="drawer-title" style={{ margin: 0, fontSize: 20 }}>{selectedNode.name}</h2>
+              {!isEditingDrawer && (
+                <button 
+                  onClick={() => setIsEditingDrawer(true)}
+                  className="btn-mode"
+                  style={{ fontSize: 11, padding: '4px 10px', borderRadius: 9999, background: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', gap: 4 }}
+                >
+                  <Edit3 style={{ width: 12, height: 12 }} /> Edit Profile
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         {!isEditingDrawer ? (

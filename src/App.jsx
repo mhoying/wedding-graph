@@ -988,6 +988,34 @@ export default function App() {
     await submitGuestProposalToGithub(proposal);
   };
 
+  const handleGuestPhotoUpload = useCallback((targetId, dataUrl) => {
+    if (!targetId || !dataUrl) return;
+    const targetNode = nodes.find(n => n.id === targetId) || (selectedNode && selectedNode.id === targetId ? selectedNode : null);
+    if (!targetNode) return;
+
+    targetNode.image = dataUrl;
+
+    const updated = [...nodes];
+    setNodes(updated);
+    setSelectedNode({ ...targetNode });
+
+    try {
+      localStorage.setItem('wedding_graph_nodes_v95', JSON.stringify(updated));
+    } catch (e) {}
+
+    setCopyToast(`📷 Photo updated for ${targetNode.name}!`);
+    setTimeout(() => setCopyToast(''), 3500);
+
+    const proposal = {
+      id: `fb_${Date.now()}`,
+      targetId: targetNode.id,
+      targetName: targetNode.name,
+      category: 'Profile Picture / Photo Upload',
+      timestamp: new Date().toISOString()
+    };
+    submitGuestProposalToGithub(proposal);
+  }, [nodes, selectedNode, submitGuestProposalToGithub]);
+
   // BFS Path Finder Engine
   const computeShortestPath = useCallback((startId, endId) => {
     if (!startId || !endId || startId === endId) return [];
@@ -1860,6 +1888,7 @@ export default function App() {
         onLogHonk={handleLogHonk}
         gaggleStore={gaggleStore}
         activePlayer={activePlayer}
+        onPhotoUpload={handleGuestPhotoUpload}
       />
 
       {/* The Grand Gaggle Championship Live Leaderboard Modal */}
