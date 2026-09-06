@@ -229,10 +229,18 @@ export default function App() {
       setGaggleStore({ ...updated });
 
       // 3. Confirm encounter is verified in local store before updating drawer UI badge
-      const isConfirmed = (updated.encounters || []).some(
-        e => String(e.actor || '').toLowerCase().trim() === String(playerToUse || '').toLowerCase().trim() &&
-             String(e.target || '').toLowerCase().trim() === String(targetGuest.name || '').toLowerCase().trim()
-      );
+      const actName = String(playerToUse || '').toLowerCase().trim();
+      const tgtName = String(targetGuest.name || '').toLowerCase().trim();
+
+      const isConfirmed = (updated.encounters || []).some(e => {
+        const eAct = String(e.actor || '').toLowerCase().trim();
+        const eTgt = String(e.target || '').toLowerCase().trim();
+
+        const actMatches = eAct === actName || (actName && (eAct.includes(actName) || actName.includes(eAct)));
+        const tgtMatches = eTgt === tgtName || (tgtName && (eTgt.includes(tgtName) || tgtName.includes(eTgt)));
+
+        return actMatches && tgtMatches;
+      });
 
       if (isConfirmed) {
         // Calculate new rank after confirmed honk
