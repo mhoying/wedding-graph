@@ -734,72 +734,10 @@ export default function App() {
     setEditHobbies(editHobbies.filter(h => h !== tag));
   };
 
-  const handleSaveProfileEdits = () => {
+  const handleSaveProfileEdits = async () => {
     if (!selectedNode) return;
-    if (!isAdmin) {
-      const changeSummary = [];
-      if (editName && editName !== (selectedNode.name || '')) {
-        changeSummary.push(`Name: ${editName}`);
-      }
-      if (editCurrentlyLivesIn && editCurrentlyLivesIn !== (selectedNode.currentlyLivesIn || '')) {
-        changeSummary.push(`Lives In: ${editCurrentlyLivesIn}`);
-      }
-      if (editOriginallyFrom && editOriginallyFrom !== (selectedNode.originallyFrom || '')) {
-        changeSummary.push(`Originally From: ${editOriginallyFrom}`);
-      }
-      if (editHobbies.join(', ') !== (selectedNode.hobbies || []).join(', ')) {
-        changeSummary.push(`Hobbies: ${editHobbies.join(', ')}`);
-      }
-      if (editCohort && editCohort !== (selectedNode.cohort || '')) {
-        changeSummary.push(`Group: ${editCohort}`);
-      }
-      if (editRelationship && editRelationship !== (selectedNode.relationship || '')) {
-        changeSummary.push(`Relationship: ${editRelationship}`);
-      }
 
-      const proposalNote = changeSummary.length > 0 
-        ? `Proposed Changes: ${changeSummary.join(' | ')}`
-        : `Proposed profile update for ${selectedNode.name}`;
-
-      const proposal = {
-        id: `fb_${Date.now()}`,
-        targetId: selectedNode.id,
-        targetName: editName || selectedNode.name,
-        category: 'Profile Edit Proposal',
-        proposedHobbies: editHobbies.join(', '),
-        proposedLocation: editCurrentlyLivesIn,
-        proposedCohort: editCohort,
-        proposedSide: editSide,
-        proposedRelationship: editRelationship,
-        note: proposalNote,
-        status: 'PENDING',
-        timestamp: new Date().toISOString()
-      };
-      submitGuestProposalToGithub(proposal);
-      setCopyToast('🚀 Proposal Sent to Host Queue for Approval!');
-      setTimeout(() => setCopyToast(''), 3500);
-      setIsEditingDrawer(false);
-      return;
-    }
-
-    const updated = nodes.map(n => {
-      if (n.id === selectedNode.id) {
-        return {
-          ...n,
-          name: editName || n.name,
-          relationship: editRelationship,
-          originallyFrom: editOriginallyFrom,
-          currentlyLivesIn: editCurrentlyLivesIn,
-          cohort: editCohort,
-          side: editSide,
-          familyStatus: editFamilyStatus,
-          hobbies: editHobbies
-        };
-      }
-      return n;
-    });
-    setNodes(updated);
-    setSelectedNode({
+    const updatedNode = {
       ...selectedNode,
       name: editName || selectedNode.name,
       relationship: editRelationship,
@@ -809,13 +747,51 @@ export default function App() {
       side: editSide,
       familyStatus: editFamilyStatus,
       hobbies: editHobbies
-    });
+    };
+
+    // 1. Immediately update local React state and selectedNode so UI reflects changes instantly
+    const updated = nodes.map(n => n.id === selectedNode.id ? updatedNode : n);
+    setNodes(updated);
+    setSelectedNode(updatedNode);
+
     try {
       localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(updated));
     } catch (e) {}
-    const jsContent = generateSampleDataJsContent(updated, links);
-    pushToGithubRepo(jsContent, `Update profile dataset for ${selectedNode.name}`, '', 'src/data/sampleData.js');
+
+    const changeSummary = [];
+    if (editName && editName !== (selectedNode.name || '')) changeSummary.push(`Name: ${editName}`);
+    if (editCurrentlyLivesIn && editCurrentlyLivesIn !== (selectedNode.currentlyLivesIn || '')) changeSummary.push(`Lives In: ${editCurrentlyLivesIn}`);
+    if (editOriginallyFrom && editOriginallyFrom !== (selectedNode.originallyFrom || '')) changeSummary.push(`Originally From: ${editOriginallyFrom}`);
+    if (editHobbies.join(', ') !== (selectedNode.hobbies || []).join(', ')) changeSummary.push(`Hobbies: ${editHobbies.join(', ')}`);
+    if (editCohort && editCohort !== (selectedNode.cohort || '')) changeSummary.push(`Group: ${editCohort}`);
+    if (editRelationship && editRelationship !== (selectedNode.relationship || '')) changeSummary.push(`Relationship: ${editRelationship}`);
+
+    const proposalNote = changeSummary.length > 0 
+      ? `Proposed Changes: ${changeSummary.join(' | ')}`
+      : `Profile update for ${selectedNode.name}`;
+
+    const proposal = {
+      id: `fb_${Date.now()}`,
+      targetId: selectedNode.id,
+      targetName: editName || selectedNode.name,
+      category: 'Profile Edit Proposal',
+      proposedHobbies: editHobbies.join(', '),
+      proposedLocation: editCurrentlyLivesIn,
+      proposedCohort: editCohort,
+      proposedSide: editSide,
+      proposedRelationship: editRelationship,
+      note: proposalNote,
+      status: 'PENDING',
+      timestamp: new Date().toISOString()
+    };
+
+    setFeedbackList(prev => [proposal, ...prev]);
     setIsEditingDrawer(false);
+    setCopyToast('✨ Profile updated & auto-saved to database!');
+    setTimeout(() => setCopyToast(''), 3500);
+
+    // 2. Submit to GitHub Issues to trigger automated zero-moderation workflow
+    await submitGuestProposalToGithub(proposal);
   };
 
   // BFS Path Finder Engine
@@ -1065,13 +1041,13 @@ export default function App() {
     setFeedbackList(prev => [newFeedback, ...prev]);
     setIsFeedbackModalOpen(false);
     setFeedbackNote('');
-    setCopyToast('🚀 Submitting Suggestion to Host Queue...');
+    setCopyToast('⚡ Submitting edit...');
 
     // Real-time GitHub Issue creation so all hosts receive proposals across all devices!
     await submitGuestProposalToGithub(newFeedback);
 
-    setCopyToast('Suggestion Submitted to Hosts!');
-    setTimeout(() => setCopyToast(''), 3000);
+    setCopyToast('✨ Profile edit submitted & auto-saved!');
+    setTimeout(() => setCopyToast(''), 3500);
   };
 
   return (
