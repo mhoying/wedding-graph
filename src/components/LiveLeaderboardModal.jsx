@@ -173,7 +173,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
               <span style={{ fontSize: 9 }}>{showGoalRules ? '▲' : '▼'}</span>
             </button>
           </div>
-          <div style={{ color: '#94a3b8', fontSize: 11, fontWeight: 500, lineHeight: 1.35 }}>
+          <div style={{ color: '#94a3b8', fontSize: 11, fontWeight: 500, lineHeight: 1.4, whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
             {currentTabObj.goal}
           </div>
           
