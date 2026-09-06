@@ -118,11 +118,11 @@
       "face_selection": "sole_person"
     },
     "michelle_preston": {
-      "raw_source": "raw_sources/michelle_preston__orig_media__1788680793468.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.293,
-      "crop_size_pct": 0.62,
-      "face_selection": "sole_person"
+      "raw_source": "raw_sources/michelle_preston__orig_media__1788716008.jpg",
+      "cx_pct": 0.54,
+      "cy_pct": 0.295,
+      "crop_size_pct": 0.35,
+      "face_selection": "center_woman_short_hair_plaid_shirt"
     },
     "nishat_shaikh": {
       "raw_source": "raw_sources/nishat_shaikh__orig_media__1788683256461.jpg",
