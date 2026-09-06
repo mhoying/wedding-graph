@@ -1093,6 +1093,7 @@ export default function ForceCanvas({
         }
 
         const hull = getConvexHull2D(points);
+        if (!hull || hull.length === 0) return;
 
         let clusterColor = isCoupleCluster ? '#38bdf8' : DYNAMIC_CLUSTER_COLORS[colorIdx % DYNAMIC_CLUSTER_COLORS.length];
         if (COHORT_COLORS[cleanLabel]) {
@@ -1127,18 +1128,15 @@ export default function ForceCanvas({
 
         if (isCoupleCluster) {
           // Triple layer glowing solid Cyan border matching Legend theme!
-          // 1. Outer Cyan Aura Glow
           ctx.lineWidth = 18.0 / globalScale;
           ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
           ctx.setLineDash([]);
           ctx.stroke();
 
-          // 2. Main Deep Sky Cyan Border Line
           ctx.lineWidth = 7.0 / globalScale;
           ctx.strokeStyle = '#0284c7';
           ctx.stroke();
 
-          // 3. Inner Electric Cyan Accent Stroke
           ctx.lineWidth = 3.0 / globalScale;
           ctx.strokeStyle = '#7dd3fc';
           ctx.stroke();
@@ -1150,7 +1148,8 @@ export default function ForceCanvas({
         }
 
         let topPoint = hull[0];
-        hull.forEach(p => { if (p.y < topPoint.y) topPoint = p; });
+        if (!topPoint) return;
+        hull.forEach(p => { if (p && typeof p.y === 'number' && p.y < topPoint.y) topPoint = p; });
 
         let labelX = topPoint.x;
         let labelY = topPoint.y - 18 * nodeScaleMultiplier;

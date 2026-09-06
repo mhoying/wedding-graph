@@ -6,8 +6,11 @@
  * @returns {Array<{x: number, y: number}>}
  */
 export function getConvexHull2D(points) {
-  if (!points || points.length <= 2) return points || [];
-  const sorted = [...points].sort((a, b) => a.x === b.x ? a.y - b.y : a.x - b.x);
+  if (!points || !Array.isArray(points) || points.length <= 2) return Array.isArray(points) ? points : [];
+  const validPoints = points.filter(p => p && typeof p.x === 'number' && typeof p.y === 'number');
+  if (validPoints.length <= 2) return validPoints;
+
+  const sorted = validPoints.sort((a, b) => a.x === b.x ? a.y - b.y : a.x - b.x);
   const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
 
   const lower = [];
