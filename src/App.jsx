@@ -993,6 +993,9 @@ export default function App() {
     const targetNode = nodes.find(n => n.id === targetId) || (selectedNode && selectedNode.id === targetId ? selectedNode : null);
     if (!targetNode) return;
 
+    const relativeImagePath = `headshots/${targetNode.id}.jpg`;
+    const repoFilePath = `public/${relativeImagePath}`;
+
     targetNode.image = dataUrl;
 
     const updated = [...nodes];
@@ -1003,12 +1006,16 @@ export default function App() {
       localStorage.setItem('wedding_graph_nodes_v95', JSON.stringify(updated));
     } catch (e) {}
 
-    setCopyToast(`📷 Photo updated & deploying live for all users!`);
+    setCopyToast(`📷 Photo saved to public/headshots/ & deploying live!`);
     setTimeout(() => setCopyToast(''), 3500);
 
-    // Auto-commit dataset directly to GitHub repo so ALL users see the photo globally
+    // 1. Upload binary JPG directly into public/headshots/<guest_id>.jpg in GitHub repo
+    await pushToGithubRepo(dataUrl, `feat(headshots): upload headshot file for ${targetNode.name}`, '', repoFilePath, true);
+
+    // 2. Update node image reference to relative path and push sampleData.js
+    targetNode.image = relativeImagePath;
     const sampleDataCode = generateSampleDataJsContent(updated, links);
-    await pushToGithubRepo(sampleDataCode, `feat(headshots): update guest photo for ${targetNode.name}`);
+    await pushToGithubRepo(sampleDataCode, `feat(data): link public/headshots/${targetNode.id}.jpg for ${targetNode.name}`);
   }, [nodes, links, selectedNode]);
 
   // BFS Path Finder Engine

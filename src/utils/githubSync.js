@@ -26,7 +26,7 @@ export function generateGuestsCsvContent(nodes) {
   return lines.join('\n');
 }
 
-export async function pushToGithubRepo(contentString, commitMessage = 'Update wedding guest dataset via Host Admin Suite', token = '', targetPath = 'src/data/sampleData.js') {
+export async function pushToGithubRepo(contentString, commitMessage = 'Update wedding guest dataset via Host Admin Suite', token = '', targetPath = 'src/data/sampleData.js', isRawBase64 = false) {
   const repoOwner = 'mhoying';
   const repoName = 'wedding-graph';
   const filePath = targetPath || 'src/data/sampleData.js';
@@ -52,15 +52,20 @@ export async function pushToGithubRepo(contentString, commitMessage = 'Update we
       sha = fileData.sha;
     }
 
-    // 2. Base64 encode content
-    const encoder = new TextEncoder();
-    const data = encoder.encode(contentString);
-    let binary = '';
-    const bytes = new Uint8Array(data);
-    for (let i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
+    // 2. Base64 encode content (or use raw base64 string if image upload)
+    let base64Content;
+    if (isRawBase64) {
+      base64Content = contentString.replace(/^data:image\/\w+;base64,/, '');
+    } else {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(contentString);
+      let binary = '';
+      const bytes = new Uint8Array(data);
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      base64Content = btoa(binary);
     }
-    const base64Content = btoa(binary);
 
     // 3. Commit & Push PUT request to GitHub Contents API
     const putRes = await fetch(getFileUrl, {
