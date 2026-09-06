@@ -101,7 +101,31 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
   };
 
   saveGaggleData(updatedStore);
+
+  // Cross-Device Remote Sync via GitHub API Issue Submission
+  syncEncounterToGithub(newEncounter || { actor: actorName, target: targetGuest.name, targetCohort: targetGuest.cohort });
+
   return updatedStore;
+}
+
+// Push encounter to remote GitHub Issues endpoint for cross-device sharing
+export async function syncEncounterToGithub(encounter) {
+  try {
+    const payload = {
+      title: `🪿 Honk: ${encounter.actor} met ${encounter.target}`,
+      body: `[HONK_ENCOUNTER_v1]\nActor: ${encounter.actor}\nTarget: ${encounter.target}\nCohort: ${encounter.targetCohort || 'Other'}\nTimestamp: ${Date.now()}`
+    };
+    await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('Remote sync fetch notice:', err);
+  }
 }
 
 // Extract City/State from raw location string
