@@ -86,17 +86,16 @@ export default function DynamicColorLegend({
       className="no-print"
       style={{
         position: 'fixed',
-        left: isMobileViewport ? '16px' : '24px',
-        right: 'auto',
-        bottom: isMobileViewport ? '95px' : '24px', // Placed bottom-left on desktop (opposite FAB) and bottom: 95px on mobile (above Quick-Dock)
-        zIndex: 8500, // Below drawer (9000) & modal (9500), but well above canvas (10)
-        maxWidth: isMobileViewport ? 'calc(100vw - 32px)' : '380px',
-        background: isLightMode ? 'rgba(255, 255, 255, 0.92)' : 'rgba(15, 23, 42, 0.90)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: isLightMode ? '1px solid rgba(0, 0, 0, 0.12)' : '1px solid rgba(255, 255, 255, 0.15)',
-        borderRadius: '14px',
-        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+        bottom: isMobileViewport ? 95 : 24,
+        left: isMobileViewport ? 16 : 24,
+        zIndex: 8500,
+        maxWidth: isMobileViewport ? 'calc(100vw - 32px)' : 320,
+        background: isLightMode ? 'rgba(255, 255, 255, 0.92)' : 'rgba(15, 23, 42, 0.92)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        border: isLightMode ? '1px solid rgba(0, 0, 0, 0.15)' : '1px solid rgba(56, 189, 248, 0.3)',
+        borderRadius: '16px',
+        boxShadow: '0 12px 35px rgba(0, 0, 0, 0.65)',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden'
       }}
