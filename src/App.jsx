@@ -723,9 +723,9 @@ export default function App() {
   }, [selectedNode]);
 
   const handleAddInterestTag = (tagToAdd) => {
-    const tag = (typeof tagToAdd === 'string' && tagToAdd.trim()) ? tagToAdd.trim() : newInterestInput.trim();
+    const tag = (typeof tagToAdd === 'string' && tagToAdd.trim()) ? tagToAdd.trim() : (newInterestInput || '').trim();
     if (tag && !editHobbies.includes(tag)) {
-      setEditHobbies([...editHobbies, tag]);
+      setEditHobbies(prev => [...prev, tag]);
       setNewInterestInput('');
     }
   };

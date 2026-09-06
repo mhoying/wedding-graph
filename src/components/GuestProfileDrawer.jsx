@@ -337,7 +337,7 @@ export default function GuestProfileDrawer({
                 />
                 <button 
                   type="button"
-                  onClick={handleAddInterestTag}
+                  onClick={() => handleAddInterestTag()}
                   style={{ padding: '6px 12px', borderRadius: 8, background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 11, fontWeight: 700 }}
                 >
                   Add
