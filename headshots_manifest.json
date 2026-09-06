@@ -41,11 +41,11 @@
       "face_selection": "smiling_man_right_dress_shirt_purple_tie"
     },
     "george_sun": {
-      "raw_source": "raw_sources/george_sun__orig_media__1788716160.jpg",
+      "raw_source": "raw_sources/george_sun__orig_media__1788716391.jpg",
       "cx_pct": 0.575,
-      "cy_pct": 0.27,
-      "crop_size_pct": 0.3,
-      "face_selection": "smiling_man_right_light_suit_blue_tie"
+      "cy_pct": 0.32,
+      "crop_size_pct": 0.36,
+      "face_selection": "smiling_man_right_light_suit_blue_tie_centered"
     },
     "james_freedman": {
       "raw_source": "raw_sources/james_freedman__orig_commit_ce224c3.jpg",
