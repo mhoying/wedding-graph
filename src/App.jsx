@@ -200,32 +200,40 @@ export default function App() {
     executeHonk(playerToUse, targetGuest);
   };
 
-  const executeHonk = (playerToUse, targetGuest) => {
+  const executeHonk = async (playerToUse, targetGuest) => {
     // Calculate baseline rank before honk
     const beforeStats = calculateGooseLeaderboards(gaggleStore.encounters || [], gaggleStore.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
     const beforeRank = (beforeStats.masterGaggleLeaderboard || []).findIndex(p => p.name === playerToUse) + 1;
 
     const updated = logHonkEncounter(playerToUse, targetGuest, nodes);
     if (updated) {
-      // Set activePlayer state to ensure instantaneous alignment across drawer checks
+      // 1. Persist active player identity
       setActivePlayer(playerToUse);
       setActivePlayerState(playerToUse);
 
-      // Force a fresh object reference so React re-renders all dependent views (GuestProfileDrawer, LiveLeaderboard)
+      // 2. Update store state with fresh object reference to force re-render
       setGaggleStore({ ...updated });
 
-      // Calculate new rank after honk
-      const afterStats = calculateGooseLeaderboards(updated.encounters || [], updated.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
-      const afterRank = (afterStats.masterGaggleLeaderboard || []).findIndex(p => p.name === playerToUse) + 1;
-      const rankMsg = (beforeRank > 0 && afterRank < beforeRank) 
-        ? ` 🎉 RANK UP! You moved up to #${afterRank}!` 
-        : ` (Current Rank: #${afterRank || 1})`;
+      // 3. Confirm encounter is verified in local store before updating drawer UI badge
+      const isConfirmed = (updated.encounters || []).some(
+        e => String(e.actor || '').toLowerCase().trim() === String(playerToUse || '').toLowerCase().trim() &&
+             String(e.target || '').toLowerCase().trim() === String(targetGuest.name || '').toLowerCase().trim()
+      );
 
-      setCopyToast(`🪿 HONK! Encounter logged with ${targetGuest.name}! +1 Flock!${rankMsg}`);
-      setTimeout(() => setCopyToast(''), 5000);
+      if (isConfirmed) {
+        // Calculate new rank after confirmed honk
+        const afterStats = calculateGooseLeaderboards(updated.encounters || [], updated.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
+        const afterRank = (afterStats.masterGaggleLeaderboard || []).findIndex(p => p.name === playerToUse) + 1;
+        const rankMsg = (beforeRank > 0 && afterRank < beforeRank) 
+          ? ` 🎉 RANK UP! You moved up to #${afterRank}!` 
+          : ` (Current Rank: #${afterRank || 1})`;
 
-      // Update selectedNode state reference to trigger re-render of drawer badge
-      setSelectedNode({ ...targetGuest });
+        setCopyToast(`🪿 HONK CONFIRMED! Encounter logged with ${targetGuest.name}! +1 Flock!${rankMsg}`);
+        setTimeout(() => setCopyToast(''), 5000);
+
+        // Update selectedNode object reference to trigger UI transformation to green badge
+        setSelectedNode({ ...targetGuest });
+      }
     }
   };
 
