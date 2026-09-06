@@ -1365,16 +1365,18 @@ export default function App() {
         </div>
       )}
 
-      {/* Floating Micro-Dock Map Controls Trigger & Sheet (Rendered on all viewports when no profile drawer is open) */}
+      {/* Floating Micro-Dock Map Controls Sheet (Triggered via Quick Dock on mobile or FAB on desktop) */}
       {!selectedNode && (
         <>
-          <button 
-            className="mobile-drawer-toggle-fab no-print"
-            onClick={() => setIsMobileControlsOpen(true)}
-          >
-            <SlidersHorizontal style={{ width: 16, height: 16 }} />
-            <span>Map Controls</span>
-          </button>
+          {!isMobileViewport && (
+            <button 
+              className="mobile-drawer-toggle-fab no-print"
+              onClick={() => setIsMobileControlsOpen(true)}
+            >
+              <SlidersHorizontal style={{ width: 16, height: 16 }} />
+              <span>Map Controls</span>
+            </button>
+          )}
 
           <MobileControlsSheet 
             isOpen={isMobileControlsOpen}

@@ -546,10 +546,10 @@ body {
   }
 
   .legend-bar {
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    max-width: calc(100vw - 24px);
+    bottom: 95px !important;
+    left: 10px;
+    right: 10px;
+    max-width: calc(100vw - 20px);
   }
 }
 
