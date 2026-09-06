@@ -195,11 +195,11 @@
       "face_selection": "smiling_man_right_white_vneck_hiking"
     },
     "danielle_sullivan": {
-      "raw_source": "raw_sources/danielle_sullivan__orig_media__1788717129.jpg",
+      "raw_source": "raw_sources/danielle_sullivan__orig_media__1788717156.jpg",
       "cx_pct": 0.5,
       "cy_pct": 0.5,
       "crop_size_pct": 1.0,
-      "face_selection": "color_corrected_woman_white_dress"
+      "face_selection": "sharpened_color_corrected_woman_white_dress"
     }
   }
 }
