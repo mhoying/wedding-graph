@@ -38,16 +38,16 @@ export default function App() {
   const fgRef = useRef();
   const imageCacheRef = useRef({});
 
-  // Core Data State (Loads real 75-guest wedding dataset by default)
+  // Core Data State (Purges old localStorage cache on new build deployment)
   useEffect(() => {
-    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v95', 'wedding_graph_nodes_v85', 'wedding_graph_nodes_v3'].forEach(k => {
+    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v100', 'wedding_graph_nodes_v95', 'wedding_graph_nodes_v85', 'wedding_graph_nodes_v3'].forEach(k => {
       try { localStorage.removeItem(k); } catch(e) {}
     });
   }, []);
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v100');
+      const saved = localStorage.getItem('wedding_graph_nodes_v105');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -1003,7 +1003,7 @@ export default function App() {
     setSelectedNode({ ...targetNode });
 
     try {
-      localStorage.setItem('wedding_graph_nodes_v95', JSON.stringify(updated));
+      localStorage.setItem('wedding_graph_nodes_v105', JSON.stringify(updated));
     } catch (e) {}
 
     setCopyToast(`📷 Photo saved to public/headshots/ & deploying live!`);
