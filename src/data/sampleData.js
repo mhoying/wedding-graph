@@ -365,6 +365,7 @@ export const SAMPLE_NODES = [
   {
     "id": "roopak_kandasamy",
     "name": "Roopak Kandasamy",
+    "image": "headshots/roopak_kandasamy.jpg",
     "type": "GUEST",
     "side": "Maureen",
     "cohort": "Bay FC",
