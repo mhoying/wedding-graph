@@ -167,11 +167,11 @@
       "face_selection": "smiling_man_black_shirt"
     },
     "steve_nares": {
-      "raw_source": "raw_sources/steve_nares__orig_media__1788683169013.jpg",
-      "cx_pct": 0.693,
-      "cy_pct": 0.399,
-      "crop_size_pct": 0.48,
-      "face_selection": "right_person_duo"
+      "raw_source": "raw_sources/steve_nares__orig_media__1788717497.jpg",
+      "cx_pct": 0.585,
+      "cy_pct": 0.45,
+      "crop_size_pct": 0.45,
+      "face_selection": "smiling_bald_man_right_navy_shirt"
     },
     "toyo_tsujino": {
       "raw_source": "raw_sources/toyo_tsujino__orig_media__1788685317722.jpg",
