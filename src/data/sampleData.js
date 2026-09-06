@@ -1,4 +1,5 @@
 // Real Wedding Guest List Data - Auto-updated via Host Admin Suite
+export const BUILD_TIMESTAMP = Date.now();
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
   "Cornell": "#ef4444",
@@ -1392,6 +1393,7 @@ export const SAMPLE_NODES = [
   {
     "id": "george_sun",
     "name": "George Sun",
+    "image": "headshots/george_sun.jpg",
     "type": "GUEST",
     "side": "Matt",
     "cohort": "Cornell",
@@ -1765,6 +1767,7 @@ export const SAMPLE_NODES = [
   {
     "id": "toyo_tsujino",
     "name": "Toyo Tsujino",
+    "image": "headshots/toyo_tsujino.jpg",
     "type": "GUEST",
     "side": "Matt",
     "cohort": "Cornell",

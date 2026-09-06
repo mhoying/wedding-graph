@@ -3,7 +3,7 @@ import ForceGraph2D from 'react-force-graph-2d';
 import { forceCollide } from 'd3-force';
 import { getNodeBounds, hexToRgba } from '../utils/nodeGeometry';
 import { getConvexHull2D } from '../utils/convexHull';
-import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials } from '../data/sampleData';
+import { COHORT_COLORS, DYNAMIC_CLUSTER_COLORS, getInitials, BUILD_TIMESTAMP } from '../data/sampleData';
 
 // Calculate BFS Hop Distances from The Couple (Matt & Maureen)
 function calculateHopDistances(nodes, links) {
@@ -713,7 +713,9 @@ export default function ForceCanvas({
         if (node.image && !imageCacheRef.current[node.image]) {
           const img = new Image();
           img.crossOrigin = 'anonymous';
-          img.src = node.image.startsWith('data:') ? node.image : (node.image.includes('?') ? node.image : `${node.image}?v=104`);
+          const cacheBuster = BUILD_TIMESTAMP || Date.now();
+          const cleanUrl = node.image.split('?')[0];
+          img.src = node.image.startsWith('data:') ? node.image : `${cleanUrl}?v=${cacheBuster}`;
           img.onload = () => {
             if (imageCacheRef.current) imageCacheRef.current[node.image] = img;
           };
