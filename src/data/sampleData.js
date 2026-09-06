@@ -903,7 +903,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "jonathan_bibayan",
-    "name": "Jonathan Bibayan",
+    "name": "Jonathan \"J-Bibbs\" Bibayan",
     "type": "GUEST",
     "side": "Joint",
     "cohort": "Jenna",
