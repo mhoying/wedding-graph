@@ -937,7 +937,8 @@ export default function ForceCanvas({
       const matchesName = node.name ? node.name.toLowerCase().includes(q) : false;
       const matchesCohort = node.cohort ? node.cohort.toLowerCase().includes(q) : false;
       const matchesSide = node.side ? node.side.toLowerCase().includes(q) : false;
-      const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase().includes(q)) : false;
+      const hobbiesArr = Array.isArray(node.hobbies) ? node.hobbies : (typeof node.hobbies === 'string' ? node.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) : []);
+      const matchesInterest = hobbiesArr.some(h => String(h).toLowerCase().includes(q));
       return matchesName || matchesCohort || matchesSide || matchesInterest;
     });
 

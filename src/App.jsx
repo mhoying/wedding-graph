@@ -458,6 +458,7 @@ export default function App() {
   const filteredNodes = useMemo(() => {
     return (nodes || []).filter(node => {
       if (!node) return false;
+      const hobbiesArr = Array.isArray(node.hobbies) ? node.hobbies : (typeof node.hobbies === 'string' ? node.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) : []);
       if (selectedClusterFocus) {
         const c = selectedClusterFocus.toLowerCase();
         const matchesCohort = node.cohort ? node.cohort.toLowerCase() === c : false;
@@ -465,20 +466,20 @@ export default function App() {
                                 (node.originallyFrom && node.originallyFrom.toLowerCase() === c) ||
                                 (node.state && node.state.toLowerCase() === c) ||
                                 (node.hometown && node.hometown.toLowerCase() === c);
-        const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase() === c) : false;
+        const matchesInterest = hobbiesArr.some(h => String(h).toLowerCase() === c);
         if (!matchesCohort && !matchesLocation && !matchesInterest && node.type !== 'ANCHOR') {
           return false;
         }
       }
       if (selectedInterests && selectedInterests.length > 0) {
-        if (!node.hobbies || !selectedInterests.some(i => node.hobbies.includes(i))) return false;
+        if (!hobbiesArr.some(i => selectedInterests.includes(i))) return false;
       }
       if (searchQuery && searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchesName = node.name ? node.name.toLowerCase().includes(q) : false;
         const matchesCohort = node.cohort ? node.cohort.toLowerCase().includes(q) : false;
         const matchesSide = node.side ? node.side.toLowerCase().includes(q) : false;
-        const matchesInterest = node.hobbies ? node.hobbies.some(h => h.toLowerCase().includes(q)) : false;
+        const matchesInterest = hobbiesArr.some(h => String(h).toLowerCase().includes(q));
         return matchesName || matchesCohort || matchesSide || matchesInterest;
       }
       return true;
@@ -879,7 +880,8 @@ export default function App() {
     const me = nodes.find(n => n.id === myGuestId);
     if (!me) return [];
 
-    const meHobbies = new Set((me.hobbies || []).map(h => String(h).trim()));
+    const meHobbiesArr = Array.isArray(me.hobbies) ? me.hobbies : (typeof me.hobbies === 'string' ? me.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) : []);
+    const meHobbies = new Set(meHobbiesArr.map(h => String(h).trim()));
     const myNeighbors = neighborMap.get(me.id) || new Set();
 
     return nodes
@@ -921,7 +923,8 @@ export default function App() {
         }
 
         // 2. Shared Interests (+40 points)
-        (other.hobbies || []).forEach(h => {
+        const otherHobbiesArr = Array.isArray(other.hobbies) ? other.hobbies : (typeof other.hobbies === 'string' ? other.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) : []);
+        otherHobbiesArr.forEach(h => {
           if (h && meHobbies.has(String(h).trim())) {
             const cleanH = String(h).trim();
             const weight = tagWeights[cleanH] || 40;
