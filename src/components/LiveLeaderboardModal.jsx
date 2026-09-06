@@ -184,7 +184,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
         </div>
 
         {/* High-Density Single-Row Leaderboard Table List */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: 12, display: 'flex', flexDirection: 'column', gap: 6, minHeight: 0 }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '12px 12px 24px 12px', display: 'flex', flexDirection: 'column', gap: 6, minHeight: 0 }}>
           {currentList.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 16px', color: '#64748b', fontSize: 12 }}>
               <span style={{ fontSize: 24, display: 'block', marginBottom: 6 }}>🪿</span>
