@@ -110,7 +110,8 @@ export const SAMPLE_NODES = [
       "Lehigh",
       "Wine",
       "RPI Medal",
-      "Books"
+      "Books",
+      "Buffalo Bills"
     ],
     "__indexColor": "#d80002",
     "fx": -110,
