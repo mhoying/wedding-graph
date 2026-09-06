@@ -69,11 +69,11 @@
       "face_selection": "bald_man_white_shirt_true_master"
     },
     "jessi_mcmullan": {
-      "raw_source": "raw_sources/jessi_mcmullan__orig_media__1788684961738.jpg",
-      "cx_pct": 0.278,
-      "cy_pct": 0.293,
-      "crop_size_pct": 0.54,
-      "face_selection": "left_person_duo"
+      "raw_source": "raw_sources/jessi_mcmullan__orig_media__1788684972.jpg",
+      "cx_pct": 0.32,
+      "cy_pct": 0.38,
+      "crop_size_pct": 0.65,
+      "face_selection": "smiling_woman_peach_saree"
     },
     "jim_merizio": {
       "raw_source": "raw_sources/jim_merizio__orig_media__1788683715783.jpg",
