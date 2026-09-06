@@ -16,11 +16,41 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
   } = gaggleData || {};
 
   const tabs = [
-    { id: 'masterGaggle', label: '🪿 Master Gaggle', title: 'Unite All Flocks (Most Cohorts Met)' },
-    { id: 'honkSpecialist', label: '🎯 Honk Specialist', title: 'Most Quests & Honks Logged' },
-    { id: 'migrationSprint', label: '⚡ Migration Sprint', title: 'Fastest 5 Encounters' },
-    { id: 'globalGoose', label: '📍 Global Goose', title: 'Most Nesting Grounds Discovered' },
-    { id: 'soulGander', label: '🍸 Soul-Gander', title: 'Top Compatibility Matches Met' }
+    {
+      id: 'masterGaggle',
+      label: '🪿 Master Gaggle',
+      title: 'Unite All Flocks',
+      goal: '🎯 Goal: Meet guests across the widest variety of distinct social circles (Cohorts like Dog Park, Google, Cornell, Lehigh, etc.).',
+      howToWin: '🏆 How to Win: Tap "Honk at [Guest]" on guests from different cohorts. The player who unlocks the most cohorts wins the Golden Goose trophy!'
+    },
+    {
+      id: 'honkSpecialist',
+      label: '🎯 Honk Specialist',
+      title: 'Most Honks Logged',
+      goal: '🎯 Goal: Log as many total guest encounters and icebreakers across the reception as possible.',
+      howToWin: '🏆 How to Win: Keep mingling and honking at guests! Each verified encounter increments your quest tally by +1.'
+    },
+    {
+      id: 'migrationSprint',
+      label: '⚡ Migration Sprint',
+      title: 'Fastest 5 Encounters',
+      goal: '🎯 Goal: Fast-flight 5 guest encounters in record time.',
+      howToWin: '🏆 How to Win: Clock starts on your 1st honk and stops on your 5th. Lowest total elapsed time (MM:SS) wins!'
+    },
+    {
+      id: 'globalGoose',
+      label: '📍 Global Goose',
+      title: 'Most Nesting Grounds',
+      goal: '🎯 Goal: Discover guests traveling from the greatest variety of geographical origins (cities/states).',
+      howToWin: '🏆 How to Win: Seek out guests from different hometowns (e.g. SF, NYC, Chicago, Austin). Unique cities met = your score.'
+    },
+    {
+      id: 'soulGander',
+      label: '🍸 Soul-Gander',
+      title: 'Compatibility Matchmaker',
+      goal: '🎯 Goal: Seek out and log encounters with your top algorithmically recommended compatibility matches.',
+      howToWin: '🏆 How to Win: Check your Matchmaker recommendations and honk at your top shared-interest matches to accumulate compatibility points.'
+    }
   ];
 
   const getActiveLeaderboard = () => {
@@ -34,6 +64,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
     }
   };
 
+  const currentTabObj = tabs.find(t => t.id === activeTab) || tabs[0];
   const currentList = getActiveLeaderboard();
 
   const formatSprintTime = (ms) => {
@@ -96,9 +127,14 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
           ))}
         </div>
 
-        {/* Tab Description */}
-        <div className="py-2.5 px-3 bg-amber-500/10 border border-amber-500/20 rounded-lg my-3 text-xs text-amber-200">
-          💡 {tabs.find(t => t.id === activeTab)?.title}
+        {/* Rich Competition Goal & How To Win Explainer Card */}
+        <div className="p-3 bg-amber-500/10 border border-amber-500/25 rounded-xl my-3 text-xs space-y-1 text-slate-200">
+          <div className="font-bold text-amber-300 text-sm flex items-center gap-1.5">
+            <span>🪿</span>
+            <span>{currentTabObj.title}</span>
+          </div>
+          <div className="text-slate-300">{currentTabObj.goal}</div>
+          <div className="text-amber-200/90 font-medium">{currentTabObj.howToWin}</div>
         </div>
 
         {/* Leaderboard Table */}
