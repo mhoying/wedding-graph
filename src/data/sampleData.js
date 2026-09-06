@@ -172,7 +172,7 @@ export const SAMPLE_NODES = [
     "type": "CONTEXT_HUB",
     "cohort": "OWFL Blog",
     "side": "Joint",
-    "relationship": "OWFL Blog",
+    "relationship": "",
     "originallyFrom": "DC",
     "currentlyLivesIn": "DC",
     "familyStatus": "Hub",
@@ -383,7 +383,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Joint",
     "cohort": "Dog Park",
-    "relationship": "Becky Spohr",
+    "relationship": "",
     "originallyFrom": "",
     "currentlyLivesIn": "Chicago",
     "familyStatus": "Couple / Group",
@@ -525,7 +525,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Matt",
     "cohort": "Other",
-    "relationship": "Friends",
+    "relationship": "",
     "originallyFrom": "",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Single",
@@ -589,7 +589,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Maureen",
     "cohort": "Bay FC",
-    "relationship": "Krista Kobeski & Guest",
+    "relationship": "",
     "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
@@ -634,7 +634,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Joint",
     "cohort": "OWFL Blog",
-    "relationship": "OWFL Blog",
+    "relationship": "",
     "originallyFrom": "",
     "currentlyLivesIn": "Bermuda",
     "familyStatus": "Single",
@@ -655,7 +655,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Matt",
     "cohort": "Stanford",
-    "relationship": "Marissa Lavelle",
+    "relationship": "",
     "originallyFrom": "SF Bay Area",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Couple / Group",
@@ -677,7 +677,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Matt",
     "cohort": "OWFL Blog",
-    "relationship": "OWFL Blog",
+    "relationship": "",
     "originallyFrom": "Upstate NY",
     "currentlyLivesIn": "Chicago",
     "familyStatus": "Single",
@@ -695,7 +695,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Joint",
     "cohort": "OWFL Blog",
-    "relationship": "OWFL Blog",
+    "relationship": "",
     "originallyFrom": "Western PA",
     "currentlyLivesIn": "Baltimore",
     "familyStatus": "Single",
@@ -1544,7 +1544,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Matt",
     "cohort": "Google",
-    "relationship": "Yannick Carer & Guest",
+    "relationship": "",
     "originallyFrom": "",
     "currentlyLivesIn": "Zurich",
     "familyStatus": "Family",
@@ -1567,7 +1567,7 @@ export const SAMPLE_NODES = [
     "type": "GUEST",
     "side": "Matt",
     "cohort": "Google",
-    "relationship": "Google",
+    "relationship": "",
     "originallyFrom": "",
     "currentlyLivesIn": "SF Bay Area",
     "familyStatus": "Single",
@@ -2182,7 +2182,7 @@ export const SAMPLE_LINKS = [
   {
     "source": "becca_winslow",
     "target": "jenna_auer",
-    "relationship": "Friends"
+    "relationship": ""
   },
   {
     "source": "maureen",
@@ -2192,7 +2192,7 @@ export const SAMPLE_LINKS = [
   {
     "source": "jess_phan",
     "target": "leslie_davidsson",
-    "relationship": "Friends"
+    "relationship": ""
   },
   {
     "source": "clyde_tsai",
@@ -2207,7 +2207,7 @@ export const SAMPLE_LINKS = [
   {
     "source": "jonathan_bibayan",
     "target": "jenna_auer",
-    "relationship": "Friends"
+    "relationship": ""
   },
   {
     "source": "mira_vojvodic",

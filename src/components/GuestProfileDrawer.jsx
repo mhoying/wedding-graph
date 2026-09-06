@@ -126,7 +126,18 @@ export default function GuestProfileDrawer({
         {!isEditingDrawer ? (
           /* VIEW MODE */
           <>
-            <p className="drawer-subtitle">{selectedNode.relationship ? selectedNode.relationship.replace(/\s*&\s*guest/gi, '').trim() : ''}</p>
+            {(() => {
+              if (!selectedNode.relationship) return null;
+              const rel = selectedNode.relationship.replace(/\s*&\s*guest/gi, '').trim();
+              if (!rel) return null;
+              const lowerRel = rel.toLowerCase();
+              const lowerName = (selectedNode.name || '').toLowerCase();
+              const lowerCohort = (selectedNode.cohort || '').toLowerCase();
+              if (lowerRel === lowerName || lowerRel === lowerCohort || lowerRel === 'friends' || lowerRel === 'google' || lowerRel === 'owfl blog') {
+                return null;
+              }
+              return <p className="drawer-subtitle">{rel}</p>;
+            })()}
 
             <div className="drawer-section">
               {selectedNode.type === 'NON_ATTENDING' && (
