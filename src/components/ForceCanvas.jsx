@@ -957,11 +957,16 @@ export default function ForceCanvas({
       if (typeof setIsOrbiting === 'function') setIsOrbiting(false);
       const target = matchingNodes[0];
       if (target && target.x !== undefined && target.y !== undefined) {
-        if (typeof fgRef.current.centerAt === 'function') {
-          fgRef.current.centerAt(target.x, target.y, 800);
-        }
+        const isMobile = window.innerWidth < 768;
+        const targetZoom = isMobile ? 3.2 : 4.2;
+        const targetX = isMobile ? target.x : target.x + 60;
+        const targetY = isMobile ? target.y + 110 : target.y;
+
         if (typeof fgRef.current.zoom === 'function') {
-          fgRef.current.zoom(1.35, 800);
+          fgRef.current.zoom(targetZoom, 0);
+        }
+        if (typeof fgRef.current.centerAt === 'function') {
+          fgRef.current.centerAt(targetX, targetY, 800);
         }
       }
     } else if (matchingNodes.length > 1 && fgRef.current && typeof fgRef.current.zoomToFit === 'function') {

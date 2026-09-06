@@ -384,25 +384,47 @@ export default function App() {
     };
   }, [nodes]);
 
-  // Camera & Node Drag Handlers (Uses centerAt + 1.35x Zoom for Single Node to take up exactly ~1/5th of viewport width!)
+  // Camera & Node Drag Handlers (Freezes physics simulation & flies camera to target node)
   const flyToNode = useCallback((targetNodeOrNodes) => {
     const nodeArray = Array.isArray(targetNodeOrNodes) ? targetNodeOrNodes.filter(Boolean) : [targetNodeOrNodes].filter(Boolean);
     
     if (nodeArray.length === 0 || !fgRef.current) return;
 
+    // FREEZE NODE MOVEMENT IMMEDIATELY so target node does not drift off screen!
+    if (typeof setIsOrbiting === 'function') {
+      setIsOrbiting(false);
+    }
+    if (typeof fgRef.current.d3AlphaTarget === 'function') {
+      fgRef.current.d3AlphaTarget(0);
+    }
+    if (Array.isArray(nodes)) {
+      nodes.forEach(n => {
+        if (n) {
+          n.vx = 0;
+          n.vy = 0;
+          if (n.id !== 'matt' && n.id !== 'maureen') {
+            n.fx = n.x;
+            n.fy = n.y;
+          }
+        }
+      });
+    }
+
     if (nodeArray.length === 1) {
       const target = nodeArray[0];
       if (target && target.x !== undefined && target.y !== undefined) {
-        if (typeof fgRef.current.centerAt === 'function') {
-          // On desktop (width >= 768px), offset X target by +120px so node centers in visible left 65% canvas!
-          const isMobile = window.innerWidth < 768;
-          const targetX = isMobile ? target.x : target.x + 120;
-          const targetY = isMobile ? target.y - 80 : target.y;
-          fgRef.current.centerAt(targetX, targetY, 800);
-        }
+        const isMobile = window.innerWidth < 768;
+        const targetZoom = isMobile ? 3.2 : 4.2;
+        const targetX = isMobile ? target.x : target.x + 60;
+        const targetY = isMobile ? target.y + 110 : target.y;
+
         if (typeof fgRef.current.zoom === 'function') {
-          const isMobile = window.innerWidth < 768;
-          fgRef.current.zoom(isMobile ? 0.75 : 1.35, 800);
+          // Set zoom level (0ms instant scale change)
+          fgRef.current.zoom(targetZoom, 0);
+        }
+        if (typeof fgRef.current.centerAt === 'function') {
+          // Smooth 800ms pan transition to target coordinates
+          fgRef.current.centerAt(targetX, targetY, 800);
         }
       }
     } else if (nodeArray.length > 1) {
@@ -411,7 +433,7 @@ export default function App() {
         fgRef.current.zoomToFit(800, 180, (canvasItem) => Boolean(canvasItem && canvasItem.id && targetIdSet.has(canvasItem.id)));
       }
     }
-  }, []);
+  }, [nodes, setIsOrbiting]);
 
   // Secret URL Parameter & Secret Keyboard Shortcut Listener (`Ctrl + Shift + A`)
   useEffect(() => {
