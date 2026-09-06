@@ -13,11 +13,11 @@
       "face_selection": "user_calibrated"
     },
     "ashley_prichard": {
-      "raw_source": "raw_sources/ashley_prichard__orig_media__1788713718501.jpg",
+      "raw_source": "raw_sources/ashley_prichard__orig_media__1788718218.jpg",
       "cx_pct": 0.718,
-      "cy_pct": 0.351,
-      "crop_size_pct": 0.55,
-      "face_selection": "center_yellow_bug_mask"
+      "cy_pct": 0.355,
+      "crop_size_pct": 0.42,
+      "face_selection": "user_calibrated"
     },
     "becky_spohr": {
       "raw_source": "raw_sources/becky_spohr__orig_media__1788715730.jpg",
