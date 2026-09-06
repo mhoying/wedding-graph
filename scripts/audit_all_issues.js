@@ -4,6 +4,7 @@ import { execSync } from 'child_process';
 
 const sampleDataPath = path.resolve('src/data/sampleData.js');
 const csvPath = path.resolve('public/guests_template.csv');
+const devLogPath = path.resolve('development_log.md');
 
 let sampleDataContent = fs.readFileSync(sampleDataPath, 'utf-8');
 const cleanedCode = sampleDataContent
@@ -14,7 +15,7 @@ const cleanedCode = sampleDataContent
 const evalFn = new Function(cleanedCode + '; return { SAMPLE_NODES, SAMPLE_LINKS };');
 const { SAMPLE_NODES } = evalFn();
 
-console.log('Running automated bi-daily guest proposal audit...');
+console.log('🚀 Running automated bi-daily guest proposal audit...');
 
 // Fetch closed issues with guest-edit-proposal label
 let issues = [];
@@ -30,6 +31,7 @@ console.log(`Auditing ${issues.length} closed proposal issues...`);
 issues.sort((a, b) => a.number - b.number);
 
 let changesMade = false;
+const detectedChangesList = [];
 
 for (const issue of issues) {
   const body = issue.body || '';
@@ -55,7 +57,9 @@ for (const issue of issues) {
     const curHobbies = node.hobbies || [];
     const missing = propHobbies.filter(h => !curHobbies.map(x => x.toLowerCase()).includes(h.toLowerCase()));
     if (missing.length > 0) {
-      console.log(`[Audit Fix] Node "${node.name}" missing hobbies: [${missing.join(', ')}] from Issue #${issue.number}`);
+      const msg = `Issue #${issue.number} (${node.name}): Added missing hobbies [${missing.join(', ')}]`;
+      console.log(`[Audit Fix] ${msg}`);
+      detectedChangesList.push(msg);
       node.hobbies = Array.from(new Set([...curHobbies, ...missing]));
       changesMade = true;
     }
@@ -65,7 +69,9 @@ for (const issue of issues) {
   if (payload.proposedLocation && payload.proposedLocation.trim()) {
     const propLoc = payload.proposedLocation.trim();
     if (!node.currentlyLivesIn || node.currentlyLivesIn.toLowerCase() !== propLoc.toLowerCase()) {
-      console.log(`[Audit Fix] Node "${node.name}" location update: "${propLoc}" from Issue #${issue.number}`);
+      const msg = `Issue #${issue.number} (${node.name}): Updated location to "${propLoc}"`;
+      console.log(`[Audit Fix] ${msg}`);
+      detectedChangesList.push(msg);
       node.currentlyLivesIn = propLoc;
       changesMade = true;
     }
@@ -76,7 +82,9 @@ for (const issue of issues) {
   if (origFromMatch && origFromMatch[1]) {
     const propOrig = origFromMatch[1].trim();
     if (!node.originallyFrom || node.originallyFrom.toLowerCase() !== propOrig.toLowerCase()) {
-      console.log(`[Audit Fix] Node "${node.name}" hometown update: "${propOrig}" from Issue #${issue.number}`);
+      const msg = `Issue #${issue.number} (${node.name}): Updated hometown to "${propOrig}"`;
+      console.log(`[Audit Fix] ${msg}`);
+      detectedChangesList.push(msg);
       node.originallyFrom = propOrig;
       changesMade = true;
     }
@@ -127,4 +135,53 @@ if (changesMade) {
   console.log('✅ Audit complete: Discrepancies auto-corrected and written to sampleData.js and guests_template.csv!');
 } else {
   console.log('✅ Audit complete: 100% data parity verified across all closed proposal issues!');
+}
+
+// Build Audit Report Markdown
+const timestamp = new Date().toISOString();
+let auditReportMd = `
+### 📊 Bi-Daily Data Parity Audit Report (${timestamp})
+- **Total Audited Proposals**: ${issues.length}
+- **Status**: ${changesMade ? '⚠️ Discrepancies Detected & Self-Healed' : '✅ 100% Data Parity Verified'}
+- **Detected & Processed Changes**: ${detectedChangesList.length}
+`;
+
+if (detectedChangesList.length > 0) {
+  auditReportMd += `\n**Detected Changes & Actions**:\n`;
+  detectedChangesList.forEach((c, idx) => {
+    auditReportMd += `${idx + 1}. ${c} -> **Processed & Saved**\n`;
+  });
+} else {
+  auditReportMd += `\n- All ${issues.length} guest proposal edits are 100% persisted and saved in \`src/data/sampleData.js\` and \`public/guests_template.csv\`.\n`;
+}
+
+// 1. Write to GitHub Actions Step Summary if available
+if (process.env.GITHUB_STEP_SUMMARY) {
+  try {
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, auditReportMd);
+  } catch (e) {}
+}
+
+// 2. Append block to development_log.md
+try {
+  const devLogEntry = `\n---\n## Audit Log - ${timestamp}\n${auditReportMd}\n`;
+  fs.appendFileSync(devLogPath, devLogEntry);
+} catch (e) {}
+
+// 3. Post Audit Summary to GitHub Issue so user gets a direct alert!
+try {
+  const existingAuditIssuesStr = execSync('gh issue list --label "data-audit-report" --json number,title', { encoding: 'utf-8' });
+  const existingAuditIssues = JSON.parse(existingAuditIssuesStr || '[]');
+  
+  if (existingAuditIssues.length > 0) {
+    const issueNum = existingAuditIssues[0].number;
+    console.log(`Posting audit notification to GitHub Issue #${issueNum}...`);
+    execSync(`gh issue comment ${issueNum} --body-file -`, { input: auditReportMd, encoding: 'utf-8' });
+  } else {
+    console.log('Creating GitHub Issue for Data Parity Audit Reports...');
+    const title = '📊 Bi-Daily Data Parity Audit Ledger';
+    execSync(`gh issue create --title "${title}" --body-file - --label "data-audit-report"`, { input: auditReportMd, encoding: 'utf-8' });
+  }
+} catch (err) {
+  console.log('Note on GitHub Issue alert:', err.message);
 }
