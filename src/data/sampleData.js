@@ -1,4 +1,4 @@
-export const BUILD_TIMESTAMP = 1788736821591;
+export const BUILD_TIMESTAMP = 1788736996426;
 // Real Wedding Guest List Data - Auto-updated via Host Admin Suite
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
@@ -411,6 +411,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "brian_kim",
+    "image": "headshots/brian_kim.jpg",
     "name": "Brian Kim",
     "type": "GUEST",
     "image": "/headshots/brian_kim.jpg",
@@ -435,6 +436,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "michelle_preston",
+    "image": "headshots/michelle_preston.jpg",
     "name": "Michelle Preston",
     "type": "GUEST",
     "image": "/headshots/michelle_preston.jpg",
@@ -604,6 +606,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "krista_kobeski",
+    "image": "headshots/krista_kobeski.jpg",
     "name": "Krista Kobeski",
     "type": "GUEST",
     "image": "/headshots/krista_kobeski.jpg",
@@ -762,6 +765,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "romana_rajput",
+    "image": "headshots/romana_rajput.jpg",
     "name": "Romana Rajput",
     "type": "GUEST",
     "image": "/headshots/romana_rajput.jpg",
@@ -784,6 +788,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "steve_nares",
+    "image": "headshots/steve_nares.jpg",
     "name": "Steve Nares",
     "type": "GUEST",
     "image": "/headshots/steve_nares.jpg",
@@ -1064,6 +1069,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "james_freedman",
+    "image": "headshots/james_freedman.jpg",
     "name": "James Freedman",
     "type": "GUEST",
     "image": "/headshots/james_freedman.jpg",
@@ -1091,6 +1097,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "nur_e_freedman",
+    "image": "headshots/nur_e_freedman.jpg",
     "name": "Nur-e Rahman Freedman",
     "type": "GUEST",
     "image": "/headshots/nur_e_freedman.jpg",
