@@ -160,11 +160,11 @@
       "face_selection": "sole_person"
     },
     "ryan_anthony": {
-      "raw_source": "raw_sources/ryan_anthony__orig_media__1788683581680.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.312,
-      "crop_size_pct": 0.6,
-      "face_selection": "sole_person_smiling_beer"
+      "raw_source": "raw_sources/ryan_anthony__orig_media__1788715848.jpg",
+      "cx_pct": 0.46,
+      "cy_pct": 0.4,
+      "crop_size_pct": 0.58,
+      "face_selection": "smiling_man_black_shirt"
     },
     "steve_nares": {
       "raw_source": "raw_sources/steve_nares__orig_media__1788683169013.jpg",
