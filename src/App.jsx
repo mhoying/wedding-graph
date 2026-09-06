@@ -515,13 +515,13 @@ export default function App() {
     };
   }, [nodes, filteredNodes, links]);
 
-  // Dynamic Clusters
   const dynamicAutoClusters = useMemo(() => {
     const clusterMap = {};
-    nodes.forEach(node => {
-      if (node.type === 'CONTEXT_HUB') return;
-      if (node.hobbies && node.hobbies.length > 0) {
-        node.hobbies.forEach(tag => {
+    (nodes || []).forEach(node => {
+      if (!node || node.type === 'CONTEXT_HUB') return;
+      const hobbiesArr = Array.isArray(node.hobbies) ? node.hobbies : (typeof node.hobbies === 'string' ? node.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) : []);
+      if (hobbiesArr.length > 0) {
+        hobbiesArr.forEach(tag => {
           if (!clusterMap[tag]) clusterMap[tag] = [];
           clusterMap[tag].push(node);
         });
@@ -738,6 +738,12 @@ export default function App() {
   const handleSaveProfileEdits = async () => {
     if (!selectedNode) return;
 
+    const cleanHobbies = Array.isArray(editHobbies) 
+      ? editHobbies 
+      : (typeof editHobbies === 'string' && editHobbies.trim() 
+        ? editHobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) 
+        : []);
+
     // Mutate existing node in-place so D3 link pointers (link.source / link.target) stay 100% intact
     const targetNode = nodes.find(n => n.id === selectedNode.id) || selectedNode;
     targetNode.name = editName || targetNode.name;
@@ -747,7 +753,7 @@ export default function App() {
     targetNode.cohort = editCohort;
     targetNode.side = editSide;
     targetNode.familyStatus = editFamilyStatus;
-    targetNode.hobbies = editHobbies;
+    targetNode.hobbies = cleanHobbies;
 
     const updated = [...nodes];
     setNodes(updated);
