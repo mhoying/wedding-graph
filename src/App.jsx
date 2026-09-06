@@ -722,7 +722,12 @@ export default function App() {
       setEditCohort(selectedNode.cohort || '');
       setEditSide(selectedNode.side || 'Maureen');
       setEditFamilyStatus(selectedNode.familyStatus || '');
-      setEditHobbies(selectedNode.hobbies ? [...selectedNode.hobbies] : []);
+      const initialHobbies = Array.isArray(selectedNode.hobbies)
+        ? [...selectedNode.hobbies]
+        : (typeof selectedNode.hobbies === 'string'
+          ? selectedNode.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean)
+          : []);
+      setEditHobbies(initialHobbies);
     }
   }, [selectedNode]);
 
@@ -1763,7 +1768,10 @@ export default function App() {
                       .filter(h => h && !h.includes(':') && !h.toLowerCase().includes('proposal') && !h.toLowerCase().includes('guest name'));
 
                     if (newHobbies.length > 0) {
-                      newNode.hobbies = Array.from(new Set([...(newNode.hobbies || []), ...newHobbies]));
+                      const existingHobbies = Array.isArray(newNode.hobbies)
+                        ? newNode.hobbies
+                        : (typeof newNode.hobbies === 'string' ? newNode.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean) : []);
+                      newNode.hobbies = Array.from(new Set([...existingHobbies, ...newHobbies]));
                     }
                   }
                 }
