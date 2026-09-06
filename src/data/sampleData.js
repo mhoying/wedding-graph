@@ -62,6 +62,7 @@ export const SAMPLE_NODES = [
     "id": "matt",
     "name": "Matt Hoying",
     "type": "ANCHOR",
+    "image": "/headshots/matt_hoying.jpg",
     "cohort": "The Couple",
     "side": "Matt",
     "relationship": "Honk Family",

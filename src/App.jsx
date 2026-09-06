@@ -56,6 +56,7 @@ export default function App() {
             return {
               ...n,
               type: sample?.type || n.type,
+              image: sample?.image || n.image,
               isAttending: sample ? sample.isAttending : n.isAttending,
               rsvpStatus: sample ? sample.rsvpStatus : n.rsvpStatus,
               attendanceStatus: sample ? sample.attendanceStatus : n.attendanceStatus,
