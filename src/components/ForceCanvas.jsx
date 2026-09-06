@@ -713,7 +713,7 @@ export default function ForceCanvas({
         if (node.image && !imageCacheRef.current[node.image]) {
           const img = new Image();
           img.crossOrigin = 'anonymous';
-          img.src = node.image.includes('?') ? node.image : `${node.image}?v=102`;
+          img.src = node.image.includes('?') ? node.image : `${node.image}?v=103`;
           img.onload = () => {
             if (imageCacheRef.current) imageCacheRef.current[node.image] = img;
           };
