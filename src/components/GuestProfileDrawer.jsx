@@ -179,10 +179,18 @@ export default function GuestProfileDrawer({
               {/* HONK AT GUEST ENCOUNTER BUTTON OR ALREADY HONKED BADGE */}
               {(() => {
                 const encounters = (gaggleStore && gaggleStore.encounters) ? gaggleStore.encounters : [];
-                const alreadyHonked = encounters.some(
-                  e => String(e.actor || '').toLowerCase().trim() === String(activePlayer || '').toLowerCase().trim() && 
-                       String(e.target || '').toLowerCase().trim() === String(selectedNode.name || '').toLowerCase().trim()
-                );
+                const actName = String(activePlayer || '').toLowerCase().trim();
+                const tgtName = String(selectedNode.name || '').toLowerCase().trim();
+
+                const alreadyHonked = encounters.some(e => {
+                  const eAct = String(e.actor || '').toLowerCase().trim();
+                  const eTgt = String(e.target || '').toLowerCase().trim();
+
+                  const actMatches = eAct === actName || (actName && (eAct.includes(actName) || actName.includes(eAct)));
+                  const tgtMatches = eTgt === tgtName || (tgtName && (eTgt.includes(tgtName) || tgtName.includes(eTgt)));
+
+                  return actMatches && tgtMatches;
+                });
 
                 if (alreadyHonked) {
                   return (
