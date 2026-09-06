@@ -62,11 +62,11 @@
       "face_selection": "right_person_duo"
     },
     "jesse_lindenberger_schutz": {
-      "raw_source": "raw_sources/jesse_lindenberger_schutz__orig_media__1788716604.jpg",
-      "cx_pct": 0.81,
-      "cy_pct": 0.5,
-      "crop_size_pct": 0.32,
-      "face_selection": "perfectly_centered_bald_man_glasses"
+      "raw_source": "raw_sources/jesse_lindenberger_schutz__orig_media__1788715598.jpg",
+      "cx_pct": 0.801,
+      "cy_pct": 0.51,
+      "crop_size_pct": 0.35,
+      "face_selection": "bald_man_white_shirt_true_master"
     },
     "jessi_mcmullan": {
       "raw_source": "raw_sources/jessi_mcmullan__orig_media__1788684961738.jpg",
