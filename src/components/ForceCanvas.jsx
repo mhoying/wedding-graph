@@ -518,7 +518,8 @@ function createClusterSeparationForce(clusterMode, edgeLengthMultiplier, hopDist
     // Enforce Minimum Center Radius (260px) Repulsion for ALL cohort nodes (e.g. Jenna, Dog Park, Cornell, etc.)
     const minCenterRadius = 260 * edgeLengthMultiplier;
     nodesList.forEach(node => {
-      if (node.id === 'matt' || node.id === 'maureen' || node.x === undefined) return;
+      const isCoupleNode = node.id === 'matt' || node.id === 'maureen' || node.cohort === 'The Couple' || partnerCohortMap.get(node.id) === 'The Couple';
+      if (isCoupleNode || node.x === undefined) return;
       const r = Math.hypot(node.x, node.y) || 1;
       if (r < minCenterRadius) {
         const pushMag = Math.min(((minCenterRadius - r) / r) * alpha * 4.5, 8.0);
@@ -755,8 +756,10 @@ export default function ForceCanvas({
           const isUnclustered = (sCohort === 'Other' || tCohort === 'Other') && !isCoupleOrFamilyLink;
 
           let cohortMultiplier;
-          if (isCoupleOrFamilyLink) {
-            cohortMultiplier = 0.15; // Ultra-short tight edge distance (~35px) for couples and families!
+          if (isMattMaureen) {
+            cohortMultiplier = 0.60; // Standard natural relationship distance for Matt & Maureen anchor link
+          } else if (isCoupleOrFamilyLink) {
+            cohortMultiplier = 0.50; // Clean natural distance for partner & family links
           } else if (isSameCohort) {
             cohortMultiplier = 0.85; // Spacious distance for non-couple friends in same cohort!
           } else if (isCrossCohort) {
