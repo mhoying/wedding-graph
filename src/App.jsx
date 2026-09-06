@@ -79,6 +79,7 @@ export default function App() {
     } catch (e) {
       console.warn('Failed to parse feedback list:', e);
     }
+    return [];
   });
 
   // Auto-fetch pending guest proposals from GitHub Issues API into Host Moderation Queue
@@ -802,7 +803,7 @@ export default function App() {
       timestamp: new Date().toISOString()
     };
 
-    setFeedbackList(prev => [proposal, ...prev]);
+    setFeedbackList(prev => [proposal, ...(prev || [])]);
     setIsEditingDrawer(false);
     setCopyToast('✨ Profile updated & auto-saved to database!');
     setTimeout(() => setCopyToast(''), 3500);
