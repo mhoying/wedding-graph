@@ -76,19 +76,27 @@ def main():
         json.dump(manifest, f, indent=2)
     print(f"📝 Updated manifest entry for: {args.guest}")
 
-    # 4. Ensure sampleData.js has image property link
+    # 4. Ensure sampleData.js has image property link AND bump BUILD_TIMESTAMP cache-buster
     if os.path.exists(SAMPLE_DATA_PATH):
+        import time
+        import re
         with open(SAMPLE_DATA_PATH, 'r', encoding='utf-8') as f:
             code = f.read()
         
+        # Automatically bump BUILD_TIMESTAMP to force fresh browser fetching on every deploy
+        new_timestamp = int(time.time() * 1000)
+        code = re.sub(r'export const BUILD_TIMESTAMP = \d+;', f'export const BUILD_TIMESTAMP = {new_timestamp};', code)
+        print(f"🔄 Bumped BUILD_TIMESTAMP cache-buster to: {new_timestamp}")
+
         target_id_str = f'"id": "{args.guest}"'
         expected_img_link = f'headshots/{args.guest}.jpg'
 
         if target_id_str in code and expected_img_link not in code:
             code = code.replace(target_id_str, f'{target_id_str},\n    "image": "{expected_img_link}"')
-            with open(SAMPLE_DATA_PATH, 'w', encoding='utf-8') as f:
-                f.write(code)
             print(f"🔗 Linked image in sampleData.js for: {args.guest}")
+
+        with open(SAMPLE_DATA_PATH, 'w', encoding='utf-8') as f:
+            f.write(code)
 
     # 5. Execute build & deploy in a single encapsulated call
     print("🚀 Triggering build & live deployment...")
