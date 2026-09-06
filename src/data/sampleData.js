@@ -96,6 +96,7 @@ export const SAMPLE_NODES = [
     "id": "maureen",
     "name": "Maureen Wink",
     "type": "ANCHOR",
+    "image": "/headshots/maureen_wink.jpg",
     "cohort": "The Couple",
     "side": "Maureen",
     "relationship": "Honk Family",
