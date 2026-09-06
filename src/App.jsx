@@ -738,22 +738,20 @@ export default function App() {
   const handleSaveProfileEdits = async () => {
     if (!selectedNode) return;
 
-    const updatedNode = {
-      ...selectedNode,
-      name: editName || selectedNode.name,
-      relationship: editRelationship,
-      originallyFrom: editOriginallyFrom,
-      currentlyLivesIn: editCurrentlyLivesIn,
-      cohort: editCohort,
-      side: editSide,
-      familyStatus: editFamilyStatus,
-      hobbies: editHobbies
-    };
+    // Mutate existing node in-place so D3 link pointers (link.source / link.target) stay 100% intact
+    const targetNode = nodes.find(n => n.id === selectedNode.id) || selectedNode;
+    targetNode.name = editName || targetNode.name;
+    targetNode.relationship = editRelationship;
+    targetNode.originallyFrom = editOriginallyFrom;
+    targetNode.currentlyLivesIn = editCurrentlyLivesIn;
+    targetNode.cohort = editCohort;
+    targetNode.side = editSide;
+    targetNode.familyStatus = editFamilyStatus;
+    targetNode.hobbies = editHobbies;
 
-    // 1. Immediately update local React state and selectedNode so UI reflects changes instantly
-    const updated = nodes.map(n => n.id === selectedNode.id ? updatedNode : n);
+    const updated = [...nodes];
     setNodes(updated);
-    setSelectedNode(updatedNode);
+    setSelectedNode({ ...targetNode });
 
     try {
       localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(updated));
