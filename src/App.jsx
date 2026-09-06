@@ -1164,6 +1164,7 @@ export default function App() {
         onOpenMapControls={() => setIsMobileControlsOpen(true)}
         isListView={isListView}
         setIsListView={setIsListView}
+        isMobileViewport={isMobileViewport}
       />
 
       {/* Dedicated Host Admin Floating Control Panel */}

@@ -36,12 +36,74 @@ export default function TopHeaderNav({
   onOpenLeaderboard = () => {},
   onOpenMapControls = () => {},
   isListView = false,
-  setIsListView = () => {}
+  setIsListView = () => {},
+  isMobileViewport = false
 }) {
   const [isTunePopoverOpen, setIsTunePopoverOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   return (
     <header className="glass-panel top-bar no-print">
+      {/* Mobile Search Overlay Modal */}
+      {isMobileSearchOpen && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            background: 'rgba(15, 23, 42, 0.95)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '16px 20px',
+            animation: 'fadeIn 0.2s ease-out'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, background: 'rgba(30, 41, 59, 0.9)', border: '1px solid #38bdf8', borderRadius: 14, padding: '8px 14px' }}>
+              <Search style={{ width: 18, height: 18, color: '#38bdf8' }} />
+              <input 
+                type="text"
+                autoFocus
+                placeholder="Search guests, cohorts, cities..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{ width: '100%', background: 'transparent', border: 'none', color: '#fff', fontSize: 15, outline: 'none' }}
+              />
+              {searchQuery && (
+                <button 
+                  type="button" 
+                  onClick={() => setSearchQuery('')}
+                  style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
+                >
+                  <X style={{ width: 16, height: 16 }} />
+                </button>
+              )}
+            </div>
+            <button 
+              onClick={() => setIsMobileSearchOpen(false)}
+              style={{ padding: '10px 14px', borderRadius: 12, background: 'rgba(255, 255, 255, 0.1)', color: '#fff', border: 'none', fontWeight: 700, fontSize: 13 }}
+            >
+              Done
+            </button>
+          </div>
+
+          <div style={{ fontSize: 12, color: '#94a3b8', fontWeight: 600, marginBottom: 8 }}>
+            {searchQuery ? `Active filter: "${searchQuery}"` : 'Type to search guests across all cohorts'}
+          </div>
+
+          {searchQuery && (
+            <button 
+              onClick={() => { setSearchQuery(''); setIsMobileSearchOpen(false); }}
+              style={{ padding: 10, background: 'rgba(244, 63, 94, 0.15)', color: '#fda4af', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: 10, fontSize: 12, fontWeight: 700 }}
+            >
+              Clear Search Filter
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Tall Left Brand Block */}
       <div className="logo-area-tall">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -49,29 +111,42 @@ export default function TopHeaderNav({
           <h1 className="logo-title" style={{ background: 'linear-gradient(135deg, #38bdf8 0%, #ec4899 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', color: '#38bdf8', margin: 0, fontSize: 17, fontWeight: 900 }}>Honk Wedding Universe</h1>
         </div>
         <span className="logo-subtitle hide-on-constrained">Sept 26, 2026 • Honk Wedding Map</span>
-      </div>      {/* Right Controls Area (Divided into 2 Clean Rows) */}
+      </div>
+
+      {/* Right Controls Area (Divided into 2 Clean Rows) */}
       <div className="header-controls-grid">
         {/* ROW 1: Search & View Actions Bar */}
         <div className="header-controls-row top-row">
-          {/* Search Bar Input */}
-          <div className="search-box">
-            <Search style={{ width: 14, height: 14, color: '#94a3b8' }} />
-            <input 
-              type="text"
-              placeholder="Search guests, cohorts, cities..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button 
-                type="button" 
-                onClick={() => setSearchQuery('')}
-                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 2 }}
-              >
-                <X style={{ width: 14, height: 14 }} />
-              </button>
-            )}
-          </div>
+          {/* Mobile vs Desktop Search Box */}
+          {isMobileViewport ? (
+            <button 
+              className="glass-panel btn-icon"
+              onClick={() => setIsMobileSearchOpen(true)}
+              title="Search Guests & Cohorts"
+              style={{ width: 44, height: 44, padding: 0, justifyContent: 'center', flexShrink: 0, border: searchQuery ? '1px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.2)', background: searchQuery ? 'rgba(56, 189, 248, 0.2)' : 'rgba(30, 41, 59, 0.7)' }}
+            >
+              <Search style={{ width: 18, height: 18, color: searchQuery ? '#38bdf8' : '#94a3b8' }} />
+            </button>
+          ) : (
+            <div className="search-box">
+              <Search style={{ width: 14, height: 14, color: '#94a3b8' }} />
+              <input 
+                type="text"
+                placeholder="Search guests, cohorts, cities..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button 
+                  type="button" 
+                  onClick={() => setSearchQuery('')}
+                  style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 2 }}
+                >
+                  <X style={{ width: 14, height: 14 }} />
+                </button>
+              )}
+            </div>
+          )}
 
           {/* Selected Interests Filter Badges */}
           {selectedInterests.length > 0 && (
