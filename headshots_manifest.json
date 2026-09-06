@@ -324,6 +324,15 @@
       "face_h_pct": 0.2865,
       "crop_size_px": 372,
       "face_selection": "node_canvas_calibrated"
+    },
+    "jess_phan": {
+      "raw_source": "raw_sources/jess_phan__orig_media.jpg",
+      "cx_pct": 0.48,
+      "cy_pct": 0.38,
+      "face_h_px": 236,
+      "face_h_pct": 0.59,
+      "crop_size_px": 400,
+      "face_selection": "node_canvas_calibrated"
     }
   }
 }
