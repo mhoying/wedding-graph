@@ -44,18 +44,25 @@ export default function App() {
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v99');
+      const saved = localStorage.getItem('wedding_graph_nodes_v100');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map(n => ({
-            ...n,
-            hobbies: Array.isArray(n.hobbies)
-              ? n.hobbies
-              : (typeof n.hobbies === 'string'
-                ? n.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean)
-                : [])
-          }));
+          return parsed.map(n => {
+            const sample = SAMPLE_NODES.find(sn => sn.id === n.id);
+            return {
+              ...n,
+              type: sample?.type || n.type,
+              isAttending: sample ? sample.isAttending : n.isAttending,
+              rsvpStatus: sample ? sample.rsvpStatus : n.rsvpStatus,
+              attendanceStatus: sample ? sample.attendanceStatus : n.attendanceStatus,
+              hobbies: Array.isArray(n.hobbies)
+                ? n.hobbies
+                : (typeof n.hobbies === 'string'
+                  ? n.hobbies.split(/[,;]/).map(h => h.trim()).filter(Boolean)
+                  : [])
+            };
+          });
         }
       }
     } catch (e) {
@@ -297,7 +304,7 @@ export default function App() {
 
   // Sync LocalStorage & Theme
   useEffect(() => {
-    localStorage.setItem('wedding_graph_nodes_v99', JSON.stringify(nodes));
+    localStorage.setItem('wedding_graph_nodes_v100', JSON.stringify(nodes));
   }, [nodes]);
 
   useEffect(() => {
