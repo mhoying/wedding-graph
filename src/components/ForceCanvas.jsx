@@ -927,7 +927,8 @@ export default function ForceCanvas({
       if (fgRef.current && typeof fgRef.current.zoomToFit === 'function') {
         const hasPositions = nodes && nodes.length > 0 && nodes.some(n => n.x !== undefined && (n.x !== 0 || n.y !== 0));
         if (hasPositions || checkCount > 10) {
-          fgRef.current.zoomToFit(600, 50);
+          const padding = isMobileViewport ? 240 : 80;
+          fgRef.current.zoomToFit(600, padding);
           clearInterval(interval);
         }
       }
