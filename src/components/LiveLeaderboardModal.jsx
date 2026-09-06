@@ -45,20 +45,20 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
   };
 
   return (
-    <div className="fixed inset-0 z-[99990] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md" style={{ pointerEvents: 'auto' }}>
-      <div className="bg-slate-900 border border-amber-500/30 rounded-2xl max-w-2xl w-full p-6 text-slate-100 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]" style={{ pointerEvents: 'auto' }}>
+    <div className="fixed inset-0 z-[99990] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/90 backdrop-blur-lg" style={{ pointerEvents: 'auto' }}>
+      <div className="modal-card bg-slate-900 border border-amber-500/30 rounded-t-2xl sm:rounded-2xl max-w-2xl w-full p-4 sm:p-6 text-slate-100 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]" style={{ pointerEvents: 'auto', background: '#0f172a' }}>
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🪿</span>
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div className="flex items-center gap-2.5">
+            <span className="text-2xl sm:text-3xl">🪿</span>
             <div>
-              <h2 className="text-xl font-bold text-amber-400">The Grand Gaggle Leaderboard</h2>
-              <p className="text-xs text-slate-400">Playing As: <span className="text-amber-300 font-semibold">{activePlayer}</span></p>
+              <h2 className="text-base sm:text-xl font-bold text-amber-400">Grand Gaggle Leaderboard</h2>
+              <p className="text-[11px] sm:text-xs text-slate-400">Playing As: <span className="text-amber-300 font-semibold">{activePlayer}</span></p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 text-lg"
+            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 text-lg touch-manipulation"
           >
             ✕
           </button>
