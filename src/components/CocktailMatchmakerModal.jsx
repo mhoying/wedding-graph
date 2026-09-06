@@ -249,7 +249,7 @@ export default function CocktailMatchmakerModal({
 
   return (
     <div className="modal-backdrop no-print" onClick={onClose}>
-      <div className="glass-panel modal-card" style={{ maxWidth: 440 }} onClick={(e) => e.stopPropagation()}>
+      <div className="glass-panel modal-card" style={{ maxWidth: 520, width: '92vw' }} onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <span className="drawer-badge" style={{ backgroundColor: '#10b981', display: 'flex', alignItems: 'center', gap: 6 }}>
             <Wand2 style={{ width: 12, height: 12 }} /> Cocktail Matchmaker
@@ -261,6 +261,29 @@ export default function CocktailMatchmakerModal({
 
         <h2 className="drawer-title" style={{ fontSize: 20 }}>Find Guest Matches</h2>
         <p className="drawer-subtitle">Pick your name to discover top shared icebreakers!</p>
+
+        {/* Dual Avatar Graphic Preview Box */}
+        {!myGuestId && (
+          <div style={{ margin: '14px 0', padding: 16, borderRadius: 16, background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(16, 185, 129, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(56, 189, 248, 0.2)', border: '2px solid #38bdf8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>
+                👤
+              </div>
+              <span style={{ fontSize: 10, fontWeight: 700, color: '#38bdf8' }}>You</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#34d399', fontSize: 18 }}>
+              <span>✨</span>
+              <span style={{ fontSize: 12, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10b981' }}>Match</span>
+              <span>✨</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(52, 211, 153, 0.2)', border: '2px solid #34d399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>
+                🍸
+              </div>
+              <span style={{ fontSize: 10, fontWeight: 700, color: '#34d399' }}>Mingler</span>
+            </div>
+          </div>
+        )}
 
         <div style={{ marginBottom: 16 }}>
           <label style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: 6 }}>Select Your Name:</label>
