@@ -55,11 +55,11 @@
       "face_selection": "sole_person_rpi_medal"
     },
     "jason_mcmullan": {
-      "raw_source": "raw_sources/jason_mcmullan__orig_media__1788684961738.jpg",
-      "cx_pct": 0.694,
-      "cy_pct": 0.351,
-      "crop_size_pct": 0.55,
-      "face_selection": "right_person_duo"
+      "raw_source": "raw_sources/jason_mcmullan__orig_media__1788684972.jpg",
+      "cx_pct": 0.69,
+      "cy_pct": 0.28,
+      "crop_size_pct": 0.6,
+      "face_selection": "smiling_man_glasses_tuxedo"
     },
     "jesse_lindenberger_schutz": {
       "raw_source": "raw_sources/jesse_lindenberger_schutz__orig_media__1788715598.jpg",
