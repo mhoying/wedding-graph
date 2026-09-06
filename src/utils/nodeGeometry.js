@@ -7,7 +7,7 @@
  * @param {number} scaleMult 
  * @returns {{width: number, height: number, avatarDiameter: number, fontSize: number, textWidth: number, collisionRadius: number}}
  */
-export function getNodeBounds(node, showHeadshots = true, scaleMult = 1.0) {
+export function getNodeBounds(node, showHeadshots = true, scaleMult = 1.0, fontScaleMult = 1.0) {
   if (!node) return { width: 100, height: 40, avatarDiameter: 40, fontSize: 11, textWidth: 60, collisionRadius: 75 };
 
   const isAnchor = node.id === 'maureen' || node.id === 'matt';
@@ -23,7 +23,7 @@ export function getNodeBounds(node, showHeadshots = true, scaleMult = 1.0) {
   const baseFontSize = isAnchor ? 13 : 11;
 
   const avatarDiameter = baseAvatarDiameter * scaleMult;
-  const fontSize = baseFontSize * scaleMult;
+  const fontSize = baseFontSize * scaleMult * fontScaleMult;
   const textWidth = labelText.length * (fontSize * 0.60);
 
   let width, height;

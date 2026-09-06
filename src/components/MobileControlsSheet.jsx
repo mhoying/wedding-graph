@@ -11,6 +11,8 @@ export default function MobileControlsSheet({
   setOrbitSpeed,
   nodeScaleMultiplier,
   setNodeScaleMultiplier,
+  fontScaleMultiplier = 1.0,
+  setFontScaleMultiplier = () => {},
   edgeLengthMultiplier,
   setEdgeLengthMultiplier,
   showHeadshots,
@@ -96,11 +98,11 @@ export default function MobileControlsSheet({
           </div>
         )}
 
-        {/* Card Node Size & Map Spacing Sliders */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
-          <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 8, borderRadius: 12 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
-              <span style={{ color: '#94a3b8', fontWeight: 600 }}>Node Size:</span>
+        {/* Card Node Size, Text Size & Map Spacing Sliders */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginBottom: 8 }}>
+          <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 6, borderRadius: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, marginBottom: 2 }}>
+              <span style={{ color: '#94a3b8', fontWeight: 600 }}>Node:</span>
               <span style={{ color: '#38bdf8', fontWeight: 800 }}>{nodeScaleMultiplier.toFixed(1)}x</span>
             </div>
             <input 
@@ -112,12 +114,30 @@ export default function MobileControlsSheet({
               onChange={(e) => setNodeScaleMultiplier(parseFloat(e.target.value))}
               onTouchStart={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
-              style={{ width: '100%', accentColor: '#38bdf8', height: 10, touchAction: 'none' }}
+              style={{ width: '100%', accentColor: '#38bdf8', height: 8, touchAction: 'none' }}
             />
           </div>
 
-          <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 8, borderRadius: 12 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+          <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 6, borderRadius: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, marginBottom: 2 }}>
+              <span style={{ color: '#94a3b8', fontWeight: 600 }}>Text:</span>
+              <span style={{ color: '#f43f5e', fontWeight: 800 }}>{fontScaleMultiplier.toFixed(1)}x</span>
+            </div>
+            <input 
+              type="range"
+              min="0.5"
+              max="2.5"
+              step="0.1"
+              value={fontScaleMultiplier}
+              onChange={(e) => setFontScaleMultiplier(parseFloat(e.target.value))}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              style={{ width: '100%', accentColor: '#f43f5e', height: 8, touchAction: 'none' }}
+            />
+          </div>
+
+          <div style={{ background: 'rgba(30, 41, 59, 0.6)', padding: 6, borderRadius: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, marginBottom: 2 }}>
               <span style={{ color: '#94a3b8', fontWeight: 600 }}>Spacing:</span>
               <span style={{ color: '#10b981', fontWeight: 800 }}>{edgeLengthMultiplier.toFixed(1)}x</span>
             </div>
@@ -130,7 +150,7 @@ export default function MobileControlsSheet({
               onChange={(e) => setEdgeLengthMultiplier(parseFloat(e.target.value))}
               onTouchStart={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
-              style={{ width: '100%', accentColor: '#10b981', height: 10, touchAction: 'none' }}
+              style={{ width: '100%', accentColor: '#10b981', height: 8, touchAction: 'none' }}
             />
           </div>
         </div>

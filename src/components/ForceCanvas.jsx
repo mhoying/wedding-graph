@@ -680,6 +680,7 @@ export default function ForceCanvas({
   getNodeColor = () => '#38bdf8',
   showHeadshots = true,
   nodeScaleMultiplier = 1.0,
+  fontScaleMultiplier = 1.0,
   edgeLengthMultiplier = 1.0,
   isOrbiting = true,
   orbitSpeed = 1.0,
@@ -730,8 +731,8 @@ export default function ForceCanvas({
           const sObj = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
           const tObj = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
           
-          const sRadius = sObj ? getNodeBounds(sObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
-          const tRadius = tObj ? getNodeBounds(tObj, showHeadshots, nodeScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
+          const sRadius = sObj ? getNodeBounds(sObj, showHeadshots, nodeScaleMultiplier, fontScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
+          const tRadius = tObj ? getNodeBounds(tObj, showHeadshots, nodeScaleMultiplier, fontScaleMultiplier).collisionRadius : 65 * nodeScaleMultiplier;
           
           const sId = String(sObj ? sObj.id : l.source).toLowerCase();
           const tId = String(tObj ? tObj.id : l.target).toLowerCase();
@@ -822,7 +823,7 @@ export default function ForceCanvas({
 
       // Hard Collision Force: Prevents ANY node overlap by enforcing collision radius buffer around every headshot/halo!
       fg.d3Force('collide', forceCollide(node => {
-        const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
+        const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier, fontScaleMultiplier);
         return (bounds.collisionRadius || 55) + 18 * nodeScaleMultiplier;
       }).iterations(4));
       
@@ -1256,7 +1257,7 @@ export default function ForceCanvas({
     ctx.globalAlpha = isDimmed ? 0.08 : (isNonAttending ? 0.65 : 1.0);
 
     const renderAvatar = showHeadshots && !isHub;
-    const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
+    const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier, fontScaleMultiplier);
 
     const badgeWidth = bounds.width;
     const badgeHeight = bounds.height;
@@ -1352,11 +1353,11 @@ export default function ForceCanvas({
     }
 
     ctx.restore();
-  }, [selectedNode, hoverNode, shortestPath, links, getNodeColor, showHeadshots, nodeScaleMultiplier, isLightMode, imageCacheRef]);
+  }, [selectedNode, hoverNode, shortestPath, links, getNodeColor, showHeadshots, nodeScaleMultiplier, fontScaleMultiplier, isLightMode, imageCacheRef]);
 
   // Pointer Hit Area Calculation
   const drawPointerArea = useCallback((node, color, ctx) => {
-    const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier);
+    const bounds = getNodeBounds(node, showHeadshots, nodeScaleMultiplier, fontScaleMultiplier);
     ctx.fillStyle = color;
     ctx.beginPath();
     if (ctx.roundRect) {

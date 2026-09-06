@@ -135,6 +135,7 @@ export default function App() {
 
   // Scalable Canvas & Motion Controls
   const [nodeScaleMultiplier, setNodeScaleMultiplier] = useState(1.0);
+  const [fontScaleMultiplier, setFontScaleMultiplier] = useState(1.0);
   const [edgeLengthMultiplier, setEdgeLengthMultiplier] = useState(1.3);
   const [isOrbiting, setIsOrbiting] = useState(true);
   const [orbitSpeed, setOrbitSpeed] = useState(0.3);
@@ -1434,6 +1435,8 @@ export default function App() {
             setOrbitSpeed={setOrbitSpeed}
             nodeScaleMultiplier={nodeScaleMultiplier}
             setNodeScaleMultiplier={setNodeScaleMultiplier}
+            fontScaleMultiplier={fontScaleMultiplier}
+            setFontScaleMultiplier={setFontScaleMultiplier}
             edgeLengthMultiplier={edgeLengthMultiplier}
             setEdgeLengthMultiplier={setEdgeLengthMultiplier}
             showHeadshots={showHeadshots}
@@ -1501,6 +1504,7 @@ export default function App() {
         getNodeColor={getNodeColor}
         showHeadshots={showHeadshots}
         nodeScaleMultiplier={nodeScaleMultiplier}
+        fontScaleMultiplier={fontScaleMultiplier}
         edgeLengthMultiplier={edgeLengthMultiplier}
         isOrbiting={isOrbiting}
         orbitSpeed={orbitSpeed}
