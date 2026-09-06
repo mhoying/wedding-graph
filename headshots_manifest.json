@@ -20,22 +20,22 @@
       "face_selection": "center_yellow_bug_mask"
     },
     "becky_spohr": {
-      "raw_source": "raw_sources/becky_spohr__orig_media__1788680933351.jpg",
-      "cx_pct": 0.500,
-      "cy_pct": 0.350,
-      "crop_size_pct": 0.60,
-      "face_selection": "sole_person"
+      "raw_source": "raw_sources/becky_spohr__orig_media__1788715730.jpg",
+      "cx_pct": 0.45,
+      "cy_pct": 0.5,
+      "crop_size_pct": 0.7,
+      "face_selection": "smiling_woman_stadium"
     },
     "brian_kim": {
       "raw_source": "raw_sources/brian_kim__orig_media__1788680580561.jpg",
-      "cx_pct": 0.500,
-      "cy_pct": 0.350,
-      "crop_size_pct": 0.60,
+      "cx_pct": 0.5,
+      "cy_pct": 0.35,
+      "crop_size_pct": 0.6,
       "face_selection": "sole_person"
     },
     "chuck_tempest": {
       "raw_source": "raw_sources/chuck_tempest__orig_media__1788683453631.jpg",
-      "cx_pct": 0.500,
+      "cx_pct": 0.5,
       "cy_pct": 0.312,
       "crop_size_pct": 0.57,
       "face_selection": "sole_person_bald_glasses"
@@ -49,9 +49,9 @@
     },
     "james_freedman": {
       "raw_source": "raw_sources/james_freedman__orig_commit_ce224c3.jpg",
-      "cx_pct": 0.500,
-      "cy_pct": 0.500,
-      "crop_size_pct": 1.00,
+      "cx_pct": 0.5,
+      "cy_pct": 0.5,
+      "crop_size_pct": 1.0,
       "face_selection": "sole_person_rpi_medal"
     },
     "jason_mcmullan": {
@@ -63,8 +63,8 @@
     },
     "jesse_lindenberger_schutz": {
       "raw_source": "raw_sources/jesse_lindenberger_schutz__orig_media__1788715570725.jpg",
-      "cx_pct": 0.680,
-      "cy_pct": 0.510,
+      "cx_pct": 0.68,
+      "cy_pct": 0.51,
       "crop_size_pct": 0.35,
       "face_selection": "foreground_right_bald_man_white_shirt"
     },
@@ -84,9 +84,9 @@
     },
     "krista_kobeski": {
       "raw_source": "raw_sources/krista_kobeski__orig_public.jpg",
-      "cx_pct": 0.500,
-      "cy_pct": 0.500,
-      "crop_size_pct": 1.00,
+      "cx_pct": 0.5,
+      "cy_pct": 0.5,
+      "crop_size_pct": 1.0,
       "face_selection": "sole_person"
     },
     "lauren_schmied": {
@@ -98,28 +98,28 @@
     },
     "leslie_davisson": {
       "raw_source": "raw_sources/leslie_davisson__orig_media__1788684762716.jpg",
-      "cx_pct": 0.500,
-      "cy_pct": 0.400,
+      "cx_pct": 0.5,
+      "cy_pct": 0.4,
       "crop_size_pct": 0.65,
       "face_selection": "sole_person_dragon_costume"
     },
     "matt_hoying": {
       "raw_source": "raw_sources/matt_hoying__orig_public.jpg",
-      "cx_pct": 0.500,
-      "cy_pct": 0.500,
-      "crop_size_pct": 1.00,
+      "cx_pct": 0.5,
+      "cy_pct": 0.5,
+      "crop_size_pct": 1.0,
       "face_selection": "sole_person"
     },
     "maureen_wink": {
       "raw_source": "raw_sources/maureen_wink__orig_public.jpg",
-      "cx_pct": 0.500,
-      "cy_pct": 0.500,
-      "crop_size_pct": 1.00,
+      "cx_pct": 0.5,
+      "cy_pct": 0.5,
+      "crop_size_pct": 1.0,
       "face_selection": "sole_person"
     },
     "michelle_preston": {
       "raw_source": "raw_sources/michelle_preston__orig_media__1788680793468.jpg",
-      "cx_pct": 0.500,
+      "cx_pct": 0.5,
       "cy_pct": 0.293,
       "crop_size_pct": 0.62,
       "face_selection": "sole_person"
@@ -133,7 +133,7 @@
     },
     "nur_e_freedman": {
       "raw_source": "raw_sources/nur_e_freedman__orig_media__1788681044646.jpg",
-      "cx_pct": 0.500,
+      "cx_pct": 0.5,
       "cy_pct": 0.312,
       "crop_size_pct": 0.58,
       "face_selection": "sole_person"
@@ -149,21 +149,21 @@
       "raw_source": "raw_sources/roopak_kandasamy__orig_media__1788713903063.jpg",
       "cx_pct": 0.278,
       "cy_pct": 0.507,
-      "crop_size_pct": 0.40,
+      "crop_size_pct": 0.4,
       "face_selection": "left_under_51grow_sign"
     },
     "romana_rajput": {
       "raw_source": "raw_sources/romana_rajput__orig_media__1788681044646.jpg",
-      "cx_pct": 0.500,
+      "cx_pct": 0.5,
       "cy_pct": 0.234,
       "crop_size_pct": 0.62,
       "face_selection": "sole_person"
     },
     "ryan_anthony": {
       "raw_source": "raw_sources/ryan_anthony__orig_media__1788683581680.jpg",
-      "cx_pct": 0.500,
+      "cx_pct": 0.5,
       "cy_pct": 0.312,
-      "crop_size_pct": 0.60,
+      "crop_size_pct": 0.6,
       "face_selection": "sole_person_smiling_beer"
     },
     "steve_nares": {
@@ -175,7 +175,7 @@
     },
     "toyo_tsujino": {
       "raw_source": "raw_sources/toyo_tsujino__orig_media__1788685317722.jpg",
-      "cx_pct": 0.360,
+      "cx_pct": 0.36,
       "cy_pct": 0.417,
       "crop_size_pct": 0.45,
       "face_selection": "left_person_glasses_drink"
