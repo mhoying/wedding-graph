@@ -6,11 +6,11 @@
   },
   "guests": {
     "allison_williams": {
-      "raw_source": "raw_sources/allison_williams__orig_media__1788683715783.jpg",
-      "cx_pct": 0.333,
-      "cy_pct": 0.382,
-      "crop_size_pct": 0.54,
-      "face_selection": "left_person_duo"
+      "raw_source": "raw_sources/allison_williams__orig_media__1788683718.jpg",
+      "cx_pct": 0.315,
+      "cy_pct": 0.36,
+      "crop_size_pct": 0.65,
+      "face_selection": "allison_williams_recropped"
     },
     "ashley_prichard": {
       "raw_source": "raw_sources/ashley_prichard__orig_media__1788713718501.jpg",
