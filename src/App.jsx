@@ -988,7 +988,7 @@ export default function App() {
     await submitGuestProposalToGithub(proposal);
   };
 
-  const handleGuestPhotoUpload = useCallback((targetId, dataUrl) => {
+  const handleGuestPhotoUpload = useCallback(async (targetId, dataUrl) => {
     if (!targetId || !dataUrl) return;
     const targetNode = nodes.find(n => n.id === targetId) || (selectedNode && selectedNode.id === targetId ? selectedNode : null);
     if (!targetNode) return;
@@ -1003,18 +1003,13 @@ export default function App() {
       localStorage.setItem('wedding_graph_nodes_v95', JSON.stringify(updated));
     } catch (e) {}
 
-    setCopyToast(`📷 Photo updated for ${targetNode.name}!`);
+    setCopyToast(`📷 Photo updated & deploying live for all users!`);
     setTimeout(() => setCopyToast(''), 3500);
 
-    const proposal = {
-      id: `fb_${Date.now()}`,
-      targetId: targetNode.id,
-      targetName: targetNode.name,
-      category: 'Profile Picture / Photo Upload',
-      timestamp: new Date().toISOString()
-    };
-    submitGuestProposalToGithub(proposal);
-  }, [nodes, selectedNode, submitGuestProposalToGithub]);
+    // Auto-commit dataset directly to GitHub repo so ALL users see the photo globally
+    const sampleDataCode = generateSampleDataJsContent(updated, links);
+    await pushToGithubRepo(sampleDataCode, `feat(headshots): update guest photo for ${targetNode.name}`);
+  }, [nodes, links, selectedNode]);
 
   // BFS Path Finder Engine
   const computeShortestPath = useCallback((startId, endId) => {
