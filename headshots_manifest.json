@@ -297,6 +297,15 @@
       "face_h_pct": 0.2594,
       "crop_size_px": 338,
       "face_selection": "raw_pixel_calibrated"
+    },
+    "tina_silva": {
+      "raw_source": "raw_sources/tina_silva__orig_media.jpg",
+      "cx_pct": 0.505,
+      "cy_pct": 0.47,
+      "face_h_px": 140,
+      "face_h_pct": 0.2431,
+      "crop_size_px": 237,
+      "face_selection": "node_canvas_calibrated"
     }
   }
 }
