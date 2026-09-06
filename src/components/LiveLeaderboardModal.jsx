@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allGuests, activePlayer, onSelectGuest, onUpdatePlayer }) {
+export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allGuests, activePlayer, onSelectGuest, onUpdatePlayer, onOpenPlayerSelect }) {
   const [activeTab, setActiveTab] = useState('masterGaggle');
   const [expandedPlayer, setExpandedPlayer] = useState(null);
   const [showGoalRules, setShowGoalRules] = useState(false);
@@ -117,10 +117,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                 <span>Playing as <span style={{ color: '#f59e0b', fontWeight: 700 }}>{activePlayer}</span></span>
                 <button
                   onClick={() => {
-                    const newName = window.prompt('🪿 Enter your player name:', activePlayer !== 'Guest Goose' ? activePlayer : '');
-                    if (newName && newName.trim() && onUpdatePlayer) {
-                      onUpdatePlayer(newName.trim());
-                    }
+                    if (onOpenPlayerSelect) onOpenPlayerSelect();
                   }}
                   style={{
                     background: 'rgba(245, 158, 11, 0.15)',
