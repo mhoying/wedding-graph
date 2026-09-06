@@ -180,7 +180,8 @@ export default function GuestProfileDrawer({
               {(() => {
                 const encounters = (gaggleStore && gaggleStore.encounters) ? gaggleStore.encounters : [];
                 const alreadyHonked = encounters.some(
-                  e => e.actor === activePlayer && e.target === selectedNode.name
+                  e => String(e.actor || '').toLowerCase().trim() === String(activePlayer || '').toLowerCase().trim() && 
+                       String(e.target || '').toLowerCase().trim() === String(selectedNode.name || '').toLowerCase().trim()
                 );
 
                 if (alreadyHonked) {
@@ -193,24 +194,38 @@ export default function GuestProfileDrawer({
                 }
 
                 return (
-                  <div style={{ marginTop: 14, marginBottom: 8 }}>
+                  <div style={{ marginTop: 14, marginBottom: 8, position: 'relative', zIndex: 99999 }}>
                     <button
-                      onClick={() => onLogHonk && onLogHonk(selectedNode)}
+                      type="button"
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (onLogHonk) onLogHonk(selectedNode);
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (onLogHonk) onLogHonk(selectedNode);
+                      }}
                       style={{
                         width: '100%',
-                        padding: '10px',
+                        padding: '12px 16px',
                         borderRadius: 12,
                         background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                         color: '#0f172a',
                         border: 'none',
                         fontWeight: 800,
-                        fontSize: 13,
+                        fontSize: 14,
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: 8,
-                        boxShadow: '0 4px 14px rgba(245, 158, 11, 0.35)'
+                        boxShadow: '0 4px 16px rgba(245, 158, 11, 0.45)',
+                        pointerEvents: 'auto',
+                        userSelect: 'none',
+                        WebkitTapHighlightColor: 'transparent',
+                        touchAction: 'manipulation'
                       }}
                     >
                       <span style={{ fontSize: 18 }}>🪿</span>
