@@ -674,7 +674,10 @@ export const SAMPLE_NODES = [
   {
     "id": "missy_ruminski",
     "name": "Missy Ruminski",
-    "type": "GUEST",
+    "type": "NON_ATTENDING",
+    "isAttending": false,
+    "rsvpStatus": "Declined",
+    "attendanceStatus": "Not Attending",
     "side": "Matt",
     "cohort": "OWFL Blog",
     "relationship": "",
