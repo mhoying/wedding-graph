@@ -86,9 +86,9 @@ export default function DynamicColorLegend({
       className="no-print"
       style={{
         position: 'fixed',
-        left: isMobileViewport ? '16px' : 'auto',
-        right: isMobileViewport ? 'auto' : '24px',
-        bottom: isMobileViewport ? '72px' : '24px', // Placed bottom-right on desktop & above FAB on mobile so it NEVER covers Map Controls!
+        left: isMobileViewport ? '16px' : '24px',
+        right: 'auto',
+        bottom: isMobileViewport ? '95px' : '24px', // Placed bottom-left on desktop (opposite FAB) and bottom: 95px on mobile (above Quick-Dock)
         zIndex: 8500, // Below drawer (9000) & modal (9500), but well above canvas (10)
         maxWidth: isMobileViewport ? 'calc(100vw - 32px)' : '380px',
         background: isLightMode ? 'rgba(255, 255, 255, 0.92)' : 'rgba(15, 23, 42, 0.90)',
