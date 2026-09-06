@@ -40,14 +40,18 @@ export default function App() {
 
   // Core Data State (Purges old localStorage cache on new build deployment)
   useEffect(() => {
-    ['wedding_graph_nodes_master', 'wedding_graph_nodes_v100', 'wedding_graph_nodes_v95', 'wedding_graph_nodes_v85', 'wedding_graph_nodes_v3'].forEach(k => {
-      try { localStorage.removeItem(k); } catch(e) {}
-    });
+    try {
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v111') {
+          localStorage.removeItem(key);
+        }
+      });
+    } catch(e) {}
   }, []);
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v105');
+      const saved = localStorage.getItem('wedding_graph_nodes_v111');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -354,7 +358,7 @@ export default function App() {
 
   // Sync LocalStorage & Theme
   useEffect(() => {
-    localStorage.setItem('wedding_graph_nodes_v100', JSON.stringify(nodes));
+    localStorage.setItem('wedding_graph_nodes_v111', JSON.stringify(nodes));
   }, [nodes]);
 
   useEffect(() => {
@@ -994,7 +998,8 @@ export default function App() {
     if (!targetNode) return;
 
     const relativeImagePath = `headshots/${targetNode.id}.jpg`;
-    const repoFilePath = `public/${relativeImagePath}`;
+    const publicHeadshotPath = `public/${relativeImagePath}`;
+    const rawSourcePath = `raw_sources/${targetNode.id}__orig_media.jpg`;
 
     targetNode.image = dataUrl;
 
@@ -1003,19 +1008,44 @@ export default function App() {
     setSelectedNode({ ...targetNode });
 
     try {
-      localStorage.setItem('wedding_graph_nodes_v105', JSON.stringify(updated));
+      localStorage.setItem('wedding_graph_nodes_v111', JSON.stringify(updated));
     } catch (e) {}
 
-    setCopyToast(`📷 Photo saved to public/headshots/ & deploying live!`);
-    setTimeout(() => setCopyToast(''), 3500);
+    setCopyToast(`📷 Uploading master raw photo & headshot directly to GitHub repository...`);
 
-    // 1. Upload binary JPG directly into public/headshots/<guest_id>.jpg in GitHub repo
-    await pushToGithubRepo(dataUrl, `feat(headshots): upload headshot file for ${targetNode.name}`, '', repoFilePath, true);
+    // 1. Commit raw master image to raw_sources/<guest_id>__orig_media.jpg in Git repo
+    await pushToGithubRepo(dataUrl, `feat(raw_sources): save raw photo master for ${targetNode.name}`, '', rawSourcePath, true);
 
-    // 2. Update node image reference to relative path and push sampleData.js
+    // 2. Commit cropped JPEG to public/headshots/<guest_id>.jpg in Git repo
+    await pushToGithubRepo(dataUrl, `feat(headshots): upload headshot file for ${targetNode.name}`, '', publicHeadshotPath, true);
+
+    // 3. Update node image reference to relative path and push sampleData.js to Git repo
     targetNode.image = relativeImagePath;
     const sampleDataCode = generateSampleDataJsContent(updated, links);
-    await pushToGithubRepo(sampleDataCode, `feat(data): link public/headshots/${targetNode.id}.jpg for ${targetNode.name}`);
+    const result = await pushToGithubRepo(sampleDataCode, `feat(data): link public/headshots/${targetNode.id}.jpg for ${targetNode.name}`);
+
+    // 4. Create GitHub Issue with direct clickable links to the subfolder files & embedded preview
+    const rawSourceUrl = `https://github.com/mhoying/wedding-graph/blob/main/raw_sources/${targetNode.id}__orig_media.jpg`;
+    const publicHeadshotUrl = `https://github.com/mhoying/wedding-graph/blob/main/public/headshots/${targetNode.id}.jpg`;
+    const rawImageCdnUrl = `https://raw.githubusercontent.com/mhoying/wedding-graph/main/public/headshots/${targetNode.id}.jpg`;
+
+    await submitGuestProposalToGithub({
+      targetId: targetNode.id,
+      targetName: targetNode.name,
+      category: 'Profile Picture / Photo Upload',
+      note: `📷 Photo uploaded directly to GitHub repo subfolders!\n\n• **Raw Master Photo**: [raw_sources/${targetNode.id}__orig_media.jpg](${rawSourceUrl})\n• **Rendered Avatar**: [public/headshots/${targetNode.id}.jpg](${publicHeadshotUrl})\n\n![Avatar Preview](${rawImageCdnUrl})`,
+      rawSourceUrl,
+      publicHeadshotUrl,
+      rawImageCdnUrl,
+      timestamp: new Date().toISOString()
+    });
+
+    if (result && result.success) {
+      setCopyToast(`🎉 Photo uploaded, saved to repo subfolders & logged to GitHub Issue with links!`);
+    } else {
+      setCopyToast(`✅ Photo saved locally! (${result ? result.message : ''})`);
+    }
+    setTimeout(() => setCopyToast(''), 5500);
   }, [nodes, links, selectedNode]);
 
   // BFS Path Finder Engine
@@ -2097,6 +2127,7 @@ export default function App() {
         setFeedbackNote={setFeedbackNote}
         handleSubmitFeedback={handleSubmitFeedback}
         allInterests={availableClusters.interests}
+        onPhotoUpload={handleGuestPhotoUpload}
       />
 
       {/* Player Identity Selection Modal (Strict Dropdown) */}
