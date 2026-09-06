@@ -913,7 +913,8 @@ export const SAMPLE_NODES = [
     "familyStatus": "Family",
     "hobbies": [
       "Kids",
-      "Green Onions"
+      "Green Onions",
+      "Music"
     ],
     "__indexColor": "#080026",
     "x": 1215.0495009347562,
