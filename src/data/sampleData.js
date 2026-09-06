@@ -1,5 +1,5 @@
 // Real Wedding Guest List Data - Auto-updated via Host Admin Suite
-export const BUILD_TIMESTAMP = 1788718048897;
+export const BUILD_TIMESTAMP = 1788718085039;
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
   "Cornell": "#ef4444",
@@ -1327,6 +1327,7 @@ export const SAMPLE_NODES = [
   },
   {
     "id": "paul_richter",
+    "image": "headshots/paul_richter.jpg",
     "name": "Paul Richter",
     "type": "GUEST",
     "side": "Joint",
