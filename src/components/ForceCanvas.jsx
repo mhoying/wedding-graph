@@ -712,7 +712,8 @@ export default function ForceCanvas({
       nodes.forEach(node => {
         if (node.image && !imageCacheRef.current[node.image]) {
           const img = new Image();
-          img.src = node.image;
+          img.crossOrigin = 'anonymous';
+          img.src = node.image.includes('?') ? node.image : `${node.image}?v=101`;
           img.onload = () => {
             if (imageCacheRef.current) imageCacheRef.current[node.image] = img;
           };
@@ -1322,7 +1323,17 @@ export default function ForceCanvas({
 
       if (node.image && imageCacheRef && imageCacheRef.current && imageCacheRef.current[node.image]) {
         const img = imageCacheRef.current[node.image];
-        ctx.drawImage(img, avatarX - avatarDiameter / 2, avatarY - avatarDiameter / 2, avatarDiameter, avatarDiameter);
+        const nw = img.naturalWidth || img.width || 400;
+        const nh = img.naturalHeight || img.height || 400;
+        const minDim = Math.min(nw, nh);
+        const sx = (nw - minDim) / 2;
+        const sy = (nh - minDim) / 2;
+
+        ctx.drawImage(
+          img,
+          sx, sy, minDim, minDim,
+          avatarX - avatarDiameter / 2, avatarY - avatarDiameter / 2, avatarDiameter, avatarDiameter
+        );
       } else {
         ctx.fillStyle = groupColor;
         ctx.fill();
