@@ -1032,6 +1032,7 @@ export const SAMPLE_NODES = [
     "id": "james_freedman",
     "name": "James Freedman",
     "type": "GUEST",
+    "image": "/headshots/james_freedman.jpg",
     "side": "Maureen",
     "cohort": "Other",
     "relationship": "The Freedman Family",
