@@ -331,7 +331,8 @@ export default function App() {
           fgRef.current.centerAt(targetX, targetY, 800);
         }
         if (typeof fgRef.current.zoom === 'function') {
-          fgRef.current.zoom(1.35, 800);
+          const isMobile = window.innerWidth < 768;
+          fgRef.current.zoom(isMobile ? 1.05 : 1.35, 800);
         }
       }
     } else if (nodeArray.length > 1) {
@@ -366,13 +367,13 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Initial Mobile Camera Setup: Center on "THE COUPLE" (0, 0) at 1.4x zoom on mobile viewports
+  // Initial Mobile Camera Setup: Center on "THE COUPLE" (0, 0) at comfortable wider 0.85x zoom on mobile viewports
   useEffect(() => {
     if (isMobileViewport && fgRef.current) {
       const timer = setTimeout(() => {
         if (fgRef.current && typeof fgRef.current.zoom === 'function' && typeof fgRef.current.centerAt === 'function') {
           fgRef.current.centerAt(0, 0, 800);
-          fgRef.current.zoom(1.4, 800);
+          fgRef.current.zoom(0.85, 800);
         }
       }, 400);
       return () => clearTimeout(timer);
