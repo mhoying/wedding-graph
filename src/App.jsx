@@ -134,14 +134,7 @@ export default function App() {
   const wasOrbitingBeforeDetailRef = useRef(false);
 
   // Security & Event Access Gate State
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    if (isSecretUrlAdmin()) return true;
-    try {
-      return localStorage.getItem('wedding_graph_authenticated') === 'true';
-    } catch (e) {
-      return false;
-    }
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [gateInput, setGateInput] = useState('');
   const [gateError, setGateError] = useState(false);
 
