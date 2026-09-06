@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allGuests, activePlayer, onSelectGuest }) {
   const [activeTab, setActiveTab] = useState('masterGaggle');
   const [expandedPlayer, setExpandedPlayer] = useState(null);
+  const [showGoalRules, setShowGoalRules] = useState(false);
 
   if (!isOpen) return null;
 
@@ -12,7 +13,6 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
     migrationSprintLeaderboard = [],
     globalGooseLeaderboard = [],
     soulGanderLeaderboard = [],
-    playerStats = {}
   } = gaggleData || {};
 
   const tabs = [
@@ -20,36 +20,41 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
       id: 'masterGaggle',
       label: '🪿 Master Gaggle',
       title: 'Unite All Flocks',
-      goal: '🎯 Goal: Meet guests across the widest variety of distinct social circles (Cohorts like Dog Park, Google, Cornell, Lehigh, etc.).',
-      howToWin: '🏆 How to Win: Tap "Honk at [Guest]" on guests from different cohorts. The player who unlocks the most cohorts wins the Golden Goose trophy!'
+      metricLabel: 'Flocks',
+      goal: 'Meet guests across the widest variety of distinct social circles.',
+      howToWin: 'Tap "Honk at Guest" on guests from different cohorts to unlock the Golden Goose trophy!'
     },
     {
       id: 'honkSpecialist',
       label: '🎯 Honk Specialist',
       title: 'Most Honks Logged',
-      goal: '🎯 Goal: Log as many total guest encounters and icebreakers across the reception as possible.',
-      howToWin: '🏆 How to Win: Keep mingling and honking at guests! Each verified encounter increments your quest tally by +1.'
+      metricLabel: 'Encounters',
+      goal: 'Log as many total guest encounters across the reception as possible.',
+      howToWin: 'Keep mingling! Each verified encounter increments your quest tally by +1.'
     },
     {
       id: 'migrationSprint',
       label: '⚡ Migration Sprint',
       title: 'Fastest 5 Encounters',
-      goal: '🎯 Goal: Fast-flight 5 guest encounters in record time.',
-      howToWin: '🏆 How to Win: Clock starts on your 1st honk and stops on your 5th. Lowest total elapsed time (MM:SS) wins!'
+      metricLabel: 'Sprint Time',
+      goal: 'Fast-flight 5 guest encounters in record time.',
+      howToWin: 'Clock starts on 1st honk, stops on 5th. Lowest total elapsed time wins!'
     },
     {
       id: 'globalGoose',
       label: '📍 Global Goose',
       title: 'Most Nesting Grounds',
-      goal: '🎯 Goal: Discover guests traveling from the greatest variety of geographical origins (cities/states).',
-      howToWin: '🏆 How to Win: Seek out guests from different hometowns (e.g. SF, NYC, Chicago, Austin). Unique cities met = your score.'
+      metricLabel: 'Origins',
+      goal: 'Discover guests traveling from the greatest variety of geographical origins.',
+      howToWin: 'Seek out guests from different hometowns. Unique cities met = score.'
     },
     {
       id: 'soulGander',
       label: '🍸 Soul-Gander',
       title: 'Compatibility Matchmaker',
-      goal: '🎯 Goal: Seek out and log encounters with your top algorithmically recommended compatibility matches.',
-      howToWin: '🏆 How to Win: Check your Matchmaker recommendations and honk at your top shared-interest matches to accumulate compatibility points.'
+      metricLabel: 'Compat Pts',
+      goal: 'Log encounters with top algorithmically recommended matches.',
+      howToWin: 'Honk at top shared-interest matches to accumulate compatibility points.'
     }
   ];
 
@@ -68,11 +73,18 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
   const currentList = getActiveLeaderboard();
 
   const formatSprintTime = (ms) => {
-    if (!ms) return 'N/A';
+    if (!ms) return '--:--';
     const totalSec = Math.floor(ms / 1000);
     const mins = Math.floor(totalSec / 60);
     const secs = totalSec % 60;
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  const getRankBadge = (idx) => {
+    if (idx === 0) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(245, 158, 11, 0.25)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>1</span>;
+    if (idx === 1) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(203, 213, 225, 0.25)', color: '#cbd5e1', border: '1px solid rgba(203, 213, 225, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>2</span>;
+    if (idx === 2) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(217, 119, 6, 0.25)', color: '#d97706', border: '1px solid rgba(217, 119, 6, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>3</span>;
+    return <span style={{ width: 24, textAlign: 'center', fontFamily: 'monospace', fontSize: 11, color: '#64748b', fontWeight: 700 }}>{String(idx + 1).padStart(2, '0')}</span>;
   };
 
   return (
@@ -80,164 +92,233 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
       <div 
         className="glass-panel modal-card"
         style={{
-          maxWidth: 640,
+          maxWidth: 620,
           width: '94vw',
           maxHeight: '85vh',
           display: 'flex',
           flexDirection: 'column',
-          padding: 20,
-          borderRadius: 24,
+          padding: 0,
+          borderRadius: 20,
           background: '#0f172a',
-          border: '1px solid rgba(245, 158, 11, 0.4)',
+          border: '1px solid rgba(245, 158, 11, 0.35)',
           boxShadow: '0 25px 60px rgba(0, 0, 0, 0.85)',
           overflow: 'hidden'
         }}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-          <div className="flex items-center gap-2.5">
-            <span className="text-2xl sm:text-3xl">🪿</span>
+        {/* Header Bar */}
+        <div style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(15, 23, 42, 0.95)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+              🪿
+            </div>
             <div>
-              <h2 className="text-base sm:text-xl font-bold text-amber-400" style={{ margin: 0 }}>Grand Gaggle Leaderboard</h2>
-              <p className="text-[11px] sm:text-xs text-slate-400" style={{ margin: 0 }}>Playing As: <span className="text-amber-300 font-semibold">{activePlayer}</span></p>
+              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: '#f8fafc' }}>Live Gaggle Leaderboard</h2>
+              <span style={{ fontSize: 11, color: '#94a3b8' }}>
+                Playing as <span style={{ color: '#f59e0b', fontWeight: 700 }}>{activePlayer}</span>
+              </span>
             </div>
           </div>
           <button
             onClick={onClose}
-            style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#94a3b8', padding: '6px 12px', borderRadius: 9999, cursor: 'pointer', fontSize: 12, fontWeight: 700 }}
+            style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#94a3b8', width: 30, height: 30, borderRadius: '50%', cursor: 'pointer', fontSize: 14, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             ✕
           </button>
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex gap-2 overflow-x-auto py-3 no-scrollbar border-b border-slate-800">
-          {tabs.map(t => (
-            <button
-              key={t.id}
-              onClick={() => { setActiveTab(t.id); setExpandedPlayer(null); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                activeTab === t.id
-                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md'
-                  : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Rich Competition Goal & How To Win Explainer Card */}
-        <div className="p-3 bg-amber-500/10 border border-amber-500/25 rounded-xl my-3 text-xs space-y-1 text-slate-200">
-          <div className="font-bold text-amber-300 text-sm flex items-center gap-1.5">
-            <span>🪿</span>
-            <span>{currentTabObj.title}</span>
+        {/* Tab Navigation */}
+        <div style={{ padding: '8px 14px', background: 'rgba(2, 6, 23, 0.6)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
+          <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2 }} className="no-scrollbar">
+            {tabs.map(t => {
+              const isActive = activeTab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => { setActiveTab(t.id); setExpandedPlayer(null); }}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: 8,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    whiteSpace: 'nowrap',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                    background: isActive ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : 'rgba(30, 41, 59, 0.7)',
+                    color: isActive ? '#0f172a' : '#94a3b8',
+                    boxShadow: isActive ? '0 2px 8px rgba(245, 158, 11, 0.3)' : 'none'
+                  }}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
           </div>
-          <div className="text-slate-300">{currentTabObj.goal}</div>
-          <div className="text-amber-200/90 font-medium">{currentTabObj.howToWin}</div>
         </div>
 
-        {/* Leaderboard Table */}
-        <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+        {/* High-Density Single-Line Goal & Rule Toggle Bar */}
+        <div style={{ padding: '8px 16px', background: 'rgba(15, 23, 42, 0.8)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', fontSize: 11 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
+              <span style={{ padding: '2px 6px', borderRadius: 4, fontSize: 9, fontWeight: 900, textTransform: 'uppercase', tracking: '0.05em', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)', flexShrink: 0 }}>
+                {currentTabObj.title}
+              </span>
+              <span style={{ color: '#cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 11 }}>
+                {currentTabObj.goal}
+              </span>
+            </div>
+            <button
+              onClick={() => setShowGoalRules(!showGoalRules)}
+              style={{ background: 'none', border: 'none', color: '#f59e0b', fontSize: 11, fontWeight: 700, cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              <span>{showGoalRules ? 'Hide Rules' : 'Rules'}</span>
+              <span style={{ fontSize: 9 }}>{showGoalRules ? '▲' : '▼'}</span>
+            </button>
+          </div>
+          
+          {showGoalRules && (
+            <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(255, 255, 255, 0.06)', color: '#94a3b8', fontSize: 11 }}>
+              <strong style={{ color: '#f59e0b' }}>How to Win:</strong> {currentTabObj.howToWin}
+            </div>
+          )}
+        </div>
+
+        {/* High-Density Single-Row Leaderboard Table List */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
           {currentList.length === 0 ? (
-            <div className="text-center py-10 text-slate-500 text-sm">
-              🪿 No honks logged yet for this category! Tap "Honk at Guest" to score first!
+            <div style={{ textAlign: 'center', padding: '40px 16px', color: '#64748b', fontSize: 12 }}>
+              <span style={{ fontSize: 24, display: 'block', marginBottom: 6 }}>🪿</span>
+              No honks logged yet for this category! Tap "Honk at Guest" to take the lead.
             </div>
           ) : (
             currentList.slice(0, 15).map((player, idx) => {
               const isSelf = player.name === activePlayer;
               const isExpanded = expandedPlayer === player.name;
-              let medal = null;
-              if (idx === 0) medal = '🥇';
-              if (idx === 1) medal = '🥈';
-              if (idx === 2) medal = '🥉';
 
               return (
                 <div
                   key={player.name}
-                  className={`rounded-xl border transition-all overflow-hidden ${
-                    isSelf
-                      ? 'bg-amber-950/30 border-amber-500/50 shadow-lg'
-                      : 'bg-slate-800/50 border-slate-700/60 hover:bg-slate-800'
-                  }`}
+                  style={{
+                    borderRadius: 12,
+                    background: isSelf ? 'rgba(245, 158, 11, 0.08)' : 'rgba(30, 41, 59, 0.4)',
+                    border: isSelf ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid rgba(255, 255, 255, 0.05)',
+                    transition: 'all 0.15s ease',
+                    overflow: 'hidden'
+                  }}
                 >
+                  {/* Single Compact Main Row (Height ~46px) */}
                   <div
                     onClick={() => setExpandedPlayer(isExpanded ? null : player.name)}
-                    className="p-3.5 flex items-center justify-between cursor-pointer select-none"
+                    style={{
+                      padding: '8px 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer',
+                      userSelect: 'none',
+                      gap: 10
+                    }}
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="w-6 text-center font-bold text-sm text-slate-400">
-                        {medal || `#${idx + 1}`}
-                      </span>
-                      <div>
-                        <div className="font-semibold text-slate-100 flex items-center gap-2">
+                    {/* Col 1: Rank Badge */}
+                    <div style={{ width: 28, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {getRankBadge(idx)}
+                    </div>
+
+                    {/* Col 2: Player Name & Inline Micro Stats */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ fontWeight: 800, fontSize: 13, color: '#f8fafc', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {player.name}
-                          {isSelf && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-normal">YOU</span>}
-                        </div>
-                        <div className="text-xs text-slate-400 flex items-center gap-2">
-                          <span>🪿 {player.honkCount} Honks</span>
-                          <span>•</span>
-                          <span>{player.cohortsMet.size} Flocks</span>
-                        </div>
+                        </span>
+                        {isSelf && (
+                          <span style={{ fontSize: 9, fontWeight: 900, padding: '1px 5px', borderRadius: 4, background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.4)', flexShrink: 0 }}>
+                            YOU
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: 10, color: '#94a3b8', marginTop: 1, display: 'flex', alignItems: 'center', gap: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <span>🪿 {player.honkCount} honks</span>
+                        <span style={{ color: '#475569' }}>•</span>
+                        <span>{player.cohortsMet.size} cohorts</span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
-                        {activeTab === 'masterGaggle' && (
-                          <span className="text-sm font-bold text-amber-400">{player.cohortsMet.size} Flocks</span>
-                        )}
-                        {activeTab === 'honkSpecialist' && (
-                          <span className="text-sm font-bold text-emerald-400">{player.questsCompleted.size} Quests</span>
-                        )}
-                        {activeTab === 'migrationSprint' && (
-                          <span className="text-sm font-bold text-cyan-400">{formatSprintTime(player.sprintTimeMs)}</span>
-                        )}
-                        {activeTab === 'globalGoose' && (
-                          <span className="text-sm font-bold text-purple-400">{player.citiesMet.size} Origins</span>
-                        )}
-                        {activeTab === 'soulGander' && (
-                          <span className="text-sm font-bold text-rose-400">{player.honkCount * 10} pts</span>
-                        )}
-                      </div>
-                      <span className="text-slate-500 text-xs">{isExpanded ? '▲' : '▼'}</span>
+                    {/* Col 3: Primary Tab Metric Badge */}
+                    <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                      {activeTab === 'masterGaggle' && (
+                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', color: '#f59e0b', fontWeight: 800, fontSize: 11 }}>
+                          {player.cohortsMet.size} Flocks
+                        </span>
+                      )}
+                      {activeTab === 'honkSpecialist' && (
+                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontWeight: 800, fontSize: 11 }}>
+                          {player.questsCompleted.size} Quests
+                        </span>
+                      )}
+                      {activeTab === 'migrationSprint' && (
+                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(56, 189, 248, 0.15)', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#38bdf8', fontWeight: 800, fontSize: 11, fontFamily: 'monospace' }}>
+                          {formatSprintTime(player.sprintTimeMs)}
+                        </span>
+                      )}
+                      {activeTab === 'globalGoose' && (
+                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(168, 85, 247, 0.15)', border: '1px solid rgba(168, 85, 247, 0.3)', color: '#c084fc', fontWeight: 800, fontSize: 11 }}>
+                          {player.citiesMet.size} Origins
+                        </span>
+                      )}
+                      {activeTab === 'soulGander' && (
+                        <span style={{ padding: '4px 8px', borderRadius: 6, background: 'rgba(244, 63, 94, 0.15)', border: '1px solid rgba(244, 63, 94, 0.3)', color: '#fb7185', fontWeight: 800, fontSize: 11 }}>
+                          {player.honkCount * 10} pts
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Col 4: Chevron */}
+                    <div style={{ width: 16, flexShrink: 0, color: '#64748b', fontSize: 10, textAlign: 'center' }}>
+                      {isExpanded ? '▲' : '▼'}
                     </div>
                   </div>
 
-                  {/* Expanded Connection Details ("Who each guest connected with") */}
+                  {/* Expanded Connections Pill Section */}
                   {isExpanded && (
-                    <div className="px-4 pb-4 pt-2 border-t border-slate-700/50 bg-slate-900/60 text-xs text-slate-300 space-y-3">
-                      <div>
-                        <span className="font-bold text-amber-300">🪿 Met Ganders ({player.connections.length}):</span>
-                        {player.connections.length === 0 ? (
-                          <p className="text-slate-500 italic mt-1">No direct encounters logged yet.</p>
-                        ) : (
-                          <div className="flex flex-wrap gap-1.5 mt-2">
-                            {player.connections.map((c, i) => (
-                              <button
-                                key={i}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onSelectGuest && onSelectGuest(c.name);
-                                  onClose();
-                                }}
-                                className="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 border border-slate-600/60 text-slate-200 flex items-center gap-1.5"
-                              >
-                                <span>🪿</span>
-                                <span>{c.name}</span>
-                                <span className="text-[10px] text-amber-400 font-mono">({c.cohort})</span>
-                              </button>
-                            ))}
-                          </div>
+                    <div style={{ padding: '8px 12px 10px 12px', borderTop: '1px solid rgba(255, 255, 255, 0.05)', background: 'rgba(15, 23, 42, 0.6)', fontSize: 11 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justify: 'space-between', color: '#94a3b8', fontSize: 10, fontWeight: 700, marginBottom: 6 }}>
+                        <span>Met Ganders ({player.connections.length}):</span>
+                        {player.citiesMet.size > 0 && (
+                          <span style={{ color: '#c084fc' }}>
+                            📍 {player.citiesMet.size} Hometowns ({[...player.citiesMet].slice(0, 3).join(', ')})
+                          </span>
                         )}
                       </div>
-
-                      {player.citiesMet.size > 0 && (
-                        <div>
-                          <span className="font-bold text-purple-300">📍 Discovered Nesting Grounds:</span>
-                          <div className="text-slate-400 mt-0.5">
-                            {[...player.citiesMet].join(' • ')}
-                          </div>
+                      {player.connections.length === 0 ? (
+                        <div style={{ color: '#64748b', fontStyle: 'italic', fontSize: 11 }}>No direct encounters logged yet.</div>
+                      ) : (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                          {player.connections.map((c, i) => (
+                            <button
+                              key={i}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onSelectGuest && onSelectGuest(c.name);
+                                onClose();
+                              }}
+                              style={{
+                                padding: '3px 8px',
+                                borderRadius: 6,
+                                background: 'rgba(30, 41, 59, 0.9)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                color: '#e2e8f0',
+                                fontSize: 10,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 4
+                              }}
+                            >
+                              <span>🪿</span>
+                              <span style={{ fontWeight: 700 }}>{c.name}</span>
+                              <span style={{ color: '#f59e0b', fontSize: 9, fontFamily: 'monospace' }}>({c.cohort})</span>
+                            </button>
+                          ))}
                         </div>
                       )}
                     </div>
