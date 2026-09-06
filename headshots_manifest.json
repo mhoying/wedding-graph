@@ -202,10 +202,10 @@
       "face_selection": "sharpened_color_corrected_woman_white_dress"
     },
     "paul_richter": {
-      "raw_source": "raw_sources/paul_richter__orig_media__1788718073.jpg",
-      "cx_pct": 0.48,
-      "cy_pct": 0.32,
-      "crop_size_pct": 0.45,
+      "raw_source": "raw_sources/paul_richter__orig_media__1788718085.jpg",
+      "cx_pct": 0.5,
+      "cy_pct": 0.4,
+      "crop_size_pct": 0.7,
       "face_selection": "user_calibrated"
     },
     "katie_richter": {
