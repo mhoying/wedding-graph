@@ -42,7 +42,7 @@ export default function App() {
   useEffect(() => {
     try {
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v111') {
+        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v112') {
           localStorage.removeItem(key);
         }
       });
@@ -51,7 +51,7 @@ export default function App() {
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v111');
+      const saved = localStorage.getItem('wedding_graph_nodes_v112');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -268,7 +268,7 @@ export default function App() {
     setNodes(combinedNodes);
 
     try {
-      localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(combinedNodes));
+      localStorage.setItem('wedding_graph_nodes_v112', JSON.stringify(combinedNodes));
     } catch (e) {}
 
     setCopyToast('⚡ Committing updated spreadsheet dataset to GitHub Repo...');
@@ -298,7 +298,7 @@ export default function App() {
     setNodes(newNodes);
     setLinks(newLinks);
     try {
-      localStorage.setItem('wedding_graph_nodes_v85', JSON.stringify(newNodes));
+      localStorage.setItem('wedding_graph_nodes_v112', JSON.stringify(newNodes));
       localStorage.setItem('wedding_graph_links_v85', JSON.stringify(newLinks));
     } catch (e) {
       console.warn('Could not save to localStorage:', e);
@@ -358,7 +358,7 @@ export default function App() {
 
   // Sync LocalStorage & Theme
   useEffect(() => {
-    localStorage.setItem('wedding_graph_nodes_v111', JSON.stringify(nodes));
+    localStorage.setItem('wedding_graph_nodes_v112', JSON.stringify(nodes));
   }, [nodes]);
 
   useEffect(() => {
@@ -949,7 +949,7 @@ export default function App() {
     setSelectedNode({ ...targetNode });
 
     try {
-      localStorage.setItem('wedding_graph_nodes_v95', JSON.stringify(updated));
+      localStorage.setItem('wedding_graph_nodes_v112', JSON.stringify(updated));
     } catch (e) {}
 
     const prevHobbies = Array.isArray(selectedNode.hobbies)
@@ -1008,7 +1008,7 @@ export default function App() {
     setSelectedNode({ ...targetNode });
 
     try {
-      localStorage.setItem('wedding_graph_nodes_v111', JSON.stringify(updated));
+      localStorage.setItem('wedding_graph_nodes_v112', JSON.stringify(updated));
     } catch (e) {}
 
     setCopyToast(`📷 Uploading master raw photo & headshot directly to GitHub repository...`);
@@ -2070,7 +2070,7 @@ export default function App() {
             });
 
             try {
-              localStorage.setItem('wedding_graph_nodes_v3', JSON.stringify(updated));
+              localStorage.setItem('wedding_graph_nodes_v112', JSON.stringify(updated));
             } catch (e) {}
 
             const jsContent = generateSampleDataJsContent(updated, links);

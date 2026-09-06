@@ -14,6 +14,8 @@
       "raw_source": "raw_sources/allison_williams__orig_media__1788717433.jpg",
       "cx_pct": 0.31,
       "cy_pct": 0.4,
+      "face_h_px": 188,
+      "face_h_pct": 0.2994,
       "crop_size_px": 318,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/allison_williams.jpg",
@@ -26,10 +28,48 @@
         200
       ]
     },
+    "andy_schmitt": {
+      "raw_source": "public/headshots_backup/andy_schmitt.jpg",
+      "cx_pct": 0.72,
+      "cy_pct": 0.25,
+      "face_h_px": 280,
+      "face_h_pct": 0.2734,
+      "crop_size_px": 474,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/andy_schmitt.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/andy_schmitt.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/andy_schmitt.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "anne_sweeney": {
+      "raw_source": "public/headshots_backup/anne_sweeney.jpg",
+      "cx_pct": 0.765,
+      "cy_pct": 0.54,
+      "face_h_px": 145,
+      "face_h_pct": 0.2517,
+      "crop_size_px": 245,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/anne_sweeney.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/anne_sweeney.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/anne_sweeney.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "ashley_prichard": {
       "raw_source": "raw_sources/ashley_prichard__orig_media__1788718218.jpg",
       "cx_pct": 0.718,
       "cy_pct": 0.355,
+      "face_h_px": 150,
+      "face_h_pct": 0.1465,
       "crop_size_px": 254,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/ashley_prichard.jpg",
@@ -42,10 +82,30 @@
         200
       ]
     },
+    "becca_winslow": {
+      "raw_source": "public/headshots_backup/becca_winslow.jpg",
+      "cx_pct": 0.605,
+      "cy_pct": 0.31,
+      "face_h_px": 110,
+      "face_h_pct": 0.1432,
+      "crop_size_px": 186,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/becca_winslow.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/becca_winslow.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/becca_winslow.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "becky_spohr": {
       "raw_source": "raw_sources/becky_spohr__orig_media__1788715730.jpg",
       "cx_pct": 0.45,
       "cy_pct": 0.5,
+      "face_h_px": 268,
+      "face_h_pct": 0.349,
       "crop_size_px": 454,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/becky_spohr.jpg",
@@ -62,6 +122,8 @@
       "raw_source": "raw_sources/brian_kim__orig_media__1788716008.jpg",
       "cx_pct": 0.8,
       "cy_pct": 0.235,
+      "face_h_px": 200,
+      "face_h_pct": 0.1953,
       "crop_size_px": 338,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/brian_kim.jpg",
@@ -74,10 +136,48 @@
         200
       ]
     },
+    "chrissy_fiore": {
+      "raw_source": "raw_sources/chrissy_fiore__orig_media__1788718987.jpg",
+      "cx_pct": 0.505,
+      "cy_pct": 0.415,
+      "face_h_px": 200,
+      "face_h_pct": 0.2594,
+      "crop_size_px": 338,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/chrissy_fiore.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/chrissy_fiore.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/chrissy_fiore.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "chuchu_zhang": {
+      "raw_source": "public/headshots_backup/chuchu_zhang.jpg",
+      "cx_pct": 0.485,
+      "cy_pct": 0.46,
+      "face_h_px": 290,
+      "face_h_pct": 0.4693,
+      "crop_size_px": 491,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/chuchu_zhang.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/chuchu_zhang.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/chuchu_zhang.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "chuck_tempest": {
       "raw_source": "raw_sources/chuck_tempest__orig_media__1788716099.jpg",
       "cx_pct": 0.52,
       "cy_pct": 0.32,
+      "face_h_px": 207,
+      "face_h_pct": 0.2695,
       "crop_size_px": 350,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/chuck_tempest.jpg",
@@ -90,10 +190,85 @@
         200
       ]
     },
+    "clyde_tsai": {
+      "raw_source": "raw_sources/clyde_tsai__orig_media__1788716815.jpg",
+      "cx_pct": 0.55,
+      "cy_pct": 0.48,
+      "face_h_px": 200,
+      "face_h_pct": 0.2604,
+      "crop_size_px": 338,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/clyde_tsai.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/clyde_tsai.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/clyde_tsai.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "cole_armstrong": {
+      "raw_source": "raw_sources/cole_armstrong__orig_media.jpg",
+      "cx_pct": 0.585,
+      "cy_pct": 0.58,
+      "face_h_px": 65,
+      "face_h_pct": 0.1074,
+      "crop_size_px": 372,
+      "face_selection": "node_canvas_calibrated",
+      "cropped_headshot": "public/headshots/cole_armstrong.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/cole_armstrong.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/cole_armstrong.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "danielle_sullivan": {
+      "raw_source": "raw_sources/danielle_sullivan__orig_media__1788717156.jpg",
+      "cx_pct": 0.44,
+      "cy_pct": 0.46,
+      "face_h_px": 140,
+      "face_h_pct": 0.35,
+      "crop_size_px": 237,
+      "face_selection": "raw_pixel_calibrated",
+      "allow_subcrop": true,
+      "cropped_headshot": "public/headshots/danielle_sullivan.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/danielle_sullivan.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/danielle_sullivan.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "erica_festa": {
+      "raw_source": "public/headshots_backup/erica_festa.jpg",
+      "cx_pct": 0.547,
+      "cy_pct": 0.347,
+      "face_h_px": 310,
+      "face_h_pct": 0.5382,
+      "crop_size_px": 525,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/erica_festa.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/erica_festa.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/erica_festa.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "george_sun": {
       "raw_source": "raw_sources/george_sun__orig_media__1788716160.jpg",
       "cx_pct": 0.57,
       "cy_pct": 0.28,
+      "face_h_px": 203,
+      "face_h_pct": 0.1982,
       "crop_size_px": 344,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/george_sun.jpg",
@@ -106,10 +281,30 @@
         200
       ]
     },
+    "greg_goetchius": {
+      "raw_source": "public/headshots_backup/greg_goetchius.jpg",
+      "cx_pct": 0.41,
+      "cy_pct": 0.215,
+      "face_h_px": 120,
+      "face_h_pct": 0.2083,
+      "crop_size_px": 203,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/greg_goetchius.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/greg_goetchius.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/greg_goetchius.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "james_freedman": {
       "raw_source": "raw_sources/james_freedman__orig_commit_ce224c3.jpg",
       "cx_pct": 0.5,
       "cy_pct": 0.48,
+      "face_h_px": 236,
+      "face_h_pct": 0.59,
       "crop_size_px": 400,
       "face_selection": "raw_pixel_calibrated",
       "allow_subcrop": true,
@@ -123,10 +318,48 @@
         200
       ]
     },
+    "janaki_lahorani": {
+      "raw_source": "public/headshots_backup/janaki_lahorani.jpg",
+      "cx_pct": 0.625,
+      "cy_pct": 0.57,
+      "face_h_px": 175,
+      "face_h_pct": 0.3038,
+      "crop_size_px": 296,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/janaki_lahorani.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/janaki_lahorani.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/janaki_lahorani.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "jason_govig": {
+      "raw_source": "public/headshots_backup/jason_govig.jpg",
+      "cx_pct": 0.535,
+      "cy_pct": 0.28,
+      "face_h_px": 170,
+      "face_h_pct": 0.2951,
+      "crop_size_px": 288,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/jason_govig.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/jason_govig.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/jason_govig.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "jason_mcmullan": {
       "raw_source": "raw_sources/jason_mcmullan__orig_media__1788684972.jpg",
       "cx_pct": 0.69,
       "cy_pct": 0.28,
+      "face_h_px": 180,
+      "face_h_pct": 0.1758,
       "crop_size_px": 305,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/jason_mcmullan.jpg",
@@ -139,10 +372,66 @@
         200
       ]
     },
+    "jeff_domanski": {
+      "raw_source": "public/headshots_backup/jeff_domanski.jpg",
+      "cx_pct": 0.485,
+      "cy_pct": 0.355,
+      "face_h_px": 180,
+      "face_h_pct": 0.1758,
+      "crop_size_px": 305,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/jeff_domanski.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/jeff_domanski.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/jeff_domanski.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "jenna_auer": {
+      "raw_source": "public/headshots_backup/jenna_auer.jpg",
+      "cx_pct": 0.27,
+      "cy_pct": 0.4,
+      "face_h_px": 210,
+      "face_h_pct": 0.2734,
+      "crop_size_px": 355,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/jenna_auer.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/jenna_auer.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/jenna_auer.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "jess_phan": {
+      "raw_source": "raw_sources/jess_phan__orig_media.jpg",
+      "cx_pct": 0.48,
+      "cy_pct": 0.38,
+      "face_h_px": 260,
+      "face_h_pct": 0.2539,
+      "crop_size_px": 400,
+      "face_selection": "node_canvas_calibrated",
+      "cropped_headshot": "public/headshots/jess_phan.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/jess_phan.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/jess_phan.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "jesse_lindenberger_schutz": {
       "raw_source": "raw_sources/jesse_lindenberger_schutz__orig_media__1788715598.jpg",
       "cx_pct": 0.801,
       "cy_pct": 0.51,
+      "face_h_px": 181,
+      "face_h_pct": 0.1768,
       "crop_size_px": 306,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/jesse_lindenberger_schutz.jpg",
@@ -159,6 +448,8 @@
       "raw_source": "raw_sources/jessi_mcmullan__orig_media__1788684972.jpg",
       "cx_pct": 0.32,
       "cy_pct": 0.38,
+      "face_h_px": 180,
+      "face_h_pct": 0.1758,
       "crop_size_px": 305,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/jessi_mcmullan.jpg",
@@ -171,10 +462,30 @@
         200
       ]
     },
+    "jill_domanski": {
+      "raw_source": "public/headshots_backup/jill_domanski.jpg",
+      "cx_pct": 0.535,
+      "cy_pct": 0.4,
+      "face_h_px": 150,
+      "face_h_pct": 0.2344,
+      "crop_size_px": 254,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/jill_domanski.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/jill_domanski.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/jill_domanski.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
     "jim_merizio": {
       "raw_source": "raw_sources/jim_merizio__orig_media__1788717433.jpg",
       "cx_pct": 0.74,
       "cy_pct": 0.26,
+      "face_h_px": 203,
+      "face_h_pct": 0.3232,
       "crop_size_px": 344,
       "face_selection": "raw_pixel_calibrated",
       "cropped_headshot": "public/headshots/jim_merizio.jpg",
@@ -187,16 +498,17 @@
         200
       ]
     },
-    "krista_kobeski": {
-      "raw_source": "raw_sources/krista_kobeski__orig_media__1788687035.jpg",
-      "cx_pct": 0.5,
+    "jonathan_bibayan": {
+      "raw_source": "public/headshots_backup/jonathan_bibayan.jpg",
+      "cx_pct": 0.48,
       "cy_pct": 0.44,
-      "crop_size_px": 257,
+      "face_h_px": 340,
+      "face_h_pct": 0.332,
+      "crop_size_px": 576,
       "face_selection": "raw_pixel_calibrated",
-      "allow_subcrop": true,
-      "cropped_headshot": "public/headshots/krista_kobeski.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/krista_kobeski.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/krista_kobeski.jpg",
+      "cropped_headshot": "public/headshots/jonathan_bibayan.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/jonathan_bibayan.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/jonathan_bibayan.jpg",
       "target_face_scale": 0.6,
       "output_face_px": 240,
       "face_center_midpoint": [
@@ -204,344 +516,23 @@
         200
       ]
     },
-    "lauren_schmied": {
-      "raw_source": "raw_sources/lauren_schmied__orig_media__1788683375539.jpg",
-      "cx_pct": 0.498,
-      "cy_pct": 0.408,
-      "crop_size_px": 459,
+    "kathryn_potts": {
+      "raw_source": "public/headshots_backup/kathryn_potts.jpg",
+      "cx_pct": 0.335,
+      "cy_pct": 0.38,
+      "face_h_px": 90,
+      "face_h_pct": 0.1172,
+      "crop_size_px": 152,
       "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/lauren_schmied.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/lauren_schmied.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/lauren_schmied.jpg",
+      "cropped_headshot": "public/headshots/kathryn_potts.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/kathryn_potts.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/kathryn_potts.jpg",
       "target_face_scale": 0.6,
       "output_face_px": 240,
       "face_center_midpoint": [
         200,
         200
       ]
-    },
-    "leslie_davisson": {
-      "raw_source": "raw_sources/leslie_davisson__orig_media__1788684762716.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.4,
-      "crop_size_px": 511,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/leslie_davisson.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/leslie_davisson.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/leslie_davisson.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "matt_hoying": {
-      "raw_source": "raw_sources/matt_hoying__orig_public.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.45,
-      "crop_size_px": 400,
-      "face_selection": "raw_pixel_calibrated",
-      "allow_subcrop": true,
-      "cropped_headshot": "public/headshots/matt_hoying.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/matt_hoying.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/matt_hoying.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "maureen_wink": {
-      "raw_source": "raw_sources/maureen_wink__orig_public.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.45,
-      "crop_size_px": 400,
-      "face_selection": "raw_pixel_calibrated",
-      "allow_subcrop": true,
-      "cropped_headshot": "public/headshots/maureen_wink.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/maureen_wink.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/maureen_wink.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "michelle_preston": {
-      "raw_source": "raw_sources/michelle_preston__orig_media__1788716008.jpg",
-      "cx_pct": 0.54,
-      "cy_pct": 0.295,
-      "crop_size_px": 230,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/michelle_preston.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/michelle_preston.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/michelle_preston.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "nishat_shaikh": {
-      "raw_source": "raw_sources/nishat_shaikh__orig_media__1788683256461.jpg",
-      "cx_pct": 0.496,
-      "cy_pct": 0.371,
-      "crop_size_px": 654,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/nishat_shaikh.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/nishat_shaikh.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/nishat_shaikh.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "nur_e_freedman": {
-      "raw_source": "raw_sources/nur_e_freedman__orig_media__1788681045.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.312,
-      "crop_size_px": 344,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/nur_e_freedman.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/nur_e_freedman.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/nur_e_freedman.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "nichole_remmert": {
-      "raw_source": "raw_sources/nichole_remmert__orig_media__1788715326751.jpg",
-      "cx_pct": 0.675,
-      "cy_pct": 0.585,
-      "crop_size_px": 267,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/nichole_remmert.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/nichole_remmert.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/nichole_remmert.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "roopak_kandasamy": {
-      "raw_source": "raw_sources/roopak_kandasamy__orig_media__1788713903063.jpg",
-      "cx_pct": 0.278,
-      "cy_pct": 0.507,
-      "crop_size_px": 228,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/roopak_kandasamy.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/roopak_kandasamy.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/roopak_kandasamy.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "romana_rajput": {
-      "raw_source": "raw_sources/romana_rajput__orig_media__1788716129.jpg",
-      "cx_pct": 0.585,
-      "cy_pct": 0.46,
-      "crop_size_px": 245,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/romana_rajput.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/romana_rajput.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/romana_rajput.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "ryan_anthony": {
-      "raw_source": "raw_sources/ryan_anthony__orig_media__1788715848.jpg",
-      "cx_pct": 0.46,
-      "cy_pct": 0.4,
-      "crop_size_px": 344,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/ryan_anthony.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/ryan_anthony.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/ryan_anthony.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "steve_nares": {
-      "raw_source": "raw_sources/steve_nares__orig_media__1788683169013.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.45,
-      "crop_size_px": 271,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/steve_nares.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/steve_nares.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/steve_nares.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "toyo_tsujino": {
-      "raw_source": "raw_sources/toyo_tsujino__orig_media__1788685317722.jpg",
-      "cx_pct": 0.51,
-      "cy_pct": 0.36,
-      "crop_size_px": 606,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/toyo_tsujino.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/toyo_tsujino.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/toyo_tsujino.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "poukhan_philavanh_anthony": {
-      "raw_source": "raw_sources/poukhan_philavanh_anthony__orig_media__1788716292.jpg",
-      "cx_pct": 0.49,
-      "cy_pct": 0.5,
-      "crop_size_px": 338,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/poukhan_philavanh_anthony.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/poukhan_philavanh_anthony.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/poukhan_philavanh_anthony.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "clyde_tsai": {
-      "raw_source": "raw_sources/clyde_tsai__orig_media__1788716815.jpg",
-      "cx_pct": 0.55,
-      "cy_pct": 0.48,
-      "crop_size_px": 338,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/clyde_tsai.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/clyde_tsai.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/clyde_tsai.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "danielle_sullivan": {
-      "raw_source": "raw_sources/danielle_sullivan__orig_media__1788717156.jpg",
-      "cx_pct": 0.44,
-      "cy_pct": 0.46,
-      "crop_size_px": 237,
-      "face_selection": "raw_pixel_calibrated",
-      "allow_subcrop": true,
-      "cropped_headshot": "public/headshots/danielle_sullivan.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/danielle_sullivan.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/danielle_sullivan.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "paul_richter": {
-      "raw_source": "raw_sources/paul_richter__orig_media__1788718085.jpg",
-      "cx_pct": 0.44,
-      "cy_pct": 0.32,
-      "crop_size_px": 338,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/paul_richter.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/paul_richter.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/paul_richter.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "katie_richter": {
-      "raw_source": "raw_sources/katie_richter__orig_media__1788718115.jpg",
-      "cx_pct": 0.265,
-      "cy_pct": 0.48,
-      "crop_size_px": 338,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/katie_richter.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/katie_richter.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/katie_richter.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "liz_scott": {
-      "raw_source": "raw_sources/liz_scott__orig_media__1788718367.jpg",
-      "cx_pct": 0.855,
-      "cy_pct": 0.35,
-      "crop_size_px": 325,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/liz_scott.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/liz_scott.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/liz_scott.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "chrissy_fiore": {
-      "raw_source": "raw_sources/chrissy_fiore__orig_media__1788718987.jpg",
-      "cx_pct": 0.505,
-      "cy_pct": 0.415,
-      "crop_size_px": 338,
-      "face_selection": "raw_pixel_calibrated",
-      "cropped_headshot": "public/headshots/chrissy_fiore.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/chrissy_fiore.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/chrissy_fiore.jpg",
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ]
-    },
-    "tina_silva": {
-      "raw_source": "raw_sources/tina_silva__orig_media.jpg",
-      "cropped_headshot": "public/headshots/tina_silva.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/tina_silva.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/tina_silva.jpg",
-      "cx_pct": 0.505,
-      "cy_pct": 0.47,
-      "target_face_scale": 0.6,
-      "output_face_px": 240,
-      "face_center_midpoint": [
-        200,
-        200
-      ],
-      "crop_size_px": 233,
-      "face_selection": "node_canvas_calibrated"
     },
     "katie_conniff": {
       "raw_source": "raw_sources/katie_conniff__orig_media.jpg",
@@ -559,15 +550,17 @@
         200
       ]
     },
-    "cole_armstrong": {
-      "raw_source": "raw_sources/cole_armstrong__orig_media.jpg",
-      "cx_pct": 0.585,
-      "cy_pct": 0.58,
-      "crop_size_px": 372,
-      "face_selection": "node_canvas_calibrated",
-      "cropped_headshot": "public/headshots/cole_armstrong.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/cole_armstrong.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/cole_armstrong.jpg",
+    "katie_richter": {
+      "raw_source": "raw_sources/katie_richter__orig_media__1788718115.jpg",
+      "cx_pct": 0.265,
+      "cy_pct": 0.48,
+      "face_h_px": 200,
+      "face_h_pct": 0.2778,
+      "crop_size_px": 338,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/katie_richter.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/katie_richter.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/katie_richter.jpg",
       "target_face_scale": 0.6,
       "output_face_px": 240,
       "face_center_midpoint": [
@@ -575,15 +568,507 @@
         200
       ]
     },
-    "jess_phan": {
-      "raw_source": "raw_sources/jess_phan__orig_media.jpg",
-      "cx_pct": 0.48,
-      "cy_pct": 0.38,
+    "krista_kobeski": {
+      "raw_source": "raw_sources/krista_kobeski__orig_media__1788687035.jpg",
+      "cx_pct": 0.5,
+      "cy_pct": 0.44,
+      "face_h_px": 152,
+      "face_h_pct": 0.38,
+      "crop_size_px": 257,
+      "face_selection": "raw_pixel_calibrated",
+      "allow_subcrop": true,
+      "cropped_headshot": "public/headshots/krista_kobeski.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/krista_kobeski.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/krista_kobeski.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "lauren_schmied": {
+      "raw_source": "raw_sources/lauren_schmied__orig_media__1788683375539.jpg",
+      "cx_pct": 0.498,
+      "cy_pct": 0.408,
+      "face_h_px": 271,
+      "face_h_pct": 0.3956,
+      "crop_size_px": 459,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/lauren_schmied.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/lauren_schmied.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/lauren_schmied.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "lauren_sofia": {
+      "raw_source": "public/headshots_backup/lauren_sofia.jpg",
+      "cx_pct": 0.505,
+      "cy_pct": 0.46,
+      "face_h_px": 125,
+      "face_h_pct": 0.217,
+      "crop_size_px": 211,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/lauren_sofia.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/lauren_sofia.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/lauren_sofia.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "leanna_habana": {
+      "raw_source": "public/headshots_backup/leanna_habana.jpg",
+      "cx_pct": 0.27,
+      "cy_pct": 0.52,
+      "face_h_px": 65,
+      "face_h_pct": 0.1354,
+      "crop_size_px": 110,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/leanna_habana.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/leanna_habana.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/leanna_habana.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "leslie_davisson": {
+      "raw_source": "raw_sources/leslie_davisson__orig_media__1788684762716.jpg",
+      "cx_pct": 0.5,
+      "cy_pct": 0.4,
+      "face_h_px": 302,
+      "face_h_pct": 0.3932,
+      "crop_size_px": 511,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/leslie_davisson.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/leslie_davisson.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/leslie_davisson.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "liz_scott": {
+      "raw_source": "raw_sources/liz_scott__orig_media__1788718367.jpg",
+      "cx_pct": 0.855,
+      "cy_pct": 0.35,
+      "face_h_px": 192,
+      "face_h_pct": 0.25,
+      "crop_size_px": 325,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/liz_scott.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/liz_scott.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/liz_scott.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "marissa_lavelle": {
+      "raw_source": "public/headshots_backup/marissa_lavelle.jpg",
+      "cx_pct": 0.415,
+      "cy_pct": 0.415,
+      "face_h_px": 150,
+      "face_h_pct": 0.2604,
+      "crop_size_px": 254,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/marissa_lavelle.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/marissa_lavelle.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/marissa_lavelle.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "mark_macdonald": {
+      "raw_source": "public/headshots_backup/mark_macdonald.jpg",
+      "cx_pct": 0.65,
+      "cy_pct": 0.28,
+      "face_h_px": 280,
+      "face_h_pct": 0.2734,
+      "crop_size_px": 474,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/mark_macdonald.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/mark_macdonald.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/mark_macdonald.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "mary_mitchell": {
+      "raw_source": "public/headshots_backup/mary_mitchell.jpg",
+      "cx_pct": 0.36,
+      "cy_pct": 0.58,
+      "face_h_px": 160,
+      "face_h_pct": 0.2778,
+      "crop_size_px": 271,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/mary_mitchell.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/mary_mitchell.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/mary_mitchell.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "matt_hoying": {
+      "raw_source": "raw_sources/matt_hoying__orig_public.jpg",
+      "cx_pct": 0.5,
+      "cy_pct": 0.45,
+      "face_h_px": 236,
+      "face_h_pct": 0.59,
       "crop_size_px": 400,
+      "face_selection": "raw_pixel_calibrated",
+      "allow_subcrop": true,
+      "cropped_headshot": "public/headshots/matt_hoying.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/matt_hoying.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/matt_hoying.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "maureen_wink": {
+      "raw_source": "raw_sources/maureen_wink__orig_public.jpg",
+      "cx_pct": 0.5,
+      "cy_pct": 0.45,
+      "face_h_px": 236,
+      "face_h_pct": 0.59,
+      "crop_size_px": 400,
+      "face_selection": "raw_pixel_calibrated",
+      "allow_subcrop": true,
+      "cropped_headshot": "public/headshots/maureen_wink.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/maureen_wink.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/maureen_wink.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "michelle_preston": {
+      "raw_source": "raw_sources/michelle_preston__orig_media__1788716008.jpg",
+      "cx_pct": 0.54,
+      "cy_pct": 0.295,
+      "face_h_px": 136,
+      "face_h_pct": 0.1328,
+      "crop_size_px": 230,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/michelle_preston.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/michelle_preston.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/michelle_preston.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "nichole_remmert": {
+      "raw_source": "raw_sources/nichole_remmert__orig_media__1788715326751.jpg",
+      "cx_pct": 0.675,
+      "cy_pct": 0.585,
+      "face_h_px": 158,
+      "face_h_pct": 0.2743,
+      "crop_size_px": 267,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/nichole_remmert.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/nichole_remmert.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/nichole_remmert.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "nishat_shaikh": {
+      "raw_source": "raw_sources/nishat_shaikh__orig_media__1788683256461.jpg",
+      "cx_pct": 0.496,
+      "cy_pct": 0.371,
+      "face_h_px": 386,
+      "face_h_pct": 0.377,
+      "crop_size_px": 654,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/nishat_shaikh.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/nishat_shaikh.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/nishat_shaikh.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "nur_e_freedman": {
+      "raw_source": "raw_sources/nur_e_freedman__orig_media__1788681045.jpg",
+      "cx_pct": 0.5,
+      "cy_pct": 0.312,
+      "face_h_px": 203,
+      "face_h_pct": 0.1982,
+      "crop_size_px": 344,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/nur_e_freedman.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/nur_e_freedman.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/nur_e_freedman.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "paul_richter": {
+      "raw_source": "raw_sources/paul_richter__orig_media__1788718085.jpg",
+      "cx_pct": 0.44,
+      "cy_pct": 0.32,
+      "face_h_px": 200,
+      "face_h_pct": 0.1953,
+      "crop_size_px": 338,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/paul_richter.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/paul_richter.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/paul_richter.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "poukhan_philavanh_anthony": {
+      "raw_source": "raw_sources/poukhan_philavanh_anthony__orig_media__1788716292.jpg",
+      "cx_pct": 0.49,
+      "cy_pct": 0.5,
+      "face_h_px": 200,
+      "face_h_pct": 0.2604,
+      "crop_size_px": 338,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/poukhan_philavanh_anthony.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/poukhan_philavanh_anthony.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/poukhan_philavanh_anthony.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "romana_rajput": {
+      "raw_source": "raw_sources/romana_rajput__orig_media__1788716129.jpg",
+      "cx_pct": 0.585,
+      "cy_pct": 0.46,
+      "face_h_px": 145,
+      "face_h_pct": 0.1888,
+      "crop_size_px": 245,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/romana_rajput.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/romana_rajput.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/romana_rajput.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "roopak_kandasamy": {
+      "raw_source": "raw_sources/roopak_kandasamy__orig_media__1788713903063.jpg",
+      "cx_pct": 0.278,
+      "cy_pct": 0.507,
+      "face_h_px": 135,
+      "face_h_pct": 0.1318,
+      "crop_size_px": 228,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/roopak_kandasamy.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/roopak_kandasamy.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/roopak_kandasamy.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "ryan_anthony": {
+      "raw_source": "raw_sources/ryan_anthony__orig_media__1788715848.jpg",
+      "cx_pct": 0.46,
+      "cy_pct": 0.4,
+      "face_h_px": 203,
+      "face_h_pct": 0.1982,
+      "crop_size_px": 344,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/ryan_anthony.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/ryan_anthony.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/ryan_anthony.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "ryan_podolak": {
+      "raw_source": "public/headshots_backup/ryan_podolak.jpg",
+      "cx_pct": 0.18,
+      "cy_pct": 0.28,
+      "face_h_px": 200,
+      "face_h_pct": 0.3472,
+      "crop_size_px": 338,
+      "face_selection": "raw_pixel_calibrated",
+      "allow_subcrop": true,
+      "cropped_headshot": "public/headshots/ryan_podolak.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/ryan_podolak.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/ryan_podolak.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "steve_nares": {
+      "raw_source": "raw_sources/steve_nares__orig_media__1788683169013.jpg",
+      "cx_pct": 0.5,
+      "cy_pct": 0.45,
+      "face_h_px": 160,
+      "face_h_pct": 0.2778,
+      "crop_size_px": 271,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/steve_nares.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/steve_nares.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/steve_nares.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "tim_auer": {
+      "raw_source": "public/headshots_backup/tim_auer.jpg",
+      "cx_pct": 0.67,
+      "cy_pct": 0.38,
+      "face_h_px": 240,
+      "face_h_pct": 0.3125,
+      "crop_size_px": 406,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/tim_auer.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/tim_auer.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/tim_auer.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "tim_coble": {
+      "raw_source": "public/headshots_backup/tim_coble.jpg",
+      "cx_pct": 0.48,
+      "cy_pct": 0.32,
+      "face_h_px": 280,
+      "face_h_pct": 0.2734,
+      "crop_size_px": 474,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/tim_coble.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/tim_coble.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/tim_coble.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "tina_silva": {
+      "raw_source": "raw_sources/tina_silva__orig_media.jpg",
+      "cx_pct": 0.505,
+      "cy_pct": 0.47,
+      "face_h_px": 240,
+      "face_h_pct": 0.4167,
+      "crop_size_px": 233,
       "face_selection": "node_canvas_calibrated",
-      "cropped_headshot": "public/headshots/jess_phan.jpg",
-      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/jess_phan.jpg",
-      "master_archive_headshot": "media_backups/master_archive/public_headshots/jess_phan.jpg",
+      "cropped_headshot": "public/headshots/tina_silva.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/tina_silva.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/tina_silva.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "toyo_tsujino": {
+      "raw_source": "raw_sources/toyo_tsujino__orig_media__1788685317722.jpg",
+      "cx_pct": 0.51,
+      "cy_pct": 0.36,
+      "face_h_px": 358,
+      "face_h_pct": 0.4387,
+      "crop_size_px": 606,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/toyo_tsujino.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/toyo_tsujino.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/toyo_tsujino.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "tracy_armstrong": {
+      "raw_source": "public/headshots_backup/tracy_armstrong.jpg",
+      "cx_pct": 0.27,
+      "cy_pct": 0.4,
+      "face_h_px": 200,
+      "face_h_pct": 0.2604,
+      "crop_size_px": 338,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/tracy_armstrong.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/tracy_armstrong.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/tracy_armstrong.jpg",
+      "target_face_scale": 0.6,
+      "output_face_px": 240,
+      "face_center_midpoint": [
+        200,
+        200
+      ]
+    },
+    "victoria_shi": {
+      "raw_source": "public/headshots_backup/victoria_shi.jpg",
+      "cx_pct": 0.561,
+      "cy_pct": 0.364,
+      "face_h_px": 100,
+      "face_h_pct": 0.1736,
+      "crop_size_px": 169,
+      "face_selection": "raw_pixel_calibrated",
+      "cropped_headshot": "public/headshots/victoria_shi.jpg",
+      "latest_backup_snapshot": "media_backups/backup_20260906_163011/public_headshots/victoria_shi.jpg",
+      "master_archive_headshot": "media_backups/master_archive/public_headshots/victoria_shi.jpg",
       "target_face_scale": 0.6,
       "output_face_px": 240,
       "face_center_midpoint": [
