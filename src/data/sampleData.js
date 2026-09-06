@@ -533,6 +533,7 @@ export const SAMPLE_NODES = [
     "side": "Matt",
     "cohort": "Other",
     "relationship": "",
+    "image": "headshots/jesse_lindenberger_schutz.jpg",
     "originallyFrom": "",
     "currentlyLivesIn": "NYC",
     "familyStatus": "Single",
