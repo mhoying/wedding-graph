@@ -183,11 +183,27 @@ export default function App() {
 
   const handleLogHonk = (targetGuest) => {
     if (!targetGuest) return;
+
+    // Calculate baseline rank before honk
+    const beforeStats = calculateGooseLeaderboards(gaggleStore.encounters || [], gaggleStore.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
+    const beforeRank = (beforeStats.masterGaggleLeaderboard || []).findIndex(p => p.name === activePlayer) + 1;
+
     const updated = logHonkEncounter(activePlayer, targetGuest, nodes);
     if (updated) {
       setGaggleStore(updated);
-      setCopyToast(`🪿 HONK! Encounter logged with ${targetGuest.name}! +1 Flock`);
-      setTimeout(() => setCopyToast(''), 4000);
+
+      // Calculate new rank after honk
+      const afterStats = calculateGooseLeaderboards(updated.encounters || [], updated.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
+      const afterRank = (afterStats.masterGaggleLeaderboard || []).findIndex(p => p.name === activePlayer) + 1;
+      const rankMsg = (beforeRank > 0 && afterRank < beforeRank) 
+        ? ` 🎉 RANK UP! You moved up to #${afterRank}!` 
+        : ` (Current Rank: #${afterRank || 1})`;
+
+      setCopyToast(`🪿 HONK! Encounter logged with ${targetGuest.name}! +1 Flock!${rankMsg}`);
+      setTimeout(() => setCopyToast(''), 5000);
+
+      // Auto-close detail view window on honk as requested
+      setSelectedNode(null);
     }
   };
 
@@ -1706,6 +1722,8 @@ export default function App() {
         colorMode={colorMode}
         getNodeColor={getNodeColor}
         onLogHonk={handleLogHonk}
+        gaggleStore={gaggleStore}
+        activePlayer={activePlayer}
       />
 
       {/* The Grand Gaggle Championship Live Leaderboard Modal */}
