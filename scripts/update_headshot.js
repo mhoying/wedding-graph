@@ -153,6 +153,9 @@ async function main() {
 
   manifest.guests[params.guest] = {
     raw_source: `raw_sources/${params.guest}__orig_media.jpg`,
+    cropped_headshot: `public/headshots/${params.guest}.jpg`,
+    latest_backup_snapshot: `media_backups/backup_20260906_163011/public_headshots/${params.guest}.jpg`,
+    master_archive_headshot: `media_backups/master_archive/public_headshots/${params.guest}.jpg`,
     cx_pct: params.cx,
     cy_pct: params.cy,
     face_h_px: params.face_h,
