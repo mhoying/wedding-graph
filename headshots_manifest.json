@@ -34,11 +34,11 @@
       "face_selection": "right_man_glasses_black_jacket"
     },
     "chuck_tempest": {
-      "raw_source": "raw_sources/chuck_tempest__orig_media__1788683453631.jpg",
-      "cx_pct": 0.5,
-      "cy_pct": 0.312,
-      "crop_size_pct": 0.57,
-      "face_selection": "sole_person_bald_glasses"
+      "raw_source": "raw_sources/chuck_tempest__orig_media__1788716099.jpg",
+      "cx_pct": 0.52,
+      "cy_pct": 0.32,
+      "crop_size_pct": 0.4,
+      "face_selection": "smiling_man_right_dress_shirt_purple_tie"
     },
     "george_sun": {
       "raw_source": "raw_sources/george_sun__orig_media__1788685759389.jpg",
