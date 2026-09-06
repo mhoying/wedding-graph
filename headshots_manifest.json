@@ -214,6 +214,13 @@
       "cy_pct": 0.5,
       "crop_size_pct": 0.4,
       "face_selection": "user_calibrated"
+    },
+    "liz_scott": {
+      "raw_source": "raw_sources/liz_scott__orig_media__1788718367.jpg",
+      "cx_pct": 0.85,
+      "cy_pct": 0.45,
+      "crop_size_pct": 0.38,
+      "face_selection": "user_calibrated"
     }
   }
 }
