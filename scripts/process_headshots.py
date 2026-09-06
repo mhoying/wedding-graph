@@ -33,8 +33,16 @@ def process_headshots():
             print(f"⚠️ Warning: Source file {raw_source_path} for {guest_id} not found! Skipping.")
             continue
 
+        # STRICT TEST: Verify that the raw source is NEVER a thumbnail or pre-cropped 400x400 temp file
+        if '.tempmediaStorage' in raw_source_path or 'scratch' in raw_source_path:
+            raise ValueError(f"🚨 MASTER SOURCE ERROR: {guest_id} raw_source '{raw_source_path}' is pointing to a temporary storage path!")
+
         img = Image.open(raw_source_path).convert('RGB')
         w, h = img.size
+
+        # STRICT TEST: Verify raw master is not a 1:1 400x400 thumbnail copy (unless specifically flagged as solo_square)
+        if w == 400 and h == 400 and entry.get('crop_size_pct', 1.0) < 1.0:
+            raise ValueError(f"🚨 THUMBNAIL DETECTED: {guest_id} master source '{raw_source_path}' is a 400x400 pre-cropped thumbnail! Must use uncropped original high-res photo.")
 
         # Fetch normalized centroid coordinates (0.0 - 1.0)
         cx_pct = entry.get('cx_pct', 0.5)
