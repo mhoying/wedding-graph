@@ -32,7 +32,8 @@ export default function GuestProfileDrawer({
   selectedInterests,
   setSelectedInterests,
   colorMode,
-  getNodeColor
+  getNodeColor,
+  onLogHonk
 }) {
   const connectedNeighbors = React.useMemo(() => {
     if (!selectedNode || !links || !nodes) return [];
