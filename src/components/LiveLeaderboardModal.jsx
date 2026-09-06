@@ -126,9 +126,9 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
           </button>
         </div>
 
-        {/* Category Navigation Bar (Single Row Flex Bar on Desktop) */}
+        {/* Category Navigation Bar (Horizontally Scrollable Pill Carousel on Mobile) */}
         <div style={{ padding: '8px 12px', background: 'rgba(2, 6, 23, 0.7)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          <div style={{ display: 'flex', gap: 6, justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2 }} className="no-scrollbar">
             {tabs.map(t => {
               const isActive = activeTab === t.id;
               return (
@@ -136,14 +136,13 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                   key={t.id}
                   onClick={() => { setActiveTab(t.id); setExpandedPlayer(null); }}
                   style={{
-                    flex: '1 1 0%',
-                    padding: '6px 4px',
+                    flex: '0 0 auto',
+                    minWidth: 105,
+                    padding: '6px 10px',
                     borderRadius: 8,
                     fontSize: 11,
                     fontWeight: 700,
                     whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
                     border: isActive ? '1px solid rgba(245, 158, 11, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
