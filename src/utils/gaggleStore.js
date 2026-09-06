@@ -79,7 +79,8 @@ export function logHonkEncounter(actorName, targetGuest, allGuests = []) {
 
   // Check if encounter already logged to prevent duplicates
   const exists = store.encounters.some(
-    e => e.actor === actorName && e.target === targetGuest.name
+    e => String(e.actor || '').toLowerCase().trim() === String(actorName || '').toLowerCase().trim() &&
+         String(e.target || '').toLowerCase().trim() === String(targetGuest.name || '').toLowerCase().trim()
   );
 
   let updatedEncounters = store.encounters;

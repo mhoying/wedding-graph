@@ -207,7 +207,12 @@ export default function App() {
 
     const updated = logHonkEncounter(playerToUse, targetGuest, nodes);
     if (updated) {
-      setGaggleStore(updated);
+      // Set activePlayer state to ensure instantaneous alignment across drawer checks
+      setActivePlayer(playerToUse);
+      setActivePlayerState(playerToUse);
+
+      // Force a fresh object reference so React re-renders all dependent views (GuestProfileDrawer, LiveLeaderboard)
+      setGaggleStore({ ...updated });
 
       // Calculate new rank after honk
       const afterStats = calculateGooseLeaderboards(updated.encounters || [], updated.playerSprintStarts || {}, nodes.filter(n => n && n.type === 'GUEST'));
@@ -219,8 +224,7 @@ export default function App() {
       setCopyToast(`🪿 HONK! Encounter logged with ${targetGuest.name}! +1 Flock!${rankMsg}`);
       setTimeout(() => setCopyToast(''), 5000);
 
-      // Keep detail view drawer open so guest sees the green Encounter Logged confirmation badge immediately!
-      // Update selectedNode state to trigger re-render of drawer badge
+      // Update selectedNode state reference to trigger re-render of drawer badge
       setSelectedNode({ ...targetGuest });
     }
   };
