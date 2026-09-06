@@ -78,6 +78,26 @@ def process_headshots():
         final_img.save(out_path, quality=95)
         print(f"✅ Generated: {guest_id:30s} -> {out_path} ({target_res}x{target_res})")
 
+    # Integrity check: Verify sampleData.js links every manifest entry
+    sample_data_path = 'src/data/sampleData.js'
+    if os.path.exists(sample_data_path):
+        with open(sample_data_path, 'r', encoding='utf-8') as f:
+            sample_code = f.read()
+
+        missing_links = []
+        for guest_id in guests.keys():
+            expected_link = f'headshots/{guest_id}.jpg'
+            if expected_link not in sample_code and f'/{expected_link}' not in sample_code:
+                missing_links.append(guest_id)
+
+        if missing_links:
+            print("\n🚨 INTEGRITY ERROR: The following guests in manifest are missing image links in src/data/sampleData.js:")
+            for m_id in missing_links:
+                print(f"   ❌ {m_id} -> missing \"image\": \"headshots/{m_id}.jpg\" in sampleData.js")
+            raise ValueError(f"Build failed! {len(missing_links)} guest(s) missing image binding in sampleData.js.")
+        else:
+            print("✅ 100% Data Integrity Verified: All manifest headshots are linked in sampleData.js!")
+
     print("\n🎉 Headshot processing complete! All headshots updated deterministically.")
 
 if __name__ == '__main__':
