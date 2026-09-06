@@ -1336,12 +1336,16 @@ export default function ForceCanvas({
       const textY = avatarY + avatarDiameter / 2 + (fontSize * 0.9) + 4 * nodeScaleMultiplier;
       ctx.font = `${isAnchor ? '800' : '700'} ${fontSize}px Inter, sans-serif`;
       ctx.textAlign = 'center';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowBlur = 4 / globalScale;
       ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isLightMode ? '#0f172a' : '#f8fafc');
       ctx.fillText(labelText, node.x, textY);
     } else {
       ctx.font = `${isAnchor ? '800' : '700'} ${fontSize}px Inter, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowBlur = 4 / globalScale;
       ctx.fillStyle = isHovered || isPathNode ? '#ffffff' : (isLightMode ? '#0f172a' : '#f8fafc');
       ctx.fillText(labelText, node.x, node.y);
     }
