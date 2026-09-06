@@ -7,6 +7,7 @@
     "dev": "vite",
     "detect-bounds": "python3 scripts/detect_real_face_bounds.py",
     "measure-pixels": "python3 scripts/measure_output_pixels.py",
+    "recalibrate-opencv": "./venv/bin/python scripts/recalibrate_with_opencv.py",
     "recalibrate-serial": "python3 scripts/recalibrate_all_guests_serial.py",
     "process-headshots": "python3 scripts/process_headshots.py",
     "update-headshot": "python3 scripts/update_headshot.py",

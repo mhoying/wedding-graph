@@ -51,12 +51,12 @@ def process_headshots():
         cx = int(cx_pct * w)
         cy = int(cy_pct * h)
 
-        # Arc-Safe Face Scale: If face_h_pct is provided, crop_size is calculated as face_height / 0.59
-        if 'face_h_pct' in entry:
+        # Arc-Safe Face Scale: Priority order: 1) face_h_px (photo-size invariant), 2) face_h_pct, 3) crop_size_pct
+        if 'face_h_px' in entry:
+            crop_size = int(entry['face_h_px'] / 0.59)
+        elif 'face_h_pct' in entry:
             face_h = entry['face_h_pct'] * h
             crop_size = int(face_h / 0.59)
-        elif 'face_h_px' in entry:
-            crop_size = int(entry['face_h_px'] / 0.59)
         else:
             crop_size = int(min(w, h) * entry.get('crop_size_pct', 0.6))
 
