@@ -30,7 +30,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
       title: 'Most Honks Logged',
       metricLabel: 'Encounters',
       goal: 'Log as many total guest encounters across the reception as possible.',
-      howToWin: 'Keep mingling! Each verified encounter increments your quest tally by +1.'
+      howToWin: 'Keep mingling! Each guest encounter increments your total honk count (+1).'
     },
     {
       id: 'migrationSprint',
@@ -272,7 +272,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                       )}
                       {activeTab === 'honkSpecialist' && (
                         <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontWeight: 800, fontSize: 10, whiteSpace: 'nowrap' }}>
-                          {player.questsCompleted.size} Quests
+                          {player.honkCount} Honks
                         </span>
                       )}
                       {activeTab === 'migrationSprint' && (

@@ -312,9 +312,9 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
     (a, b) => b.cohortsMet.size - a.cohortsMet.size || b.honkCount - a.honkCount
   );
 
-  // 2. Honk Specialist (Most Quests / Total Honks)
+  // 2. Honk Specialist (Most Total Honks / Encounters)
   const honkSpecialistLeaderboard = [...playerList].sort(
-    (a, b) => b.questsCompleted.size - a.questsCompleted.size || b.honkCount - a.honkCount
+    (a, b) => b.honkCount - a.honkCount || b.questsCompleted.size - a.questsCompleted.size
   );
 
   // 3. Migration Sprint Champion (Fastest 5 encounters)
