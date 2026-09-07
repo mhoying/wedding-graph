@@ -170,12 +170,12 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "nur_e_freedman": {
-      "raw_source": "raw_sources/nur_e_freedman__orig_media__1788681045.jpg",
-      "cx_pct": 0.5,
+      "raw_source": "raw_sources/nur_e_freedman__orig_media.jpg",
+      "cx_pct": 0.586,
       "cy_pct": 0.312,
-      "face_h_px": 203,
-      "face_h_pct": 0.1982,
-      "crop_size_px": 344,
+      "face_h_px": 750,
+      "face_h_pct": 0.186,
+      "crop_size_px": 1271,
       "face_selection": "raw_pixel_calibrated"
     },
     "nichole_remmert": {
