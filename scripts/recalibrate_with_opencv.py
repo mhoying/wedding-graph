@@ -61,7 +61,7 @@ GUEST_CALIBRATION_SPECS = {
     "erica_festa": {"raw_source": "raw_sources/erica_festa__orig_media__1788723982017.jpg", "cx_pct": 0.547, "cy_pct": 0.347, "face_h_px": 310},
     "leanna_habana": {"raw_source": "raw_sources/leanna_habana__orig_media.jpg", "cx_pct": 0.281, "cy_pct": 0.521, "face_h_px": 43},
     "kathryn_potts": {"raw_source": "raw_sources/kathryn_potts__orig_media.jpg", "cx_pct": 0.342, "cy_pct": 0.391, "face_h_px": 130},
-    "marissa_lavelle": {"raw_source": "raw_sources/marissa__orig_media__1788723219483.jpg", "cx_pct": 0.415, "cy_pct": 0.415, "face_h_px": 150},
+    "marissa_lavelle": {"raw_source": "raw_sources/marissa_lavelle__orig_media.jpg", "cx_pct": 0.415, "cy_pct": 0.419, "face_h_px": 450},
     "anne_sweeney": {"raw_source": "raw_sources/anne_sweeney__orig_media__1788723219483.jpg", "cx_pct": 0.765, "cy_pct": 0.540, "face_h_px": 145},
     "cole_armstrong": {"raw_source": "raw_sources/cole_armstrong__orig_media__1788723247197.jpg", "cx_pct": 0.690, "cy_pct": 0.490, "face_h_px": 65},
     "andy_schmitt": {"raw_source": "raw_sources/andy_schmitt__orig_media__1788723271686.jpg", "cx_pct": 0.720, "cy_pct": 0.250, "face_h_px": 280},

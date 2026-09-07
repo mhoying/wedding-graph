@@ -316,6 +316,15 @@
       "crop_size_px": 220,
       "face_selection": "raw_pixel_calibrated"
     },
+    "marissa_lavelle": {
+      "raw_source": "raw_sources/marissa_lavelle__orig_media.jpg",
+      "cx_pct": 0.415,
+      "cy_pct": 0.419,
+      "face_h_px": 450,
+      "face_h_pct": 0.2083,
+      "crop_size_px": 762,
+      "face_selection": "raw_pixel_calibrated"
+    },
     "lauren_sofia": {
       "raw_source": "raw_sources/lauren_sofia__orig_media.jpg",
       "cx_pct": 0.5,
