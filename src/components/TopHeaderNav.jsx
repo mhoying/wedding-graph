@@ -46,32 +46,33 @@ export default function TopHeaderNav({
       </div>
 
       {/* Right Controls Area (Divided into 2 Clean Rows) */}
-      <div className="header-controls-grid">
-        {/* ROW 1: Always-Visible Search Bar & Closeable Active Filter Chips */}
-        <div className="header-controls-row top-row" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {/* Always-Visible Inline Search Input */}
+      <div className="header-controls-grid" style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1, minWidth: 0 }}>
+        {/* ROW 1: Search Bar & Primary Actions */}
+        <div className="header-controls-row top-row" style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%' }}>
+          {/* Always-Visible Prominent Search Input */}
           <div 
             className="search-box glass-panel" 
             style={{ 
               display: 'flex', 
               alignItems: 'center', 
               gap: 8, 
-              padding: '5px 12px', 
-              background: 'rgba(15, 23, 42, 0.85)', 
-              border: searchQuery ? '1px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.2)', 
+              padding: '6px 14px', 
+              background: 'rgba(15, 23, 42, 0.95)', 
+              border: searchQuery ? '1.5px solid #38bdf8' : '1px solid rgba(56, 189, 248, 0.4)', 
               borderRadius: 12,
-              minWidth: 150,
-              flex: '1 1 200px',
-              flexShrink: 0
+              minWidth: 180,
+              maxWidth: 320,
+              flex: '1 1 240px',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
             }}
           >
-            <Search style={{ width: 14, height: 14, color: searchQuery ? '#38bdf8' : '#94a3b8', flexShrink: 0 }} />
+            <Search style={{ width: 16, height: 16, color: searchQuery ? '#38bdf8' : '#38bdf8', flexShrink: 0 }} />
             <input 
               type="text"
               placeholder="Search guests, cohorts, cities..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ width: '100%', background: 'transparent', border: 'none', color: '#fff', fontSize: 12, fontWeight: 600, outline: 'none' }}
+              style={{ width: '100%', background: 'transparent', border: 'none', color: '#ffffff', fontSize: 13, fontWeight: 700, outline: 'none' }}
             />
             {searchQuery && (
               <button 
@@ -80,7 +81,7 @@ export default function TopHeaderNav({
                 style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 2, display: 'flex', alignItems: 'center' }}
                 title="Clear Search"
               >
-                <X style={{ width: 13, height: 13 }} />
+                <X style={{ width: 14, height: 14 }} />
               </button>
             )}
           </div>

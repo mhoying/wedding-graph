@@ -522,8 +522,9 @@ body {
   }
 
   .search-box {
-    width: 130px !important;
-    max-width: 140px !important;
+    width: 180px !important;
+    max-width: 220px !important;
+    min-width: 140px !important;
   }
 
   .desktop-only-controls,
