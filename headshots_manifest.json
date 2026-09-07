@@ -134,14 +134,13 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "matt_hoying": {
-      "raw_source": "raw_sources/matt_hoying__orig_public.jpg",
+      "raw_source": "raw_sources/matt_hoying__orig_media.jpg",
       "cx_pct": 0.5,
       "cy_pct": 0.45,
       "face_h_px": 236,
       "face_h_pct": 0.59,
       "crop_size_px": 400,
-      "face_selection": "raw_pixel_calibrated",
-      "allow_subcrop": true
+      "face_selection": "raw_pixel_calibrated"
     },
     "maureen_wink": {
       "raw_source": "raw_sources/maureen_wink__orig_public.jpg",
