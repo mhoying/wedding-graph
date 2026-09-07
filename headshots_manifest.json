@@ -412,6 +412,16 @@
       "face_h_pct": 0.2539,
       "crop_size_px": 440,
       "face_selection": "raw_pixel_calibrated"
+    },
+    "anne_sweeney": {
+      "raw_source": "raw_sources/anne_sweeney__orig_media.jpg",
+      "cx_pct": 0.45,
+      "cy_pct": 0.52,
+      "face_h_px": 235,
+      "face_h_pct": 0.5883,
+      "crop_size_px": 392,
+      "face_selection": "vladmandic_landmark_calibrated",
+      "cropped_headshot": "public/headshots/anne_sweeney.jpg"
     }
   }
 }
