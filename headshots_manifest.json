@@ -125,7 +125,7 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "leslie_davisson": {
-      "raw_source": "raw_sources/leslie_davisson__orig_media__1788684762716.jpg",
+      "raw_source": "raw_sources/leslie_davisson__orig_media.jpg",
       "cx_pct": 0.5,
       "cy_pct": 0.4,
       "face_h_px": 302,
