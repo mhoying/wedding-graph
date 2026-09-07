@@ -536,5 +536,16 @@
       ],
       "scale": 78
     }
+  },
+  "mary_mitchell": {
+    "guest": "mary_mitchell",
+    "raw_source": "raw_sources/mary_mitchell__orig_media.jpg",
+    "crop": {
+      "center": [
+        1520,
+        1320
+      ],
+      "scale": 84
+    }
   }
 }
