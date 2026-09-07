@@ -43,10 +43,10 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
     {
       id: 'globalGoose',
       label: '📍 Global Goose',
-      title: 'Most Nesting Grounds',
-      metricLabel: 'Origins',
-      goal: 'Discover guests traveling from the greatest variety of geographical origins.',
-      howToWin: 'Seek out guests from different hometowns. Unique cities met = score.'
+      title: 'Most Locations Discovered',
+      metricLabel: 'Locations',
+      goal: 'Discover guests connected to the widest variety of geographical locations (current cities & hometowns).',
+      howToWin: 'Honk at guests from diverse places. Total unique locations (current residence + hometowns) = score.'
     },
     {
       id: 'soulGander',
@@ -282,7 +282,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                       )}
                       {activeTab === 'globalGoose' && (
                         <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(168, 85, 247, 0.15)', border: '1px solid rgba(168, 85, 247, 0.3)', color: '#c084fc', fontWeight: 800, fontSize: 10, whiteSpace: 'nowrap' }}>
-                          {player.citiesMet.size} Origins
+                          {player.citiesMet.size} Locations
                         </span>
                       )}
                       {activeTab === 'soulGander' && (

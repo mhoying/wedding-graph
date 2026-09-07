@@ -282,11 +282,18 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
     stats.connections.push({ name: e.target, cohort: e.targetCohort, time: e.timestamp });
     if (e.targetCohort) stats.cohortsMet.add(e.targetCohort);
 
-    // Dynamic resolution of target guest's origin location
+    // Dynamic resolution of all locations (current residence & hometown origins) associated with target guest
     const targetGuestObj = guestMap.get(e.target);
-    const targetCity = e.targetCity || (targetGuestObj ? (targetGuestObj.currentlyLivesIn || targetGuestObj.originallyFrom || targetGuestObj.state || 'Other') : null);
-    if (targetCity && targetCity !== 'Other') {
-      stats.citiesMet.add(targetCity);
+    if (targetGuestObj) {
+      if (targetGuestObj.currentlyLivesIn && targetGuestObj.currentlyLivesIn !== 'Other') {
+        stats.citiesMet.add(targetGuestObj.currentlyLivesIn);
+      }
+      if (targetGuestObj.originallyFrom && targetGuestObj.originallyFrom !== 'Other') {
+        stats.citiesMet.add(targetGuestObj.originallyFrom);
+      }
+      if (!targetGuestObj.currentlyLivesIn && !targetGuestObj.originallyFrom && targetGuestObj.state) {
+        stats.citiesMet.add(targetGuestObj.state);
+      }
     }
 
     // Speed Mingler Sprint calculation (5th encounter)
