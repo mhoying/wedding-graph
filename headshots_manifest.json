@@ -481,5 +481,16 @@
       ],
       "scale": 60
     }
+  },
+  "greg_goetchius": {
+    "guest": "greg_goetchius",
+    "raw_source": "raw_sources/greg_goetchius__orig_media.jpg",
+    "crop": {
+      "center": [
+        1600,
+        640
+      ],
+      "scale": 60
+    }
   }
 }
