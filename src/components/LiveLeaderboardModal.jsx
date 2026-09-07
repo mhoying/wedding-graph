@@ -220,8 +220,8 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
               return 0;
             };
 
-            // Calculate dense ranks (equal score = equal rank & medal)
-            let currentRank = 1;
+            // Calculate dense ranks (equal score = equal rank & medal tier)
+            let rankTier = 1;
             const ranks = [];
             currentList.forEach((player, i) => {
               if (i === 0) {
@@ -230,9 +230,9 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                 const prevVal = getMetricVal(currentList[i - 1]);
                 const currVal = getMetricVal(player);
                 if (currVal !== prevVal) {
-                  currentRank += 1;
+                  rankTier += 1;
                 }
-                ranks.push(currentRank);
+                ranks.push(rankTier);
               }
             });
 
