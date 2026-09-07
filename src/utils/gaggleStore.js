@@ -261,7 +261,6 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
       name,
       cohortsMet: new Set(),
       citiesMet: new Set(),
-      questsCompleted: new Set(),
       honkCount: 0,
       totalMatchScore: 0,
       topMatchesMet: [],
@@ -294,15 +293,6 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
         stats.sprintTimeMs = stats.fifthEncounterTime - stats.firstEncounterTime;
       }
     }
-
-    // Quest Specialist calculation (simulated based on attributes met)
-    const targetObj = guestMap.get(e.target);
-    if (targetObj) {
-      if (targetObj.hobbies && targetObj.hobbies.length) {
-        targetObj.hobbies.forEach(h => stats.questsCompleted.add(`Hobby: ${h}`));
-      }
-      if (targetObj.cohort) stats.questsCompleted.add(`Flock: ${targetObj.cohort}`);
-    }
   });
 
   const playerList = Object.values(playerStats);
@@ -314,7 +304,7 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
 
   // 2. Honk Specialist (Most Total Honks / Encounters)
   const honkSpecialistLeaderboard = [...playerList].sort(
-    (a, b) => b.honkCount - a.honkCount || b.questsCompleted.size - a.questsCompleted.size
+    (a, b) => b.honkCount - a.honkCount
   );
 
   // 3. Migration Sprint Champion (Fastest 5 encounters)
