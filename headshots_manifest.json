@@ -225,13 +225,14 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "toyo_tsujino": {
-      "raw_source": "raw_sources/toyo_tsujino__orig_media__1788685317722.jpg",
-      "cx_pct": 0.51,
-      "cy_pct": 0.36,
-      "face_h_px": 358,
-      "face_h_pct": 0.4387,
-      "crop_size_px": 606,
-      "face_selection": "raw_pixel_calibrated"
+      "raw_source": "raw_sources/toyo_tsujino__orig_media.jpg",
+      "cx_pct": 0.3578,
+      "cy_pct": 0.4118,
+      "face_h_px": 125,
+      "face_h_pct": 0.1532,
+      "crop_size_px": 208,
+      "face_selection": "vladmandic_landmark_calibrated",
+      "cropped_headshot": "public/headshots/toyo_tsujino.jpg"
     },
     "poukhan_philavanh_anthony": {
       "raw_source": "raw_sources/poukhan_philavanh_anthony__orig_media__1788716292.jpg",
