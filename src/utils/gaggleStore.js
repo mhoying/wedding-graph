@@ -281,7 +281,13 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
     stats.honkCount += 1;
     stats.connections.push({ name: e.target, cohort: e.targetCohort, time: e.timestamp });
     if (e.targetCohort) stats.cohortsMet.add(e.targetCohort);
-    if (e.targetCity) stats.citiesMet.add(e.targetCity);
+
+    // Dynamic resolution of target guest's origin location
+    const targetGuestObj = guestMap.get(e.target);
+    const targetCity = e.targetCity || (targetGuestObj ? (targetGuestObj.currentlyLivesIn || targetGuestObj.originallyFrom || targetGuestObj.state || 'Other') : null);
+    if (targetCity && targetCity !== 'Other') {
+      stats.citiesMet.add(targetCity);
+    }
 
     // Speed Mingler Sprint calculation (5th encounter)
     if (stats.honkCount === 1 && !stats.firstEncounterTime) {
