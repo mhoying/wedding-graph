@@ -281,12 +281,12 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "liz_scott": {
-      "raw_source": "raw_sources/liz_scott__orig_media__1788718367.jpg",
+      "raw_source": "raw_sources/liz_scott__orig_media.jpg",
       "cx_pct": 0.855,
       "cy_pct": 0.35,
-      "face_h_px": 192,
-      "face_h_pct": 0.25,
-      "crop_size_px": 325,
+      "face_h_px": 110,
+      "face_h_pct": 0.1432,
+      "crop_size_px": 186,
       "face_selection": "raw_pixel_calibrated"
     },
     "chrissy_fiore": {
