@@ -80,11 +80,11 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  const getRankBadge = (idx) => {
-    if (idx === 0) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(245, 158, 11, 0.25)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>1</span>;
-    if (idx === 1) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(203, 213, 225, 0.25)', color: '#cbd5e1', border: '1px solid rgba(203, 213, 225, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>2</span>;
-    if (idx === 2) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(217, 119, 6, 0.25)', color: '#d97706', border: '1px solid rgba(217, 119, 6, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>3</span>;
-    return <span style={{ width: 24, textAlign: 'center', fontFamily: 'monospace', fontSize: 11, color: '#64748b', fontWeight: 700 }}>{String(idx + 1).padStart(2, '0')}</span>;
+  const getRankBadge = (rankNum) => {
+    if (rankNum === 1) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(245, 158, 11, 0.25)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>1</span>;
+    if (rankNum === 2) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(203, 213, 225, 0.25)', color: '#cbd5e1', border: '1px solid rgba(203, 213, 225, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>2</span>;
+    if (rankNum === 3) return <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(217, 119, 6, 0.25)', color: '#d97706', border: '1px solid rgba(217, 119, 6, 0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 12 }}>3</span>;
+    return <span style={{ width: 24, textAlign: 'center', fontFamily: 'monospace', fontSize: 11, color: '#64748b', fontWeight: 700 }}>{String(rankNum).padStart(2, '0')}</span>;
   };
 
   return (
@@ -209,10 +209,37 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
               <span style={{ fontSize: 24, display: 'block', marginBottom: 6 }}>🪿</span>
               No honks logged yet for this category! Tap "Honk at Guest" to take the lead.
             </div>
-          ) : (
-            currentList.slice(0, 15).map((player, idx) => {
+          ) : (() => {
+            // Helper extractor for active metric
+            const getMetricVal = (p) => {
+              if (activeTab === 'masterGaggle') return p.cohortsMet.size;
+              if (activeTab === 'honkSpecialist') return p.honkCount;
+              if (activeTab === 'migrationSprint') return p.sprintTimeMs || Infinity;
+              if (activeTab === 'globalGoose') return p.citiesMet.size;
+              if (activeTab === 'soulGander') return p.totalMatchScore;
+              return 0;
+            };
+
+            // Calculate dense ranks (equal score = equal rank & medal)
+            let currentRank = 1;
+            const ranks = [];
+            currentList.forEach((player, i) => {
+              if (i === 0) {
+                ranks.push(1);
+              } else {
+                const prevVal = getMetricVal(currentList[i - 1]);
+                const currVal = getMetricVal(player);
+                if (currVal !== prevVal) {
+                  currentRank += 1;
+                }
+                ranks.push(currentRank);
+              }
+            });
+
+            return currentList.slice(0, 15).map((player, idx) => {
               const isSelf = player.name === activePlayer;
               const isExpanded = expandedPlayer === player.name;
+              const denseRank = ranks[idx];
 
               return (
                 <div
@@ -239,9 +266,9 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                       gap: 10
                     }}
                   >
-                    {/* Col 1: Rank Badge */}
+                    {/* Col 1: Dense Rank Medal Badge */}
                     <div style={{ width: 28, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {getRankBadge(idx)}
+                      {getRankBadge(denseRank)}
                     </div>
 
                     {/* Col 2: Player Name & Inline Micro Stats */}
@@ -345,8 +372,8 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                   )}
                 </div>
               );
-            })
-          )}
+            });
+          })()}
         </div>
       </div>
     </div>
