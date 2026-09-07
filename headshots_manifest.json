@@ -377,6 +377,15 @@
       "crop_size_px": 186,
       "face_selection": "raw_pixel_calibrated"
     },
+    "ryan_podolak": {
+      "raw_source": "raw_sources/ryan_podolak__orig_media.jpg",
+      "cx_pct": 0.156,
+      "cy_pct": 0.278,
+      "face_h_px": 480,
+      "face_h_pct": 0.2222,
+      "crop_size_px": 813,
+      "face_selection": "raw_pixel_calibrated"
+    },
     "jonathan_bibayan": {
       "raw_source": "raw_sources/jonathan_bibayan__orig_media.jpg",
       "cx_pct": 0.48,
