@@ -54,7 +54,33 @@ GUEST_CALIBRATION_SPECS = {
     "paul_richter": {"raw_source": "raw_sources/paul_richter__orig_media__1788718085.jpg", "cx_pct": 0.440, "cy_pct": 0.320, "face_h_px": 200},
     "katie_richter": {"raw_source": "raw_sources/katie_richter__orig_media__1788718115.jpg", "cx_pct": 0.265, "cy_pct": 0.480, "face_h_px": 200},
     "liz_scott": {"raw_source": "raw_sources/liz_scott__orig_media__1788718367.jpg", "cx_pct": 0.855, "cy_pct": 0.350, "face_h_px": 192},
-    "chrissy_fiore": {"raw_source": "raw_sources/chrissy_fiore__orig_media__1788718987.jpg", "cx_pct": 0.505, "cy_pct": 0.415, "face_h_px": 200}
+    "chrissy_fiore": {"raw_source": "raw_sources/chrissy_fiore__orig_media__1788718987.jpg", "cx_pct": 0.505, "cy_pct": 0.415, "face_h_px": 200},
+    "jill_domanski": {"raw_source": "raw_sources/jill_domanski__orig_media__1788722497516.jpg", "cx_pct": 0.535, "cy_pct": 0.400, "face_h_px": 150},
+    "jeff_domanski": {"raw_source": "raw_sources/jeff_domanski__orig_media__1788722512303.jpg", "cx_pct": 0.485, "cy_pct": 0.355, "face_h_px": 180},
+    "victoria_shi": {"raw_source": "raw_sources/victoria_shi__orig_media__1788722526443.jpg", "cx_pct": 0.561, "cy_pct": 0.364, "face_h_px": 100},
+    "erica_festa": {"raw_source": "raw_sources/erica_festa__orig_media__1788723982017.jpg", "cx_pct": 0.547, "cy_pct": 0.347, "face_h_px": 310},
+    "leanna_habana": {"raw_source": "raw_sources/leanna_habana__orig_media__1788723145057.jpg", "cx_pct": 0.270, "cy_pct": 0.520, "face_h_px": 65, "color_correct": True},
+    "kathryn_potts": {"raw_source": "raw_sources/kathryn_potts__orig_media.jpg", "cx_pct": 0.342, "cy_pct": 0.391, "face_h_px": 130},
+    "marissa_lavelle": {"raw_source": "raw_sources/marissa__orig_media__1788723219483.jpg", "cx_pct": 0.415, "cy_pct": 0.415, "face_h_px": 150},
+    "anne_sweeney": {"raw_source": "raw_sources/anne_sweeney__orig_media__1788723219483.jpg", "cx_pct": 0.765, "cy_pct": 0.540, "face_h_px": 145},
+    "cole_armstrong": {"raw_source": "raw_sources/cole_armstrong__orig_media__1788723247197.jpg", "cx_pct": 0.690, "cy_pct": 0.490, "face_h_px": 65},
+    "andy_schmitt": {"raw_source": "raw_sources/andy_schmitt__orig_media__1788723271686.jpg", "cx_pct": 0.720, "cy_pct": 0.250, "face_h_px": 280},
+    "janaki_lahorani": {"raw_source": "raw_sources/janaki__orig_media__1788723310171.jpg", "cx_pct": 0.625, "cy_pct": 0.570, "face_h_px": 175},
+    "jason_govig": {"raw_source": "raw_sources/jason_govig__orig_media__1788723310171.jpg", "cx_pct": 0.535, "cy_pct": 0.280, "face_h_px": 170},
+    "greg_goetchius": {"raw_source": "raw_sources/greg_goetchius__orig_media__1788723345072.jpg", "cx_pct": 0.410, "cy_pct": 0.215, "face_h_px": 120},
+    "lauren_sofia": {"raw_source": "raw_sources/lauren_sofia__orig_media__1788723345072.jpg", "cx_pct": 0.505, "cy_pct": 0.460, "face_h_px": 125},
+    "chuchu_zhang": {"raw_source": "raw_sources/chuchu_zhang__orig_media.png", "cx_pct": 0.485, "cy_pct": 0.460, "face_h_px": 290},
+    "jenna_auer": {"raw_source": "raw_sources/jenna_auer__orig_media.jpg", "cx_pct": 0.270, "cy_pct": 0.400, "face_h_px": 210},
+    "tim_auer": {"raw_source": "raw_sources/jenna_auer__orig_media.jpg", "cx_pct": 0.670, "cy_pct": 0.380, "face_h_px": 240},
+    "mary_mitchell": {"raw_source": "raw_sources/mary_mitchell__orig_media.jpg", "cx_pct": 0.360, "cy_pct": 0.580, "face_h_px": 160},
+    "tina_silva": {"raw_source": "raw_sources/tina_silva__orig_media.jpg", "cx_pct": 0.440, "cy_pct": 0.500, "face_h_px": 240},
+    "tim_coble": {"raw_source": "raw_sources/tim_coble__orig_media.jpg", "cx_pct": 0.480, "cy_pct": 0.320, "face_h_px": 280},
+    "becca_winslow": {"raw_source": "raw_sources/becca_winslow__orig_media.jpg", "cx_pct": 0.605, "cy_pct": 0.310, "face_h_px": 110},
+    "ryan_podolak": {"raw_source": "raw_sources/ryan_podolak__orig_media.jpg", "cx_pct": 0.180, "cy_pct": 0.280, "face_h_px": 200, "allow_subcrop": True},
+    "jonathan_bibayan": {"raw_source": "raw_sources/jonathan_bibayan__orig_media.jpg", "cx_pct": 0.480, "cy_pct": 0.440, "face_h_px": 340},
+    "mark_macdonald": {"raw_source": "raw_sources/mark_macdonald__orig_media.jpg", "cx_pct": 0.650, "cy_pct": 0.280, "face_h_px": 280},
+    "jess_phan": {"raw_source": "raw_sources/jess_phan__orig_media.jpg", "cx_pct": 0.550, "cy_pct": 0.540, "face_h_px": 260},
+    "tracy_armstrong": {"raw_source": "raw_sources/tracy_armstrong__orig_media.jpg", "cx_pct": 0.360, "cy_pct": 0.480, "face_h_px": 280}
 }
 
 def backup_safety():
@@ -74,6 +100,11 @@ def backup_safety():
 def run_master_recalibration():
     backup_safety()
 
+    # Auto-ingest session media if needed
+    brain_jess = "/home/mattie/.gemini/antigravity/brain/d1d82195-9679-4831-841e-6a1401965558/media__1788727198775.jpg"
+    if os.path.exists(brain_jess):
+        shutil.copy2(brain_jess, "raw_sources/jess_phan__orig_media.jpg")
+
     os.makedirs(DEBUG_OVERLAY_DIR, exist_ok=True)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -90,6 +121,16 @@ def run_master_recalibration():
             continue
 
         pil_img = Image.open(raw_path).convert('RGB')
+        if spec.get('color_correct'):
+            import numpy as np
+            arr = np.array(pil_img).astype(np.float32)
+            r_m, g_m, b_m = np.mean(arr[:, :, 0]), np.mean(arr[:, :, 1]), np.mean(arr[:, :, 2])
+            gray = (r_m + g_m + b_m) / 3.0
+            arr[:, :, 0] = np.clip(arr[:, :, 0] * (gray / r_m * 1.15), 0, 255)
+            arr[:, :, 1] = np.clip(arr[:, :, 1] * (gray / g_m * 0.85), 0, 255)
+            arr[:, :, 2] = np.clip(arr[:, :, 2] * (gray / b_m * 1.10), 0, 255)
+            pil_img = Image.fromarray(arr.astype(np.uint8))
+
         w, h = pil_img.size
 
         cx_pct = spec['cx_pct']
