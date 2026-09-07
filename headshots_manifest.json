@@ -245,13 +245,14 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "clyde_tsai": {
-      "raw_source": "raw_sources/clyde_tsai__orig_media__1788716815.jpg",
-      "cx_pct": 0.55,
-      "cy_pct": 0.48,
-      "face_h_px": 200,
-      "face_h_pct": 0.2604,
-      "crop_size_px": 338,
-      "face_selection": "raw_pixel_calibrated"
+      "raw_source": "raw_sources/clyde_tsai__orig_media.jpg",
+      "cx_pct": 0.6927,
+      "cy_pct": 0.6385,
+      "face_h_px": 428,
+      "face_h_pct": 0.175,
+      "crop_size_px": 714,
+      "face_selection": "vladmandic_landmark_calibrated",
+      "cropped_headshot": "public/headshots/clyde_tsai.jpg"
     },
     "danielle_sullivan": {
       "raw_source": "raw_sources/danielle_sullivan__orig_media__1788717156.jpg",
