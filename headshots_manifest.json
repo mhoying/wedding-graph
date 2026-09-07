@@ -525,5 +525,16 @@
       ],
       "scale": 78
     }
+  },
+  "romana_rajput": {
+    "guest": "romana_rajput",
+    "raw_source": "raw_sources/romana_rajput__orig_media.jpg",
+    "crop": {
+      "center": [
+        2180,
+        1620
+      ],
+      "scale": 78
+    }
   }
 }
