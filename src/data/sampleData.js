@@ -962,6 +962,7 @@ export const SAMPLE_NODES = [
     "id": "lindsay_mayott",
     "name": "Lindsay Mayott",
     "type": "GUEST",
+    "image": "headshots/lindsay_mayott.jpg",
     "side": "Joint",
     "cohort": "Other",
     "relationship": "The Bibayan-Mayott Family",
