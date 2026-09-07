@@ -379,6 +379,15 @@
       "crop_size_px": 576,
       "face_selection": "raw_pixel_calibrated"
     },
+    "mark_macdonald": {
+      "raw_source": "raw_sources/mark_macdonald__orig_media.jpg",
+      "cx_pct": 0.528,
+      "cy_pct": 0.252,
+      "face_h_px": 685,
+      "face_h_pct": 0.104,
+      "crop_size_px": 1161,
+      "face_selection": "raw_pixel_calibrated"
+    },
     "jess_phan": {
       "raw_source": "raw_sources/jess_phan__orig_media.jpg",
       "cx_pct": 0.55,

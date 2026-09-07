@@ -78,7 +78,7 @@ GUEST_CALIBRATION_SPECS = {
     "becca_winslow": {"raw_source": "raw_sources/becca_winslow__orig_media.jpg", "cx_pct": 0.605, "cy_pct": 0.310, "face_h_px": 110},
     "ryan_podolak": {"raw_source": "raw_sources/ryan_podolak__orig_media.jpg", "cx_pct": 0.180, "cy_pct": 0.280, "face_h_px": 200, "allow_subcrop": True},
     "jonathan_bibayan": {"raw_source": "raw_sources/jonathan_bibayan__orig_media.jpg", "cx_pct": 0.480, "cy_pct": 0.440, "face_h_px": 340},
-    "mark_macdonald": {"raw_source": "raw_sources/mark_macdonald__orig_media.jpg", "cx_pct": 0.650, "cy_pct": 0.280, "face_h_px": 280},
+    "mark_macdonald": {"raw_source": "raw_sources/mark_macdonald__orig_media.jpg", "cx_pct": 0.528, "cy_pct": 0.252, "face_h_px": 685},
     "jess_phan": {"raw_source": "raw_sources/jess_phan__orig_media.jpg", "cx_pct": 0.550, "cy_pct": 0.540, "face_h_px": 260},
     "tracy_armstrong": {"raw_source": "raw_sources/tracy_armstrong__orig_media.jpg", "cx_pct": 0.360, "cy_pct": 0.480, "face_h_px": 280}
 }
