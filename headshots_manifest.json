@@ -394,12 +394,13 @@
     },
     "jonathan_bibayan": {
       "raw_source": "raw_sources/jonathan_bibayan__orig_media.jpg",
-      "cx_pct": 0.48,
-      "cy_pct": 0.44,
-      "face_h_px": 340,
-      "face_h_pct": 0.0843,
-      "crop_size_px": 576,
-      "face_selection": "raw_pixel_calibrated"
+      "cx_pct": 0.5216,
+      "cy_pct": 0.4762,
+      "face_h_px": 1346,
+      "face_h_pct": 0.3338,
+      "crop_size_px": 2243,
+      "face_selection": "vladmandic_landmark_calibrated",
+      "cropped_headshot": "public/headshots/jonathan_bibayan.jpg"
     },
     "mark_macdonald": {
       "raw_source": "raw_sources/mark_macdonald__orig_media.jpg",
