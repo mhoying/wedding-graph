@@ -5,11 +5,13 @@
  * and cache-bypassing cross-device synchronization.
  */
 
-const GAGGLE_STORE_KEY = 'wedding_graph_gaggle_v100_store';
-const ACTIVE_PLAYER_KEY = 'wedding_graph_active_player_v100';
+const GAGGLE_STORE_KEY = 'wedding_graph_gaggle_v101_store';
+const ACTIVE_PLAYER_KEY = 'wedding_graph_active_player_v101';
 const LEGACY_KEYS = [
   'wedding_graph_gaggle_v1',
+  'wedding_graph_gaggle_v100_store',
   'wedding_graph_active_player_v1',
+  'wedding_graph_active_player_v100',
   'wedding_graph_feedback_v95',
   'wedding_graph_feedback_v99'
 ];
@@ -149,62 +151,50 @@ export async function flushUnsyncedEncounters() {
   saveUnsyncedEncounters(remaining);
 }
 
-// Push encounter to remote GitHub Issues endpoint for cross-device sharing
+const FIREBASE_DB_URL = 'https://wedding-graph-default-rtdb.firebaseio.com/encounters.json';
+
+// Push encounter to remote Firebase Realtime DB endpoint for instant cross-device sharing
 export async function syncEncounterToGithub(encounter) {
   try {
     const payload = {
-      title: `🪿 Honk: ${encounter.actor} met ${encounter.target}`,
-      body: `[HONK_ENCOUNTER_v1]\nActor: ${encounter.actor}\nTarget: ${encounter.target}\nCohort: ${encounter.targetCohort || 'Other'}\nTimestamp: ${Date.now()}`
+      actor: encounter.actor,
+      target: encounter.target,
+      targetCohort: encounter.targetCohort || 'Other',
+      timestamp: encounter.timestamp || Date.now()
     };
-    const res = await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues', {
+    const res = await fetch(FIREBASE_DB_URL, {
       method: 'POST',
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     });
-    return res.ok || res.status === 201;
+    return res.ok || res.status === 200;
   } catch (err) {
     console.warn('Remote sync fetch notice (will retry via Outbox queue):', err);
     return false;
   }
 }
 
-// Fetch remote encounters from GitHub API / Issues to sync live across devices
+// Fetch remote encounters from Firebase DB to sync live across devices instantly
 export async function fetchRemoteEncounters() {
   // First retry flushing any pending local outbox items
   await flushUnsyncedEncounters();
 
   try {
-    const res = await fetch('https://api.github.com/repos/mhoying/wedding-graph/issues?state=all&per_page=100');
-    if (!res.ok) {
-      if (res.status === 403) {
-        console.info('GitHub API rate limit reached (60/hr IP limit). Utilizing local store seamlessly.');
-      }
-      return null;
-    }
-    const issues = await res.json();
+    const res = await fetch(FIREBASE_DB_URL);
+    if (!res.ok) return null;
 
-    const remoteEncounters = [];
-    (issues || []).forEach(issue => {
-      if (issue.body && issue.body.includes('[HONK_ENCOUNTER_v1]')) {
-        const actorMatch = issue.body.match(/Actor:\s*(.+)/);
-        const targetMatch = issue.body.match(/Target:\s*(.+)/);
-        const cohortMatch = issue.body.match(/Cohort:\s*(.+)/);
-        const tsMatch = issue.body.match(/Timestamp:\s*(\d+)/);
+    const data = await res.json();
+    if (!data) return null;
 
-        if (actorMatch && targetMatch) {
-          remoteEncounters.push({
-            id: `remote_${issue.id}`,
-            actor: actorMatch[1].trim(),
-            target: targetMatch[1].trim(),
-            targetCohort: cohortMatch ? cohortMatch[1].trim() : 'Other',
-            timestamp: tsMatch ? parseInt(tsMatch[1], 10) : Date.now()
-          });
-        }
-      }
-    });
+    const remoteEncounters = Object.entries(data).map(([key, val]) => ({
+      id: key,
+      actor: val.actor,
+      target: val.target,
+      targetCohort: val.targetCohort || 'Other',
+      timestamp: val.timestamp || Date.now()
+    }));
 
     if (remoteEncounters.length > 0) {
       const store = getStoredGaggleData();
