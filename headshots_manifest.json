@@ -206,12 +206,12 @@
       "face_selection": "raw_pixel_calibrated"
     },
     "ryan_anthony": {
-      "raw_source": "raw_sources/ryan_anthony__orig_media__1788715848.jpg",
-      "cx_pct": 0.46,
+      "raw_source": "raw_sources/ryan_anthony__orig_media.jpg",
+      "cx_pct": 0.5,
       "cy_pct": 0.4,
-      "face_h_px": 203,
-      "face_h_pct": 0.1982,
-      "crop_size_px": 344,
+      "face_h_px": 300,
+      "face_h_pct": 0.293,
+      "crop_size_px": 508,
       "face_selection": "raw_pixel_calibrated"
     },
     "steve_nares": {
