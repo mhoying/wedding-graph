@@ -1,114 +1,41 @@
-import React, { useState } from 'react';
-import { Search, Sun, Moon, Layers, Download, X, Heart, ShieldAlert, Compass, Wand2, Play, Pause, Eye, EyeOff, SlidersHorizontal, Palette, FileSpreadsheet } from 'lucide-react';
+import React from 'react';
+import { Search, Sun, Moon, Layers, X, ShieldAlert, Compass, Wand2, SlidersHorizontal, FileSpreadsheet } from 'lucide-react';
 
 export default function TopHeaderNav({
-  searchQuery,
-  setSearchQuery,
-  selectedInterests,
-  setSelectedInterests,
+  searchQuery = '',
+  setSearchQuery = () => {},
+  selectedInterests = [],
+  setSelectedInterests = () => {},
+  selectedClusterFocus = '',
+  setSelectedClusterFocus = () => {},
   isLightMode,
   setIsLightMode,
   clusterMode,
   setClusterMode,
   colorMode,
   setColorMode,
-  showHeadshots,
-  setShowHeadshots,
-  isOrbiting,
-  setIsOrbiting,
-  orbitSpeed,
-  setOrbitSpeed,
-  nodeScaleMultiplier,
-  setNodeScaleMultiplier,
-  edgeLengthMultiplier,
-  setEdgeLengthMultiplier,
-  isPathMode,
-  setIsPathMode,
-  setIsMatchmakerOpen,
   isAdmin,
-  handleExportCsv,
   feedbackQueueCount,
   setIsFeedbackQueueOpen,
   setIsSpreadsheetOpen,
-  selectedClusterFocus = '',
-  setSelectedClusterFocus = () => {},
-  availableClusters = [],
   onOpenLeaderboard = () => {},
   onOpenMapControls = () => {},
   isListView = false,
   setIsListView = () => {},
-  isMobileViewport = false,
-  isMobileSearchOpen: externalIsMobileSearchOpen,
-  setIsMobileSearchOpen: setExternalIsMobileSearchOpen
+  setIsMatchmakerOpen = () => {},
+  isPathMode = false,
+  setIsPathMode = () => {}
 }) {
-  const [isTunePopoverOpen, setIsTunePopoverOpen] = useState(false);
-  const [internalIsMobileSearchOpen, setInternalIsMobileSearchOpen] = useState(false);
+  const hasActiveFilters = Boolean((searchQuery && searchQuery.trim()) || selectedClusterFocus || (selectedInterests && selectedInterests.length > 0));
 
-  const isSearchModalOpen = externalIsMobileSearchOpen !== undefined ? externalIsMobileSearchOpen : internalIsMobileSearchOpen;
-  const setSearchModalOpen = setExternalIsMobileSearchOpen || setInternalIsMobileSearchOpen;
+  const handleClearAllFilters = () => {
+    setSearchQuery('');
+    setSelectedClusterFocus('');
+    setSelectedInterests([]);
+  };
 
   return (
     <header className="glass-panel top-bar no-print">
-      {/* Mobile Search Overlay Modal */}
-      {isSearchModalOpen && (
-        <div 
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 99999,
-            background: 'rgba(15, 23, 42, 0.95)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '16px 20px',
-            animation: 'fadeIn 0.2s ease-out'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, background: 'rgba(30, 41, 59, 0.9)', border: '1px solid #38bdf8', borderRadius: 14, padding: '8px 14px' }}>
-              <Search style={{ width: 18, height: 18, color: '#38bdf8' }} />
-              <input 
-                type="text"
-                autoFocus
-                placeholder="Search guests, cohorts, cities..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ width: '100%', background: 'transparent', border: 'none', color: '#fff', fontSize: 15, outline: 'none' }}
-              />
-              {searchQuery && (
-                <button 
-                  type="button" 
-                  onClick={() => setSearchQuery('')}
-                  style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 4 }}
-                >
-                  <X style={{ width: 16, height: 16 }} />
-                </button>
-              )}
-            </div>
-            <button 
-              onClick={() => setSearchModalOpen(false)}
-              style={{ padding: '10px 14px', borderRadius: 12, background: 'rgba(255, 255, 255, 0.1)', color: '#fff', border: 'none', fontWeight: 700, fontSize: 13 }}
-            >
-              Done
-            </button>
-          </div>
-
-          <div style={{ fontSize: 12, color: '#94a3b8', fontWeight: 600, marginBottom: 8 }}>
-            {searchQuery ? `Active filter: "${searchQuery}"` : 'Type to search guests across all cohorts'}
-          </div>
-
-          {searchQuery && (
-            <button 
-              onClick={() => { setSearchQuery(''); setSearchModalOpen(false); }}
-              style={{ padding: 10, background: 'rgba(244, 63, 94, 0.15)', color: '#fda4af', border: '1px solid rgba(244, 63, 94, 0.3)', borderRadius: 10, fontSize: 12, fontWeight: 700 }}
-            >
-              Clear Search Filter
-            </button>
-          )}
-        </div>
-      )}
-
       {/* Tall Left Brand Block */}
       <div className="logo-area-tall">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -120,57 +47,150 @@ export default function TopHeaderNav({
 
       {/* Right Controls Area (Divided into 2 Clean Rows) */}
       <div className="header-controls-grid">
-        {/* ROW 1: Search & View Actions Bar */}
-        <div className="header-controls-row top-row">
-          {/* Mobile vs Desktop Search Box */}
-          {isMobileViewport ? null : (
-            <div className="search-box">
-              <Search style={{ width: 14, height: 14, color: '#94a3b8' }} />
-              <input 
-                type="text"
-                placeholder="Search guests, cohorts, cities..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
-                <button 
-                  type="button" 
-                  onClick={() => setSearchQuery('')}
-                  style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 2 }}
-                >
-                  <X style={{ width: 14, height: 14 }} />
-                </button>
-              )}
-            </div>
-          )}
+        {/* ROW 1: Always-Visible Search Bar & Closeable Active Filter Chips */}
+        <div className="header-controls-row top-row" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Always-Visible Inline Search Input */}
+          <div 
+            className="search-box glass-panel" 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 8, 
+              padding: '5px 12px', 
+              background: 'rgba(15, 23, 42, 0.85)', 
+              border: searchQuery ? '1px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.2)', 
+              borderRadius: 12,
+              minWidth: 150,
+              flex: '1 1 200px',
+              flexShrink: 0
+            }}
+          >
+            <Search style={{ width: 14, height: 14, color: searchQuery ? '#38bdf8' : '#94a3b8', flexShrink: 0 }} />
+            <input 
+              type="text"
+              placeholder="Search guests, cohorts, cities..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ width: '100%', background: 'transparent', border: 'none', color: '#fff', fontSize: 12, fontWeight: 600, outline: 'none' }}
+            />
+            {searchQuery && (
+              <button 
+                type="button" 
+                onClick={() => setSearchQuery('')}
+                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 2, display: 'flex', alignItems: 'center' }}
+                title="Clear Search"
+              >
+                <X style={{ width: 13, height: 13 }} />
+              </button>
+            )}
+          </div>
 
-          {/* Selected Interests Filter Badges */}
-          {selectedInterests.length > 0 && (
-            <div className="active-interests-bar hide-on-constrained">
-              {selectedInterests.map(interest => (
-                <span key={interest} className="interest-chip">
-                  <span>{interest}</span>
+          {/* ACTIVE FILTER CHIPS SECTION (Closeable Chips with ✕) */}
+          {hasActiveFilters && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'nowrap', overflowX: 'auto' }}>
+              {/* Active Search Query Chip */}
+              {searchQuery && searchQuery.trim() && (
+                <span 
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 5,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '3px 9px',
+                    borderRadius: 9999,
+                    background: 'rgba(56, 189, 248, 0.2)',
+                    border: '1px solid #38bdf8',
+                    color: '#7dd3fc',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  <span>🔍 "{searchQuery.trim()}"</span>
                   <X 
-                    style={{ width: 12, height: 12, cursor: 'pointer' }}
+                    style={{ width: 12, height: 12, cursor: 'pointer', opacity: 0.8 }}
+                    onClick={() => setSearchQuery('')}
+                  />
+                </span>
+              )}
+
+              {/* Active Cluster Focus Chip */}
+              {selectedClusterFocus && (
+                <span 
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 5,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '3px 9px',
+                    borderRadius: 9999,
+                    background: 'rgba(236, 72, 153, 0.2)',
+                    border: '1px solid #ec4899',
+                    color: '#f472b6',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  <span>🎯 "{selectedClusterFocus}"</span>
+                  <X 
+                    style={{ width: 12, height: 12, cursor: 'pointer', opacity: 0.8 }}
+                    onClick={() => setSelectedClusterFocus('')}
+                  />
+                </span>
+              )}
+
+              {/* Active Selected Interest Chips */}
+              {selectedInterests && selectedInterests.map(interest => (
+                <span 
+                  key={interest} 
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 5,
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '3px 9px',
+                    borderRadius: 9999,
+                    background: 'rgba(16, 185, 129, 0.2)',
+                    border: '1px solid #10b981',
+                    color: '#34d399',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  <span>✨ {interest}</span>
+                  <X 
+                    style={{ width: 12, height: 12, cursor: 'pointer', opacity: 0.8 }}
                     onClick={() => setSelectedInterests(selectedInterests.filter(i => i !== interest))}
                   />
                 </span>
               ))}
+
+              {/* Clear All Filters Action Button */}
               <button 
-                onClick={() => setSelectedInterests([])}
-                style={{ fontSize: 10, color: '#ec4899', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                type="button"
+                onClick={handleClearAllFilters}
+                style={{ 
+                  fontSize: 10, 
+                  fontWeight: 800,
+                  color: '#f43f5e', 
+                  background: 'rgba(244, 63, 94, 0.15)', 
+                  border: '1px solid rgba(244, 63, 94, 0.4)', 
+                  borderRadius: 9999, 
+                  padding: '3px 8px',
+                  cursor: 'pointer', 
+                  whiteSpace: 'nowrap'
+                }}
               >
                 Clear All
               </button>
             </div>
           )}
 
-          {/* List Directory / 3D Canvas Map Toggle Button */}
+          {/* Directory List / 3D Map View Toggle Button */}
           <button 
             onClick={() => setIsListView(!isListView)} 
             className={`glass-panel btn-icon ${isListView ? 'active' : ''} hide-on-constrained`}
             title="Toggle Alphabetical Directory List vs 3D Map View"
-            style={{ height: 34, padding: '0 10px', gap: 6, fontSize: 12, fontWeight: 800, color: isListView ? '#f43f5e' : '#38bdf8', background: isListView ? 'rgba(244, 63, 94, 0.2)' : 'rgba(56, 189, 248, 0.15)', border: isListView ? '1px solid #f43f5e' : '1px solid rgba(56, 189, 248, 0.4)', flexShrink: 0 }}
+            style={{ height: 34, padding: '0 10px', gap: 6, fontSize: 12, fontWeight: 800, color: isListView ? '#f43f5e' : '#38bdf8', background: isListView ? 'rgba(244, 63, 94, 0.2)' : 'rgba(56, 189, 248, 0.15)', border: isListView ? '1px solid #f43f5e' : '1px solid rgba(56, 189, 248, 0.4)', flexShrink: 0, marginLeft: 'auto' }}
           >
             <span>{isListView ? '🌐 3D Map View' : '📋 Directory List'}</span>
           </button>
@@ -185,7 +205,7 @@ export default function TopHeaderNav({
             {isLightMode ? <Moon style={{ width: 14, height: 14 }} /> : <Sun style={{ width: 14, height: 14, color: '#38bdf8' }} />}
           </button>
 
-          {/* Host Live Spreadsheet & Moderation Queue Buttons */}
+          {/* Host Admin Buttons */}
           {isAdmin && (
             <>
               <button 
@@ -300,7 +320,7 @@ export default function TopHeaderNav({
             <span>Matchmaker</span>
           </button>
 
-          {/* Cluster Overlays Dropdown (Omitted when width is constrained) */}
+          {/* Cluster Overlays Dropdown */}
           <div className="glass-panel color-mode-bar hide-on-constrained" style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 6px', background: 'rgba(30, 41, 59, 0.85)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: 8, flexShrink: 0 }}>
             <Layers style={{ width: 13, height: 13, color: '#ec4899', marginRight: 4 }} />
             <span style={{ color: '#cbd5e1', fontSize: 11, fontWeight: 700, marginRight: 4 }}>Clusters:</span>
