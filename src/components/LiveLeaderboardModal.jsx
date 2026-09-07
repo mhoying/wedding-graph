@@ -54,7 +54,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
       title: 'Compatibility Matchmaker',
       metricLabel: 'Compat Pts',
       goal: 'Log encounters with top algorithmically recommended matches.',
-      howToWin: 'Honk at top shared-interest matches to accumulate compatibility points.'
+      howToWin: 'Honk at matches to score points. Rare shared interests & rare locations yield higher compatibility points!'
     }
   ];
 

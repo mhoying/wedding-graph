@@ -248,6 +248,45 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
   const guestMap = new Map();
   allGuests.forEach(g => guestMap.set(g.name, g));
 
+  // Precompute Inverse Frequency (IDF) Rarity weights across all guests
+  const hobbyCounts = {};
+  const liveCounts = {};
+  const homeCounts = {};
+  const cohortCounts = {};
+
+  allGuests.forEach(g => {
+    (g.hobbies || []).forEach(h => {
+      if (h && h.trim()) {
+        const k = h.trim().toLowerCase();
+        hobbyCounts[k] = (hobbyCounts[k] || 0) + 1;
+      }
+    });
+    if (g.currentlyLivesIn) {
+      const k = g.currentlyLivesIn.trim().toLowerCase();
+      liveCounts[k] = (liveCounts[k] || 0) + 1;
+    }
+    if (g.originallyFrom) {
+      const k = g.originallyFrom.trim().toLowerCase();
+      homeCounts[k] = (homeCounts[k] || 0) + 1;
+    }
+    if (g.cohort) {
+      const k = g.cohort.trim().toLowerCase();
+      cohortCounts[k] = (cohortCounts[k] || 0) + 1;
+    }
+  });
+
+  // Calculate rare interest tag weight (Inverse Frequency: 10 to 85 pts)
+  const getTagRarityWeight = (tag) => {
+    const count = hobbyCounts[tag.toLowerCase()] || 1;
+    return Math.min(85, Math.max(10, Math.round(80 / Math.pow(count, 0.55))));
+  };
+
+  // Calculate rare location weight (Inverse Frequency: 15 to 60 pts)
+  const getLocRarityWeight = (loc, countsMap, defaultWeight = 25) => {
+    const count = countsMap[loc.toLowerCase()] || 1;
+    return Math.min(65, Math.max(15, Math.round(50 / Math.pow(count, 0.5))));
+  };
+
   const playerStats = {};
 
   // Initialize stats for each unique actor or guest
@@ -296,37 +335,45 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
       }
     }
 
-    // Soul-Gander Compatibility Matchmaker Score calculation
+    // Soul-Gander Compatibility Matchmaker Score calculation (with IDF Rarity Weighting)
     if (targetGuestObj) {
       const actorGuestObj = guestMap.get(e.actor);
       if (actorGuestObj) {
         let matchPts = 0;
-        // Shared hobbies / interests
+        // 1. Shared hobbies / interests (IDF Rarity weighted: 10-85 pts per matching interest)
         const actorHobbies = Array.isArray(actorGuestObj.hobbies) ? actorGuestObj.hobbies : [];
         const targetHobbies = Array.isArray(targetGuestObj.hobbies) ? targetGuestObj.hobbies : [];
         const actorHobbySet = new Set(actorHobbies.map(h => String(h).trim().toLowerCase()));
         targetHobbies.forEach(h => {
           if (h && actorHobbySet.has(String(h).trim().toLowerCase())) {
-            matchPts += 30;
+            const cleanH = String(h).trim();
+            matchPts += getTagRarityWeight(cleanH);
           }
         });
-        // Shared current location
+
+        // 2. Shared current location (Rarity weighted: 15-65 pts)
         if (actorGuestObj.currentlyLivesIn && targetGuestObj.currentlyLivesIn && actorGuestObj.currentlyLivesIn.toLowerCase() === targetGuestObj.currentlyLivesIn.toLowerCase()) {
-          matchPts += 25;
+          matchPts += getLocRarityWeight(actorGuestObj.currentlyLivesIn, liveCounts, 25);
         }
-        // Shared hometown
+
+        // 3. Shared hometown / origin (Rarity weighted: 15-65 pts)
         if (actorGuestObj.originallyFrom && targetGuestObj.originallyFrom && actorGuestObj.originallyFrom.toLowerCase() === targetGuestObj.originallyFrom.toLowerCase()) {
-          matchPts += 25;
+          matchPts += getLocRarityWeight(actorGuestObj.originallyFrom, homeCounts, 25);
         }
-        // Shared cohort
+
+        // 4. Shared cohort (Rarity weighted: 15-45 pts)
         if (actorGuestObj.cohort && targetGuestObj.cohort && actorGuestObj.cohort.toLowerCase() === targetGuestObj.cohort.toLowerCase()) {
-          matchPts += 20;
+          const cCount = cohortCounts[actorGuestObj.cohort.trim().toLowerCase()] || 1;
+          const cohortPts = Math.min(45, Math.max(15, Math.round(40 / Math.pow(cCount, 0.4))));
+          matchPts += cohortPts;
         }
-        // Shared side
+
+        // 5. Shared wedding side (+15 pts)
         if (actorGuestObj.side && targetGuestObj.side && actorGuestObj.side.toLowerCase() === targetGuestObj.side.toLowerCase()) {
           matchPts += 15;
         }
-        stats.totalMatchScore += matchPts;
+
+        stats.totalMatchScore += (matchPts > 0 ? matchPts : 10);
       } else {
         stats.totalMatchScore += 10;
       }
