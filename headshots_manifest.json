@@ -261,12 +261,12 @@
       "allow_subcrop": true
     },
     "paul_richter": {
-      "raw_source": "raw_sources/paul_richter__orig_media__1788718085.jpg",
-      "cx_pct": 0.44,
-      "cy_pct": 0.32,
-      "face_h_px": 200,
-      "face_h_pct": 0.1953,
-      "crop_size_px": 338,
+      "raw_source": "raw_sources/paul_richter__orig_media.jpg",
+      "cx_pct": 0.545,
+      "cy_pct": 0.35,
+      "face_h_px": 180,
+      "face_h_pct": 0.1758,
+      "crop_size_px": 305,
       "face_selection": "raw_pixel_calibrated"
     },
     "katie_richter": {
