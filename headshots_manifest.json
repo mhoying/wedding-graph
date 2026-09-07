@@ -514,5 +514,16 @@
       ],
       "scale": 84
     }
+  },
+  "roopak_kandasamy": {
+    "guest": "roopak_kandasamy",
+    "raw_source": "raw_sources/roopak_kandasamy__orig_media.jpg",
+    "crop": {
+      "center": [
+        920,
+        2020
+      ],
+      "scale": 78
+    }
   }
 }
