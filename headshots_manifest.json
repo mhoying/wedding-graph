@@ -547,5 +547,16 @@
       ],
       "scale": 84
     }
+  },
+  "krista_kobeski": {
+    "guest": "krista_kobeski",
+    "raw_source": "raw_sources/krista_kobeski__orig_media.jpg",
+    "crop": {
+      "center": [
+        2200,
+        1400
+      ],
+      "scale": 60
+    }
   }
 }
