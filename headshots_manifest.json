@@ -298,6 +298,15 @@
       "crop_size_px": 338,
       "face_selection": "raw_pixel_calibrated"
     },
+    "leanna_habana": {
+      "raw_source": "raw_sources/leanna_habana__orig_media.jpg",
+      "cx_pct": 0.281,
+      "cy_pct": 0.521,
+      "face_h_px": 43,
+      "face_h_pct": 0.0896,
+      "crop_size_px": 72,
+      "face_selection": "raw_pixel_calibrated"
+    },
     "kathryn_potts": {
       "raw_source": "raw_sources/kathryn_potts__orig_media.jpg",
       "cx_pct": 0.342,
