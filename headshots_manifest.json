@@ -503,5 +503,16 @@
       ],
       "scale": 60
     }
+  },
+  "tina_silva": {
+    "guest": "tina_silva",
+    "raw_source": "raw_sources/tina_silva__orig_media.jpg",
+    "crop": {
+      "center": [
+        2060,
+        1140
+      ],
+      "scale": 84
+    }
   }
 }
