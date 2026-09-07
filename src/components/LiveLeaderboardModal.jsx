@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { normalizeName } from '../utils/gaggleStore';
 
 export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allGuests, activePlayer, onSelectGuest, onUpdatePlayer, onOpenPlayerSelect }) {
   const [activeTab, setActiveTab] = useState('masterGaggle');
@@ -237,7 +238,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
             });
 
             return currentList.slice(0, 15).map((player, idx) => {
-              const isSelf = player.name === activePlayer;
+              const isSelf = normalizeName(player.name) === normalizeName(activePlayer);
               const isExpanded = expandedPlayer === player.name;
               const denseRank = ranks[idx];
 
@@ -246,8 +247,15 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                   key={player.name}
                   style={{
                     borderRadius: 12,
-                    background: isSelf ? 'rgba(245, 158, 11, 0.08)' : 'rgba(30, 41, 59, 0.4)',
-                    border: isSelf ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid rgba(255, 255, 255, 0.05)',
+                    background: isSelf
+                      ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.12) 100%)'
+                      : 'rgba(30, 41, 59, 0.4)',
+                    border: isSelf
+                      ? '1.5px solid #f59e0b'
+                      : '1px solid rgba(255, 255, 255, 0.05)',
+                    boxShadow: isSelf
+                      ? '0 0 16px rgba(245, 158, 11, 0.25), inset 0 0 12px rgba(245, 158, 11, 0.1)'
+                      : 'none',
                     transition: 'all 0.15s ease',
                     overflow: 'hidden',
                     flexShrink: 0
@@ -278,7 +286,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                           {player.name}
                         </span>
                         {isSelf && (
-                          <span style={{ fontSize: 9, fontWeight: 900, padding: '1px 5px', borderRadius: 4, background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.4)', flexShrink: 0 }}>
+                          <span style={{ fontSize: 9, fontWeight: 900, padding: '1px 6px', borderRadius: 4, background: '#f59e0b', color: '#0f172a', letterSpacing: '0.5px', boxShadow: '0 0 8px rgba(245, 158, 11, 0.6)', flexShrink: 0 }}>
                             YOU
                           </span>
                         )}
