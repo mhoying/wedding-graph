@@ -287,7 +287,7 @@ export default function LiveLeaderboardModal({ isOpen, onClose, gaggleData, allG
                       )}
                       {activeTab === 'soulGander' && (
                         <span style={{ padding: '3px 6px', borderRadius: 6, background: 'rgba(244, 63, 94, 0.15)', border: '1px solid rgba(244, 63, 94, 0.3)', color: '#fb7185', fontWeight: 800, fontSize: 10, whiteSpace: 'nowrap' }}>
-                          {player.honkCount * 10} pts
+                          {player.totalMatchScore || 0} pts
                         </span>
                       )}
                     </div>

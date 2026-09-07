@@ -296,6 +296,44 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
       }
     }
 
+    // Soul-Gander Compatibility Matchmaker Score calculation
+    if (targetGuestObj) {
+      const actorGuestObj = guestMap.get(e.actor);
+      if (actorGuestObj) {
+        let matchPts = 0;
+        // Shared hobbies / interests
+        const actorHobbies = Array.isArray(actorGuestObj.hobbies) ? actorGuestObj.hobbies : [];
+        const targetHobbies = Array.isArray(targetGuestObj.hobbies) ? targetGuestObj.hobbies : [];
+        const actorHobbySet = new Set(actorHobbies.map(h => String(h).trim().toLowerCase()));
+        targetHobbies.forEach(h => {
+          if (h && actorHobbySet.has(String(h).trim().toLowerCase())) {
+            matchPts += 30;
+          }
+        });
+        // Shared current location
+        if (actorGuestObj.currentlyLivesIn && targetGuestObj.currentlyLivesIn && actorGuestObj.currentlyLivesIn.toLowerCase() === targetGuestObj.currentlyLivesIn.toLowerCase()) {
+          matchPts += 25;
+        }
+        // Shared hometown
+        if (actorGuestObj.originallyFrom && targetGuestObj.originallyFrom && actorGuestObj.originallyFrom.toLowerCase() === targetGuestObj.originallyFrom.toLowerCase()) {
+          matchPts += 25;
+        }
+        // Shared cohort
+        if (actorGuestObj.cohort && targetGuestObj.cohort && actorGuestObj.cohort.toLowerCase() === targetGuestObj.cohort.toLowerCase()) {
+          matchPts += 20;
+        }
+        // Shared side
+        if (actorGuestObj.side && targetGuestObj.side && actorGuestObj.side.toLowerCase() === targetGuestObj.side.toLowerCase()) {
+          matchPts += 15;
+        }
+        stats.totalMatchScore += matchPts;
+      } else {
+        stats.totalMatchScore += 10;
+      }
+    } else {
+      stats.totalMatchScore += 10;
+    }
+
     // Speed Mingler Sprint calculation (5th encounter)
     if (stats.honkCount === 1 && !stats.firstEncounterTime) {
       stats.firstEncounterTime = e.timestamp;
@@ -332,7 +370,7 @@ export function calculateGooseLeaderboards(encounters = [], playerSprintStarts =
 
   // 5. Soul-Gander Matchmaker (Total Compatibility Points)
   const soulGanderLeaderboard = [...playerList].sort(
-    (a, b) => b.honkCount - a.honkCount
+    (a, b) => b.totalMatchScore - a.totalMatchScore || b.honkCount - a.honkCount
   );
 
   return {
