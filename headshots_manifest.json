@@ -352,6 +352,15 @@
       "crop_size_px": 406,
       "face_selection": "raw_pixel_calibrated"
     },
+    "mary_mitchell": {
+      "raw_source": "raw_sources/mary_mitchell__orig_media.jpg",
+      "cx_pct": 0.36,
+      "cy_pct": 0.42,
+      "face_h_px": 480,
+      "face_h_pct": 0.2222,
+      "crop_size_px": 813,
+      "face_selection": "raw_pixel_calibrated"
+    },
     "tina_silva": {
       "raw_source": "raw_sources/tina_silva__orig_media.jpg",
       "cx_pct": 0.44,

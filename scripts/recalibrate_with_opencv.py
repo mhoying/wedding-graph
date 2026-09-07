@@ -72,7 +72,7 @@ GUEST_CALIBRATION_SPECS = {
     "chuchu_zhang": {"raw_source": "raw_sources/chuchu_zhang__orig_media.png", "cx_pct": 0.485, "cy_pct": 0.460, "face_h_px": 290},
     "jenna_auer": {"raw_source": "raw_sources/jenna_auer__orig_media.jpg", "cx_pct": 0.270, "cy_pct": 0.400, "face_h_px": 210},
     "tim_auer": {"raw_source": "raw_sources/jenna_auer__orig_media.jpg", "cx_pct": 0.670, "cy_pct": 0.380, "face_h_px": 240},
-    "mary_mitchell": {"raw_source": "raw_sources/mary_mitchell__orig_media.jpg", "cx_pct": 0.360, "cy_pct": 0.580, "face_h_px": 160},
+    "mary_mitchell": {"raw_source": "raw_sources/mary_mitchell__orig_media.jpg", "cx_pct": 0.360, "cy_pct": 0.420, "face_h_px": 480},
     "tina_silva": {"raw_source": "raw_sources/tina_silva__orig_media.jpg", "cx_pct": 0.440, "cy_pct": 0.500, "face_h_px": 240},
     "tim_coble": {"raw_source": "raw_sources/tim_coble__orig_media.jpg", "cx_pct": 0.480, "cy_pct": 0.320, "face_h_px": 280},
     "becca_winslow": {"raw_source": "raw_sources/becca_winslow__orig_media.jpg", "cx_pct": 0.605, "cy_pct": 0.310, "face_h_px": 110},
