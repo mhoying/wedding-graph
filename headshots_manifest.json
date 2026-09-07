@@ -492,5 +492,16 @@
       ],
       "scale": 78
     }
+  },
+  "tim_coble": {
+    "guest": "tim_coble",
+    "raw_source": "raw_sources/tim_coble__orig_media.jpg",
+    "crop": {
+      "center": [
+        980,
+        1200
+      ],
+      "scale": 60
+    }
   }
 }
