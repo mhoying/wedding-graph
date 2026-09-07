@@ -42,7 +42,7 @@ export default function App() {
   useEffect(() => {
     try {
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v112') {
+        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v113') {
           localStorage.removeItem(key);
         }
       });
@@ -51,7 +51,7 @@ export default function App() {
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v112');
+      const saved = localStorage.getItem('wedding_graph_nodes_v113');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -191,7 +191,7 @@ export default function App() {
     );
   }, [gaggleStore, nodes]);
 
-  // On-demand remote encounter sync when opening leaderboard
+  // On-demand & background polling for remote encounters when leaderboard is open
   const syncRemoteEncounters = useCallback(async () => {
     const updated = await fetchRemoteEncounters();
     if (updated) {
@@ -199,9 +199,18 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isLeaderboardOpen) {
+      syncRemoteEncounters();
+      const interval = setInterval(() => {
+        syncRemoteEncounters();
+      }, 4000);
+      return () => clearInterval(interval);
+    }
+  }, [isLeaderboardOpen, syncRemoteEncounters]);
+
   const handleOpenLeaderboard = () => {
     setIsLeaderboardOpen(true);
-    syncRemoteEncounters();
   };
 
   // Player Identity Selector Modal State
@@ -358,7 +367,7 @@ export default function App() {
 
   // Sync LocalStorage & Theme
   useEffect(() => {
-    localStorage.setItem('wedding_graph_nodes_v112', JSON.stringify(nodes));
+    localStorage.setItem('wedding_graph_nodes_v113', JSON.stringify(nodes));
   }, [nodes]);
 
   useEffect(() => {
