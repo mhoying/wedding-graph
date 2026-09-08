@@ -135,7 +135,8 @@ export async function pushToGithubRepo(contentString, commitMessage = 'Update we
 }
 
 export function generateSampleDataJsContent(nodes, links) {
-  return `// Real Wedding Guest List Data - Auto-updated via Host Admin Suite
+  return `export const BUILD_TIMESTAMP = ${Date.now()};
+// Real Wedding Guest List Data - Auto-updated via Host Admin Suite
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
   "Cornell": "#ef4444",

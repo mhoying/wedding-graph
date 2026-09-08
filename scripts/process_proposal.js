@@ -74,7 +74,32 @@ if (payload.proposedRelationship && payload.proposedRelationship.trim()) {
   node.relationship = payload.proposedRelationship.trim();
 }
 
-// Check freeform notes for Originally From
+// Check for photo upload category or proposedHeadshot
+const manifestPath = path.resolve('headshots_manifest.json');
+if (payload.category === 'Profile Picture / Photo Upload' || payload.proposedHeadshot) {
+  const relativeHeadshotPath = `headshots/${node.id}.jpg`;
+  node.image = relativeHeadshotPath;
+  console.log(`Setting image path for ${node.name} to ${relativeHeadshotPath}`);
+
+  if (fs.existsSync(manifestPath)) {
+    try {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      if (!manifest.guests) manifest.guests = {};
+      manifest.guests[node.id] = {
+        ...manifest.guests[node.id],
+        raw_source: `raw_sources/${node.id}__orig_media.jpg`,
+        cropped_headshot: `public/headshots/${node.id}.jpg`,
+        face_selection: 'web_upload_auto_processed'
+      };
+      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');
+      console.log(`Updated headshots_manifest.json for ${node.id}`);
+    } catch (err) {
+      console.error('Error updating headshots_manifest.json:', err);
+    }
+  }
+}
+
+// Generate updated sampleData.js string
 const origFromMatch = issueBody.match(/Originally From:\s*([^|\n]+)/i);
 if (origFromMatch && origFromMatch[1]) {
   node.originallyFrom = origFromMatch[1].trim();

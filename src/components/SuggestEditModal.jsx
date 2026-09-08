@@ -13,7 +13,8 @@ export default function SuggestEditModal({
   feedbackNote,
   setFeedbackNote,
   handleSubmitFeedback,
-  allInterests = []
+  allInterests = [],
+  onPhotoUpload
 }) {
   if (!isOpen) return null;
 
@@ -31,7 +32,7 @@ export default function SuggestEditModal({
         </div>
 
         <p style={{ fontSize: 12, color: '#38bdf8', marginBottom: 16 }}>
-          ✨ Updates submitted here are automatically saved to the database and deployed live within 1–2 minutes!
+          ✨ Updates submitted here are automatically saved to the database and committed live to GitHub repository subfolders!
         </p>
 
         <div style={{ marginBottom: 12 }}>
@@ -68,6 +69,44 @@ export default function SuggestEditModal({
             <option value="Relationship Correction">Relationship Connection Edit</option>
           </select>
         </div>
+
+        {/* Direct Image File Uploader when Profile Picture / Photo Upload is selected */}
+        {feedbackCategory === "Profile Picture / Photo Upload" && (
+          <div style={{ marginBottom: 14, background: 'rgba(56, 189, 248, 0.1)', padding: 12, borderRadius: 10, border: '1px dashed #38bdf8' }}>
+            <label style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', display: 'block', marginBottom: 6 }}>
+              📷 Upload Image File directly to GitHub Repository Subfolder:
+            </label>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={(e) => {
+                const file = e.target.files && e.target.files[0];
+                if (file && feedbackTargetNode && typeof onPhotoUpload === 'function') {
+                  const reader = new FileReader();
+                  reader.onload = (evt) => {
+                    const img = new Image();
+                    img.onload = () => {
+                      const canvas = document.createElement('canvas');
+                      canvas.width = 400;
+                      canvas.height = 400;
+                      const ctx = canvas.getContext('2d');
+                      const minDim = Math.min(img.width, img.height);
+                      const sx = (img.width - minDim) / 2;
+                      const sy = (img.height - minDim) / 2;
+                      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, 400, 400);
+                      const dataUrl = canvas.toDataURL('image/jpeg', 0.90);
+                      onPhotoUpload(feedbackTargetNode.id, dataUrl);
+                      onClose();
+                    };
+                    img.src = evt.target.result;
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
+              style={{ fontSize: 11, color: '#cbd5e1' }}
+            />
+          </div>
+        )}
 
         <div style={{ marginBottom: 16 }}>
           <label style={{ fontSize: 11, fontWeight: 600, color: '#cbd5e1', display: 'block', marginBottom: 4 }}>Note / Proposed Change (Free Text OR Select Below):</label>

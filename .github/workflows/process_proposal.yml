@@ -54,4 +54,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Auto-approve guest proposal #${{ github.event.issue.number }} [skip ci]"
-          file_pattern: "src/data/sampleData.js public/guests_template.csv"
+          file_pattern: "src/data/sampleData.js public/guests_template.csv headshots_manifest.json"
