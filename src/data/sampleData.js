@@ -592,7 +592,9 @@ export const SAMPLE_NODES = [
     "currentlyLivesIn": "Madison, WI",
     "familyStatus": "Couple / Group",
     "hobbies": [
-      "Wine"
+      "Wine",
+      "virgo",
+      "Sailing"
     ],
     "__indexColor": "#340017",
     "x": 564.7958927978593,
