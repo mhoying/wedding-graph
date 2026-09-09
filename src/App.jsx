@@ -42,7 +42,7 @@ export default function App() {
   useEffect(() => {
     try {
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v120') {
+        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v121') {
           localStorage.removeItem(key);
         }
       });
@@ -51,7 +51,7 @@ export default function App() {
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v120');
+      const saved = localStorage.getItem('wedding_graph_nodes_v121');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -460,6 +460,17 @@ export default function App() {
       }
     }
   }, [nodes, setIsOrbiting]);
+
+  // Zoom Out Camera Handler (Smoothly resets camera view to frame the entire graph)
+  const handleZoomOutToFit = useCallback(() => {
+    if (!fgRef.current) return;
+    if (typeof fgRef.current.zoomToFit === 'function') {
+      fgRef.current.zoomToFit(800, 40);
+    } else if (typeof fgRef.current.centerAt === 'function' && typeof fgRef.current.zoom === 'function') {
+      fgRef.current.centerAt(0, 0, 800);
+      fgRef.current.zoom(0.5, 800);
+    }
+  }, []);
 
   // Secret URL Parameter & Secret Keyboard Shortcut Listener (`Ctrl + Shift + A`)
   useEffect(() => {
@@ -1350,6 +1361,7 @@ export default function App() {
         availableClusters={availableClusters}
         onOpenLeaderboard={handleOpenLeaderboard}
         onOpenMapControls={() => setIsMobileControlsOpen(true)}
+        onZoomOut={handleZoomOutToFit}
         isListView={isListView}
         setIsListView={setIsListView}
         isMobileViewport={isMobileViewport}
@@ -1649,6 +1661,7 @@ export default function App() {
           onOpenDirectory={() => setIsListView(!isListView)}
           onOpenMatchmaker={() => setIsMatchmakerOpen(true)}
           onOpenMapControls={() => setIsMobileControlsOpen(true)}
+          onZoomOut={handleZoomOutToFit}
           isListView={isListView}
           honkCount={(gaggleStore.encounters || []).length}
           isLightMode={isLightMode}

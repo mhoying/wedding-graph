@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Sun, Moon, Layers, X, ShieldAlert, Compass, Wand2, SlidersHorizontal, FileSpreadsheet } from 'lucide-react';
+import { Search, Sun, Moon, Layers, X, ShieldAlert, Compass, Wand2, SlidersHorizontal, FileSpreadsheet, ZoomOut } from 'lucide-react';
 
 export default function TopHeaderNav({
   searchQuery = '',
@@ -20,6 +20,7 @@ export default function TopHeaderNav({
   setIsSpreadsheetOpen,
   onOpenLeaderboard = () => {},
   onOpenMapControls = () => {},
+  onZoomOut = () => {},
   isListView = false,
   setIsListView = () => {},
   setIsMatchmakerOpen = () => {},
@@ -295,6 +296,17 @@ export default function TopHeaderNav({
           >
             <SlidersHorizontal style={{ width: 13, height: 13, color: '#38bdf8' }} />
             <span>Map Controls</span>
+          </button>
+
+          {/* Zoom Out to Full Graph Button */}
+          <button 
+            onClick={onZoomOut}
+            className="glass-panel btn-icon"
+            title="Zoom Out to Frame Full Graph"
+            style={{ height: 32, padding: '0 10px', gap: 6, fontSize: 11, fontWeight: 800, color: '#ec4899', background: 'rgba(236, 72, 153, 0.15)', border: '1px solid rgba(236, 72, 153, 0.4)', flexShrink: 0 }}
+          >
+            <ZoomOut style={{ width: 13, height: 13, color: '#ec4899' }} />
+            <span>Zoom Out</span>
           </button>
 
           {/* Path Finder Toggle */}

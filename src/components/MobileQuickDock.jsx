@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, ClipboardList, Wand2, SlidersHorizontal, Sun, Moon, Search } from 'lucide-react';
+import { Trophy, ClipboardList, Wand2, SlidersHorizontal, Sun, Moon, Search, ZoomOut } from 'lucide-react';
 
 export default function MobileQuickDock({
   onOpenLeaderboard,
@@ -7,6 +7,7 @@ export default function MobileQuickDock({
   onOpenMatchmaker,
   onOpenMapControls,
   onOpenSearch,
+  onZoomOut,
   isListView,
   honkCount = 0,
   isLightMode,
@@ -164,6 +165,40 @@ export default function MobileQuickDock({
         </div>
         <span style={{ fontSize: 10, fontWeight: 800, color: '#2dd4bf', letterSpacing: 0.2 }}>Matchmaker</span>
       </button>
+
+      {/* 🔍 Zoom Out to Full Graph Button */}
+      {onZoomOut && (
+        <button
+          onClick={onZoomOut}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 3,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            color: '#f8fafc'
+          }}
+          title="Zoom Out to Frame Full Graph"
+        >
+          <div style={{
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            background: 'rgba(236, 72, 153, 0.2)',
+            border: '1px solid rgba(236, 72, 153, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 12px rgba(236, 72, 153, 0.3)'
+          }}>
+            <ZoomOut style={{ width: 20, height: 20, color: '#ec4899' }} />
+          </div>
+          <span style={{ fontSize: 10, fontWeight: 800, color: '#ec4899', letterSpacing: 0.2 }}>Zoom Out</span>
+        </button>
+      )}
 
       {/* 🎛️ Map Controls Trigger Button */}
       <button
