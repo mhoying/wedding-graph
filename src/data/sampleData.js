@@ -525,7 +525,10 @@ export const SAMPLE_NODES = [
     "hobbies": [
       "Tennis",
       "Cycling",
-      "Baking"
+      "Baking",
+      "Running",
+      "Movies",
+      "Cooking"
     ],
     "__indexColor": "#700014",
     "x": 559.0993679752828,
