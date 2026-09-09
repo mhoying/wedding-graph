@@ -88,7 +88,20 @@ export default function TopHeaderNav({
 
           {/* ACTIVE FILTER CHIPS SECTION (Closeable Chips with ✕) */}
           {hasActiveFilters && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'nowrap', overflowX: 'auto' }}>
+            <div 
+              className="active-filter-chips-container"
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 6, 
+                flexWrap: 'wrap', 
+                maxHeight: 64, 
+                overflowY: 'auto',
+                paddingRight: 4,
+                flex: '1 1 auto',
+                minWidth: 0
+              }}
+            >
               {/* Active Search Query Chip */}
               {searchQuery && searchQuery.trim() && (
                 <span 
@@ -103,14 +116,20 @@ export default function TopHeaderNav({
                     background: 'rgba(56, 189, 248, 0.2)',
                     border: '1px solid #38bdf8',
                     color: '#7dd3fc',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    maxWidth: 160,
+                    overflow: 'hidden'
                   }}
                 >
-                  <span>🔍 "{searchQuery.trim()}"</span>
-                  <X 
-                    style={{ width: 12, height: 12, cursor: 'pointer', opacity: 0.8 }}
+                  <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>🔍 "{searchQuery.trim()}"</span>
+                  <button 
+                    type="button"
                     onClick={() => setSearchQuery('')}
-                  />
+                    style={{ background: 'none', border: 'none', color: '#7dd3fc', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', flexShrink: 0 }}
+                    title="Remove search filter"
+                  >
+                    <X style={{ width: 12, height: 12, opacity: 0.9 }} />
+                  </button>
                 </span>
               )}
 
@@ -128,14 +147,20 @@ export default function TopHeaderNav({
                     background: 'rgba(236, 72, 153, 0.2)',
                     border: '1px solid #ec4899',
                     color: '#f472b6',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    maxWidth: 160,
+                    overflow: 'hidden'
                   }}
                 >
-                  <span>🎯 "{selectedClusterFocus}"</span>
-                  <X 
-                    style={{ width: 12, height: 12, cursor: 'pointer', opacity: 0.8 }}
+                  <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>🎯 "{selectedClusterFocus}"</span>
+                  <button 
+                    type="button"
                     onClick={() => setSelectedClusterFocus('')}
-                  />
+                    style={{ background: 'none', border: 'none', color: '#f472b6', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', flexShrink: 0 }}
+                    title="Remove cluster filter"
+                  >
+                    <X style={{ width: 12, height: 12, opacity: 0.9 }} />
+                  </button>
                 </span>
               )}
 
@@ -154,14 +179,20 @@ export default function TopHeaderNav({
                     background: 'rgba(16, 185, 129, 0.2)',
                     border: '1px solid #10b981',
                     color: '#34d399',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    maxWidth: 140,
+                    overflow: 'hidden'
                   }}
                 >
-                  <span>✨ {interest}</span>
-                  <X 
-                    style={{ width: 12, height: 12, cursor: 'pointer', opacity: 0.8 }}
+                  <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>✨ {interest}</span>
+                  <button 
+                    type="button"
                     onClick={() => setSelectedInterests(selectedInterests.filter(i => i !== interest))}
-                  />
+                    style={{ background: 'none', border: 'none', color: '#34d399', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', flexShrink: 0 }}
+                    title="Remove interest filter"
+                  >
+                    <X style={{ width: 12, height: 12, opacity: 0.9 }} />
+                  </button>
                 </span>
               ))}
 
@@ -178,7 +209,8 @@ export default function TopHeaderNav({
                   borderRadius: 9999, 
                   padding: '3px 8px',
                   cursor: 'pointer', 
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0
                 }}
               >
                 Clear All
