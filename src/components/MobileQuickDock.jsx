@@ -25,15 +25,17 @@ export default function MobileQuickDock({
         zIndex: 9000,
         display: 'flex',
         alignItems: 'center',
-        gap: 6,
-        padding: '6px 12px',
+        justifyContent: 'space-between',
+        gap: 4,
+        padding: '6px 10px',
         background: 'rgba(15, 23, 42, 0.94)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: '1px solid rgba(56, 189, 248, 0.35)',
         borderRadius: 9999,
         boxShadow: '0 12px 36px rgba(0, 0, 0, 0.65)',
-        maxWidth: 'calc(100vw - 16px)'
+        width: 'calc(100vw - 20px)',
+        maxWidth: 420
       }}
     >
       {/* 🔍 Search Button */}
@@ -43,12 +45,15 @@ export default function MobileQuickDock({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 2,
+          justifyContent: 'center',
+          gap: 3,
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           padding: 0,
-          color: '#f8fafc'
+          color: '#f8fafc',
+          flex: '1 1 0px',
+          minWidth: 0
         }}
         title="Search Guests & Cohorts"
       >
@@ -61,11 +66,12 @@ export default function MobileQuickDock({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 0 10px rgba(56, 189, 248, 0.3)'
+          boxShadow: '0 0 10px rgba(56, 189, 248, 0.3)',
+          flexShrink: 0
         }}>
           <Search style={{ width: 18, height: 18, color: '#38bdf8' }} />
         </div>
-        <span style={{ fontSize: 9, fontWeight: 800, color: '#38bdf8', letterSpacing: 0.1 }}>Search</span>
+        <span style={{ fontSize: 9, fontWeight: 800, color: '#38bdf8', letterSpacing: 0.1, whiteSpace: 'nowrap', lineHeight: 1 }}>Search</span>
       </button>
 
       {/* 🏆 Grand Gaggle Championship Button */}
@@ -75,12 +81,15 @@ export default function MobileQuickDock({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 2,
+          justifyContent: 'center',
+          gap: 3,
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           padding: 0,
-          color: '#f8fafc'
+          color: '#f8fafc',
+          flex: '1 1 0px',
+          minWidth: 0
         }}
         title="Open Championship Leaderboard"
       >
@@ -94,12 +103,13 @@ export default function MobileQuickDock({
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          boxShadow: '0 0 10px rgba(245, 158, 11, 0.3)'
+          boxShadow: '0 0 10px rgba(245, 158, 11, 0.3)',
+          flexShrink: 0
         }}>
-          <span style={{ fontSize: 16 }}>🪿</span>
-          <Trophy style={{ width: 12, height: 12, color: '#fbbf24', position: 'absolute', bottom: -2, right: -2 }} />
+          <span style={{ fontSize: 15 }}>🪿</span>
+          <Trophy style={{ width: 11, height: 11, color: '#fbbf24', position: 'absolute', bottom: -1, right: -1 }} />
         </div>
-        <span style={{ fontSize: 9, fontWeight: 800, color: '#fbbf24', letterSpacing: 0.1 }}>Mingling</span>
+        <span style={{ fontSize: 9, fontWeight: 800, color: '#fbbf24', letterSpacing: 0.1, whiteSpace: 'nowrap', lineHeight: 1 }}>Mingling</span>
       </button>
 
       {/* 📋 Guest Directory List Toggle Button */}
@@ -109,29 +119,33 @@ export default function MobileQuickDock({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: 3,
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           padding: 0,
-          color: '#f8fafc'
+          color: '#f8fafc',
+          flex: '1 1 0px',
+          minWidth: 0
         }}
         title="Toggle Guest Directory List"
       >
         <div style={{
-          width: 44,
-          height: 44,
+          width: 38,
+          height: 38,
           borderRadius: '50%',
           background: isListView ? 'rgba(244, 63, 94, 0.25)' : 'rgba(56, 189, 248, 0.2)',
           border: isListView ? '1px solid #f43f5e' : '1px solid rgba(56, 189, 248, 0.5)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: isListView ? '0 0 12px rgba(244, 63, 94, 0.35)' : '0 0 12px rgba(56, 189, 248, 0.3)'
+          boxShadow: isListView ? '0 0 12px rgba(244, 63, 94, 0.35)' : '0 0 12px rgba(56, 189, 248, 0.3)',
+          flexShrink: 0
         }}>
-          <ClipboardList style={{ width: 20, height: 20, color: isListView ? '#f43f5e' : '#38bdf8' }} />
+          <ClipboardList style={{ width: 18, height: 18, color: isListView ? '#f43f5e' : '#38bdf8' }} />
         </div>
-        <span style={{ fontSize: 10, fontWeight: 800, color: isListView ? '#f43f5e' : '#38bdf8', letterSpacing: 0.2 }}>Directory</span>
+        <span style={{ fontSize: 9, fontWeight: 800, color: isListView ? '#f43f5e' : '#38bdf8', letterSpacing: 0.1, whiteSpace: 'nowrap', lineHeight: 1 }}>Directory</span>
       </button>
 
       {/* 🍸 Cocktail Matchmaker Button */}
@@ -141,29 +155,33 @@ export default function MobileQuickDock({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: 3,
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           padding: 0,
-          color: '#f8fafc'
+          color: '#f8fafc',
+          flex: '1 1 0px',
+          minWidth: 0
         }}
         title="Open Cocktail Matchmaker"
       >
         <div style={{
-          width: 44,
-          height: 44,
+          width: 38,
+          height: 38,
           borderRadius: '50%',
           background: 'rgba(45, 212, 191, 0.2)',
           border: '1px solid rgba(45, 212, 191, 0.5)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 0 12px rgba(45, 212, 191, 0.3)'
+          boxShadow: '0 0 12px rgba(45, 212, 191, 0.3)',
+          flexShrink: 0
         }}>
-          <Wand2 style={{ width: 20, height: 20, color: '#2dd4bf' }} />
+          <Wand2 style={{ width: 18, height: 18, color: '#2dd4bf' }} />
         </div>
-        <span style={{ fontSize: 10, fontWeight: 800, color: '#2dd4bf', letterSpacing: 0.2 }}>Matchmaker</span>
+        <span style={{ fontSize: 9, fontWeight: 800, color: '#2dd4bf', letterSpacing: 0.1, whiteSpace: 'nowrap', lineHeight: 1 }}>Matches</span>
       </button>
 
       {/* 🔍 Zoom Out to Full Graph Button */}
@@ -174,29 +192,33 @@ export default function MobileQuickDock({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 3,
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             padding: 0,
-            color: '#f8fafc'
+            color: '#f8fafc',
+            flex: '1 1 0px',
+            minWidth: 0
           }}
           title="Zoom Out to Frame Full Graph"
         >
           <div style={{
-            width: 44,
-            height: 44,
+            width: 38,
+            height: 38,
             borderRadius: '50%',
             background: 'rgba(236, 72, 153, 0.2)',
             border: '1px solid rgba(236, 72, 153, 0.5)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 12px rgba(236, 72, 153, 0.3)'
+            boxShadow: '0 0 12px rgba(236, 72, 153, 0.3)',
+            flexShrink: 0
           }}>
-            <ZoomOut style={{ width: 20, height: 20, color: '#ec4899' }} />
+            <ZoomOut style={{ width: 18, height: 18, color: '#ec4899' }} />
           </div>
-          <span style={{ fontSize: 10, fontWeight: 800, color: '#ec4899', letterSpacing: 0.2 }}>Zoom Out</span>
+          <span style={{ fontSize: 9, fontWeight: 800, color: '#ec4899', letterSpacing: 0.1, whiteSpace: 'nowrap', lineHeight: 1 }}>Zoom Out</span>
         </button>
       )}
 
@@ -207,29 +229,33 @@ export default function MobileQuickDock({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: 3,
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           padding: 0,
-          color: '#f8fafc'
+          color: '#f8fafc',
+          flex: '1 1 0px',
+          minWidth: 0
         }}
         title="Open Map Controls"
       >
         <div style={{
-          width: 44,
-          height: 44,
+          width: 38,
+          height: 38,
           borderRadius: '50%',
           background: 'rgba(52, 211, 153, 0.2)',
           border: '1px solid rgba(52, 211, 153, 0.5)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 0 12px rgba(52, 211, 153, 0.3)'
+          boxShadow: '0 0 12px rgba(52, 211, 153, 0.3)',
+          flexShrink: 0
         }}>
-          <SlidersHorizontal style={{ width: 20, height: 20, color: '#34d399' }} />
+          <SlidersHorizontal style={{ width: 18, height: 18, color: '#34d399' }} />
         </div>
-        <span style={{ fontSize: 10, fontWeight: 800, color: '#34d399', letterSpacing: 0.2 }}>Controls</span>
+        <span style={{ fontSize: 9, fontWeight: 800, color: '#34d399', letterSpacing: 0.1, whiteSpace: 'nowrap', lineHeight: 1 }}>Controls</span>
       </button>
 
       {/* 🌓 Light / Dark Theme Toggle Button */}
@@ -240,29 +266,33 @@ export default function MobileQuickDock({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 3,
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             padding: 0,
-            color: '#f8fafc'
+            color: '#f8fafc',
+            flex: '1 1 0px',
+            minWidth: 0
           }}
           title="Toggle Light/Dark Theme"
         >
           <div style={{
-            width: 44,
-            height: 44,
+            width: 38,
+            height: 38,
             borderRadius: '50%',
             background: isLightMode ? 'rgba(241, 245, 249, 0.9)' : 'rgba(30, 41, 59, 0.9)',
             border: isLightMode ? '1px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.3)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 12px rgba(56, 189, 248, 0.3)'
+            boxShadow: '0 0 12px rgba(56, 189, 248, 0.3)',
+            flexShrink: 0
           }}>
-            {isLightMode ? <Moon style={{ width: 20, height: 20, color: '#0f172a' }} /> : <Sun style={{ width: 20, height: 20, color: '#38bdf8' }} />}
+            {isLightMode ? <Moon style={{ width: 18, height: 18, color: '#0f172a' }} /> : <Sun style={{ width: 18, height: 18, color: '#38bdf8' }} />}
           </div>
-          <span style={{ fontSize: 10, fontWeight: 800, color: isLightMode ? '#0f172a' : '#cbd5e1', letterSpacing: 0.2 }}>
+          <span style={{ fontSize: 9, fontWeight: 800, color: isLightMode ? '#0f172a' : '#cbd5e1', letterSpacing: 0.1, whiteSpace: 'nowrap', lineHeight: 1 }}>
             {isLightMode ? 'Light' : 'Dark'}
           </span>
         </button>
