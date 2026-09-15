@@ -1620,7 +1620,8 @@ export const SAMPLE_NODES = [
       "Photography",
       "Running",
       "Travel",
-      "Skiing"
+      "Skiing",
+      "Outdoors"
     ],
     "__indexColor": "#c40043",
     "x": -346.0790406578724,
