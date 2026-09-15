@@ -489,6 +489,11 @@
       "crop_size_px": 400,
       "face_selection": "manual_calibrated",
       "cropped_headshot": "public/headshots/chuchu_zhang.jpg"
+    },
+    "yannick_carer": {
+      "raw_source": "raw_sources/yannick_carer__orig_media.jpg",
+      "cropped_headshot": "public/headshots/yannick_carer.jpg",
+      "face_selection": "web_upload_auto_processed"
     }
   },
   "tracy_armstrong": {
