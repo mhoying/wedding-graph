@@ -1086,7 +1086,12 @@ export const SAMPLE_NODES = [
       "RPI Medal",
       "Hiking",
       "Rock Climbing",
-      "Cooking"
+      "Cooking",
+      "Yellowstone",
+      "Movies",
+      "Knicks",
+      "Travel",
+      "Trivia"
     ],
     "__indexColor": "#90002c",
     "x": -1098.6535648929714,
