@@ -24,6 +24,12 @@ jobs:
           node-version: 20
           cache: 'npm'
 
+      - name: Fetch Latest Remote Changes & Rebase
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+
       - name: Process Proposal & Update Database
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
@@ -52,8 +58,34 @@ jobs:
               state: 'closed'
             });
 
-      - name: Commit & Push Updated Dataset
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Auto-approve guest proposal #${{ github.event.issue.number }} [skip ci]"
-          file_pattern: "src/data/sampleData.js public/guests_template.csv headshots_manifest.json"
+      - name: Commit & Push Updated Dataset (With Resilient Retry)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/sampleData.js public/guests_template.csv headshots_manifest.json src/App.jsx
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Auto-approve guest proposal #${{ github.event.issue.number }} [skip ci]"
+
+          # Resilient push retry loop to prevent concurrent git lock failures
+          SUCCESS=0
+          for i in {1..5}; do
+            echo "Attempt $i: Syncing remote and pushing..."
+            git pull --rebase origin main || true
+            if git push origin main; then
+              SUCCESS=1
+              echo "Push succeeded on attempt $i!"
+              break
+            fi
+            echo "Push failed, waiting before retrying..."
+            sleep $((RANDOM % 3 + 2))
+          done
+
+          if [ $SUCCESS -ne 1 ]; then
+            echo "Failed to push proposal commit after 5 attempts."
+            exit 1
+          fi

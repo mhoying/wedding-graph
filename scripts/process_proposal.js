@@ -105,6 +105,28 @@ if (origFromMatch && origFromMatch[1]) {
   node.originallyFrom = origFromMatch[1].trim();
 }
 
+// Update BUILD_TIMESTAMP in sampleData.js content
+const newTimestamp = Date.now();
+sampleDataContent = sampleDataContent.replace(/export const BUILD_TIMESTAMP = \d+;/, `export const BUILD_TIMESTAMP = ${newTimestamp};`);
+
+// Update App.jsx storage cache version dynamically
+const appJsxPath = path.resolve('src/App.jsx');
+if (fs.existsSync(appJsxPath)) {
+  try {
+    let appJsxContent = fs.readFileSync(appJsxPath, 'utf-8');
+    const versionMatch = appJsxContent.match(/wedding_graph_nodes_v(\d+)/);
+    if (versionMatch) {
+      const currentVer = parseInt(versionMatch[1], 10);
+      const nextVer = currentVer + 1;
+      appJsxContent = appJsxContent.replaceAll(`wedding_graph_nodes_v${currentVer}`, `wedding_graph_nodes_v${nextVer}`);
+      fs.writeFileSync(appJsxPath, appJsxContent, 'utf-8');
+      console.log(`Bumped App.jsx cache key version to v${nextVer}`);
+    }
+  } catch (err) {
+    console.error('Error updating App.jsx cache key:', err);
+  }
+}
+
 // Generate updated sampleData.js string
 function generateSampleDataJs(nodes) {
   const jsonNodesStr = JSON.stringify(nodes, null, 2);
