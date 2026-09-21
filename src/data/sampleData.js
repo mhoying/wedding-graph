@@ -575,7 +575,11 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Brains",
       "Darkness",
-      "Cats"
+      "Cats",
+      "Hiking",
+      "Running",
+      "Travel",
+      "Wine"
     ],
     "__indexColor": "#480016",
     "x": -0.39717257812614026,
