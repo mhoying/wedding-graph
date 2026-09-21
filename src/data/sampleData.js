@@ -1090,7 +1090,12 @@ export const SAMPLE_NODES = [
       "RPI Medal",
       "Hiking",
       "Rock Climbing",
-      "Cooking"
+      "Cooking",
+      "Yellowstone",
+      "Movies",
+      "Knicks",
+      "Travel",
+      "Trivia"
     ],
     "__indexColor": "#90002c",
     "x": -514.7737367038065,
@@ -1621,7 +1626,11 @@ export const SAMPLE_NODES = [
       "Dogs",
       "Kids",
       "Cycling",
-      "Photography"
+      "Photography",
+      "Running",
+      "Travel",
+      "Skiing",
+      "Outdoors"
     ],
     "__indexColor": "#c40043",
     "x": 332.53916816238507,
