@@ -494,6 +494,11 @@
       "raw_source": "raw_sources/yannick_carer__orig_media.jpg",
       "cropped_headshot": "public/headshots/yannick_carer.jpg",
       "face_selection": "web_upload_auto_processed"
+    },
+    "katie_conniff": {
+      "raw_source": "raw_sources/katie_conniff__orig_media.jpg",
+      "cropped_headshot": "public/headshots/katie_conniff.jpg",
+      "face_selection": "web_upload_auto_processed"
     }
   },
   "tracy_armstrong": {
