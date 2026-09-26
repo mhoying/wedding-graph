@@ -5,13 +5,15 @@
  * and cache-bypassing cross-device synchronization.
  */
 
-const GAGGLE_STORE_KEY = 'wedding_graph_gaggle_v101_store';
-const ACTIVE_PLAYER_KEY = 'wedding_graph_active_player_v101';
+const GAGGLE_STORE_KEY = 'wedding_graph_gaggle_v102_store';
+const ACTIVE_PLAYER_KEY = 'wedding_graph_active_player_v102';
 const LEGACY_KEYS = [
   'wedding_graph_gaggle_v1',
   'wedding_graph_gaggle_v100_store',
+  'wedding_graph_gaggle_v101_store',
   'wedding_graph_active_player_v1',
   'wedding_graph_active_player_v100',
+  'wedding_graph_active_player_v101',
   'wedding_graph_feedback_v95',
   'wedding_graph_feedback_v99'
 ];
