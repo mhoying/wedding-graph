@@ -42,7 +42,7 @@ export default function App() {
   useEffect(() => {
     try {
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v130') {
+        if (key.startsWith('wedding_graph_nodes_') && key !== 'wedding_graph_nodes_v131') {
           localStorage.removeItem(key);
         }
       });
@@ -51,7 +51,7 @@ export default function App() {
 
   const [nodes, setNodes] = useState(() => {
     try {
-      const saved = localStorage.getItem('wedding_graph_nodes_v130');
+      const saved = localStorage.getItem('wedding_graph_nodes_v131');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
