@@ -499,6 +499,11 @@
       "raw_source": "raw_sources/katie_conniff__orig_media.jpg",
       "cropped_headshot": "public/headshots/katie_conniff.jpg",
       "face_selection": "web_upload_auto_processed"
+    },
+    "nadia_shaikh": {
+      "raw_source": "raw_sources/nadia_shaikh__orig_media.jpg",
+      "cropped_headshot": "public/headshots/nadia_shaikh.jpg",
+      "face_selection": "web_upload_auto_processed"
     }
   },
   "tracy_armstrong": {
