@@ -1,4 +1,4 @@
-export const BUILD_TIMESTAMP = 1790462764879;
+export const BUILD_TIMESTAMP = 1790470193439;
 // Real Wedding Guest List Data - Auto-updated via Host Admin Suite
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
@@ -906,7 +906,17 @@ export const SAMPLE_NODES = [
       "Dogs",
       "cheese",
       "Books",
-      "Dance"
+      "Dance",
+      "Wine",
+      "Pilates",
+      "Clemson",
+      "Chocolate",
+      "more cheese",
+      "Camping",
+      "Bluegrass",
+      "Bad Bunny",
+      "RVs",
+      "Costco"
     ],
     "state": "SF Bay Area",
     "__indexColor": "#300024",
