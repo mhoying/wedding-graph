@@ -1,4 +1,4 @@
-export const BUILD_TIMESTAMP = 1790524864803;
+export const BUILD_TIMESTAMP = 1790525363465;
 // Real Wedding Guest List Data - Auto-updated via Host Admin Suite
 export const COHORT_COLORS = {
   "The Couple": "#38bdf8",
@@ -819,14 +819,23 @@ export const SAMPLE_NODES = [
     "name": "Poukhan Philavanh Anthony",
     "type": "GUEST",
     "side": "Matt",
-    "cohort": "Other",
+    "cohort": "Stranger",
     "relationship": "The Anthony Family",
     "originallyFrom": "Minnesota",
-    "currentlyLivesIn": "Minnesota",
+    "currentlyLivesIn": "Limbo",
     "familyStatus": "Family",
     "hobbies": [
       "Kids",
-      "Dogs"
+      "Dogs",
+      "Crafts",
+      "Books",
+      "Reddit",
+      "Imaging fake scenarios in my head",
+      "Talking to myself",
+      "Comedy",
+      "Self-unimprovement",
+      "Ranting about Canadian Geese",
+      "Reading comments on social media and drafting a reply but never submitting it because I'm a coward"
     ],
     "__indexColor": "#6c0021",
     "x": 377.12492099430256,
