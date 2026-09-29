@@ -782,7 +782,14 @@ export const SAMPLE_NODES = [
     "familyStatus": "Couple / Group",
     "hobbies": [
       "Cocktails",
-      "Travel"
+      "Travel",
+      "Chargers",
+      "cheese",
+      "Cooking",
+      "Dance",
+      "Darkness",
+      "Music",
+      "Soccer"
     ],
     "__indexColor": "#94001f",
     "x": -932.1055395231281,
@@ -919,7 +926,18 @@ export const SAMPLE_NODES = [
       "Dogs",
       "cheese",
       "Books",
-      "Dance"
+      "Dance",
+      "Wine",
+      "Pilates",
+      "Clemson",
+      "Chocolate",
+      "more cheese",
+      "Camping",
+      "Bluegrass",
+      "Bad Bunny",
+      "RVs",
+      "Costco",
+      "Leopard Print"
     ],
     "state": "SF Bay Area",
     "__indexColor": "#300024",
@@ -1143,7 +1161,13 @@ export const SAMPLE_NODES = [
       "Books",
       "Bad Bunny",
       "Wine",
-      "Cooking"
+      "Cooking",
+      "Cocktails",
+      "Cars",
+      "Gardening",
+      "Travel",
+      "Words",
+      "Movies"
     ],
     "__indexColor": "#7c002d",
     "x": -456.5756579106352,
